@@ -1,0 +1,1 @@
+package newlinesEncoding;/** * IMPORTANT: This file should contain only CR as EOL character! * */public class CRNewlines {    public static void main( String[] args )    {        System.out.println( "Hello World!" );    }}

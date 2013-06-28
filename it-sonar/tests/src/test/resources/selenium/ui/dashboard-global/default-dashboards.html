@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>default-dashboards</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">default-dashboards</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/login</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/admin_dashboards</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.admin_page</td>
+        <td>*Global Dashboards*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>activeGlobal</td>
+        <td>*Home*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>activeGlobal</td>
+        <td>*Remove from defaults*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.admin_page</td>
+        <td>*Project Dashboards*Dashboard*Fake<br/> Fake dashboard for integration tests*Hotspots*Time Machine*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>activeProject</td>
+        <td>*Dashboard*Fake<br/> Fake dashboard for integration tests*Hotspots*Time Machine*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.admin_page</td>
+        <td>*Shared Dashboards*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=remove-Fake</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertConfirmation</td>
+        <td>Are you sure to remove it from default dashboards?</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>shared</td>
+        <td>*Fake*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=remove-Dashboard</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertConfirmation</td>
+        <td>Are you sure to remove it from default dashboards?</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>shared</td>
+        <td>*Dashboard*Fake*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=remove-Hotspots</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertConfirmation</td>
+        <td>Are you sure to remove it from default dashboards?</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>shared</td>
+        <td>*Dashboard*Fake*Hotspots*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=remove-Issues</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertConfirmation</td>
+        <td>Are you sure to remove it from default dashboards?</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>shared</td>
+        <td>*Dashboard*Fake*Hotspots*Issues*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>activeProject</td>
+        <td>*Time Machine*Remove from defaults*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=add-Dashboard</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>activeProject</td>
+        <td>*Time Machine*Remove from defaults*Dashboard*Remove from defaults*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

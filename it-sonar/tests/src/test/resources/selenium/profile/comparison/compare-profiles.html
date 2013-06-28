@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>compare-profiles</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">compare-profiles</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/logout</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/login</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>commit</td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>open</td>
+        <td>/sonar/profiles</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>compare-link</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementNotPresent</td>
+        <td>comparison-header</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>id1</td>
+        <td>label=To compare - one</td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>id2</td>
+        <td>label=To compare - two</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>submit-compare</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>in1Value</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>in2Value</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>modifiedValue</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>sameValue</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>in1-rules</td>
+        <td>glob:*Empty Block*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>in2-rules</td>
+        <td>glob:*Redundant Modifier*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>modified-rules</td>
+        <td>glob:*String Literal Equality*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>modified-rules</td>
+        <td>glob:*Whitespace After*COMMA, SEMI, TYPECAST*Whitespace After*TYPECAST*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

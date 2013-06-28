@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2009-2012 SonarSource SA
+  ~ All rights reserved
+  ~ mailto:contact AT sonarsource DOT com
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>search_for_assignee</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/issues</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=File contains tab characters (this is the first instance).</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>css=.issue-detail</td>
+        <td>*sample.Sample*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.issue-detail</td>
+        <td>*Sonar :: Integration Tests :: Simple Sample*sample.Sample*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.issue-detail</td>
+        <td>*File Tab Character*Open*File contains tab characters (this is the first instance).*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.issue-detail</td>
+        <td>*1*package sample;*9*private String myMethod() {*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

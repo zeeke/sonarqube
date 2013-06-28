@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>list_sort_by_descending_name</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/measures</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>select-qualifiers</td>
+        <td>Files</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=search-button</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>measures-table</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>link=Name</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>measures-table</td>
+        <td>*org.apache.struts.validator.validwhen.ValidWhenParserTokenTypes*org.apache.struts.util.ModuleUtils*</td>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+</html>

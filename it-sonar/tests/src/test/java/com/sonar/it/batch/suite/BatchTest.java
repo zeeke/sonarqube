@@ -1,0 +1,352 @@
+/*
+ * Copyright (C) 2009-2012 SonarSource SA
+ * All rights reserved
+ * mailto:contact AT sonarsource DOT com
+ */
+package com.sonar.it.batch.suite;
+
+import com.sonar.it.ItUtils;
+import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.build.BuildFailureException;
+import com.sonar.orchestrator.build.BuildResult;
+import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.selenium.Selenese;
+import com.sonar.orchestrator.util.VersionUtils;
+import org.apache.commons.io.FileUtils;
+import org.junit.*;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
+import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.services.*;
+
+import java.io.File;
+import java.io.IOException;
+
+import static org.fest.assertions.Assertions.assertThat;
+
+public class BatchTest {
+
+  @ClassRule
+  public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
+
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
+
+  @Rule
+  public TemporaryFolder temp = new TemporaryFolder();
+
+  @Before
+  public void deleteData() {
+    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+  }
+
+  @Test
+  public void should_scan_branch() {
+    scan("shared/xoo-multi-modules-sample");
+    scan("shared/xoo-multi-modules-sample", "sonar.branch", "0.x");
+
+    Sonar sonar = orchestrator.getServer().getWsClient();
+    assertThat(sonar.findAll(new ResourceQuery().setQualifiers("TRK"))).hasSize(2);
+
+    Resource master = sonar.find(new ResourceQuery("com.sonarsource.it.samples:multi-modules-sample"));
+    assertThat(master.getName()).isEqualTo("Sonar :: Integration Tests :: Multi-modules Sample");
+
+    Resource branch = sonar.find(new ResourceQuery("com.sonarsource.it.samples:multi-modules-sample:0.x"));
+    assertThat(branch.getName()).isEqualTo("Sonar :: Integration Tests :: Multi-modules Sample 0.x");
+  }
+
+  /**
+   * SONAR-2907
+   */
+  @Test
+  public void branch_should_load_own_settings_from_database() {
+    scan("shared/xoo-multi-modules-sample");
+    assertThat(getResource("com.sonarsource.it.samples:multi-modules-sample:module_b")).isNotNull();
+
+    Sonar sonar = orchestrator.getServer().getAdminWsClient();
+    // The parameter skippedModule considers key after first colon
+    sonar.update(new PropertyUpdateQuery("sonar.skippedModules", "multi-modules-sample:module_b",
+      "com.sonarsource.it.samples:multi-modules-sample"));
+
+    try {
+      scan("shared/xoo-multi-modules-sample");
+      assertThat(getResource("com.sonarsource.it.samples:multi-modules-sample:module_b")).isNull();
+
+      scan("shared/xoo-multi-modules-sample",
+        "sonar.branch", "mybranch");
+
+      assertThat(getResource("com.sonarsource.it.samples:multi-modules-sample:module_b:mybranch")).isNotNull();
+    } finally {
+      sonar.delete(new PropertyDeleteQuery("sonar.skippedModules", "com.sonarsource.it.samples:multi-modules-sample"));
+    }
+  }
+
+  @Test
+  public void should_import_sources_by_default() {
+    scan("shared/xoo-sample");
+
+    SourceQuery query = new SourceQuery("sample:sample/Sample.xoo");
+    Source source = orchestrator.getServer().getWsClient().find(query);
+    assertThat(source.getLines()).hasSize(13); // SONAR-3896
+    assertThat(source.getLine(3)).isEqualTo("public class Sample {");
+  }
+
+  @Test
+  public void should_not_import_sources() {
+    scan("batch/do-not-import-sources",
+      "sonar.importSources", "true");
+
+    Source source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/Hello.xoo"));
+    assertThat(source).isNotNull();
+    Source testSource = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/HelloTest.xoo"));
+    assertThat(testSource).isNotNull();
+
+    scan("batch/do-not-import-sources",
+      "sonar.importSources", "false");
+
+    source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/Hello.xoo"));
+    assertThat(source).isNull();
+    testSource = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/HelloTest.xoo"));
+    assertThat(testSource).isNull();
+
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("do-not-import-sources",
+      "/selenium/batch/do-not-import-sources/display-issues-but-not-source.html",
+      "/selenium/batch/do-not-import-sources/do-not-display-sources.html",
+
+      // SONAR-2403
+      "/selenium/batch/do-not-import-sources/source-of-unit-test.html").build();
+    orchestrator.executeSelenese(selenese);
+  }
+
+  @Test
+  public void test_dry_run() {
+    BuildResult result = scan("shared/xoo-sample",
+      "sonar.dryRun", "true");
+
+    // Analysis is not persisted in database
+    Resource project = getResource("com.sonarsource.it.samples:simple-sample");
+    assertThat(project).isNull();
+    assertThat(result.getLogs()).contains("Dry run");
+    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL");
+  }
+
+  /**
+   * SONAR-2497
+   */
+  @Test
+  public void should_exclude_plugins() {
+    BuildResult buildResult = inspectQuietly("shared/xoo-sample",
+      // exclude xoo plugin
+      "sonar.excludePlugins", "xoo",
+      "sonar.profile", "");
+
+    assertThat(buildResult.getStatus()).isEqualTo(1);
+    assertThat(buildResult.getLogs()).contains(
+      "Language with key 'xoo' not found");
+  }
+
+  /**
+   * SONAR-3116
+   */
+  @Test
+  public void should_not_exclude_root_module() {
+    thrown.expect(BuildFailureException.class);
+    scan("shared/xoo-multi-modules-sample",
+      "sonar.skippedModules", "multi-modules-sample");
+  }
+
+  /**
+   * SONAR-3315
+   */
+  @Test
+  public void should_display_explicit_message_when_duplicate_source_files() {
+    BuildResult buildResult = inspectQuietly("batch/duplicate-source");
+
+    assertThat(buildResult.getStatus()).isEqualTo(1);
+    assertThat(buildResult.getLogs()).contains("Duplicate source for resource");
+    // and check that the reference to the "real" file is present
+    assertThat(buildResult.getLogs()).contains("org/sonar/tests/ClassOne.xoo");
+  }
+
+  /**
+   * SONAR-3125
+   */
+  @Test
+  public void should_display_explicit_message_when_no_plugin_language_available() {
+    BuildResult buildResult = inspectQuietly("shared/xoo-sample",
+      "sonar.language", "foo",
+      "sonar.profile", "");
+    assertThat(buildResult.getStatus()).isEqualTo(1);
+    assertThat(buildResult.getLogs()).contains(
+      "You must install a plugin that supports the language 'foo'");
+  }
+
+  @Test
+  public void should_authenticate_when_needed() {
+    try {
+      orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
+
+      BuildResult buildResult = inspectQuietly("shared/xoo-sample",
+        "sonar.login", "",
+        "sonar.password", "");
+      assertThat(buildResult.getStatus()).isEqualTo(1);
+      assertThat(buildResult.getLogs()).contains(
+        "Not authorized. Analyzing this project requires to be authenticated. Please provide the values of the properties sonar.login and sonar.password.");
+
+      // SONAR-4048
+      buildResult = inspectQuietly("shared/xoo-sample",
+        "sonar.login", "wrong_login",
+        "sonar.password", "wrong_password");
+      assertThat(buildResult.getStatus()).isEqualTo(1);
+      assertThat(buildResult.getLogs()).contains(
+        "Not authorized. Please check the properties sonar.login and sonar.password.");
+
+      buildResult = scan("shared/xoo-sample",
+        "sonar.login", "admin",
+        "sonar.password", "admin");
+      assertThat(buildResult.getStatus()).isEqualTo(0);
+
+    } finally {
+      orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "false"));
+    }
+  }
+
+  /**
+   * SONAR-4211 Test Sonar Runner when server requires authentication
+   */
+  @Test
+  public void sonar_runner_with_secured_server() {
+    try {
+      orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
+
+      BuildResult buildResult = inspectQuietly("shared/xoo-sample");
+      assertThat(buildResult.getStatus()).isEqualTo(1);
+      assertThat(buildResult.getLogs()).contains(
+        "Not authorized. Analyzing this project requires to be authenticated. Please provide the values of the properties sonar.login and sonar.password.");
+
+      buildResult = inspectQuietly("shared/xoo-sample",
+        "sonar.login", "wrong_login",
+        "sonar.password", "wrong_password");
+      assertThat(buildResult.getStatus()).isEqualTo(1);
+      assertThat(buildResult.getLogs()).contains(
+        "Not authorized. Please check the properties sonar.login and sonar.password.");
+
+      buildResult = scan("shared/xoo-sample",
+        "sonar.login", "admin",
+        "sonar.password", "admin");
+      assertThat(buildResult.getStatus()).isEqualTo(0);
+
+    } finally {
+      orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "false"));
+    }
+  }
+
+  /**
+   * SONAR-2291
+   */
+  @Test
+  public void batch_should_cache_plugin_jars() throws IOException {
+    File userHome = temp.newFolder();
+
+    BuildResult result = scan("shared/xoo-sample",
+      "sonar.userHome", userHome.getAbsolutePath());
+
+    File cache = new File(userHome, "cache");
+    assertThat(cache).exists().isDirectory();
+    int cachedFiles = FileUtils.listFiles(cache, new String[]{"jar"}, true).size();
+    assertThat(cachedFiles).isGreaterThan(5);
+    assertThat(result.getLogs()).contains("User cache: " + cache.getAbsolutePath());
+    assertThat(result.getLogs()).contains("Download sonar-findbugs-plugin-");
+
+    result = scan("shared/xoo-sample",
+      "sonar.userHome", userHome.getAbsolutePath());
+    assertThat(cachedFiles).isEqualTo(cachedFiles);
+    assertThat(result.getLogs()).contains("User cache: " + cache.getAbsolutePath());
+    assertThat(result.getLogs()).doesNotContain("Download sonar-findbugs-plugin-");
+  }
+
+  /**
+   * SONAR-4239
+   */
+  @Test
+  public void should_display_project_url_after_analysis() throws IOException {
+    Assume.assumeTrue(VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.6"));
+
+    BuildResult result = scan("shared/xoo-multi-modules-sample");
+
+    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL, you can browse "
+      + orchestrator.getServer().getUrl() + "/dashboard/index/com.sonarsource.it.samples:multi-modules-sample");
+
+    result = scan("shared/xoo-multi-modules-sample",
+      "sonar.branch", "mybranch");
+
+    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL, you can browse "
+      + orchestrator.getServer().getUrl() + "/dashboard/index/com.sonarsource.it.samples:multi-modules-sample:mybranch");
+
+    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.core.serverBaseURL", "http://foo:123/sonar"));
+
+    result = scan("shared/xoo-multi-modules-sample");
+
+    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL, you can browse "
+      + "http://foo:123/sonar/dashboard/index/com.sonarsource.it.samples:multi-modules-sample");
+  }
+
+  /**
+   * SONAR-4188
+   */
+  @Test
+  public void should_display_explicit_message_when_invalid_project_key_or_branch() {
+    BuildResult buildResult = inspectQuietly("shared/xoo-sample",
+      "sonar.projectKey", "arg$l:");
+    assertThat(buildResult.getStatus()).isEqualTo(1);
+    assertThat(buildResult.getLogs()).contains("arg$l: is not a valid project or module key");
+
+    buildResult = inspectQuietly("shared/xoo-sample",
+      "sonar.branch", "arg$l:");
+    assertThat(buildResult.getStatus()).isEqualTo(1);
+    assertThat(buildResult.getLogs()).contains("arg$l: is not a valid branch");
+  }
+
+  /**
+   * SONAR-4147
+   */
+  @Test
+  public void should_display_profiling() {
+    BuildResult buildResult = scan("shared/xoo-sample",
+      "sonar.showProfiling", "true");
+    assertThat(buildResult.getLogs()).contains("Initializers execution time");
+    assertThat(buildResult.getLogs()).contains("Sensors execution time breakdown");
+    assertThat(buildResult.getLogs()).contains("Decorators execution time breakdown");
+    assertThat(buildResult.getLogs()).contains("Post-Jobs execution time breakdown");
+    // Purge
+    assertThat(buildResult.getLogs()).contains("Profiling for purge:");
+  }
+
+  private Resource getResource(String key) {
+    return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(key, "lines"));
+  }
+
+  private BuildResult scan(String projectPath, String... props) {
+    SonarRunner runner = configureRunner(projectPath, props);
+    return orchestrator.executeBuild(runner);
+  }
+
+  private BuildResult inspectQuietly(String projectPath, String... props) {
+    SonarRunner runner = configureRunner(projectPath, props);
+    return orchestrator.executeBuildQuietly(runner);
+  }
+
+  private SonarRunner configureRunner(String projectPath, String... props) {
+    SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
+      .setRunnerVersion("2.2.2")
+      .setProfile("one-issue-per-line");
+    for (int i = 0; i < props.length; i += 2) {
+      runner.setProperty(props[i], props[i + 1]);
+    }
+    return runner;
+  }
+
+}

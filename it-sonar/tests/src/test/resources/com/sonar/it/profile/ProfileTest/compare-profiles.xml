@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sonar-config>
+  <version><![CDATA[59]]></version>
+  <date><![CDATA[2009-02-19]]></date>
+  <metrics/>
+  <properties>
+    <property>
+      <key><![CDATA[sonar.role.admin.TRK.defaultGroups]]></key>
+      <value><![CDATA[sonar-administrators]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.admin.TRK.defaultUsers]]></key>
+      <value><![CDATA[]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.user.TRK.defaultGroups]]></key>
+      <value><![CDATA[Anyone,sonar-users]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.user.TRK.defaultUsers]]></key>
+      <value><![CDATA[]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.codeviewer.TRK.defaultGroups]]></key>
+      <value><![CDATA[Anyone,sonar-users]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.codeviewer.TRK.defaultUsers]]></key>
+      <value><![CDATA[]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.admin.VW.defaultGroups]]></key>
+      <value><![CDATA[sonar-administrators]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.admin.VW.defaultUsers]]></key>
+      <value><![CDATA[]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.user.VW.defaultGroups]]></key>
+      <value><![CDATA[Anyone,sonar-users]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.user.VW.defaultUsers]]></key>
+      <value><![CDATA[]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.codeviewer.VW.defaultGroups]]></key>
+      <value><![CDATA[Anyone,sonar-users]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.codeviewer.VW.defaultUsers]]></key>
+      <value><![CDATA[]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.admin.SVW.defaultGroups]]></key>
+      <value><![CDATA[sonar-administrators]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.admin.SVW.defaultUsers]]></key>
+      <value><![CDATA[]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.user.SVW.defaultGroups]]></key>
+      <value><![CDATA[Anyone,sonar-users]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.user.SVW.defaultUsers]]></key>
+      <value><![CDATA[]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.codeviewer.SVW.defaultGroups]]></key>
+      <value><![CDATA[Anyone,sonar-users]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.role.codeviewer.SVW.defaultUsers]]></key>
+      <value><![CDATA[]]></value>
+    </property>
+    <property>
+      <key><![CDATA[sonar.profile.java]]></key>
+      <value><![CDATA[Sonar way]]></value>
+    </property>
+  </properties>
+  <profiles>
+    <profile>
+      <name><![CDATA[To compare - one]]></name>
+      <language><![CDATA[java]]></language>
+      <active-rules>
+        <!-- only in "one" -->
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck]]></key>
+          <plugin>checkstyle</plugin>
+          <level>BLOCKER</level>
+        </active-rule>
+
+        <!-- in profiles "one" and "two", with same configuration -->
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck]]></key>
+          <plugin><![CDATA[checkstyle]]></plugin>
+          <level>MAJOR</level>
+        </active-rule>
+
+
+        <!-- in profiles "one" and "two", with different configuration -->
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.coding.StringLiteralEqualityCheck]]></key>
+          <plugin><![CDATA[checkstyle]]></plugin>
+          <level>MAJOR</level>
+        </active-rule>
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck]]></key>
+          <plugin>checkstyle</plugin>
+          <level>MAJOR</level>
+          <params>
+            <param>
+              <key><![CDATA[tokens]]></key>
+              <value><![CDATA[COMMA,SEMI,TYPECAST]]></value>
+            </param>
+          </params>
+        </active-rule>
+      </active-rules>
+      <alerts/>
+    </profile>
+
+    <profile>
+      <name><![CDATA[To compare - two]]></name>
+      <language><![CDATA[java]]></language>
+      <active-rules>
+        <!-- in profiles "one" and "two", with same configuration -->
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck]]></key>
+          <plugin><![CDATA[checkstyle]]></plugin>
+          <level>MAJOR</level>
+        </active-rule>
+
+        <!-- in profiles "one" and "two", with different configuration -->
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.coding.StringLiteralEqualityCheck]]></key>
+          <plugin><![CDATA[checkstyle]]></plugin>
+          <level>INFO</level>
+        </active-rule>
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck]]></key>
+          <plugin>checkstyle</plugin>
+          <level>MAJOR</level>
+          <params>
+            <param>
+              <key><![CDATA[tokens]]></key>
+              <value><![CDATA[TYPECAST]]></value>
+            </param>
+          </params>
+        </active-rule>
+
+        <!-- only in "two" -->
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck]]></key>
+          <plugin><![CDATA[checkstyle]]></plugin>
+          <level>MAJOR</level>
+        </active-rule>
+      </active-rules>
+      <alerts/>
+    </profile>
+
+    <profile>
+      <name><![CDATA[Sonar way]]></name>
+      <language><![CDATA[java]]></language>
+      <active-rules>
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck]]></key>
+          <plugin><![CDATA[checkstyle]]></plugin>
+          <level>MAJOR</level>
+        </active-rule>
+      </active-rules>
+    </profile>
+
+  </profiles>
+</sonar-config>

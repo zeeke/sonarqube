@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>hotspot_metric</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">hotspot_metric</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/widget?id=hotspot_metric&amp;resource=org.apache.struts:struts-parent&amp;metric=comment_lines_density&amp;title=NewTitle</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>block_1</td>
+        <td>*NewTitle*ValidWhenLexer*ValidWhenParser*MockPageContext*MockFormBean*PerformForward*</td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>link=ValidWhenLexer</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>link=ValidWhenParser</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>link=MockPageContext</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>link=MockFormBean</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>link=PerformForward</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/widget?id=hotspot_metric&amp;resource=org.apache.struts:struts-parent&amp;metric=lcom4</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>block_1</td>
+        <td>*Hotspots by LCOM4*</td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>link=ServletActionContext</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=ServletActionContext</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForPopUp</td>
+        <td>resource</td>
+        <td>30000</td>
+    </tr>
+    <tr>
+        <td>selectPopUp</td>
+        <td>resource</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForElementPresent</td>
+        <td>class=accordion-item</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.source_title</td>
+        <td>*org.apache.struts.chain.contexts.ServletActionContext*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>source_header</td>
+        <td>*Lack of Cohesion of Methods*3*</td>
+    </tr>
+    <tr>
+        <td>close</td>
+        <td>resource</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

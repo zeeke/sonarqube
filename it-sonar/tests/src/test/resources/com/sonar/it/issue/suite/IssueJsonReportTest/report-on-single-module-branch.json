@@ -1,0 +1,61 @@
+{"version": "3.6-SNAPSHOT", "issues": [
+  {
+    "key": "abcde",
+    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut",
+    "line": 18,
+    "message": "System.out.print is used",
+    "severity": "MAJOR",
+    "rule": "pmd:SystemPrintln",
+    "status": "OPEN",
+    "isNew": false,
+    "creationDate": "2013-05-01T00:00:00+0000",
+    "updateDate": "2013-05-01T00:00:00+0000"
+  },
+  {
+    "key": "abcde",
+    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut",
+    "line": 10,
+    "message": "System.out.print is used",
+    "severity": "MAJOR",
+    "rule": "pmd:SystemPrintln",
+    "status": "OPEN",
+    "isNew": true,
+    "creationDate": "2013-05-02T00:00:00+0000",
+    "updateDate": "2013-05-02T00:00:00+0000"
+  },
+  {
+    "key": "abcde",
+    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut",
+    "line": 14,
+    "message": "System.out.print is used",
+    "severity": "MAJOR",
+    "rule": "pmd:SystemPrintln",
+    "status": "OPEN",
+    "isNew": true,
+    "creationDate": "2013-05-02T00:00:00+0000",
+    "updateDate": "2013-05-02T00:00:00+0000"
+  },
+  {
+    "key": "abcde",
+    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut",
+    "line": 22,
+    "message": "System.out.print is used",
+    "severity": "MAJOR",
+    "rule": "pmd:SystemPrintln",
+    "status": "OPEN",
+    "isNew": false,
+    "creationDate": "2013-05-01T00:00:00+0000",
+    "updateDate": "2013-05-01T00:00:00+0000"
+  }
+], "components": [
+  {
+    "key": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut"
+  }
+], "rules": [
+  {
+    "key": "pmd:SystemPrintln",
+    "rule": "SystemPrintln",
+    "repository": "pmd",
+    "name": "System Println"
+  }
+]}

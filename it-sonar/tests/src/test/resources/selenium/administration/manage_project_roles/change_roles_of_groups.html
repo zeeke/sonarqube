@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>change_roles_of_groups</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>deleteAllVisibleCookies</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/project_roles/index/com.sonarsource.it.samples:simple-sample</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>crumbs</td>
+        <td>*Simple Sample*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>admin-role-groups</td>
+        <td>sonar-administrators</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=select-admin-edit-groups</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>addSelection</td>
+        <td>id=to</td>
+        <td>label=sonar-administrators</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>id=select_left</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>addSelection</td>
+        <td>id=from</td>
+        <td>label=sonar-users</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>id=select_right</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=save</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>admin-role-groups</td>
+        <td>sonar-users</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>user-role-groups</td>
+        <td>Anyone, sonar-users</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=select-user-edit-groups</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>id=select_left_all</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>addSelection</td>
+        <td>id=from</td>
+        <td>label=sonar-administrators</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>id=select_right</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=save</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>user-role-groups</td>
+        <td>sonar-administrators</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>codeviewer-role-groups</td>
+        <td>Anyone, sonar-users</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=select-codeviewer-edit-groups</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>id=select_right_all</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=save</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>codeviewer-role-groups</td>
+        <td>Anyone, sonar-administrators, sonar-users</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

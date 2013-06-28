@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>installed-plugins</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/logout</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/settings</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>id=login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>id=password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>name=commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/updatecenter</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>content</td>
+        <td>*Installed Plugins*</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=Visual Studio</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>select_visualstudio</td>
+        <td>*Visual Studio*Depends upon:*C Sharp*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>uninstall-visualstudio</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=form.warning</td>
+        <td>*visualstudio-plugin-v10-1.0.jar*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>css=form.warning</td>
+        <td>*csharp-plugin-v10-1.0*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=cancel-uninstall</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=C Sharp</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>select_csharp</td>
+        <td>*C Sharp*Depends upon:*DotNet*Uninstalling this plugin will also uninstall:*Visual Studio*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=uninstall-csharp</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=form.warning</td>
+        <td>*csharp-plugin-v10-1.0*visualstudio-plugin-v10-1.0.jar*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>css=form.warning</td>
+        <td>*dotnet-plugin-v10-1.0.jar*fxcop-plugin-v10-1.0.jar*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=cancel-uninstall</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=DotNet</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>select_dotnet</td>
+        <td>*DotNet*Includes:*FxCop*Uninstalling this plugin will also uninstall:*C Sharp*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=uninstall-dotnet</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=form.warning</td>
+        <td>*csharp-plugin-v10-1.0.jar*dotnet-plugin-v10-1.0.jar*fxcop-plugin-v10-1.0.jar*visualstudio-plugin-v10-1.0.jar*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=cancel-uninstall</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

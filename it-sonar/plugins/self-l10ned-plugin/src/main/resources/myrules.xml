@@ -1,0 +1,8 @@
+<rules>
+  <rule>
+    <key>myrule</key>
+    <name>Rule from localized plugin</name>
+    <configKey>myrule</configKey>
+    <description>Description of the rule from localized plugin</description>
+  </rule>
+</rules>

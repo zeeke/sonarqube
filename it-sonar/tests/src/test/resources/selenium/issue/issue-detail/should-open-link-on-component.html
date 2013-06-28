@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2009-2012 SonarSource SA
+  ~ All rights reserved
+  ~ mailto:contact AT sonarsource DOT com
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>should-open-link-on-component</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/issues</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>css=.issue-detail-link</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>css=.issue-detail</td>
+        <td>*sample.Sample*</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>css=.issue-component-link</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForPopUp</td>
+        <td>resource-com-sonarsource-it-samples-simple-sample-sample-sample</td>
+        <td>30000</td>
+    </tr>
+    <tr>
+        <td>selectPopUp</td>
+        <td>resource-com-sonarsource-it-samples-simple-sample-sample-sample</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertLocation</td>
+        <td>*/resource/index/com.sonarsource.it.samples:simple-sample:sample.Sample?layout=false&amp;tab=issues*</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

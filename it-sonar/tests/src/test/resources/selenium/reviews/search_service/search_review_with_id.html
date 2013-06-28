@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>search_review_with_id</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">search_review_with_id</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/new</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/resource/index/com.sonarsource.it.reviews:several-files-project:org.sonar.tests.ClassC?tab=issues</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>mouseOver</td>
+        <td>css=div.violation</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>name=bComment</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>store</td>
+        <td>css=textarea[name=&quot;text&quot;]</td>
+        <td>commentText</td>
+    </tr>
+    <tr>
+        <td>waitForVisible</td>
+        <td>${commentText}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>storeAttribute</td>
+        <td>//input[@name=&quot;id&quot;]@value</td>
+        <td>violationId</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>${commentText}</td>
+        <td>This is a review</td>
+    </tr>
+    <tr>
+        <td>typeKeys</td>
+        <td>${commentText}</td>
+        <td>This is a review</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>submit_btn${violationId}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>css=.violation</td>
+        <td>glob:*This is a review*</td>
+    </tr>
+    <tr>
+        <td>storeEval</td>
+        <td>window.document.getElementsByClassName(&quot;review_permalink&quot;)[1].firstChild.text.substring(8)</td>
+        <td>reviewId</td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/reviews/index</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>autocompleteText-assignee_login</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>review_id</td>
+        <td>${reviewId}</td>
+    </tr>
+    <tr>
+        <td>removeSelection</td>
+        <td>id=severities</td>
+        <td>label=Any</td>
+    </tr>
+    <tr>
+        <td>addSelection</td>
+        <td>id=severities</td>
+        <td>label=Blocker</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>submit_search</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>reviews-search</td>
+        <td>*1 results*must be private and have accessor methods*Administrator*This is a review*</td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>link=${reviewId}</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

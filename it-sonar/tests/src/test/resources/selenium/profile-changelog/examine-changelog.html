@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>modify-again</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">modify-again</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/logout</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/new</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/profiles</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>rules-java-profile_b</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>searchtext</td>
+        <td>Empty Block</td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>search_repository</td>
+        <td>label=Checkstyle</td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>search_activation</td>
+        <td>label=Inactive</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>submit_search</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>selectAndWait</td>
+        <td>bulk_action</td>
+        <td>label=Activate all</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>link=Changelog</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.data.width100</td>
+        <td>*2 -&gt; 3*Administrator*on*Empty Block*Severity set to*MAJOR*</td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>id=since</td>
+        <td>value=0</td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>id=to</td>
+        <td>value=2</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>submit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.data.width100</td>
+        <td>*1 -&gt; 2*Administrator*off*Abstract Class Name*Severity was*MAJOR*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

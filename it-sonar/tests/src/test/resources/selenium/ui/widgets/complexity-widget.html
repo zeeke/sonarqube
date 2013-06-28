@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>complexity</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">complexity</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/widget?id=complexity&amp;resource=org.apache.struts:struts-parent&amp;metric1=complexity&amp;metric2=ncloc&amp;chartTitle=MyWidget</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>block_1</td>
+        <td>*Complexity*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>m_function_complexity</td>
+        <td>2.5</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>m_class_complexity</td>
+        <td>20.0</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>m_file_complexity</td>
+        <td>21.1</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>m_complexity</td>
+        <td>6,741</td>
+    </tr>
+    <tr>
+        <td>assertVisible</td>
+        <td>css=div#chart_function_complexity_distribution &gt; img</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertNotVisible</td>
+        <td>css=div#chart_file_complexity_distribution &gt; img</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>id=cmp_dist_file_complexity_distribution</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertNotVisible</td>
+        <td>css=div#chart_function_complexity_distribution &gt; img</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertVisible</td>
+        <td>css=div#chart_file_complexity_distribution &gt; img</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

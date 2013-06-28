@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>create-user</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>deleteAllVisibleCookies</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/new</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>id=login</td>
+        <td>profileadm</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>id=password</td>
+        <td>papwd</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>name=commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/profiles</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>id=restore-link</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>id=create-link-java</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>link=Set as default</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>link=Sonar way</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>xpath=//input[@type='checkbox']</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForElementPresent</td>
+        <td>xpath=//input[@type='checkbox' and not(@checked)]</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=tab-alerts</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertTextPresent</td>
+        <td>Create alert</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=tab-projects</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertTextPresent</td>
+        <td>Add project</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/project/profile/1</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>id=submit-java</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

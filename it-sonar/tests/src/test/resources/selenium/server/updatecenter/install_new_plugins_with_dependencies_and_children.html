@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>installed-plugins</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/logout</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/settings</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>id=login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>id=password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>name=commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/updatecenter/available</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>content</td>
+        <td>*Available Plugins*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>content</td>
+        <td>*C Sharp*DotNet*Visual Studio*</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=DotNet</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>select-dotnet</td>
+        <td>*DotNet*Includes:*FxCop*Version*1.1*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>submit-dotnet</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=form.warning</td>
+        <td>*dotnet-plugin-v11-1.1.jar*fxcop-plugin-v11-1.1.jar*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>css=form.warning</td>
+        <td>*csharp-plugin-v11-1.1.jar*visualstudio-plugin-v11-1.1.jar*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>content</td>
+        <td>*C Sharp*Visual Studio*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>content</td>
+        <td>*DotNet*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>cancel-pending-installations</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/updatecenter/available</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=C Sharp</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>select-csharp</td>
+        <td>*Installing this plugin will also install:*DotNet*Version*1.1*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=submit-csharp</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=form.warning</td>
+        <td>*csharp-plugin-v11-1.1.jar*dotnet-plugin-v11-1.1.jar*fxcop-plugin-v11-1.1.jar*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>css=form.warning</td>
+        <td>*visualstudio-plugin-v11-1.1.jar*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>content</td>
+        <td>*Visual Studio*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>content</td>
+        <td>*DotNet*C Sharp*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=cancel-pending-installations</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/updatecenter/available</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=Visual Studio</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>select-visualstudio</td>
+        <td>*Visual Studio*Installing this plugin will also install:*C Sharp*Version:*1.1*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=submit-visualstudio</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=form.warning</td>
+        <td>*csharp-plugin-v11-1.1.jar*dotnet-plugin-v11-1.1.jar*fxcop-plugin-v11-1.1.jar*visualstudio-plugin-v11-1.1.jar*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>content</td>
+        <td>*DotNet*C Sharp*Visual Studio*</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=cancel-pending-installations</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>link=Available Plugins</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>list_widget_sort</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>storeEval</td>
+        <td>'sort_widget_'+(new Date()).getTime()</td>
+        <td>FILTER_NAME</td>
+    </tr>
+    <tr>
+        <td>deleteAllVisibleCookies</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/measures</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>link=Log in</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>name=commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>select-qualifiers</td>
+        <td>Files</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=search-button</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>id=save-as</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForElementPresent</td>
+        <td>save-as-filter-form</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>name</td>
+        <td>${FILTER_NAME}</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=save-as-submit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>storeEval</td>
+        <td>window.location.pathname.split('/').last()</td>
+        <td>FILTER_ID</td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/widget?id=measure_filter_list&amp;filter=${FILTER_ID}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>block_1</td>
+        <td>*Name*LOC*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>block_1</td>
+        <td>*org.apache.struts.action.Action*org.apache.struts.action.PlugIn*</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=LOCs</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>block_1</td>
+        <td>*org.apache.struts.action.ActionServlet*org.apache.struts.util.RequestUtils*</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=LOCs</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>block_1</td>
+        <td>*org.apache.struts.mock.MockAction*org.apache.struts.tiles.PathAttribute*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

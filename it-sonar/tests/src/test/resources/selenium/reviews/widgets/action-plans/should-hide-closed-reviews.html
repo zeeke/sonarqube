@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>should-hide-closed-reviews</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/widget?id=action_plans&amp;resource=com.sonarsource.it.reviews:several-files-project&amp;showClosedReviews=false</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>block_1</td>
+        <td>*Open action plans*Sprint for 1.1*31 Dec 2100*</td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>Link=2</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>link=2</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>reviews-search</td>
+        <td>*Reviews*Filtered by:*Status*Action plan*2 results*It is planned now*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

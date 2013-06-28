@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile>
+  <name>global-issues</name>
+  <language>java</language>
+  <rules>
+    <rule>
+      <repositoryKey>checkstyle</repositoryKey>
+      <key>com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocPackageCheck</key>
+      <priority>MAJOR</priority>
+    </rule>
+    <rule>
+      <repositoryKey>checkstyle</repositoryKey>
+      <key>com.puppycrawl.tools.checkstyle.checks.NewlineAtEndOfFileCheck</key>
+      <priority>MAJOR</priority>
+    </rule>
+  </rules>
+</profile>

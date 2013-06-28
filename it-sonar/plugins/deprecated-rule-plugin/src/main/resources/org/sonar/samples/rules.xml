@@ -1,0 +1,8 @@
+<rules>
+  <rule>
+    <key>deprecated-rule</key>
+    <name>Deprecated rule</name>
+    <status>DEPRECATED</status>
+    <description>This is a deprecated rule.</description>
+  </rule>
+</rules>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/new</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/resource/index/com.sonarsource.it.samples:simple-sample:sample.Sample</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForElementPresent</td>
+        <td>class=accordion-item</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>css=.pos3 &gt; td.plus &gt; a</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForVisible</td>
+        <td>createViolationCell3</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>name=new_rule</td>
+        <td>Invalid class name</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>name=message</td>
+        <td>The name 'Sample' is too generic</td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>name=severity</td>
+        <td>label=Critical</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>css=input[type=&quot;submit&quot;]</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>css=table.code</td>
+        <td>glob:*Invalid class name*</td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>css=table.code</td>
+        <td>glob:*The name 'Sample' is too generic*</td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>css=table.code</td>
+        <td>glob:*less than a minute*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

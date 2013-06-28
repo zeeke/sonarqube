@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>should-display-timemachine-dashboard</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">should-display-timemachine-dashboard</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/dashboard/index/com.sonarsource.it.samples:simple-sample</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForElementPresent</td>
+        <td>Link=Time Machine</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>Link=Time Machine</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>dashboard</td>
+        <td>*Complexity: 2*Rules compliance: 100*Coverage: 0*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>dashboard</td>
+        <td>*Sep 01 2012*0.7*Nov 30 2012*0.9*Dec 31 2012*1.0-SNAPSHOT*</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>dashboard</td>
+        <td>*Lines of code*Lines*Statements*Files*Classes*Methods*Accessors*Comments*Comment lines*Public documented API*Public undocumented API*Duplicated lines (%)*Duplicated
+            lines*Duplicated blocks*Duplicated files*Issues*Blocker issues*Critical issues*Major issues*Minor issues*Weighted issues*Complexity*Complexity /method*Complexity
+            /class*Complexity /file*Coverage*Line coverage*
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

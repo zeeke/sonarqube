@@ -1,0 +1,9 @@
+<rules>
+  <rule>
+    <key>rule.without.description</key>
+    <name>Rule Without Description</name>
+    <configKey>rule.without.description</configKey>
+    <!-- Empty description -->
+    <description>   </description>
+  </rule>
+ </rules>

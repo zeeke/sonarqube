@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>should-open-links-on-review-detail</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">should-open-links-on-review-detail</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/widget?id=unplanned_reviews&amp;resource=com.sonarsource.it.reviews:several-files-project</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>link=Variable 'hello' must be private and have accessor methods.</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>review</td>
+        <td>*Open*org.sonar.tests.ClassA*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>review</td>
+        <td>*Planned for*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

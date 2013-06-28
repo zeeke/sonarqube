@@ -1,0 +1,1 @@
+We use this empty folder to test tasks that doesn't need a project.

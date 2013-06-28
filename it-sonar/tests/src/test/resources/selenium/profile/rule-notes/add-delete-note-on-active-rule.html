@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>add-delete-note-on-active-rule</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/logout</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/sessions/login</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>login</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>password</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>commit</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>open</td>
+        <td>/sonar/profiles</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=rules-java-One%20Rule%20Profile</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=Line Length</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>result_table</td>
+        <td>*Line Length*Add note*</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=Add note</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td>css=textarea[name='note']</td>
+        <td>This</td>
+    </tr>
+    <tr>
+        <td>typeKeys</td>
+        <td>css=textarea[name='note']</td>
+        <td>is my note</td>
+    </tr>
+    <tr>
+        <td>pause</td>
+        <td>1000</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>name=submit-active-note</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>result_table</td>
+        <td>*Line Length*Administrator*Edit*Delete*is my note*</td>
+    </tr>
+    <tr>
+        <td>assertNotText</td>
+        <td>result_table</td>
+        <td>*Add note*</td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=Delete</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertConfirmation</td>
+        <td>Do you really want to delete this note?</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>result_table</td>
+        <td>*Add note*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
