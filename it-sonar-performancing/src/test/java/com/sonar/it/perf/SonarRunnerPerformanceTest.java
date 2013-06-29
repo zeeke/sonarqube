@@ -64,7 +64,7 @@ public class SonarRunnerPerformanceTest {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDuration(duration, 100000L);
+    assertDuration(duration, 80000L);
   }
 
   @Test
@@ -80,7 +80,7 @@ public class SonarRunnerPerformanceTest {
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
 
-    assertDuration(duration, 158000L);
+    assertDuration(duration, 125000L);
   }
 
   @Test
