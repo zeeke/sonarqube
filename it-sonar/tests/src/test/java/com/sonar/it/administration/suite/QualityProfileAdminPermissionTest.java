@@ -40,6 +40,5 @@ public class QualityProfileAdminPermissionTest {
 
         ).build();
     orchestrator.executeSelenese(selenese);
-
   }
 }

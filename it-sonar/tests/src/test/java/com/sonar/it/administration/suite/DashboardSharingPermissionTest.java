@@ -8,6 +8,7 @@ package com.sonar.it.administration.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
@@ -26,14 +27,14 @@ public class DashboardSharingPermissionTest {
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
-    UserParameters canShareDashboard = UserParameters.create().login("can_share_dashboards").name("can_share_dashboards").password("password").passwordConfirmation("password");
+    UserParameters canShareDashboard = UserParameters.create().login("can_share_dashboards").name("can_share_dashboards")
+      .password("password").passwordConfirmation("password");
     client.userClient().create(canShareDashboard);
-    UserParameters cannotShareDashboard = UserParameters.create().login("cannot_share_dashboards").name("cannot_share_dashboards").password("password").passwordConfirmation("password");
-    client.userClient().create(cannotShareDashboard);
 
-
-
-
-
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("set-dashboard-sharing-permission",
+      "/selenium/administration/permission-administration/user-dashboard-sharing-permission.html",
+      "/selenium/administration/permission-administration/group-dashboard-sharing-permission.html")
+    .build();
+    orchestrator.executeSelenese(selenese);
   }
 }

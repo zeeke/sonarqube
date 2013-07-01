@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>set-dashboard-sharing-permission</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+  <tbody>
+  <tr>
+    <td>deleteAllVisibleCookies</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>open</td>
+    <td>/sonar/roles/global</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>type</td>
+    <td>id=login</td>
+    <td>admin</td>
+  </tr>
+  <tr>
+    <td>type</td>
+    <td>id=password</td>
+    <td>admin</td>
+  </tr>
+  <tr>
+    <td>clickAndWait</td>
+    <td>name=commit</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>assertTable</td>
+    <td>css=table.data.3.0</td>
+    <td>glob:*Dashboard Sharing*</td>
+  </tr>
+  <tr>
+    <td>clickAndWait</td>
+    <td>id=select-users-shareDashboard</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>addSelection</td>
+    <td>id=from</td>
+    <td>label=can_share_dashboards</td>
+  </tr>
+  <tr>
+    <td>click</td>
+    <td>id=select_right</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>clickAndWait</td>
+    <td>id=save</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>assertTable</td>
+    <td>css=table.data.3.1</td>
+    <td>exact:can_share_dashboards (select)</td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
