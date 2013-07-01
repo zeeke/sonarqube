@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>set-dashboard-sharing-permission</title>
+  <title>project-dashboard-sharing-permission</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -15,18 +15,18 @@
   </tr>
   <tr>
     <td>open</td>
-    <td>/sonar/roles/global</td>
+    <td>/sonar/dashboards?resource=1</td>
     <td></td>
   </tr>
   <tr>
     <td>type</td>
     <td>id=login</td>
-    <td>admin</td>
+    <td>cannot_share_dashboards</td>
   </tr>
   <tr>
     <td>type</td>
     <td>id=password</td>
-    <td>admin</td>
+    <td>password</td>
   </tr>
   <tr>
     <td>clickAndWait</td>
@@ -34,34 +34,19 @@
     <td></td>
   </tr>
   <tr>
-    <td>assertTable</td>
-    <td>css=table.data.3.0</td>
-    <td>glob:*Dashboard Sharing*</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>id=select-users-shareDashboard</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>addSelection</td>
-    <td>id=from</td>
-    <td>label=can_share_dashboards</td>
-  </tr>
-  <tr>
     <td>click</td>
-    <td>id=select_right</td>
+    <td>create-link-dashboard</td>
     <td></td>
   </tr>
   <tr>
-    <td>clickAndWait</td>
-    <td>id=save</td>
+    <td>waitForVisible</td>
+    <td>css=div.modal-body</td>
     <td></td>
   </tr>
   <tr>
-    <td>assertTable</td>
-    <td>css=table.data.3.1</td>
-    <td>exact:can_share_dashboards (select)</td>
+    <td>assertElementNotPresent</td>
+    <td>css=div.modal-body > div.modal.field > input#shared</td>
+    <td></td>
   </tr>
   </tbody>
 </table>
