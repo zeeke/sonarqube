@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>should_update_issue_filters</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<tbody>
+<tr>
+	<td>storeEval</td>
+	<td>'filter_'+(new Date()).getTime()</td>
+	<td>FILTER_NAME</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>select-project</td>
+	<td>sample</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=search-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>issue-filters-operations</td>
+	<td>*Save as*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=save-as</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>save-as-filter-form</td>
+	<td>*Save Filter*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>${FILTER_NAME}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=description</td>
+	<td>First ${FILTER_NAME} description</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=save-as-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>filter-title</td>
+	<td>*${FILTER_NAME}*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>my-issue-filter-${FILTER_NAME}</td>
+	<td>*${FILTER_NAME}*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>edit_${FILTER_NAME}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>edit-filter-form</td>
+	<td>*Edit Filter*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>${FILTER_NAME}_new_name</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=save-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>filter-title</td>
+	<td>*${FILTER_NAME}_new_name*</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -22,7 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
 /**
  * Tests the extension point IssueFilter
  */
-public class IssueFilterTest extends AbstractIssueTestCase {
+public class IssueFilterExtensionTest extends AbstractIssueTestCase {
 
   @Before
   public void resetData() {

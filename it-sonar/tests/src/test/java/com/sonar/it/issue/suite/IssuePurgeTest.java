@@ -18,6 +18,7 @@ import java.util.List;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class IssuePurgeTest extends AbstractIssueTestCase {
+
   @Before
   public void deleteAnalysisData() {
     orchestrator.getDatabase().truncateInspectionTables();
