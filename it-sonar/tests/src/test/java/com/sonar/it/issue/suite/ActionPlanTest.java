@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.issue.ActionPlan;
+import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.NewActionPlan;
 import org.sonar.wsclient.issue.UpdateActionPlan;
 
@@ -140,6 +141,26 @@ public class ActionPlanTest extends AbstractIssueTestCase {
 
     List<ActionPlan> results = adminActionPlanClient().find(PROJECT_KEY);
     assertThat(results).isEmpty();
+  }
+
+  /**
+   * SONAR-4449
+   */
+  @Test
+  public void should_delete_action_plan_also_unplan_linked_issues() {
+    // Create action plan
+    ActionPlan newActionPlan = adminActionPlanClient().create(
+      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+
+    Issue issue = searchRandomIssue();
+    // Link an issue to the action plan
+    adminIssueClient().plan(issue.key(), newActionPlan.key());
+    // Delete action plan
+    adminActionPlanClient().delete(newActionPlan.key());
+
+    // Reload the issue
+    Issue reloaded = searchIssueByKey(issue.key());
+    assertThat(reloaded.actionPlan()).isNull();
   }
 
   @Test

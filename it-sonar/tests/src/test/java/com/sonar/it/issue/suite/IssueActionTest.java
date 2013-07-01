@@ -126,7 +126,38 @@ public class IssueActionTest extends AbstractIssueTestCase {
    * SONAR-4290
    */
   @Test
-  public void set_action_plan() {
+  public void plan() {
+    assertThat(issue.actionPlan()).isNull();
+
+    // Set action plan to issue
+    ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("com.sonarsource.it.samples:simple-sample")
+      .description("Short term issues").deadLine(toDate("2113-01-31")));
+    assertThat(newActionPlan.key()).isNotNull();
+    adminIssueClient().plan(issue.key(), newActionPlan.key());
+    assertThat(search(IssueQuery.create().actionPlans(newActionPlan.key())).list()).hasSize(1);
+
+    orchestrator.executeBuild(scan);
+    Issue reloaded = searchIssueByKey(issue.key());
+    assertThat(reloaded.actionPlan()).isEqualTo(newActionPlan.key());
+    assertThat(reloaded.creationDate()).isEqualTo(issue.creationDate());
+    ActionPlan actionPlan = search(IssueQuery.create().actionPlans(newActionPlan.key())).actionPlans(reloaded);
+    assertThat(actionPlan.name()).isEqualTo(newActionPlan.name());
+    assertThat(actionPlan.deadLine()).isEqualTo(newActionPlan.deadLine());
+  }
+
+  @Test
+  public void fail_plan_if_action_plan_does_not_exist() {
+    assertThat(issue.actionPlan()).isNull();
+    try {
+      adminIssueClient().plan(issue.key(), "unknown");
+      fail();
+    } catch (Exception e) {
+      verifyHttpException(e, 400);
+    }
+  }
+
+  @Test
+  public void un_plan() {
     assertThat(issue.actionPlan()).isNull();
 
     // Set action plan to issue
