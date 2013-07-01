@@ -10,6 +10,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.PropertyQuery;
 
@@ -23,6 +24,7 @@ public class SubCategoriesTest {
    * SONAR-3159
    */
   @Test
+  @Ignore
   public void should_support_global_subcategories() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("subcategories",
         "/selenium/administration/subcategories/global-subcategories.html"

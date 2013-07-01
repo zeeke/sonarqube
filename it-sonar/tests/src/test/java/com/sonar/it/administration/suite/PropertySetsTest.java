@@ -8,6 +8,7 @@ package com.sonar.it.administration.suite;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.PropertyQuery;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
@@ -30,6 +31,7 @@ public class PropertySetsTest {
   }
 
   @Test
+  @Ignore
   public void should_edit_properties() {
     setProperty("sonar.test.jira.servers", "jira1,jira2");
     setProperty("sonar.test.jira.servers.jira1.url", "http://jira1");
@@ -45,6 +47,7 @@ public class PropertySetsTest {
   }
 
   @Test
+  @Ignore
   public void should_support_property_sets_with_auto_generated_keys() {
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-auto-generated",
       "/selenium/administration/auto-generated/create.html"
