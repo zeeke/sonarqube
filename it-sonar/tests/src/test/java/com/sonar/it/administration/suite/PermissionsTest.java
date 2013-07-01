@@ -40,7 +40,7 @@ public class PermissionsTest {
 
     PermissionParameters secondUserProfileAdminParams = PermissionParameters.create().user("add_remove_permission_user").permission("profileadmin");
     client.permissionClient().addPermission(secondUserProfileAdminParams);
-    PermissionParameters secondUserShareDashboardParams = PermissionParameters.create().user("add_remove_permission_user").permission("sharedashboard");
+    PermissionParameters secondUserShareDashboardParams = PermissionParameters.create().user("add_remove_permission_user").permission("shareDashboard");
     client.permissionClient().addPermission(secondUserShareDashboardParams);
     client.permissionClient().removePermission(secondUserProfileAdminParams);
 
@@ -60,7 +60,7 @@ public class PermissionsTest {
 
     PermissionParameters usersGroupProfileAdminParams = PermissionParameters.create().group("sonar-users").permission("profileadmin");
     client.permissionClient().addPermission(usersGroupProfileAdminParams);
-    PermissionParameters usersGroupShareDashboardParams = PermissionParameters.create().group("sonar-users").permission("sharedashboard");
+    PermissionParameters usersGroupShareDashboardParams = PermissionParameters.create().group("sonar-users").permission("shareDashboard");
     client.permissionClient().addPermission(usersGroupShareDashboardParams);
     client.permissionClient().removePermission(usersGroupProfileAdminParams);
 
