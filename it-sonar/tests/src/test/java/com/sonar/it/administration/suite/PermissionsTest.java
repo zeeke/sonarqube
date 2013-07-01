@@ -58,11 +58,12 @@ public class PermissionsTest {
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
-    PermissionParameters usersGroupProfileAdminParams = PermissionParameters.create().group("sonar-users").permission("profileadmin");
+    PermissionParameters usersGroupProfileAdminParams = PermissionParameters.create().group("sonar-users").permission("shareDashboard");
     client.permissionClient().addPermission(usersGroupProfileAdminParams);
-    PermissionParameters usersGroupShareDashboardParams = PermissionParameters.create().group("sonar-users").permission("shareDashboard");
-    client.permissionClient().addPermission(usersGroupShareDashboardParams);
     client.permissionClient().removePermission(usersGroupProfileAdminParams);
+
+    PermissionParameters usersGroupShareDashboardParams = PermissionParameters.create().group("sonar-users").permission("profileadmin");
+    client.permissionClient().addPermission(usersGroupShareDashboardParams);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-groups-permissions-using-ws",
       "/selenium/administration/permission-administration/manage-groups-permission-with-ws.html")

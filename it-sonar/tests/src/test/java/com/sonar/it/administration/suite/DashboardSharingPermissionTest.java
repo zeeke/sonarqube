@@ -24,6 +24,8 @@ public class DashboardSharingPermissionTest {
 
   @BeforeClass
   public static void setUpUsers() {
+    orchestrator.getDatabase().truncateInspectionTables();
+
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
     UserParameters newUser = UserParameters.create().login("new_user").name("new_user")
       .password("password").passwordConfirmation("password");

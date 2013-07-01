@@ -13,8 +13,15 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  BackupTest.class, BulkDeletionTest.class, DashboardSharingPermissionTest.class, PermissionsTest.class, ProjectAdministrationTest.class,
-  PropertySetsTest.class, SubCategoriesTest.class, SystemAdminPermissionTest.class, UserAdministrationTest.class
+//  BackupTest.class,
+//  BulkDeletionTest.class,
+//  DashboardSharingPermissionTest.class,
+  PermissionsTest.class,
+//  ProjectAdministrationTest.class,
+//  PropertySetsTest.class,
+//  SubCategoriesTest.class,
+  SystemAdminPermissionTest.class,
+//  UserAdministrationTest.class
 })
 public class AdministrationTestSuite {
 
