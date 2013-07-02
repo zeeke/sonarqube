@@ -91,7 +91,7 @@
 <tr>
 	<td>waitForText</td>
 	<td>filter-title</td>
-	<td>*user_${FILTER_NAME}*</td>
+	<td>*user_${FILTER_NAME}*Shared with all users*</td>
 </tr>
 <tr>
 	<td>deleteAllVisibleCookies</td>
@@ -134,13 +134,58 @@
 	<td>*user_${FILTER_NAME}*</td>
 </tr>
 <tr>
+	<td>clickAndWait</td>
+	<td>id=star-user_${FILTER_NAME}</td>
+	<td></td>
+</tr>
+<tr>
 	<td>assertText</td>
-	<td>shared-user_${FILTER_NAME}</td>
-	<td>*User Issue Filters*Copy*Edit*Delete*</td>
+	<td>sidebar-favourites</td>
+	<td>*user_${FILTER_NAME}*</td>
+</tr>
+<tr>
+	<td>deleteAllVisibleCookies</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>user-issue-filters</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>my-issue-filters</td>
+	<td>*user_${FILTER_NAME}*</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>edit_shared_user_${FILTER_NAME}</td>
+	<td>id=edit_user_${FILTER_NAME}</td>
 	<td></td>
 </tr>
 <tr>
@@ -149,14 +194,9 @@
 	<td>*Edit Filter*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>edit-filter-form</td>
-	<td>*Name*Description*Shared with all users*</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=name</td>
-	<td>${FILTER_NAME}_new_name</td>
+	<td>click</td>
+	<td>shared</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -164,13 +204,38 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
+	<td>waitForText</td>
 	<td>filter-title</td>
-	<td>*${FILTER_NAME}_new_name*Shared by User Issue Filters*</td>
+	<td>*user_${FILTER_NAME}*Private*</td>
+</tr>
+<tr>
+	<td>deleteAllVisibleCookies</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Manage</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/issues/manage</td>
 	<td></td>
 </tr>
 <tr>
@@ -184,9 +249,9 @@
 	<td>*user_${FILTER_NAME}*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>shared-${FILTER_NAME}_new_name</td>
-	<td>*User Issue Filters*Copy*Edit*Delete*</td>
+	<td>assertNotText</td>
+	<td>sidebar-favourites</td>
+	<td>*user_${FILTER_NAME}*</td>
 </tr>
 </tbody>
 </table>

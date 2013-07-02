@@ -14,6 +14,11 @@
 	<td>FILTER_NAME</td>
 </tr>
 <tr>
+	<td>deleteAllVisibleCookies</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>open</td>
 	<td>/sonar/sessions/new</td>
 	<td></td>
@@ -21,12 +26,12 @@
 <tr>
 	<td>type</td>
 	<td>login</td>
-	<td>admin</td>
+	<td>user-issue-filters</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>password</td>
-	<td>admin</td>
+	<td>password</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -37,11 +42,6 @@
 	<td>open</td>
 	<td>/sonar/issues</td>
 	<td></td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>issue-filters-operations</td>
-	<td>*Copy*</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -76,7 +76,12 @@
 <tr>
 	<td>type</td>
 	<td>id=name</td>
-	<td>${FILTER_NAME}</td>
+	<td>user_${FILTER_NAME}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=shared</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -86,16 +91,51 @@
 <tr>
 	<td>waitForText</td>
 	<td>filter-title</td>
-	<td>*${FILTER_NAME}*</td>
+	<td>*user_${FILTER_NAME}*</td>
+</tr>
+<tr>
+	<td>deleteAllVisibleCookies</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/issues/manage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>content</td>
+	<td>*My Filters*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>issue-filters-operations</td>
-	<td>*Copy*</td>
+	<td>shared-filters</td>
+	<td>*user_${FILTER_NAME}*</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=copy</td>
+	<td>id=copy-user_${FILTER_NAME}</td>
 	<td></td>
 </tr>
 <tr>
@@ -104,29 +144,39 @@
 	<td>*Copy Filter*</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=name</td>
-	<td>${FILTER_NAME}_Copy</td>
+	<td>assertChecked</td>
+	<td>shared</td>
+	<td></td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>type</td>
+	<td>id=name</td>
+	<td>user_${FILTER_NAME}_copy</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
 	<td>id=copy-submit</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
+	<td>assertText</td>
 	<td>filter-title</td>
-	<td>*${FILTER_NAME}_Copy*</td>
+	<td>*user_${FILTER_NAME}_copy*</td>
 </tr>
 <tr>
-	<td>assertSelectedLabel</td>
-	<td>select-severities</td>
-	<td>Minor</td>
+	<td>assertText</td>
+	<td>sidebar-favourites</td>
+	<td>*user_${FILTER_NAME}_copy*</td>
 </tr>
 <tr>
-	<td>assertSelectedLabel</td>
-	<td>select-status</td>
-	<td>Open</td>
+  <td>assertSelectedLabel</td>
+  <td>select-severities</td>
+  <td>Minor</td>
+</tr>
+<tr>
+  <td>assertSelectedLabel</td>
+  <td>select-status</td>
+  <td>Open</td>
 </tr>
 <tr>
   <td>assertText</td>
