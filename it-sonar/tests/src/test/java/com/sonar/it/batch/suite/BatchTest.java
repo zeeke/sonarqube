@@ -121,18 +121,6 @@ public class BatchTest {
     orchestrator.executeSelenese(selenese);
   }
 
-  @Test
-  public void test_dry_run() {
-    BuildResult result = scan("shared/xoo-sample",
-      "sonar.dryRun", "true");
-
-    // Analysis is not persisted in database
-    Resource project = getResource("com.sonarsource.it.samples:simple-sample");
-    assertThat(project).isNull();
-    assertThat(result.getLogs()).contains("Dry run");
-    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL");
-  }
-
   /**
    * SONAR-2497
    */
@@ -342,10 +330,8 @@ public class BatchTest {
   private SonarRunner configureRunner(String projectPath, String... props) {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
       .setRunnerVersion("2.2.2")
-      .setProfile("one-issue-per-line");
-    for (int i = 0; i < props.length; i += 2) {
-      runner.setProperty(props[i], props[i + 1]);
-    }
+      .setProfile("one-issue-per-line")
+      .setProperties(props);
     return runner;
   }
 

@@ -21,7 +21,9 @@ import org.junit.runners.Suite;
   PropertySetsTest.class,
   SubCategoriesTest.class,
   SystemAdminPermissionTest.class,
-  UserAdministrationTest.class
+  UserAdministrationTest.class,
+  ScanPermissionTest.class,
+  DryRunScanPermissionTest.class
 })
 public class AdministrationTestSuite {
 
@@ -32,5 +34,6 @@ public class AdministrationTestSuite {
     .addPlugin(ItUtils.locateTestPlugin("property-sets-plugin"))
     .addPlugin(ItUtils.locateTestPlugin("subcategories-plugin"))
     .addPlugin(ItUtils.locateTestPlugin("user-handler-plugin"))
+    .addPlugin(ItUtils.xooPlugin())
     .build();
 }

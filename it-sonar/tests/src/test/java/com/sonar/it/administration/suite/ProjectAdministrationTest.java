@@ -20,7 +20,6 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 import javax.annotation.Nullable;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -38,22 +37,6 @@ public class ProjectAdministrationTest {
   @After
   public void deleteAnalysisData() throws SQLException {
     orchestrator.getDatabase().truncateInspectionTables();
-
-    executeSql("DELETE FROM group_roles WHERE resource_id IS NOT NULL");
-    executeSql("DELETE FROM user_roles WHERE resource_id IS NOT NULL");
-  }
-
-  private void executeSql(String sql) {
-    Connection connection = orchestrator.getDatabase().openConnection();
-    try {
-      connection.prepareStatement(sql).execute();
-      // commit is useless on some databases
-      connection.commit();
-    } catch (SQLException e) {
-      // frequent use-case : the table does not exist
-    } finally {
-      orchestrator.getDatabase().closeQuietly(connection);
-    }
   }
 
   @Test

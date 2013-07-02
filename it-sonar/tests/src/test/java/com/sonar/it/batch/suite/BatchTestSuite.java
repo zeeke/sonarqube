@@ -24,6 +24,8 @@ public class BatchTestSuite {
 
     // used by MavenTest
     .addPlugin(ItUtils.locateTestPlugin("maven-execution-plugin"))
+    // used by DryRunTest
+    .addPlugin(ItUtils.locateTestPlugin("access-secured-props-plugin"))
 
     .build();
 }

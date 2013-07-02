@@ -39,6 +39,7 @@
   </build>
 
   <modules>
+    <module>access-secured-props-plugin</module>
     <module>custom-metric-plugin</module>
     <module>dashboard-plugin</module>
     <module>deprecated-checkstyle-extension</module>
