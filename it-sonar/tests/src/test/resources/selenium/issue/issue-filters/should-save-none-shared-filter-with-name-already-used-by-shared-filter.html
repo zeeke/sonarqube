@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>should_update_issue_filters</title>
+    <title>should_save_issue_filters</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -14,6 +14,11 @@
 	<td>FILTER_NAME</td>
 </tr>
 <tr>
+	<td>deleteAllVisibleCookies</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>open</td>
 	<td>/sonar/sessions/new</td>
 	<td></td>
@@ -21,12 +26,12 @@
 <tr>
 	<td>type</td>
 	<td>login</td>
-	<td>admin</td>
+	<td>user-issue-filters</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>password</td>
-	<td>admin</td>
+	<td>password</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -71,7 +76,82 @@
 <tr>
 	<td>type</td>
 	<td>id=name</td>
-	<td>${FILTER_NAME}</td>
+	<td>user_${FILTER_NAME}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=shared</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=save-as-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>filter-title</td>
+	<td>*user_${FILTER_NAME}*</td>
+</tr>
+<tr>
+	<td>deleteAllVisibleCookies</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/issues/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>select-project</td>
+	<td>sample</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=search-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>issue-filters-operations</td>
+	<td>*Save as*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=save-as</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>save-as-filter-form</td>
+	<td>*Save Filter*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>user_${FILTER_NAME}</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -84,54 +164,9 @@
 	<td>*${FILTER_NAME}*</td>
 </tr>
 <tr>
-	<td>removeAllSelections</td>
-	<td>select-severities</td>
-	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>select-severities</td>
-	<td>Info</td>
-</tr>
-<tr>
-	<td>removeAllSelections</td>
-	<td>select-status</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=search-button</td>
-	<td></td>
-</tr>
-<tr>
 	<td>assertText</td>
-	<td>issue-filters-operations</td>
-	<td>*Save*</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=save</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>issue-filters-operations</td>
-	<td>*Save*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>criteria-project</td>
-	<td>*Sample*</td>
-</tr>
-<tr>
-	<td>assertSelectedLabels</td>
-	<td>select-severities</td>
-	<td>Info</td>
-</tr>
-<tr>
-	<td>assertNotSomethingSelected</td>
-	<td>select-status</td>
-	<td></td>
+	<td>sidebar-favourites</td>
+	<td>*${FILTER_NAME}*</td>
 </tr>
 </tbody>
 </table>

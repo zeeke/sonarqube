@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>should_update_issue_filters</title>
+    <title>should_save_issue_filters</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -84,54 +84,44 @@
 	<td>*${FILTER_NAME}*</td>
 </tr>
 <tr>
-	<td>removeAllSelections</td>
-	<td>select-severities</td>
-	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>select-severities</td>
-	<td>Info</td>
-</tr>
-<tr>
-	<td>removeAllSelections</td>
-	<td>select-status</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
-	<td>id=search-button</td>
+	<td>link=Manage</td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>my-issue-filters</td>
+	<td>*${FILTER_NAME}*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>issue-filters-operations</td>
-	<td>*Save*</td>
+	<td>my-issue-filter-${FILTER_NAME}</td>
+	<td>*Delete*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=delete_${FILTER_NAME}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>confirm-form</td>
+	<td>*Delete Filter*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>confirm-form</td>
+	<td>*Are you sure that you want to delete the filter &quot;${FILTER_NAME}&quot;?*</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=save</td>
+	<td>id=confirm-submit</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>issue-filters-operations</td>
-	<td>*Save*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>criteria-project</td>
-	<td>*Sample*</td>
-</tr>
-<tr>
-	<td>assertSelectedLabels</td>
-	<td>select-severities</td>
-	<td>Info</td>
-</tr>
-<tr>
-	<td>assertNotSomethingSelected</td>
-	<td>select-status</td>
-	<td></td>
+	<td>my-issue-filters</td>
+	<td>*${FILTER_NAME}*</td>
 </tr>
 </tbody>
 </table>

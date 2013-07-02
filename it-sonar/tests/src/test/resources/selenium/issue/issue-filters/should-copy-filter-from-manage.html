@@ -44,16 +44,6 @@
 	<td>sample</td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>select-severities</td>
-	<td>Minor</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>select-status</td>
-	<td>Open</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>id=search-button</td>
 	<td></td>
@@ -74,6 +64,11 @@
 	<td>${FILTER_NAME}</td>
 </tr>
 <tr>
+	<td>type</td>
+	<td>id=description</td>
+	<td>First ${FILTER_NAME} description</td>
+</tr>
+<tr>
 	<td>click</td>
 	<td>id=save-as-submit</td>
 	<td></td>
@@ -84,54 +79,39 @@
 	<td>*${FILTER_NAME}*</td>
 </tr>
 <tr>
-	<td>removeAllSelections</td>
-	<td>select-severities</td>
+	<td>clickAndWait</td>
+	<td>link=Manage</td>
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>select-severities</td>
-	<td>Info</td>
+	<td>waitForText</td>
+	<td>my-issue-filters</td>
+	<td>*${FILTER_NAME}*</td>
 </tr>
 <tr>
-	<td>removeAllSelections</td>
-	<td>select-status</td>
+	<td>click</td>
+	<td>copy-${FILTER_NAME}</td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>copy-filter-form</td>
+	<td>*Copy Filter*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>${FILTER_NAME}_Copy</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=search-button</td>
+	<td>copy-submit</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>issue-filters-operations</td>
-	<td>*Save*</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=save</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>issue-filters-operations</td>
-	<td>*Save*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>criteria-project</td>
-	<td>*Sample*</td>
-</tr>
-<tr>
-	<td>assertSelectedLabels</td>
-	<td>select-severities</td>
-	<td>Info</td>
-</tr>
-<tr>
-	<td>assertNotSomethingSelected</td>
-	<td>select-status</td>
-	<td></td>
+	<td>filter-title</td>
+	<td>*${FILTER_NAME}_Copy*</td>
 </tr>
 </tbody>
 </table>
