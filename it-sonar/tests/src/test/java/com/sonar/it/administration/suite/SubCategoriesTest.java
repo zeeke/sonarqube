@@ -24,7 +24,6 @@ public class SubCategoriesTest {
    * SONAR-3159
    */
   @Test
-  @Ignore
   public void should_support_global_subcategories() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("subcategories",
         "/selenium/administration/subcategories/global-subcategories.html"
