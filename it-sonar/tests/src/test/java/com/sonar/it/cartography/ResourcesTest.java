@@ -12,7 +12,6 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.MavenLocation;
 import org.junit.After;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -48,13 +47,12 @@ public class ResourcesTest {
 
   // SONAR-4235
   @Test
-  @Ignore("wait for Goldeneye")
   public void test_resource_creation_date() {
     long before = new Date().getTime();
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")));
     long after = new Date().getTime();
     Resource xooSample = orchestrator.getServer().getWsClient().find(new ResourceQuery().setLanguages("xoo"));
-    // assertThat(xooSample.getCreationDate().getTime()).isGreaterThan(before).isLessThan(after);
+    assertThat(xooSample.getCreationDate().getTime()).isGreaterThan(before).isLessThan(after);
   }
 
   private void scanProject(String project) {
