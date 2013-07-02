@@ -31,7 +31,6 @@ public class PropertySetsTest {
   }
 
   @Test
-  @Ignore
   public void should_edit_properties() {
     setProperty("sonar.test.jira.servers", "jira1,jira2");
     setProperty("sonar.test.jira.servers.jira1.url", "http://jira1");
@@ -47,7 +46,6 @@ public class PropertySetsTest {
   }
 
   @Test
-  @Ignore
   public void should_support_property_sets_with_auto_generated_keys() {
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-auto-generated",
       "/selenium/administration/auto-generated/create.html"
