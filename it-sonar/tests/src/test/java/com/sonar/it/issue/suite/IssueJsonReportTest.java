@@ -106,7 +106,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
     orchestrator.executeBuild(scan);
 
     // SONAR-4342 Set property in DB on root module
-    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.profile.java", "issues", "com.sonarsource.it.samples:multi-modules-sample"));
+    orchestrator.getServer().getAdminWsClient().create(new PropertyCreateQuery("sonar.profile.java", "issues", "com.sonarsource.it.samples:multi-modules-sample"));
 
     // Dry-run scan on a module -> no new issues
     File modulePom = ItUtils.locateProjectPom("shared/multi-modules-sample/module_a/module_a1");
