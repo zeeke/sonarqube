@@ -98,12 +98,13 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
   @Test
   public void should_share_filter() {
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_share_filter",
-      "/selenium/issue/issue-filters/should_share_filter.html",
-      "/selenium/issue/issue-filters/should_share_filter-from-manage.html",
+      "/selenium/issue/issue-filters/should-share-filter.html",
+      "/selenium/issue/issue-filters/should-share-filter-from-manage.html",
       "/selenium/issue/issue-filters/should-open-filter-shared-by-another-user.html",
       "/selenium/issue/issue-filters/should-save-none-shared-filter-with-name-already-used-by-shared-filter.html",
       "/selenium/issue/issue-filters/should-not-save-shared-filter-with-name-already-used-by-shared-filter.html",
-      "/selenium/issue/issue-filters/should-flag-as-favorite-filter-shared-by-another-user.html"
+      "/selenium/issue/issue-filters/should-flag-as-favorite-filter-shared-by-another-user.html",
+      "/selenium/issue/issue-filters/admin-should-edit-filter-shared-by-others.html"
     ).build());
   }
 }
