@@ -20,7 +20,7 @@ public class BatchTestSuite {
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
-      .setContext("/")
+    .setContext("/")
 
     // used by MavenTest
     .addPlugin(ItUtils.locateTestPlugin("maven-execution-plugin"))

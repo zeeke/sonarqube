@@ -7,10 +7,11 @@ package com.sonar.it.batch.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import org.fest.assertions.Delta;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -20,7 +21,7 @@ import java.util.List;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class FileExclusionsTest {
-  private static final String PROJECT = "com.sonarsource.it.projects.batch:exclusions";
+  private static final String PROJECT = "exclusions";
 
   @ClassRule
   public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
@@ -33,17 +34,15 @@ public class FileExclusionsTest {
   @Test
   public void should_exclude_source_files() {
     scan(
-      "sonar.global.exclusions", "**/*Ignore*.java",
-      "sonar.exclusions", "**/*Exclude*.java,org/sonar/tests/packageToExclude/**",
-      "sonar.test.exclusions", "**/ClassTwoTest.java"
-    );
+        "sonar.global.exclusions", "**/*Ignore*.xoo",
+        "sonar.exclusions", "**/*Exclude*.xoo,org/sonar/tests/packageToExclude/**",
+        "sonar.test.exclusions", "**/ClassTwoTest.xoo");
 
-    Resource project = projectWithMetrics("ncloc", "classes", "packages", "functions");
+    Resource project = projectWithMetrics("ncloc", "files", "directories");
 
     assertThat(project.getMeasureIntValue("ncloc")).isEqualTo(60);
-    assertThat(project.getMeasureIntValue("classes")).isEqualTo(4);
-    assertThat(project.getMeasureIntValue("packages")).isEqualTo(2);
-    assertThat(project.getMeasureIntValue("functions")).isEqualTo(8);
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(4);
+    assertThat(project.getMeasureIntValue("directories")).isEqualTo(2);
   }
 
   /**
@@ -52,16 +51,15 @@ public class FileExclusionsTest {
   @Test
   public void should_exclude_test_files() {
     scan(
-      "sonar.global.exclusions", "**/*Ignore*.java",
-      "sonar.exclusions", "**/*Exclude*.java,org/sonar/tests/packageToExclude/**",
-      "sonar.test.exclusions", "**/ClassTwoTest.java"
-    );
+        "sonar.global.exclusions", "**/*Ignore*.xoo",
+        "sonar.exclusions", "**/*Exclude*.xoo,org/sonar/tests/packageToExclude/**",
+        "sonar.test.exclusions", "**/ClassTwoTest.xoo");
 
     List<Resource> testFiles = orchestrator.getServer().getWsClient()
-      .findAll(new ResourceQuery(PROJECT).setQualifiers("UTS").setDepth(-1));
+        .findAll(new ResourceQuery(PROJECT).setQualifiers("UTS").setDepth(-1));
 
     assertThat(testFiles).hasSize(2);
-    assertThat(testFiles).onProperty("name").excludes("ClassTwoTest", "package-info.java");
+    assertThat(testFiles).onProperty("name").excludes("ClassTwoTest.xoo");
   }
 
   /**
@@ -70,18 +68,17 @@ public class FileExclusionsTest {
   @Test
   public void should_include_source_files() {
     scan(
-      "sonar.dynamicAnalysis", "false",
-      "sonar.inclusions", "**/*One.java,**/*Two.java"
-    );
+        "sonar.dynamicAnalysis", "false",
+        "sonar.inclusions", "**/*One.xoo,**/*Two.xoo");
 
     Resource project = projectWithMetrics("files");
     assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
 
     List<Resource> sourceFiles = orchestrator.getServer().getWsClient()
-      .findAll(new ResourceQuery(PROJECT).setQualifiers("CLA").setDepth(-1));
+        .findAll(new ResourceQuery(PROJECT).setQualifiers("FIL").setDepth(-1));
 
     assertThat(sourceFiles).hasSize(2);
-    assertThat(sourceFiles).onProperty("name").containsOnly("ClassOne", "ClassTwo");
+    assertThat(sourceFiles).onProperty("name").containsOnly("ClassOne.xoo", "ClassTwo.xoo");
   }
 
   /**
@@ -89,16 +86,16 @@ public class FileExclusionsTest {
    */
   @Test
   public void should_include_test_files() {
-    scan("sonar.test.inclusions", "**/*One*.java,**/*Two*.java");
+    scan("sonar.test.inclusions", "**/*One*.xoo,**/*Two*.xoo");
 
     Resource project = projectWithMetrics("tests");
     assertThat(project.getMeasureIntValue("tests")).isEqualTo(2);
 
     List<Resource> testFiles = orchestrator.getServer().getWsClient()
-      .findAll(new ResourceQuery(PROJECT).setQualifiers("UTS").setDepth(-1));
+        .findAll(new ResourceQuery(PROJECT).setQualifiers("UTS").setDepth(-1));
 
     assertThat(testFiles).hasSize(2);
-    assertThat(testFiles).onProperty("name").containsOnly("ClassOneTest", "ClassTwoTest");
+    assertThat(testFiles).onProperty("name").containsOnly("ClassOneTest.xoo", "ClassTwoTest.xoo");
   }
 
   /**
@@ -107,27 +104,27 @@ public class FileExclusionsTest {
   @Test
   public void should_include_and_exclude_files_by_absolute_path() {
     scan(
-      // includes everything except ClassOnDefaultPackage
-      "sonar.inclusions", "file:**/src/main/java/org/**/*.java",
+        // includes everything except ClassOnDefaultPackage
+        "sonar.inclusions", "file:**/src/main/xoo/org/**/*.xoo",
 
-      // exclude ClassThree and ClassToExclude
-      "sonar.exclusions", "file:**/src/main/java/org/**/packageToExclude/*.java,file:**/src/main/java/org/**/*Exclude.java"
-    );
+        // exclude ClassThree and ClassToExclude
+        "sonar.exclusions", "file:**/src/main/xoo/org/**/packageToExclude/*.xoo,file:**/src/main/xoo/org/**/*Exclude.xoo");
 
     List<Resource> sourceFiles = orchestrator.getServer().getWsClient()
-      .findAll(new ResourceQuery(PROJECT).setQualifiers("CLA").setDepth(-1));
+        .findAll(new ResourceQuery(PROJECT).setQualifiers("FIL").setDepth(-1));
 
     assertThat(sourceFiles).hasSize(4);
-    assertThat(sourceFiles).onProperty("name").containsOnly("ClassOne", "ClassToIgnoreGlobally", "ClassTwo", "NoSonarComment");
+    assertThat(sourceFiles).onProperty("name").containsOnly("ClassOne.xoo", "ClassToIgnoreGlobally.xoo", "ClassTwo.xoo", "NoSonarComment.xoo");
   }
 
   @Test
+  // TODO
+  @Ignore("Xoo doesn't support coverage yet")
   public void should_exclude_files_from_coverage() {
     scan(
-      "sonar.global.exclusions", "**/*Ignore*.java",
-      "sonar.exclusions", "**/*Exclude*.java,org/sonar/tests/packageToExclude/**",
-      "sonar.test.exclusions", "**/ClassTwoTest.java"
-    );
+        "sonar.global.exclusions", "**/*Ignore*.xoo",
+        "sonar.exclusions", "**/*Exclude*.xoo,org/sonar/tests/packageToExclude/**",
+        "sonar.test.exclusions", "**/ClassTwoTest.xoo");
 
     Resource project = projectWithMetrics("tests", "test_failures", "test_success_density", "line_coverage");
 
@@ -138,12 +135,13 @@ public class FileExclusionsTest {
   }
 
   @Test
+  // TODO
+  @Ignore("Xoo doesn't support duplication yet")
   public void should_exclude_files_from_duplication() {
     scan(
-      "sonar.global.exclusions", "**/*Ignore*.java",
-      "sonar.exclusions", "**/*Exclude*.java,org/sonar/tests/packageToExclude/**",
-      "sonar.test.exclusions", "**/ClassTwoTest.java"
-    );
+        "sonar.global.exclusions", "**/*Ignore*.xoo",
+        "sonar.exclusions", "**/*Exclude*.xoo,org/sonar/tests/packageToExclude/**",
+        "sonar.test.exclusions", "**/ClassTwoTest.xoo");
 
     Resource project = projectWithMetrics("duplicated_lines_density", "duplicated_lines", "duplicated_blocks", "duplicated_files");
 
@@ -158,11 +156,9 @@ public class FileExclusionsTest {
   }
 
   private void scan(String... properties) {
-    MavenBuild build = MavenBuild
-      .create(ItUtils.locateProjectPom("batch/exclusions"))
-      .setCleanPackageSonarGoals()
-      .setProperties(properties)
-      .setProperty("maven.test.failure.ignore", "true");
+    SonarRunner build = SonarRunner
+        .create(ItUtils.locateProjectDir("batch/exclusions"))
+        .setProperties(properties);
     orchestrator.executeBuild(build);
   }
 }
