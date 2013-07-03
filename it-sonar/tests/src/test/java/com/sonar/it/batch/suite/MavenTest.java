@@ -151,7 +151,7 @@ public class MavenTest {
   public void build_helper_plugin_should_add_dirs_when_dynamic_analysis() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
         .setCleanPackageSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false");
+        .setProperty("sonar.dynamicAnalysis", "true");
     orchestrator.executeBuild(build);
 
     checkBuildHelperFiles();
