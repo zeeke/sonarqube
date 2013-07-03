@@ -5,21 +5,15 @@
  */
 package com.sonar.it.batch;
 
-import org.junit.Ignore;
-
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
-import com.sonar.orchestrator.locator.MavenLocation;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.hamcrest.number.OrderingComparisons.greaterThan;
-import static org.junit.Assert.assertThat;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Test the extension point org.sonar.api.batch.bootstrap.ProjectBuilder
@@ -29,22 +23,18 @@ import static org.junit.Assert.assertThat;
  *
  * @since 2.9
  */
-// TODO
-@Ignore("Waiting for refactoring of Maven bootstraper")
 public class ProjectBuilderTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .addPlugin(ItUtils.locateTestPlugin("project-builder-plugin"))
-    .build();
+      .addPlugin(ItUtils.locateTestPlugin("project-builder-plugin"))
+      .build();
 
   @Test
   public void shouldDefineProjectFromPlugin() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("batch/project-builder"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/project-builder"))
+        .setCleanSonarGoals()
+        .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     checkProject();
@@ -52,31 +42,31 @@ public class ProjectBuilderTest {
     checkSubProject("project-builder-module-b");
     checkFile("project-builder-module-a", "HelloA");
     checkFile("project-builder-module-b", "HelloB");
-    assertThat(getResource("com.sonarsource.it.projects.batch:project-builder-module-b:[default].IgnoredFile"), nullValue());
+    assertThat(getResource("com.sonarsource.it.projects.batch:project-builder-module-b:[default].IgnoredFile")).isNull();
   }
 
   private void checkProject() {
     Resource project = getResource("com.sonarsource.it.projects.batch:project-builder");
 
     // name has been changed by plugin
-    assertThat(project.getName(), is("Name changed by plugin"));
+    assertThat(project.getName()).isEqualTo("Name changed by plugin");
 
-    assertThat(project, not(nullValue()));
-    assertThat(project.getMeasureIntValue("files"), is(2));
-    assertThat(project.getMeasureIntValue("lines"), greaterThan(10));
+    assertThat(project).isNotNull();
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
+    assertThat(project.getMeasureIntValue("lines")).isGreaterThan(10);
   }
 
   private void checkSubProject(String subProjectKey) {
     Resource subProject = getResource("com.sonarsource.it.projects.batch:" + subProjectKey);
-    assertThat(subProject, not(nullValue()));
-    assertThat(subProject.getMeasureIntValue("files"), is(1));
-    assertThat(subProject.getMeasureIntValue("lines"), greaterThan(5));
+    assertThat(subProject).isNotNull();
+    assertThat(subProject.getMeasureIntValue("files")).isEqualTo(1);
+    assertThat(subProject.getMeasureIntValue("lines")).isGreaterThan(5);
   }
 
   private void checkFile(String subProjectKey, String fileKey) {
     Resource file = getResource("com.sonarsource.it.projects.batch:" + subProjectKey + ":[default]." + fileKey);
-    assertThat(file, not(nullValue()));
-    assertThat(file.getMeasureIntValue("lines"), greaterThan(5));
+    assertThat(file).isNotNull();
+    assertThat(file.getMeasureIntValue("lines")).isGreaterThan(5);
   }
 
   private Resource getResource(String key) {
