@@ -26,7 +26,7 @@
 <tr>
 	<td>type</td>
 	<td>login</td>
-	<td>user-issue-filters</td>
+	<td>user-measure-filters</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -40,23 +40,13 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/issues</td>
+	<td>/sonar/measures</td>
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>select-project</td>
-	<td>sample</td>
-</tr>
-<tr>
 	<td>select</td>
-	<td>select-severities</td>
-	<td>Minor</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>select-status</td>
-	<td>Open</td>
+	<td>select-qualifiers</td>
+	<td>Projects</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -120,7 +110,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/issues/manage</td>
+	<td>/sonar/measures/manage</td>
 	<td></td>
 </tr>
 <tr>
@@ -134,12 +124,12 @@
 	<td>*user_${FILTER_NAME}*</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>id=star-user_${FILTER_NAME}</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
+	<td>waitForText</td>
 	<td>sidebar-favourites</td>
 	<td>*user_${FILTER_NAME}*</td>
 </tr>
@@ -156,7 +146,7 @@
 <tr>
 	<td>type</td>
 	<td>login</td>
-	<td>user-issue-filters</td>
+	<td>user-measure-filters</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -170,7 +160,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/issues</td>
+	<td>/sonar/measures</td>
 	<td></td>
 </tr>
 <tr>
@@ -180,7 +170,12 @@
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>my-issue-filters</td>
+	<td>my-filters</td>
+	<td>*user_${FILTER_NAME}*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>sidebar-favourites</td>
 	<td>*user_${FILTER_NAME}*</td>
 </tr>
 <tr>
@@ -209,11 +204,6 @@
 	<td>*user_${FILTER_NAME}*Private*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>sidebar-favourites</td>
-	<td>*user_${FILTER_NAME}*</td>
-</tr>
-<tr>
 	<td>deleteAllVisibleCookies</td>
 	<td></td>
 	<td></td>
@@ -240,7 +230,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/issues/manage</td>
+	<td>/sonar/measures/manage</td>
 	<td></td>
 </tr>
 <tr>

@@ -12,6 +12,8 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.sonar.wsclient.SonarClient;
+import org.sonar.wsclient.user.UserParameters;
 
 public class MeasureFiltersTest {
 
@@ -26,7 +28,15 @@ public class MeasureFiltersTest {
       .withDynamicAnalysis(true)
       .build();
     orchestrator.executeBuild(build);
+    createUser();
   }
+
+  private static void createUser(){
+    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
+    UserParameters userCreationParameters = UserParameters.create().login("user-measure-filters").name("User Measure Filters").password("password").passwordConfirmation("password");
+    client.userClient().create(userCreationParameters);
+  }
+
 
   @Test
   public void execute_measure_filters() {
@@ -68,6 +78,11 @@ public class MeasureFiltersTest {
   @Test
   public void share_measure_filters() {
     //TODO
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("share_measure_filters",
+      // SONAR-4469
+      "/selenium/measures/measure_filters/should-unshare-filter-remove-other-filters-favourite.html"
+    ).build();
+    orchestrator.executeSelenese(selenese);
   }
 
   @Test

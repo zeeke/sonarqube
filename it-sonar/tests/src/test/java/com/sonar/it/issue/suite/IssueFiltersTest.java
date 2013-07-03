@@ -27,7 +27,10 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(runner);
+    createUser();
+  }
 
+  private static void createUser(){
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
     UserParameters userCreationParameters = UserParameters.create().login("user-issue-filters").name("User Issue Filters").password("password").passwordConfirmation("password");
     client.userClient().create(userCreationParameters);
