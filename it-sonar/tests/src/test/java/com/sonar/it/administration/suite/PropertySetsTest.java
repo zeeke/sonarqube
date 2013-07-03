@@ -8,7 +8,6 @@ package com.sonar.it.administration.suite;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.PropertyQuery;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
