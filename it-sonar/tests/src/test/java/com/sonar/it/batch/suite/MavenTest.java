@@ -20,7 +20,6 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-
 public class MavenTest {
 
   @ClassRule
@@ -33,14 +32,12 @@ public class MavenTest {
 
   @Test
   public void shouldSupportJarWithoutSources() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("maven/project-with-module-without-sources"))
-      .addSonarGoal()
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/project-with-module-without-sources"))
+        .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient()
-      .find(ResourceQuery.create("com.sonarsource.it.samples.project-with-module-without-sources:project-with-module-without-sources"));
+        .find(ResourceQuery.create("com.sonarsource.it.samples.project-with-module-without-sources:project-with-module-without-sources"));
     assertThat(project.getName()).isEqualTo("Project with 1 module without sources");
   }
 
@@ -49,11 +46,8 @@ public class MavenTest {
    */
   @Test
   public void shouldSupportJeeProjects() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("maven/jee"))
-      .addGoal("clean install")
-      .addSonarGoal()
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/jee"))
+        .setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.jee:parent", "files"));
@@ -68,10 +62,8 @@ public class MavenTest {
    */
   @Test
   public void shouldSupportMavenExtensions() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("maven/maven-extensions"))
-      .addSonarGoal()
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-extensions"))
+        .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-extensions", "files"));
@@ -84,10 +76,8 @@ public class MavenTest {
   @Test
   public void testBadMavenParameters() {
     // should not fail
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("maven/maven-bad-parameters"))
-      .addSonarGoal()
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-parameters"))
+        .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.maven-bad-parameters:parent", "files"));
@@ -96,11 +86,9 @@ public class MavenTest {
 
   @Test
   public void shouldAnalyzeMultiModules() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("maven/modules-order"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/modules-order"))
+        .setCleanSonarGoals()
+        .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     Sonar sonar = orchestrator.getServer().getWsClient();
@@ -120,11 +108,9 @@ public class MavenTest {
    */
   @Test
   public void shouldSupportDifferentDeclarationsForModules() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("maven/modules-declaration"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/modules-declaration"))
+        .setCleanSonarGoals()
+        .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
     Sonar sonar = orchestrator.getServer().getWsClient();
 
@@ -152,12 +138,9 @@ public class MavenTest {
    */
   @Test
   public void testMavenPluginConfiguration() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("maven/maven-plugin-configuration"))
-      .addGoal("clean") // "clean" is important, otherwise we wouldn't be able to catch regressions
-      .addSonarGoal()
-      .withProperty("sonar.java.coveragePlugin", "cobertura")
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-plugin-configuration"))
+        .setCleanSonarGoals()
+        .setProperty("sonar.java.coveragePlugin", "cobertura");
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-plugin-configuration", "coverage"));
@@ -166,12 +149,9 @@ public class MavenTest {
 
   @Test
   public void build_helper_plugin_should_add_dirs_when_dynamic_analysis() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("maven/many-source-dirs"))
-      .addGoal("clean verify")
-      .addSonarGoal()
-      .withDynamicAnalysis(true)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
+        .setCleanPackageSonarGoals()
+        .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     checkBuildHelperFiles();
@@ -184,8 +164,8 @@ public class MavenTest {
   @Test
   public void build_helper_plugin_should_add_dirs_when_static_analysis() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
-      .setCleanSonarGoals()
-      .setProperty("sonar.dynamicAnalysis", "false");
+        .setCleanSonarGoals()
+        .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     checkBuildHelperFiles();
@@ -197,22 +177,22 @@ public class MavenTest {
   @Test
   public void should_support_shade_with_dependency_reduced_pom_with_clean_install_sonar_goals() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/shade-with-dependency-reduced-pom"))
-      .setProperty("sonar.dynamicAnalysis", "false")
-      .setGoals("clean", "install", "sonar:sonar");
+        .setProperty("sonar.dynamicAnalysis", "false")
+        .setGoals("clean", "install", "sonar:sonar");
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isEqualTo(0);
     assertThat(result.getLogs()).doesNotContain(
-      "Unable to determine structure of project. Probably you use Maven Advanced Reactor Options, which is not supported by Sonar and should not be used.");
+        "Unable to determine structure of project. Probably you use Maven Advanced Reactor Options, which is not supported by Sonar and should not be used.");
   }
 
   @Test
   public void should_execute_maven_from_scan() throws Exception {
     MavenBuild scan = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setProperty("sonar.dynamicAnalysis", "false")
-      .setCleanSonarGoals()
+        .setProperty("sonar.dynamicAnalysis", "false")
+        .setCleanSonarGoals()
 
-      // See the faux plugin "maven-execution-plugin"
-      .setProperty("showMavenCompilerHelp", "true");
+        // See the faux plugin "maven-execution-plugin"
+        .setProperty("showMavenCompilerHelp", "true");
     BuildResult result = orchestrator.executeBuild(scan);
     assertThat(result.getLogs()).contains("The Compiler Plugin is used to compile the sources");
   }
@@ -234,6 +214,5 @@ public class MavenTest {
   private Resource getResource(String key) {
     return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(key, "files", "tests"));
   }
-
 
 }
