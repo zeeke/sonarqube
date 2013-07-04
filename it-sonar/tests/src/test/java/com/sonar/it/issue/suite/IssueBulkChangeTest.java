@@ -213,7 +213,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
   }
 
   @Test
-  @Ignore("Number of issues sent is too big (it fails from 159 issues), the bulk change execution return a 413 HTTP code.")
+  @Ignore("Number of issues sent is too big (it fails from 159 issues), the bulk change execution returns a 413 HTTP code. Should find a way to not sent params in url but in the body")
   public void should_apply_bulk_change_with_maximum_number_of_issues() {
     analyzeProjectWithALotOfIssues();
     String newSeverity = "BLOCKER";
