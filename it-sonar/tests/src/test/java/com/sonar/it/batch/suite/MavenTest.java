@@ -11,6 +11,7 @@ import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Resource;
@@ -137,6 +138,7 @@ public class MavenTest {
    * if Sonar unable to configure cobertura-maven-plugin, then coverage.xml wouldn't be generated
    */
   @Test
+  @Ignore("TODO should be migrated as it uses Cobertura")
   public void testMavenPluginConfiguration() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-plugin-configuration"))
         .setCleanSonarGoals()
