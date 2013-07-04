@@ -6,12 +6,16 @@
 package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.sonar.wsclient.issue.*;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueComment;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
+import org.sonar.wsclient.issue.NewIssue;
 
 import java.util.List;
 
@@ -23,7 +27,7 @@ import static org.fest.assertions.Fail.fail;
  */
 public class ManualIssueTest extends AbstractIssueTestCase {
 
-  private final static String COMPONENT_KEY = "com.sonarsource.it.samples:simple-sample:sample.Sample";
+  private final static String COMPONENT_KEY = "sample:sample.Sample";
 
   @Before
   public void before() {
@@ -255,13 +259,13 @@ public class ManualIssueTest extends AbstractIssueTestCase {
   public void fail_if_unknown_rule() throws Exception {
     try {
       adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
-          // this rule does not exist
+        // this rule does not exist
         .rule("manual:unknown-rule")
         .line(3)
         .severity("CRITICAL")
         .message("The name 'Sample' is too generic"));
       fail();
-    } catch (Exception e){
+    } catch (Exception e) {
       verifyHttpException(e, 400);
     }
   }
@@ -274,7 +278,7 @@ public class ManualIssueTest extends AbstractIssueTestCase {
         .severity("CRITICAL")
         .message("The name 'Sample' is too generic"));
       fail();
-    } catch (Exception e){
+    } catch (Exception e) {
       verifyHttpException(e, 400);
     }
   }
@@ -283,13 +287,13 @@ public class ManualIssueTest extends AbstractIssueTestCase {
   public void fail_if_not_a_manual_rule() throws Exception {
     try {
       adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
-          // Not a manual rule
+        // Not a manual rule
         .rule("squid:S00119")
         .line(3)
         .severity("CRITICAL")
         .message("The name 'Sample' is too generic"));
       fail();
-    } catch (Exception e){
+    } catch (Exception e) {
       verifyHttpException(e, 400);
     }
   }
@@ -303,13 +307,13 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
     try {
       adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
-          // This rule is disabled
+        // This rule is disabled
         .rule("manual:invalidclassname")
         .line(3)
         .severity("CRITICAL")
         .message("The name 'Sample' is too generic"));
       fail();
-    } catch (Exception e){
+    } catch (Exception e) {
       verifyHttpException(e, 400);
     }
   }
@@ -324,7 +328,7 @@ public class ManualIssueTest extends AbstractIssueTestCase {
         .severity("CRITICAL")
         .message("The name 'Sample' is too generic"));
       fail();
-    } catch (Exception e){
+    } catch (Exception e) {
       verifyHttpException(e, 400);
     }
   }
@@ -339,7 +343,7 @@ public class ManualIssueTest extends AbstractIssueTestCase {
         .severity("CRITICAL")
         .message("The name 'Sample' is too generic"));
       fail();
-    } catch (Exception e){
+    } catch (Exception e) {
       verifyHttpException(e, 400);
     }
   }
@@ -350,12 +354,13 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   }
 
-  private void analyzeProject(){
+  private void analyzeProject() {
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.cpd.skip", "true")
+      .setRunnerVersion("2.2.2");
+
     // no active rules
-    orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("empty"));
+    orchestrator.executeBuild(scan);
   }
 
 }
