@@ -6,6 +6,7 @@
 package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
+import com.sonar.orchestrator.build.Build;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
@@ -261,47 +262,23 @@ public class IssueTest extends AbstractIssueTestCase {
 
   /**
    * SONAR-4359
+   * SONAR-4301
    */
   @Test
   public void test_code_viewer() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("issues"));
+
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "issues", "sonar.cpd.skip", "true")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(scan);
 
     // Resolve an issue
-    Issue issue = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:simple-sample:sample.Sample").rules("pmd:UnusedLocalVariable")).list().get(0);
+    Issue issue = search(IssueQuery.create().componentRoots("sample:sample.Sample").rules("pmd:UnusedLocalVariable")).list().get(0);
     adminIssueClient().doTransition(issue.key(), "resolve");
 
     // Mark an issue as false positive
-    issue = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:simple-sample:sample.Sample")
-      .rules("checkstyle:com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck")).list().get(0);
-    adminIssueClient().doTransition(issue.key(), "falsepositive");
-
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issues-code-viewer",
-      "/selenium/issue/issues-code-viewer/display-only-unresolved-issues.html",
-      "/selenium/issue/issues-code-viewer/display-only-false-positives.html"
-    ).build());
-  }
-
-  /**
-   * SONAR-4301
-   */
-  @Test
-  public void test_issues_code_viewer() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("issues"));
-
-    // Resolve an issue
-    Issue issue = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:simple-sample:sample.Sample").rules("pmd:UnusedLocalVariable")).list().get(0);
-    adminIssueClient().doTransition(issue.key(), "resolve");
-
-    // Mark an issue as false positive
-    issue = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:simple-sample:sample.Sample")
+    issue = search(IssueQuery.create().componentRoots("sample:sample.Sample")
       .rules("checkstyle:com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck")).list().get(0);
     adminIssueClient().doTransition(issue.key(), "falsepositive");
 
@@ -317,10 +294,10 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void test_issue_detail() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("issues"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "issues", "sonar.cpd.skip", "true")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(scan);
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issue-detail",
       "/selenium/issue/issue-detail/test-issue-detail.html",
