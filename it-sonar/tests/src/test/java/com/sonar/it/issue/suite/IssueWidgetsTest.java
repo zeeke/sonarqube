@@ -7,7 +7,8 @@
 package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.Build;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
@@ -23,7 +24,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class IssueWidgetsTest extends AbstractIssueTestCase {
 
-  private static final String PROJECT_KEY = "com.sonarsource.it.projects.rule:rule-widgets";
+  private static final String PROJECT_KEY = "rule-widgets";
 
   @Before
   public void before() throws Exception {
@@ -159,10 +160,8 @@ public class IssueWidgetsTest extends AbstractIssueTestCase {
   @Test
   public void test_rules_widgets_on_differential_view() throws Exception {
     // let's exclude 1 file to have cleared issues
-    orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("rule/rule-widgets"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.exclusions", "**/FewViolations.java")
-      .setProfile("sonar-way-2.7"));
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("rule/rule-widgets"))
+      .setProperties("sonar.exclusions", "**/FewViolations.java", "sonar.profile", "sonar-way-2.7"));
 
     orchestrator.executeSelenese(Selenese
       .builder()
@@ -181,11 +180,11 @@ public class IssueWidgetsTest extends AbstractIssueTestCase {
       ).build());
   }
 
-  private void analyzeProject(){
-    orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("rule/rule-widgets"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("sonar-way-2.7"));
+  private void analyzeProject() {
+    Build scan = SonarRunner.create(ItUtils.locateProjectDir("rule/rule-widgets"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7", "sonar.cpd.skip", "true")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(scan);
   }
 
 }
