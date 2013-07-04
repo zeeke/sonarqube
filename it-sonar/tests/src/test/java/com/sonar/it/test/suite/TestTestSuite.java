@@ -12,7 +12,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  CoberturaTest.class, IntegrationTestTest.class, JacocoTest.class, UnitTestTest.class
+  IntegrationTestTest.class, JacocoTest.class, UnitTestTest.class
 })
 public class TestTestSuite {
 
