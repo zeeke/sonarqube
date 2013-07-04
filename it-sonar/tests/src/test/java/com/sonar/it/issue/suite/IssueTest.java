@@ -90,16 +90,14 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void should_get_no_issue_on_empty_profile() {
     // no active rules
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("empty");
-    orchestrator.executeBuild(build);
+    Build scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.cpd.skip", "true")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(scan);
 
-    String componentKey = "com.sonarsource.it.samples:simple-sample";
-    assertThat(searchIssuesByComponent(componentKey)).isEmpty();
+    assertThat(searchIssuesByComponent("sample")).isEmpty();
 
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(componentKey, "violations", "blocker_violations", "violations_density"));
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample", "violations", "blocker_violations", "violations_density"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("blocker_violations")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("violations_density")).isEqualTo(100);
@@ -108,36 +106,34 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void should_close_no_more_existing_issue() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("issues");
-    orchestrator.executeBuild(build);
+    Build scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "issues", "sonar.cpd.skip", "true")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(scan);
 
-    String componentKey = "com.sonarsource.it.samples:simple-sample";
-    List<Issue> issues = searchIssuesByComponent(componentKey);
+    String projectKey = "sample";
+    List<Issue> issues = searchIssuesByComponent(projectKey);
     assertThat(issues).hasSize(4);
     for (Issue issue : issues) {
       assertThat(issue.status()).isEqualTo("OPEN");
     }
 
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(componentKey, "violations"));
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey, "violations"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(4);
 
     // Empty profile -> no issue
-    build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("empty");
-    orchestrator.executeBuild(build);
+    scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.cpd.skip", "true")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(scan);
 
-    issues = searchIssuesByComponent(componentKey);
+    issues = searchIssuesByComponent(projectKey);
     assertThat(issues).hasSize(4);
     for (Issue issue : issues) {
       assertThat(issue.status()).isEqualTo("CLOSED");
     }
 
-    project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(componentKey, "violations"));
+    project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey, "violations"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(0);
   }
 
@@ -311,7 +307,7 @@ public class IssueTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void test_file_with_thousands_issues(){
+  public void test_file_with_thousands_issues() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("issue/file-with-thousands-issues"))
       .setProfile("one-issue-per-line");

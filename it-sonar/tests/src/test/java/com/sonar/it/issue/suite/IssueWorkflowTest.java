@@ -6,7 +6,6 @@
 package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
@@ -210,7 +209,7 @@ public class IssueWorkflowTest extends AbstractIssueTestCase {
     assertThat(falsePositive.resolution()).isEqualTo("FALSE-POSITIVE");
     assertThat(falsePositive.creationDate()).isEqualTo(issue.creationDate());
 
-     // scan without any rules -> false-positive is closed
+    // scan without any rules -> false-positive is closed
     orchestrator.executeBuild(scan.setProfile("empty"));
     Issue closed = searchIssueByKey(issue.key());
     assertThat(closed.status()).isEqualTo("CLOSED");
