@@ -6,7 +6,7 @@
 package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,19 +18,16 @@ import static org.fest.assertions.Fail.fail;
 public class IssueActionTest extends AbstractIssueTestCase {
 
   Issue issue;
-  MavenBuild scan;
+  SonarRunner scan;
 
   @Before
   public void resetData() {
     orchestrator.getDatabase().truncateInspectionTables();
-
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    scan = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("issues");
+    scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "issues", "sonar.cpd.skip", "true")
+      .setRunnerVersion("2.2.2");
     orchestrator.executeBuild(scan);
-
     issue = searchRandomIssue();
   }
 
@@ -61,7 +58,7 @@ public class IssueActionTest extends AbstractIssueTestCase {
    */
   @Test
   public void change_severity() {
-    String componentKey = "com.sonarsource.it.samples:simple-sample:sample.Sample";
+    String componentKey = "sample:sample.Sample";
 
     // there are no blocker issues
     assertThat(searchIssuesBySeverities(componentKey, "BLOCKER")).isEmpty();
@@ -130,7 +127,7 @@ public class IssueActionTest extends AbstractIssueTestCase {
     assertThat(issue.actionPlan()).isNull();
 
     // Set action plan to issue
-    ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("com.sonarsource.it.samples:simple-sample")
+    ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample")
       .description("Short term issues").deadLine(toDate("2113-01-31")));
     assertThat(newActionPlan.key()).isNotNull();
     adminIssueClient().plan(issue.key(), newActionPlan.key());
@@ -161,7 +158,7 @@ public class IssueActionTest extends AbstractIssueTestCase {
     assertThat(issue.actionPlan()).isNull();
 
     // Set action plan to issue
-    ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("com.sonarsource.it.samples:simple-sample")
+    ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample")
       .description("Short term issues").deadLine(toDate("2113-01-31")));
     assertThat(newActionPlan.key()).isNotNull();
     adminIssueClient().plan(issue.key(), newActionPlan.key());
