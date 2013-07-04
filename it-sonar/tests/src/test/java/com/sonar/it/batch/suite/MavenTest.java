@@ -48,7 +48,7 @@ public class MavenTest {
   @Test
   public void shouldSupportJeeProjects() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/jee"))
-        .setCleanPackageSonarGoals();
+        .setGoals("clean install", "sonar:sonar");
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.jee:parent", "files"));
