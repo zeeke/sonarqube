@@ -17,9 +17,7 @@ import org.sonar.wsclient.services.UpdateCenterQuery;
 import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.number.OrderingComparisons.greaterThan;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class UpdateCenterTest {
 
@@ -32,12 +30,12 @@ public class UpdateCenterTest {
   @Test
   public void web_service_should_return_installed_plugins() {
     List<Plugin> plugins = orchestrator.getServer().getAdminWsClient().findAll(UpdateCenterQuery.createForInstalledPlugins());
-    assertThat(plugins.size(), greaterThan(0));
+    assertThat(plugins.size()).isGreaterThan(0);
 
     Plugin installedPlugin = findPlugin(plugins, "fake");
     assertNotNull(installedPlugin);
-    assertThat(installedPlugin.getName(), is("Plugins :: Fake"));
-    assertThat(installedPlugin.getVersion(), is("1.0-SNAPSHOT"));
+    assertThat(installedPlugin.getName()).isEqualTo("Plugins :: Fake");
+    assertThat(installedPlugin.getVersion()).isEqualTo("1.0-SNAPSHOT");
   }
 
   @Test

@@ -40,6 +40,7 @@ public class SettingsEncryptionTest {
         .setProperty("encryptedProperty", "{aes}9mx5Zq4JVyjeChTcVjEide4kWCwusFl7P2dSVXtg9IY=");
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("Fail to decrypt the property sonar.password. Please check your secret key");
 
     build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
         .setProperty("sonar.secretKeyPath", pathToValidSecretKey())
