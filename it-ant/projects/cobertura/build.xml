@@ -63,7 +63,7 @@
   </target>
 
   <target name="compile" depends="init">
-    <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" fork="true" debug="true" includeAntRuntime="false" />
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" fork="true" debug="true" includeAntRuntime="false" source="1.5" target="1.5" />
   </target>
 
   <target name="instrument" depends="init,compile">
@@ -153,7 +153,7 @@
   <property name="sonar.surefire.reportsPath" value="${reports.junit.xml.dir}" />
   <property name="sonar.core.codeCoveragePlugin" value="cobertura" />
   <property name="sonar.cobertura.reportPath" value="${reports.coverage.xml.dir}/coverage.xml" />
-	
+
   <target name="sonar">
     <!-- Import Sonar Ant tasks -->
     <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml">

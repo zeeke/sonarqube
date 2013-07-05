@@ -6,14 +6,15 @@
 package com.sonar.ant.it;
 
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.build.AntBuild;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
-import com.sonar.orchestrator.util.VersionUtils;
+import com.sonar.orchestrator.version.Version;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -29,23 +30,40 @@ import static org.junit.Assume.assumeTrue;
 
 public class AntTest {
 
-  private static String antTaskVersion;
+  private static Version antTaskVersion;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-groovy-plugin", "0.5"))
-      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-groovy.xml"))
-      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-classpath.xml"))
-      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-version.xml"))
-      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-project-metadata-java.xml"))
-      .build();
+  private static Orchestrator orchestrator = null;
 
   @BeforeClass
-  public static void start() {
-    antTaskVersion = orchestrator.getConfiguration().getString("antTask.version");
+  public static void startServer() {
+    OrchestratorBuilder builder = Orchestrator.builderEnv();
+
+    builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-groovy-plugin", "0.5"))
+        .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-groovy.xml"))
+        .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-classpath.xml"))
+        .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-version.xml"))
+        .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-project-metadata-java.xml"));
+
+    // SONAR-4358
+    // Wating for ORCH-184
+    if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("3.7")) {
+      builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.4-SNAPSHOT"));
+    }
+
+    orchestrator = builder.build();
+    orchestrator.start();
+
+    antTaskVersion = Version.create(orchestrator.getConfiguration().getString("antTask.version"));
+  }
+
+  @AfterClass
+  public static void stopServer() {
+    if (orchestrator != null) {
+      orchestrator.stop();
+    }
   }
 
   @After
@@ -328,7 +346,7 @@ public class AntTest {
 
     String logs = analysisResults.getLogs();
     // showSql
-    if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.2")) {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.2")) {
       // >= sonar 3.2 and mybatis 3.1
       assertThat(logs).contains("==>  Preparing");
     }
@@ -345,7 +363,7 @@ public class AntTest {
    */
   @Test
   public void testVerbose() {
-    assumeTrue(VersionUtils.isGreaterThanOrEqual(antTaskVersion, "2.1"));
+    assumeTrue(antTaskVersion.isGreaterThanOrEquals("2.1"));
     AntBuild build = AntBuild.create()
         .setBuildLocation(FileLocation.of("projects/shared/build.xml"))
         // Workaround for ORCH-174
