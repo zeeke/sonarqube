@@ -138,7 +138,7 @@ public class UserAdministrationTest {
 
     UserParameters reactivationParameters = UserParameters.create().login("should_reactivate_user").password("password").passwordConfirmation("password");
     client.userClient().create(reactivationParameters);
-    client.userClient().delete(UserParameters.create().login("should_reactivate_user"));
+    client.userClient().deactivate("should_reactivate_user");
     client.userClient().create(reactivationParameters);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-creation-using-ws",
@@ -175,7 +175,7 @@ public class UserAdministrationTest {
 
     UserParameters creationParameters = UserParameters.create().login("should_delete_user").password("password").passwordConfirmation("password");
     client.userClient().create(creationParameters);
-    client.userClient().delete(UserParameters.create().login("should_delete_user"));
+    client.userClient().deactivate("should_delete_user");
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-deletion-using-ws",
       "/selenium/administration/user-administration/delete-user-with-ws.html").build();
