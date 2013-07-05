@@ -26,7 +26,7 @@ import java.util.Map;
 class MavenBuildExecutor extends AbstractBuildExecutor<MavenBuild> {
 
   private static final String MAVEN_OPTS = "MAVEN_OPTS";
-  private static final String MOJO_VERSION_PROP = "orchestrator.mojo.version";
+  private static final String MOJO_VERSION_PROP = "orchestrator.sonarMojo.version";
 
   @VisibleForTesting
   BuildResult execute(MavenBuild build, Configuration config, Map<String, String> adjustedProperties, CommandExecutor commandExecutor) {
