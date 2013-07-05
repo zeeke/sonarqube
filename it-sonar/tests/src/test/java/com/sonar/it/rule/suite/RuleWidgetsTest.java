@@ -7,7 +7,7 @@ package com.sonar.it.rule.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
@@ -23,13 +23,8 @@ public class RuleWidgetsTest {
   public static void setup() throws Exception {
     orchestrator.getDatabase().truncateInspectionTables();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("rule/rule-widgets"))
-      .addSonarGoal()
-      .withProperty("sonar.profile", "sonar-way-2.7")
-      .withDynamicAnalysis(false)
-      .build();
-    orchestrator.executeBuild(build);
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("rule/rule-widgets"))
+      .setProperties("sonar.profile", "sonar-way-2.7"));
   }
 
   // SONAR-2071
