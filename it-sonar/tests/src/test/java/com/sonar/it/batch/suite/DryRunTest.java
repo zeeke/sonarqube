@@ -69,6 +69,18 @@ public class DryRunTest {
       + "The SonarQube plugin which requires this property must be deactivated in dry run mode.");
   }
 
+  @Test
+  public void test_build_breaker_with_dry_run() {
+    SonarRunner runner = configureRunner("shared/xoo-sample",
+        "sonar.dryRun", "true")
+        .setProfile("SimpleAlertProfile");
+    BuildResult result = orchestrator.executeBuildQuietly(runner);
+
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code > 5");
+    assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
+  }
+
   private Resource getResource(String key) {
     return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(key, "lines"));
   }

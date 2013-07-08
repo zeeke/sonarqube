@@ -5,6 +5,9 @@
  */
 package com.sonar.it.batch.suite;
 
+import com.sonar.orchestrator.locator.MavenLocation;
+
+import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import org.junit.ClassRule;
@@ -26,6 +29,8 @@ public class BatchTestSuite {
     .addPlugin(ItUtils.locateTestPlugin("maven-execution-plugin"))
     // used by DryRunTest
     .addPlugin(ItUtils.locateTestPlugin("access-secured-props-plugin"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-build-breaker-plugin", "1.1"))
+    .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"))
 
     .build();
 }
