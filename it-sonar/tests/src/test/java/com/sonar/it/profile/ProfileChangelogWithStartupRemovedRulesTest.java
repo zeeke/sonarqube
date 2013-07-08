@@ -11,10 +11,8 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore("Depends on http://jira.sonarsource.com/browse/ORCH-176 fixed in Orchestrator 2.8")
 public class ProfileChangelogWithStartupRemovedRulesTest {
 
   @ClassRule

@@ -8,10 +8,8 @@ package com.sonar.it.profile;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore("Depends on http://jira.sonarsource.com/browse/ORCH-176 fixed in Orchestrator 2.8")
 public class UninstallJavaTest {
 
   /**
