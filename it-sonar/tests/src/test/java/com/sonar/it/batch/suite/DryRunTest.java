@@ -69,6 +69,7 @@ public class DryRunTest {
       + "The SonarQube plugin which requires this property must be deactivated in dry run mode.");
   }
 
+  // SONAR-4468
   @Test
   public void test_build_breaker_with_dry_run() {
     SonarRunner runner = configureRunner("shared/xoo-sample",
