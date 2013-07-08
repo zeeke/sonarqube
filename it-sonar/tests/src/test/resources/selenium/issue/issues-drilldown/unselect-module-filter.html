@@ -15,51 +15,66 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/drilldown/issues/com.sonarsource.it.samples:multi-modules-sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>col_1</td>
-        <td>*com.sonar.it.samples.modules.a1*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>col_1</td>
-        <td>*com.sonar.it.samples.modules.b1*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=Module B</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>col_1</td>
-        <td>*com.sonar.it.samples.modules.a1*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>col_1</td>
-        <td>*com.sonar.it.samples.modules.b1*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=Module B</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>col_1</td>
-        <td>*com.sonar.it.samples.modules.a1*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>col_1</td>
-        <td>*com.sonar.it.samples.modules.b1*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/drilldown/issues/com.sonarsource.it.samples:multi-modules-sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issues-content</td>
+	<td>*20 results*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>col_1</td>
+	<td>*com.sonar.it.samples.modules.a1*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>col_1</td>
+	<td>*com.sonar.it.samples.modules.b1*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Module B</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issues-content</td>
+	<td>*10 results*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>col_1</td>
+	<td>*com.sonar.it.samples.modules.a1*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>col_1</td>
+	<td>*com.sonar.it.samples.modules.b1*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Module B</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issues-content</td>
+	<td>*20 results*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>col_1</td>
+	<td>*com.sonar.it.samples.modules.a1*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>col_1</td>
+	<td>*com.sonar.it.samples.modules.b1*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

@@ -15,36 +15,51 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/drilldown/issues/com.sonarsource.it.samples:multi-modules-sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>col_0</td>
-        <td>*Module B 10*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=System Println</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>col_0</td>
-        <td>*Module B 2*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=System Println</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>col_0</td>
-        <td>*Module B 10*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/drilldown/issues/com.sonarsource.it.samples:multi-modules-sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issues-content</td>
+	<td>*20 results*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>col_0</td>
+	<td>*Module B 10*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=System Println</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issues-content</td>
+	<td>*4 results*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>col_0</td>
+	<td>*Module B 2*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=System Println</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issues-content</td>
+	<td>*20 results*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>col_0</td>
+	<td>*Module B 10*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
