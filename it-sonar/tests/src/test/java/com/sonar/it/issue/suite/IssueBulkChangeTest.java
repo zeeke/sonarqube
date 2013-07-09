@@ -14,10 +14,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.sonar.wsclient.issue.BulkChange;
-import org.sonar.wsclient.issue.BulkChangeQuery;
-import org.sonar.wsclient.issue.Issue;
-import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.*;
 
 import java.util.List;
 
@@ -28,6 +25,8 @@ import static org.fest.assertions.Assertions.assertThat;
  * SONAR-4421
  */
 public class IssueBulkChangeTest extends AbstractIssueTestCase {
+
+  private final static String PROJECT_KEY = "sample";
 
   @Before
   public void resetData() {
@@ -86,6 +85,29 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     assertThat(bulkChange.totalIssuesChanged()).isEqualTo(nbIssues);
     for (Issue issue : search(IssueQuery.create().issues(issueKeys)).list()) {
       assertThat(issue.assignee()).isEqualTo("admin");
+    }
+  }
+
+  @Test
+  public void should_plan() {
+    analyzeSampleProjectWillSmallIssues();
+
+    // Create action plan
+    ActionPlan newActionPlan = adminActionPlanClient().create(
+      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+
+    int nbIssues = 3;
+    String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
+    BulkChange bulkChange = adminIssueClient().bulkChange(
+      BulkChangeQuery.create()
+        .issues(issueKeys)
+        .actions("plan")
+        .actionParameter("plan", "plan", newActionPlan.key())
+    );
+
+    assertThat(bulkChange.totalIssuesChanged()).isEqualTo(nbIssues);
+    for (Issue issue : search(IssueQuery.create().issues(issueKeys)).list()) {
+      assertThat(issue.actionPlan()).isEqualTo(newActionPlan.key());
     }
   }
 
