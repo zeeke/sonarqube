@@ -14,36 +14,36 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/widget?id=false_positive_reviews&amp;resource=rule-widgets</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>link=Do not use if statements that are always true or always false</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>css=.source_title</td>
-        <td>*Rule Widgets*sample.ManyViolations*</td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>css=input[type=&quot;button&quot;]</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=1</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>content</td>
-        <td>*Resolved*False positive*1 results*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/widget?id=false_positive_reviews&amp;resource=sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.rule-modal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issue-detail</td>
+	<td>*Sample*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[type=&quot;button&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>content</td>
+	<td>*Resolved*False positive*1 results*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

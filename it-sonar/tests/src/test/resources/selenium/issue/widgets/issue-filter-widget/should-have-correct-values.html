@@ -3,20 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>should-open-weighted-issues</title>
+    <title>should_save_issue_filters</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
-    <thead>
-    <tr>
-        <td rowspan="1" colspan="3">should-open-weighted-issues</td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-	<td>deleteAllVisibleCookies</td>
-	<td></td>
-	<td></td>
+<tbody>
+<tr>
+	<td>storeEval</td>
+	<td>'filter_'+(new Date()).getTime()</td>
+	<td>FILTER_NAME</td>
 </tr>
 <tr>
 	<td>open</td>
@@ -40,33 +35,53 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/widget?id=my_reviews&amp;resource=sample</td>
+	<td>/sonar/issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>select-project</td>
+	<td>rule-widgets</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>select-severities</td>
+	<td>Minor</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>select-status</td>
+	<td>Open</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=search-button</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=.rule-modal</td>
+	<td>id=save-as</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>css=.issue-detail</td>
-	<td>*Sample*</td>
+	<td>save-as-filter-form</td>
+	<td>*Save Filter*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=name</td>
+	<td>${FILTER_NAME}</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=input[type=&quot;button&quot;]</td>
+	<td>id=save-as-submit</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=1</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>content</td>
-	<td>*Administrator*1 results*</td>
+	<td>waitForText</td>
+	<td>filter-title</td>
+	<td>*${FILTER_NAME}*</td>
 </tr>
 </tbody>
 </table>

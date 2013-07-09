@@ -14,51 +14,51 @@
     </thead>
     <tbody>
     <tr>
-        <td>deleteAllVisibleCookies</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/widget?id=my_reviews&amp;resource=rule-widgets</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>body</td>
-        <td>*My Unresolved Issues*</td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/widget?id=my_reviews&amp;resource=rule-widgets</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>body</td>
-        <td>*My Unresolved Issues*Do not use if statements that are always true or always false*</td>
-    </tr>
-    </tbody>
+	<td>deleteAllVisibleCookies</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/widget?id=my_reviews&amp;resource=sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>body</td>
+	<td>*My Unresolved Issues*</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/widget?id=my_reviews&amp;resource=sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>body</td>
+	<td>*My Unresolved Issues*1 results*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

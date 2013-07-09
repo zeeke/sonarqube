@@ -7,7 +7,6 @@
 package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.orchestrator.build.Build;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -24,7 +23,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class IssueWidgetsTest extends AbstractIssueTestCase {
 
-  private static final String PROJECT_KEY = "rule-widgets";
+  private static final String PROJECT_KEY = "sample";
 
   @Before
   public void before() throws Exception {
@@ -53,8 +52,7 @@ public class IssueWidgetsTest extends AbstractIssueTestCase {
    */
   @Test
   public void test_my_unresolved_issues_widget() throws Exception {
-    Issue critical = searchIssuesByRules(PROJECT_KEY, "pmd:UnconditionalIfStatement").get(0);
-    adminIssueClient().assign(critical.key(), "admin");
+    adminIssueClient().assign(searchRandomIssue().key(), "admin");
 
     orchestrator.executeSelenese(Selenese
       .builder()
@@ -69,8 +67,7 @@ public class IssueWidgetsTest extends AbstractIssueTestCase {
    */
   @Test
   public void test_false_positive_widget() throws Exception {
-    Issue critical = searchIssuesByRules(PROJECT_KEY, "pmd:UnconditionalIfStatement").get(0);
-    adminIssueClient().doTransition(critical.key(), "falsepositive");
+    adminIssueClient().doTransition(searchRandomIssue().key(), "falsepositive");
 
     orchestrator.executeSelenese(Selenese
       .builder()
@@ -86,7 +83,7 @@ public class IssueWidgetsTest extends AbstractIssueTestCase {
   @Test
   public void test_unresolved_issue_statuses_widget() throws Exception {
     List<Issue> issues = searchIssuesByComponent(PROJECT_KEY);
-    assertThat(issues).hasSize(9);
+    assertThat(issues).hasSize(13);
 
     // 1 is a false-positive, 2 are confirmed, 1 is reopened
     adminIssueClient().doTransition(issues.get(0).key(), "falsepositive");
@@ -117,7 +114,7 @@ public class IssueWidgetsTest extends AbstractIssueTestCase {
     // 3 issues will be affected to the action plan : 2 unresolved issues, and 1 resolved
 
     List<Issue> issues = search(IssueQuery.create()).list();
-    assertThat(issues).hasSize(9);
+    assertThat(issues).hasSize(13);
 
     adminIssueClient().plan(issues.get(0).key(), actionPlan.key());
     adminIssueClient().plan(issues.get(1).key(), actionPlan.key());
@@ -138,53 +135,11 @@ public class IssueWidgetsTest extends AbstractIssueTestCase {
       ).build());
   }
 
-  /**
-   * SONAR-4341
-   */
-  @Test
-  public void test_rules_widgets() throws Exception {
-    orchestrator.executeSelenese(Selenese
-      .builder()
-      .setHtmlTestsInClasspath("rules-widget",
-        "/selenium/issue/widgets/rules/should-have-correct-values.html",
-        "/selenium/issue/widgets/rules/should-open-issues-by-severity.html",
-        "/selenium/issue/widgets/rules/should-open-issues-count.html",
-        "/selenium/issue/widgets/rules/should-open-weighted-issues.html"
-      ).build());
-  }
-
-  /**
-   * SONAR-3081
-   * SONAR-4341
-   */
-  @Test
-  public void test_rules_widgets_on_differential_view() throws Exception {
-    // let's exclude 1 file to have cleared issues
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("rule/rule-widgets"))
-      .setProperties("sonar.exclusions", "**/FewViolations.java", "sonar.profile", "sonar-way-2.7"));
-
-    orchestrator.executeSelenese(Selenese
-      .builder()
-      .setHtmlTestsInClasspath("rules-widget-differential-view-cleared-issues",
-        "/selenium/issue/widgets/rules/diff-view-should-show-cleared-issues-count.html"
-      ).build());
-
-    // And let's run again to have new issues
-    analyzeProject();
-
-    orchestrator.executeSelenese(Selenese
-      .builder()
-      .setHtmlTestsInClasspath("rules-widget-differential-view-new-issues",
-        "/selenium/issue/widgets/rules/diff-view-should-show-new-issues-count.html",
-        "/selenium/issue/widgets/rules/diff-view-should-open-new-issues-on-drilldown.html"
-      ).build());
-  }
 
   private void analyzeProject() {
-    Build scan = SonarRunner.create(ItUtils.locateProjectDir("rule/rule-widgets"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7", "sonar.cpd.skip", "true")
-      .setRunnerVersion("2.2.2");
-    orchestrator.executeBuild(scan);
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-line"));
   }
 
 }
