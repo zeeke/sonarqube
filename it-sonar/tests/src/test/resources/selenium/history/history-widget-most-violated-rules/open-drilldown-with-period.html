@@ -8,21 +8,26 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/widget?id=hotspot_most_violated_rules&amp;resource=com.sonarsource.it.samples:history&amp;period=1</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=More</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertValue</td>
-        <td>select-comparison</td>
-        <td>1</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/widget?id=hotspot_most_violated_rules&amp;resource=com.sonarsource.it.samples:history&amp;period=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=More</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issues-content</td>
+	<td>*results*</td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>select-comparison</td>
+	<td>1</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
