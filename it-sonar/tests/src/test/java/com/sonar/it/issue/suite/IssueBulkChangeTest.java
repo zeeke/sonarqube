@@ -7,10 +7,12 @@
 package com.sonar.it.issue.suite;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,8 +28,6 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
-  private final static String PROJECT_KEY = "sample";
-
   @Before
   public void resetData() {
     orchestrator.getDatabase().truncateInspectionTables();
@@ -35,7 +35,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Test
   public void should_change_severity() {
-    analyzeSampleProjectWillSmallIssues();
+    analyzeSampleProjectWillSmallNumberOfIssues();
     String newSeverity = "BLOCKER";
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
@@ -54,7 +54,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Test
   public void should_do_transition() {
-    analyzeSampleProjectWillSmallIssues();
+    analyzeSampleProjectWillSmallNumberOfIssues();
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
     BulkChange bulkChange = adminIssueClient().bulkChange(
@@ -72,7 +72,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Test
   public void should_assign() {
-    analyzeSampleProjectWillSmallIssues();
+    analyzeSampleProjectWillSmallNumberOfIssues();
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
     BulkChange bulkChange = adminIssueClient().bulkChange(
@@ -90,11 +90,11 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Test
   public void should_plan() {
-    analyzeSampleProjectWillSmallIssues();
+    analyzeSampleProjectWillSmallNumberOfIssues();
 
     // Create action plan
     ActionPlan newActionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+      NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(toDate("2113-01-31")));
 
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
@@ -113,7 +113,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Test
   public void should_add_comment() {
-    analyzeSampleProjectWillSmallIssues();
+    analyzeSampleProjectWillSmallNumberOfIssues();
     String newSeverity = "BLOCKER";
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
@@ -134,7 +134,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Test
   public void should_apply_bulk_change_on_many_actions() {
-    analyzeSampleProjectWillSmallIssues();
+    analyzeSampleProjectWillSmallNumberOfIssues();
     String newSeverity = "BLOCKER";
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
@@ -160,7 +160,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Test
   public void should_not_apply_bulk_change_if_not_logged() {
-    analyzeSampleProjectWillSmallIssues();
+    analyzeSampleProjectWillSmallNumberOfIssues();
     String newSeverity = "BLOCKER";
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
@@ -175,7 +175,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Test
   public void should_not_apply_bulk_change_if_no_change_to_do() {
-    analyzeSampleProjectWillSmallIssues();
+    analyzeSampleProjectWillSmallNumberOfIssues();
     String newSeverity = "BLOCKER";
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
@@ -203,7 +203,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Test
   public void should_not_apply_bulk_change_if_action_is_invalid() {
-    analyzeSampleProjectWillSmallIssues();
+    analyzeSampleProjectWillSmallNumberOfIssues();
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
 
@@ -254,7 +254,82 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     }
   }
 
-  private void analyzeSampleProjectWillSmallIssues() {
+  /**
+   * SONAR-4421
+   */
+  @Test
+  public void should_apply_bulk_change_from_console() {
+    analyzeSampleProjectWillSmallNumberOfIssues();
+
+    // Create action plan
+    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(toDate("2113-01-31")));
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_change_from_console",
+      "/selenium/issue/bulk-change/should-apply-bulk-change.html"
+    ).build());
+
+    for (Issue issue : search(IssueQuery.create()).list()) {
+      assertThat(issue.status()).isEqualTo("CONFIRMED");
+      assertThat(issue.assignee()).isEqualTo("admin");
+      assertThat(issue.severity()).isEqualTo("BLOCKER");
+      assertThat(issue.actionPlan()).isEqualTo(actionPlan.key());
+      assertThat(issue.comments()).hasSize(1);
+      assertThat(issue.comments().get(0).htmlText()).isEqualTo("this is my <em>comment</em>");
+    }
+  }
+
+  @Test
+  public void should_apply_bulk_change_on_limited_max_number_of_issues_from_console() {
+    analyzeProjectWithALotOfIssues();
+    final String newSeverity = "BLOCKER";
+    int nbIssues = 500;
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_change_with_maximum_number_of_issues_from_console",
+      "/selenium/issue/bulk-change/should-apply-bulk-change-on-limited-max-number-of-issues.html"
+    ).build());
+
+    int nbIssuesChanged = Iterables.size(Iterables.filter(search(IssueQuery.create().pageSize(-1)).list(), new Predicate<Issue>() {
+      public boolean apply(Issue issue) {
+        return issue.severity().equals(newSeverity);
+      }
+    }));
+    assertThat(nbIssuesChanged).isEqualTo(nbIssues);
+  }
+
+  @Test
+  public void should_apply_bulk_plan_on_issues_from_same_project_from_console() {
+    analyzeSampleProjectWillSmallNumberOfIssues();
+
+    // Create action plan
+    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(toDate("2113-01-31")));
+
+    List<Issue> issues = search(IssueQuery.create()).list();
+    assertThat(issues.size()).isGreaterThanOrEqualTo(2);
+
+    // Assign issues to admin in order to link them to a action plan from console without having to select a project
+    Issue issue1 = issues.get(0);
+    Issue issue2 = issues.get(1);
+    adminIssueClient().assign(issue1.key(), "admin");
+    adminIssueClient().assign(issue2.key(), "admin");
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_plan_on_issues_from_same_project_from_console",
+      "/selenium/issue/bulk-change/should-apply-bulk-plan-on-issues-from-same-project.html"
+    ).build());
+
+    assertThat(searchIssueByKey(issue1.key()).actionPlan()).isEqualTo(actionPlan.key());
+    assertThat(searchIssueByKey(issue2.key()).actionPlan()).isEqualTo(actionPlan.key());
+  }
+
+  @Test
+  public void test_console() {
+    analyzeProjectWithALotOfIssues();
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("test_console",
+      "/selenium/issue/bulk-change/should-be-admin-to-apply-bulk-change.html"
+    ).build());
+  }
+
+  private void analyzeSampleProjectWillSmallNumberOfIssues() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line"));
