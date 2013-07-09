@@ -135,6 +135,18 @@ public class IssueWidgetsTest extends AbstractIssueTestCase {
       ).build());
   }
 
+  /**
+   * SONAR-3557
+   */
+  @Test
+  public void test_issue_filter_widget() throws Exception {
+    orchestrator.executeSelenese(Selenese.builder()
+      .setHtmlTestsInClasspath("issue-filter-widget",
+        "/selenium/issue/widgets/issue-filter-widget/should-have-correct-values.html",
+        "/selenium/issue/widgets/issue-filter-widget/should-open-links-on-issues.html"
+      ).build());
+  }
+
 
   private void analyzeProject() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
