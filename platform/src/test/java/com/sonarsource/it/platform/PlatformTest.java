@@ -25,7 +25,7 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
-import com.sonar.orchestrator.util.VersionUtils;
+import com.sonar.orchestrator.version.Version;
 import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -55,7 +55,7 @@ public class PlatformTest {
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
 
-  private static String viewsVersion;
+  private static Version viewsVersion;
 
   @BeforeClass
   public static void start() {
@@ -79,7 +79,7 @@ public class PlatformTest {
         inspect(baseDir);
       }
     }
-    if (VersionUtils.isGreaterThanOrEqual(viewsVersion, "2.1")) {
+    if (viewsVersion.isGreaterThanOrEquals("2.1")) {
       // Refresh views
       SonarRunner runner;
       try {
@@ -138,7 +138,7 @@ public class PlatformTest {
       String version = StringUtils.trim(pluginFields[2]);
       builder.addPlugin(MavenLocation.create(StringUtils.trim(pluginFields[0]), artifactId, version));
       if ("sonar-views-plugin".equals(artifactId)) {
-        viewsVersion = version;
+        viewsVersion = Version.create(version);
       }
     }
   }
@@ -228,17 +228,17 @@ public class PlatformTest {
 
   @Test
   public void viewsTechnicalDebt() {
-    if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.4")) {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.4")) {
       // JAVA-17
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt").getValue(), is(495719.3));
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt_ratio").getValue(), is(20.0));
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt_repart").getData(), is("Comments=5.78;Complexity=11.79;Coverage=20.37;Design=9.27;Duplication=39.63;Violations=13.11"));
-    } else if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.3")) {
+    } else if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
       // SONAR-3793 and SONAR-3793
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt").getValue(), is(495725.5));
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt_ratio").getValue(), is(20.0));
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt_repart").getData(), is("Comments=5.78;Complexity=11.79;Coverage=20.37;Design=9.27;Duplication=39.63;Violations=13.12"));
-    } else if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.1")) {
+    } else if (orchestrator.getServer().version().isGreaterThanOrEquals("3.1")) {
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt").getValue(), is(497336.2));
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt_ratio").getValue(), is(20.1));
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt_repart").getData(), is("Comments=5.77;Complexity=11.75;Coverage=20.63;Design=9.24;Duplication=39.51;Violations=13.07"));
@@ -255,14 +255,14 @@ public class PlatformTest {
   @Test
   public void viewsMeasures() {
     assertThat(getMeasure(JAVA_VIEWS, "ncloc").getIntValue(), is(76638));
-    if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.4")) {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.4")) {
       // JAVA-17
       assertThat(getMeasure(JAVA_VIEWS, "lines").getIntValue(), is(179835));
     } else {
       assertThat(getMeasure(JAVA_VIEWS, "lines").getIntValue(), is(179068));
     }
     assertThat(getMeasure(JAVA_VIEWS, "files").getIntValue(), is(767));
-    if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.3")) {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
       // SONAR-3712
       assertThat(getMeasure(JAVA_VIEWS, "statements").getIntValue(), is(33246));
     } else {
@@ -271,7 +271,7 @@ public class PlatformTest {
     assertThat(getMeasure(JAVA_VIEWS, "classes").getIntValue(), is(930));
     assertThat(getMeasure(JAVA_VIEWS, "packages").getIntValue(), is(61));
     assertThat(getMeasure(JAVA_VIEWS, "comment_lines_density").getValue(), is(34.7));
-    if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.3")) {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
       // SONAR-3631
       assertThat(getMeasure(JAVA_VIEWS, "comment_lines").getIntValue(), is(40774));
     } else {
@@ -283,14 +283,14 @@ public class PlatformTest {
     assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines").getIntValue(), is(31312));
     assertThat(getMeasure(JAVA_VIEWS, "duplicated_blocks").getIntValue(), is(1572));
     assertThat(getMeasure(JAVA_VIEWS, "duplicated_files").getIntValue(), is(201));
-    if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.4")) {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.4")) {
       // JAVA-17
       assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines_density").getValue(), is(17.4));
     } else {
       assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines_density").getValue(), is(17.5));
     }
 
-    if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.3")) {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
       // SONAR-3793 and SONAR-3793
       assertThat(getMeasure(JAVA_VIEWS, "complexity").getIntValue(), is(19379));
       assertThat(getMeasure(JAVA_VIEWS, "function_complexity").getValue(), is(2.4));
