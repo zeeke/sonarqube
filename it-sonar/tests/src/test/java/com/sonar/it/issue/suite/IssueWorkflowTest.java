@@ -22,9 +22,10 @@ public class IssueWorkflowTest extends AbstractIssueTestCase {
   @Before
   public void resetData() {
     orchestrator.getDatabase().truncateInspectionTables();
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "issues", "sonar.cpd.skip", "true")
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
+    scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.cpd.skip", "true")
+      .setProfile("one-issue-per-line")
       .setRunnerVersion("2.2.2");
     orchestrator.executeBuild(scan);
 
