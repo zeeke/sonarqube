@@ -17,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONValue;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Server;
 import org.sonar.wsclient.services.ServerQuery;
@@ -87,7 +88,11 @@ public class ServerAdministrationTest {
     orchestrator.executeSelenese(selenese);
   }
 
+  /**
+   * SONAR-4466 - Tests below are to be migrated to the new permission templates dedicated page
+   */
   @Test
+  @Ignore
   public void configureRoles() {
     MavenBuild build = MavenBuild.builder()
         .setPom(ItUtils.locateProjectPom("shared/sample"))
