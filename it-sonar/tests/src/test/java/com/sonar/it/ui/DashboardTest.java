@@ -7,7 +7,7 @@ package com.sonar.it.ui;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -17,18 +17,13 @@ public class DashboardTest {
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
       .addPlugin(ItUtils.locateTestPlugin("dashboard-plugin"))
+      .addPlugin(ItUtils.xooPlugin())
       .build();
 
   @BeforeClass
   public static void inspectProject() {
-    MavenBuild inspection = MavenBuild.builder()
-        .setPom(ItUtils.locateProjectPom("shared/sample"))
-        .addGoal("clean install")
-        .addSonarGoal()
-        .withDynamicAnalysis(false)
-        .build();
-
-    orchestrator.executeBuild(inspection);
+    SonarRunner build = SonarRunner.create((ItUtils.locateProjectDir("shared/xoo-sample")));
+    orchestrator.executeBuild(build);
   }
 
   /**
@@ -79,8 +74,7 @@ public class DashboardTest {
 
   @Test
   public void test_welcome_widget() {
-    seleniumSuite("welcome_widget","/selenium/ui/widgets/welcome_widget.html"
-    );
+    seleniumSuite("welcome_widget", "/selenium/ui/widgets/welcome_widget.html");
   }
 
   private void seleniumSuite(String suiteName, String... tests) {

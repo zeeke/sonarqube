@@ -11,7 +11,7 @@ public class FakeDashboardTemplate extends DashboardTemplate {
       .setDescription("Fake dashboard for integration tests");
     dashboard.addWidget("lcom4", 1);
     dashboard.addWidget("description", 1);
-    dashboard.addWidget("comments_duplications", 2);
+    dashboard.addWidget("documentation_comments", 2);
     dashboard.addWidget("complexity", 3); // should be ignored because the layout is 2 columns
     return dashboard;
   }
