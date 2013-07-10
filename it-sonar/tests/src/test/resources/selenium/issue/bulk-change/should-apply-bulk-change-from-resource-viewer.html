@@ -2,17 +2,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
-  <tbody>
-  <tr>
-	<td>deleteAllVisibleCookies</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
+    <tbody>
+    <tr>
 	<td>open</td>
 	<td>/sonar/sessions/new</td>
 	<td></td>
@@ -34,32 +29,42 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/issues</td>
+	<td>/sonar/resource/index/sample:sample%2FSample.xoo</td>
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>select-project</td>
-	<td>sample</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>search-button</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>content</td>
-	<td>*Open*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>issue-filters-operations</td>
-	<td>*Bulk Change*</td>
+	<td>waitForText</td>
+	<td>class=source_title</td>
+	<td>*Sample*</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=bulk-change</td>
+	<td>link=Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.sourceHeader</td>
+	<td>*13 issues*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.source_tabs</td>
+	<td>*Bulk Change*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>css=.sources2.code</td>
+	<td>*Confirmed*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.sources2.code</td>
+	<td>*Open*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Bulk Change</td>
 	<td></td>
 </tr>
 <tr>
@@ -68,39 +73,9 @@
 	<td>*Change 13 issues*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>bulk-change-form</td>
-	<td>*Assign*Plan*Change severity*Transition*Comment*</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=assign-action</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=plan-action</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=set-severity-action</td>
-	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>severity</td>
-	<td>Blocker</td>
-</tr>
-<tr>
 	<td>click</td>
 	<td>transition-confirm</td>
 	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name=comment</td>
-	<td>this is my *comment*</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -108,9 +83,29 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForText</td>
+	<td>class=source_title</td>
+	<td>*Sample*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.sourceHeader</td>
+	<td>*13 issues*</td>
+</tr>
+<tr>
 	<td>assertText</td>
-	<td>content</td>
+	<td>css=.sources2.code</td>
 	<td>*Confirmed*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>css=.sources2.code</td>
+	<td>*Open*</td>
 </tr>
 </tbody>
 </table>

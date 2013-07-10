@@ -7,7 +7,6 @@
 package com.sonar.it.issue.suite;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
@@ -284,16 +283,12 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     final String newSeverity = "BLOCKER";
     int nbIssues = 500;
 
+    // The test will do a bulk change on the whole list of issues project and change the severity to Blocker
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_change_with_maximum_number_of_issues_from_console",
       "/selenium/issue/bulk-change/should-apply-bulk-change-on-limited-max-number-of-issues.html"
     ).build());
 
-    int nbIssuesChanged = Iterables.size(Iterables.filter(search(IssueQuery.create().pageSize(-1)).list(), new Predicate<Issue>() {
-      public boolean apply(Issue issue) {
-        return issue.severity().equals(newSeverity);
-      }
-    }));
-    assertThat(nbIssuesChanged).isEqualTo(nbIssues);
+    assertThat(search(IssueQuery.create().severities(newSeverity)).paging().total()).isEqualTo(nbIssues);
   }
 
   @Test
@@ -326,6 +321,18 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("test_console",
       "/selenium/issue/bulk-change/should-be-admin-to-apply-bulk-change.html"
+    ).build());
+  }
+
+  /**
+   * SONAR-4418
+   */
+  @Test
+  public void should_apply_bulk_change_from_resource_viewer() {
+    analyzeSampleProjectWillSmallNumberOfIssues();
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_change_from_resource_viewer",
+      "/selenium/issue/bulk-change/should-apply-bulk-change-from-resource-viewer.html"
     ).build());
   }
 
