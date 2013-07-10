@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile>
+  <name>with-deprecated-rule</name>
+  <language>xoo</language>
+  <rules>
+    <rule>
+      <repositoryKey>xoo</repositoryKey>
+      <key>OneIssuePerLine</key>
+      <priority>MINOR</priority>
+    </rule>
+    <rule>
+      <repositoryKey>deprecated-repo</repositoryKey>
+      <key>deprecated-rule</key>
+      <priority>MAJOR</priority>
+    </rule>
+  </rules>
+</profile>

@@ -79,6 +79,7 @@
     <module>resource-configuration-extension-plugin</module>
     <module>update-center</module>
     <module>subcategories-plugin</module>
+    <module>deprecated-xoo-rule-plugin</module>
   </modules>
 
 </project>
