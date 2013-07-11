@@ -139,6 +139,8 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
     MavenBuild scan = MavenBuild.create(rootPom)
       .setCleanSonarGoals()
       .setProperty("sonar.projectDate", "2013-05-01")
+      // Checkstyle issues messages are localized
+      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US")
       .setProfile("issues");
     orchestrator.executeBuild(scan);
 
@@ -147,6 +149,8 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
       .setCleanSonarGoals()
       .setProperty("sonar.dryRun", "true")
       .setProperty("sonar.projectDate", "2013-05-02")
+      // Checkstyle issues messages are localized
+      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US")
       .setProfile("issues");
     orchestrator.executeBuild(dryRunScan);
 
@@ -163,7 +167,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
     s = s.replaceAll("\\w\\w\\w\\w\\w\\w\\w\\w\\-\\w\\w\\w\\w\\-\\w\\w\\w\\w\\-\\w\\w\\w\\w\\-\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w", "abcde");
 
     // sanitize sonar version. Note that "-SILVER-SNAPSHOT" is used by Goldeneye jobs
-    s = s.replaceAll("\\d\\.\\d(\\-SILVER)?\\-SNAPSHOT", "<SONAR_VERSION>");
+    s = s.replaceAll("\\d\\.\\d(.\\d)?(\\-SILVER)?\\-SNAPSHOT", "<SONAR_VERSION>");
 
     return sanitizeTimezones(s);
   }
