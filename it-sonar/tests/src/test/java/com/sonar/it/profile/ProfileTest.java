@@ -79,7 +79,7 @@ public class ProfileTest {
 
   @Test
   public void should_project_association() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/backup.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
         .setCleanPackageSonarGoals()
@@ -96,7 +96,8 @@ public class ProfileTest {
 
   @Test
   public void should_override_profile_with_property() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/override-profile-with-property.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Overridden_java.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
         .setCleanPackageSonarGoals()
@@ -174,7 +175,7 @@ public class ProfileTest {
    */
   @Test
   public void should_not_delete_all_associations_when_deleting_a_profile() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/backup.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
         .setCleanPackageSonarGoals()
