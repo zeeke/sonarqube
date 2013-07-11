@@ -10,6 +10,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueClient;
@@ -17,19 +18,19 @@ import org.sonar.wsclient.issue.IssueQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class IssueWithSonarRestartTest {
+public class IssueWithRestartToRemoveRulePluginTest {
+
+  @ClassRule
+  public static Orchestrator orchestrator = Orchestrator.builderEnv()
+    .addPlugin(ItUtils.xooPlugin())
+    .addPlugin(ItUtils.locateTestPlugin("deprecated-xoo-rule-plugin"))
+    .build();
 
   /**
    * SONAR-4364
    */
   @Test
   public void scan_should_close_issue_on_more_existing_rule() {
-    Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.xooPlugin())
-      .addPlugin(ItUtils.locateTestPlugin("deprecated-xoo-rule-plugin"))
-      .build();
-    orchestrator.start();
-
     IssueClient issueClient = ItUtils.newWsClientForAnonymous(orchestrator).issueClient();
 
     orchestrator.getDatabase().truncateInspectionTables();
