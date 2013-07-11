@@ -69,6 +69,20 @@ public class DryRunTest {
       + "The SonarQube plugin which requires this property must be deactivated in dry run mode.");
   }
 
+  // SONAR-4488
+  @Test
+  public void should_fail_if_dryrun_timout_is_too_short() {
+    // Test access from task (ie BatchSettings)
+    SonarRunner runner = configureRunner("shared/xoo-sample",
+        "sonar.dryRun", "true",
+        "sonar.dryRun.readTimeout", "1",
+        "accessSecuredFromTask", "true");
+    BuildResult result = orchestrator.executeBuildQuietly(runner);
+
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("DryRun database read timed out after 1 ms. You can try to increase read timeout with property -Dsonar.dryRun.readTimeout");
+  }
+
   // SONAR-4468
   @Test
   public void test_build_breaker_with_dry_run() {
