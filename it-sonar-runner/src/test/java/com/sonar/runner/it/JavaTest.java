@@ -8,8 +8,6 @@ package com.sonar.runner.it;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.ResourceLocation;
-import com.sonar.orchestrator.util.VersionUtils;
-import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -20,7 +18,7 @@ import java.io.File;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assume.assumeThat;
+import static org.junit.Assume.assumeTrue;
 
 public class JavaTest extends RunnerTestCase {
 
@@ -40,7 +38,7 @@ public class JavaTest extends RunnerTestCase {
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:sample").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
-    if (VersionUtils.isGreaterThanOrEqual(Util.runnerVersion(orchestrator), "2.1")) {
+    if (Util.runnerVersion(orchestrator).isGreaterThanOrEquals("2.1")) {
       // SONARPLUGINS-2399
       assertThat(project.getName()).isEqualTo("Java Sample, with comma");
     }
@@ -73,10 +71,15 @@ public class JavaTest extends RunnerTestCase {
         .setProperty("sonar.verbose", "true")
         .setAdditionalArguments("-e", "-X")
         .setProfile("sonar-way");
+    // SONARPLUGINS-3061
+    if (Util.runnerVersion(orchestrator).isGreaterThanOrEquals("2.3")) {
+      // Add a trailing slash
+      build.setProperty("sonar.host.url", orchestrator.getServer().getUrl() + "/");
+    }
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:sample").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
-    if (VersionUtils.isGreaterThanOrEqual(Util.runnerVersion(orchestrator), "2.1")) {
+    if (Util.runnerVersion(orchestrator).isGreaterThanOrEquals("2.1")) {
       // SONARPLUGINS-2399
       assertThat(project.getName()).isEqualTo("Java Sample, with comma");
     }
@@ -126,7 +129,7 @@ public class JavaTest extends RunnerTestCase {
 
   @Test
   public void basedir_contains_java_sources() {
-    assumeThat(VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.0"), Is.is(true));
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("3.0"));
 
     // The provided profile "Sonar way" can't be used because whitespaces are not supported by orchestrator on windows.
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
@@ -143,7 +146,7 @@ public class JavaTest extends RunnerTestCase {
    */
   @Test
   public void should_support_simple_project_keys() {
-    assumeThat(VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.0"), Is.is(true));
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("3.0"));
 
     // The provided profile "Sonar way" can't be used because whitespaces are not supported by orchestrator on windows.
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
@@ -229,7 +232,7 @@ public class JavaTest extends RunnerTestCase {
 
   @Test
   public void should_fail_if_unable_to_connect() {
-    assumeThat(Util.isRunnerVersionGreaterThan(orchestrator, "2.1"), Is.is(true));
+    assumeTrue(Util.runnerVersion(orchestrator).isGreaterThan("2.1"));
 
     SonarRunner build = newRunner(new File("projects/multi-module/failures/unexisting-config-file"))
         .setProperty("sonar.host.url", "http://foo");

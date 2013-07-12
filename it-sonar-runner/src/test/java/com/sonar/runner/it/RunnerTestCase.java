@@ -7,8 +7,6 @@ package com.sonar.runner.it;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
-import com.sonar.orchestrator.util.VersionUtils;
-import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -20,7 +18,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.junit.Assume.assumeThat;
+import static org.junit.Assume.assumeTrue;
 
 @RunWith(Parameterized.class)
 public abstract class RunnerTestCase {
@@ -36,15 +34,15 @@ public abstract class RunnerTestCase {
     this.fork = fork;
   }
 
-  @Parameterized.Parameters
+  @Parameterized.Parameters(name = "fork={0}")
   public static Collection<Object[]> data() {
-    Object[][] data = new Object[][]{{false}, {true}};
+    Object[][] data = new Object[][] { {false}, {true}};
     return Arrays.asList(data);
   }
 
   SonarRunner newRunner(File baseDir, String... keyValueProperties) {
     SonarRunner runner = SonarRunner.create(baseDir, keyValueProperties);
-    runner.setRunnerVersion(Util.runnerVersion(orchestrator));
+    runner.setRunnerVersion(Util.runnerVersion(orchestrator).toString());
     if (fork) {
       runner.setProperty("sonarRunner.mode", "fork");
     }
@@ -54,7 +52,7 @@ public abstract class RunnerTestCase {
   @Before
   public void assumeVersion22WhenForkMode() {
     if (fork) {
-      assumeThat(VersionUtils.isGreaterThanOrEqual(Util.runnerVersion(orchestrator), "2.2"), Is.is(true));
+      assumeTrue(Util.runnerVersion(orchestrator).isGreaterThanOrEquals("2.2"));
     }
   }
 }

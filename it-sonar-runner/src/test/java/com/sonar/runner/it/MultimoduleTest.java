@@ -7,7 +7,6 @@ package com.sonar.runner.it;
 
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
-import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -15,7 +14,7 @@ import org.sonar.wsclient.services.ResourceQuery;
 import java.io.File;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assume.assumeThat;
+import static org.junit.Assume.assumeTrue;
 
 public class MultimoduleTest extends RunnerTestCase {
 
@@ -59,7 +58,7 @@ public class MultimoduleTest extends RunnerTestCase {
    */
   @Test
   public void test_multi_language_with_same_projectdir() {
-    assumeThat(Util.isRunnerVersionGreaterThan(orchestrator, "2.1"), Is.is(true));
+    assumeTrue(Util.runnerVersion(orchestrator).isGreaterThan("2.1"));
 
     SonarRunner build = newRunner(new File("projects/multi-module/multi-language"));
 
@@ -107,7 +106,7 @@ public class MultimoduleTest extends RunnerTestCase {
    */
   @Test
   public void test_warning_when_source_folder_on_root_module() {
-    assumeThat(Util.isRunnerVersionGreaterThan(orchestrator, "2.1"), Is.is(true));
+    assumeTrue(Util.runnerVersion(orchestrator).isGreaterThan("2.1"));
 
     SonarRunner build = newRunner(new File("projects/multi-module/simplest/simplest-with-props-on-each-module"));
 
