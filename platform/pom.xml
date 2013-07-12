@@ -137,7 +137,7 @@
         </property>
       </activation>
       <properties>
-        <sonar.runtimeVersion>3.6</sonar.runtimeVersion>
+        <sonar.runtimeVersion>3.6.1</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
           org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
