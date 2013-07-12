@@ -12,7 +12,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  ManualRulesTest.class, RuleWidgetsTest.class, SonarCommonRulesTest.class, ViolationsTest.class
+  ManualRulesTest.class, RuleWidgetsTest.class, SonarCommonRulesTest.class
 })
 public class RuleTestSuite {
 

@@ -14,31 +14,31 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.projects.rule:encoded-violation-message:foo.EncodedViolationMessage?tab=issues</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>body</td>
-        <td>*foo.EncodedViolationMessage*</td>
-    </tr>
-    <tr>
-        <td>assertTextPresent</td>
-        <td>EncodedViolationMessage</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>glob:*Avoid Duplicate Literals*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>glob:*The String literal &quot;&lt;select&gt;&quot; appears*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/encoded-issue-message:foo.EncodedIssueMessage?tab=issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*foo.EncodedIssueMessage*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.sources2.code</td>
+	<td>*EncodedIssueMessage*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=table.code</td>
+	<td>glob:*Avoid Duplicate Literals*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=table.code</td>
+	<td>glob:*The String literal &quot;&lt;select&gt;&quot; appears*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

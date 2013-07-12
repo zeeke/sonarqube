@@ -7,7 +7,6 @@ package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.Build;
-import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -34,13 +33,14 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void test_common_measures() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("issues");
-    orchestrator.executeBuild(build);
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/multi-modules-sample"))
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("issues")
+      // Multi module project have to use sonar-runner 2.2.2 to not fail
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(scan);
 
-    String componentKey = "com.sonarsource.it.samples:multi-modules-sample";
+    String componentKey = "multi-modules-sample";
     assertThat(searchIssuesByComponent(componentKey)).hasSize(20);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(componentKey, "violations", "info_violations", "minor_violations", "major_violations",
@@ -60,13 +60,12 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void test_resolution_and_status_measures() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+      .setProperties("sonar.cpd.skip", "true")
       .setProfile("issues");
-    orchestrator.executeBuild(build);
+    orchestrator.executeBuild(scan);
 
-    String componentKey = "com.sonarsource.it.samples:simple-sample";
+    String componentKey = "sample";
     List<Issue> issues = searchIssuesByComponent(componentKey);
     assertThat(issues).hasSize(4);
 
@@ -77,7 +76,7 @@ public class IssueTest extends AbstractIssueTestCase {
     adminIssueClient().doTransition(issues.get(3).key(), "reopen");
 
     // Re analyze the project to compute measures
-    orchestrator.executeBuild(build);
+    orchestrator.executeBuild(scan);
 
     Resource project = orchestrator.getServer().getWsClient().find(
       ResourceQuery.createForMetrics(componentKey, "false_positive_issues", "open_issues", "reopened_issues", "confirmed_issues"));
@@ -91,8 +90,8 @@ public class IssueTest extends AbstractIssueTestCase {
   public void should_get_no_issue_on_empty_profile() {
     // no active rules
     Build scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.cpd.skip", "true")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("empty");
     orchestrator.executeBuild(scan);
 
     assertThat(searchIssuesByComponent("sample")).isEmpty();
@@ -107,8 +106,8 @@ public class IssueTest extends AbstractIssueTestCase {
   public void should_close_no_more_existing_issue() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
     Build scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "issues", "sonar.cpd.skip", "true")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("issues");
     orchestrator.executeBuild(scan);
 
     String projectKey = "sample";
@@ -123,8 +122,8 @@ public class IssueTest extends AbstractIssueTestCase {
 
     // Empty profile -> no issue
     scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.cpd.skip", "true")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("empty");
     orchestrator.executeBuild(scan);
 
     issues = searchIssuesByComponent(projectKey);
@@ -146,13 +145,13 @@ public class IssueTest extends AbstractIssueTestCase {
 
     Sonar wsClient = orchestrator.getServer().getAdminWsClient();
 
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("reviews/with-tests"))
-      .setCleanPackageSonarGoals()
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("issue/with-tests"))
+      .setProperties("sonar.cpd.skip", "true")
       .setProfile("pmd-junit");
-    orchestrator.executeBuild(build);
+    orchestrator.executeBuild(scan);
 
     // Store current number of issues
-    Resource project = wsClient.find(ResourceQuery.createForMetrics("com.sonarsource.it.reviews:with-tests", "violations"));
+    Resource project = wsClient.find(ResourceQuery.createForMetrics("with-tests", "violations"));
     int issues = project.getMeasureIntValue("violations");
 
     // Create the manual rule
@@ -161,16 +160,16 @@ public class IssueTest extends AbstractIssueTestCase {
     ).build());
 
     // Create a issue on the test source file
-    adminIssueClient().create(NewIssue.create().component("com.sonarsource.it.reviews:with-tests:org.sonar.tests.HelloTest")
+    adminIssueClient().create(NewIssue.create().component("with-tests:org.sonar.tests.HelloTest")
       .severity("MAJOR")
       .rule("manual:invalidclassname").line(3)
       .message("The name 'HelloTest' is too generic"));
 
     // Re-analyse the project
-    orchestrator.executeBuild(build);
+    orchestrator.executeBuild(scan);
 
     // And check that the number of issues metrics have changed
-    project = wsClient.find(ResourceQuery.createForMetrics("com.sonarsource.it.reviews:with-tests", "violations"));
+    project = wsClient.find(ResourceQuery.createForMetrics("with-tests", "violations"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(issues + 1);
   }
 
@@ -181,14 +180,12 @@ public class IssueTest extends AbstractIssueTestCase {
   public void should_get_issues_even_if_no_issue_on_line_of_code() {
     // all the detected issues are not attached to a line
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/backup-for-file-global-issues.xml"));
-
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("rule/file-global-violations"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("issue/file-global-issues"))
+      .setProperties("sonar.cpd.skip", "true")
       .setProfile("global-issues");
-    orchestrator.executeBuild(build);
+    orchestrator.executeBuild(scan);
 
-    List<Issue> issues = searchIssuesByComponent("com.sonarsource.it.projects.rule:file-global-violations:sample.Sample");
+    List<Issue> issues = searchIssuesByComponent("file-global-issues:sample.Sample");
     assertThat(issues.size()).isGreaterThan(0);
     for (Issue issue : issues) {
       assertThat(issue.line()).describedAs("issue with line: " + issue.ruleKey()).isNull();
@@ -205,12 +202,10 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void should_encode_issue_messages() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
-
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("rule/encoded-violation-message"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("issue/encoded-issue-message"))
+      .setProperties("sonar.cpd.skip", "true")
       .setProfile("sonar-way-2.7");
-    orchestrator.executeBuild(build);
+    orchestrator.executeBuild(scan);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("encoded-issue-message",
       "/selenium/issue/encoded-issue-message.html").build();
@@ -223,12 +218,10 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void should_not_have_issues_on_tests() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("rule/no-violations-on-tests"))
-      .setCleanPackageSonarGoals()
-      .setProperties("skipTests", "true")
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("issue/no-issue-on-tests"))
+      .setProperties("sonar.cpd.skip", "true")
       .setProfile("issues");
-    orchestrator.executeBuild(build);
+    orchestrator.executeBuild(scan);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("no-issue-on-tests",
       "/selenium/issue/no-issue-on-tests.html"
@@ -242,12 +235,12 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void test_issue_drilldown() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("issues");
-    orchestrator.executeBuild(build);
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/multi-modules-sample"))
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("issues")
+      // Multi module project have to use sonar-runner 2.2.2 to not fail
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(scan);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("issues-drilldown",
       "/selenium/issue/issues-drilldown/unselect-module-filter.html",
@@ -265,8 +258,8 @@ public class IssueTest extends AbstractIssueTestCase {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
 
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "issues", "sonar.cpd.skip", "true")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("issues");
     orchestrator.executeBuild(scan);
 
     // Resolve an issue
@@ -291,8 +284,8 @@ public class IssueTest extends AbstractIssueTestCase {
   public void test_issue_detail() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "issues", "sonar.cpd.skip", "true")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("issues");
     orchestrator.executeBuild(scan);
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issue-detail",
@@ -310,6 +303,7 @@ public class IssueTest extends AbstractIssueTestCase {
   public void test_file_with_thousands_issues() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("issue/file-with-thousands-issues"))
+      .setProperties("sonar.cpd.skip", "true")
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(runner);
 
