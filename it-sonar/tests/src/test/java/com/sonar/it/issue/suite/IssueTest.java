@@ -6,7 +6,6 @@
 package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.orchestrator.build.Build;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -59,21 +58,21 @@ public class IssueTest extends AbstractIssueTestCase {
    */
   @Test
   public void test_resolution_and_status_measures() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("issues");
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+        .setProperties("sonar.cpd.skip", "true")
+        .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
     String componentKey = "sample";
     List<Issue> issues = searchIssuesByComponent(componentKey);
-    assertThat(issues).hasSize(4);
+    assertThat(issues).hasSize(13);
 
-    // 1 is a false-positive, 1 is confirmed, 1 is reopened, and the remaining one stays open
+    // 1 is a false-positive, 1 is confirmed, 1 is reopened, and the remaining ones stays open
     adminIssueClient().doTransition(issues.get(0).key(), "falsepositive");
     adminIssueClient().doTransition(issues.get(1).key(), "confirm");
-    adminIssueClient().doTransition(issues.get(3).key(), "resolve");
-    adminIssueClient().doTransition(issues.get(3).key(), "reopen");
+    adminIssueClient().doTransition(issues.get(2).key(), "resolve");
+    adminIssueClient().doTransition(issues.get(2).key(), "reopen");
 
     // Re analyze the project to compute measures
     orchestrator.executeBuild(scan);
@@ -81,7 +80,7 @@ public class IssueTest extends AbstractIssueTestCase {
     Resource project = orchestrator.getServer().getWsClient().find(
       ResourceQuery.createForMetrics(componentKey, "false_positive_issues", "open_issues", "reopened_issues", "confirmed_issues"));
     assertThat(project.getMeasureIntValue("false_positive_issues")).isEqualTo(1);
-    assertThat(project.getMeasureIntValue("open_issues")).isEqualTo(1);
+    assertThat(project.getMeasureIntValue("open_issues")).isEqualTo(10);
     assertThat(project.getMeasureIntValue("reopened_issues")).isEqualTo(1);
     assertThat(project.getMeasureIntValue("confirmed_issues")).isEqualTo(1);
   }
@@ -89,9 +88,9 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void should_get_no_issue_on_empty_profile() {
     // no active rules
-    Build scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("empty");
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+        .setProperties("sonar.cpd.skip", "true")
+        .setProfile("empty");
     orchestrator.executeBuild(scan);
 
     assertThat(searchIssuesByComponent("sample")).isEmpty();
@@ -104,30 +103,27 @@ public class IssueTest extends AbstractIssueTestCase {
 
   @Test
   public void should_close_no_more_existing_issue() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    Build scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("issues");
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+        .setProperties("sonar.cpd.skip", "true")
+        .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
     String projectKey = "sample";
     List<Issue> issues = searchIssuesByComponent(projectKey);
-    assertThat(issues).hasSize(4);
+    assertThat(issues).hasSize(13);
     for (Issue issue : issues) {
       assertThat(issue.status()).isEqualTo("OPEN");
     }
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey, "violations"));
-    assertThat(project.getMeasureIntValue("violations")).isEqualTo(4);
+    assertThat(project.getMeasureIntValue("violations")).isEqualTo(13);
 
     // Empty profile -> no issue
-    scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("empty");
-    orchestrator.executeBuild(scan);
+    orchestrator.executeBuild(scan.setProfile("empty"));
 
     issues = searchIssuesByComponent(projectKey);
-    assertThat(issues).hasSize(4);
+    assertThat(issues).hasSize(13);
     for (Issue issue : issues) {
       assertThat(issue.status()).isEqualTo("CLOSED");
     }
@@ -289,13 +285,13 @@ public class IssueTest extends AbstractIssueTestCase {
     orchestrator.executeBuild(scan);
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issue-detail",
-      "/selenium/issue/issue-detail/test-issue-detail.html",
-      "/selenium/issue/issue-detail/should-open-link-on-component.html",
-      "/selenium/issue/issue-detail/should-open-rule-detail.html",
-      "/selenium/issue/issue-detail/should-open-link-on-permalink-issue.html",
-      // SONAR-4284
-      "/selenium/issue/issue-detail/should-open-changelog.html",
-      "/selenium/issue/issue-detail/should-display-actions-when-logged.html"
+        "/selenium/issue/issue-detail/test-issue-detail.html",
+        "/selenium/issue/issue-detail/should-open-link-on-component.html",
+        "/selenium/issue/issue-detail/should-open-rule-detail.html",
+        "/selenium/issue/issue-detail/should-open-link-on-permalink-issue.html",
+        // SONAR-4284
+        "/selenium/issue/issue-detail/should-open-changelog.html",
+        "/selenium/issue/issue-detail/should-display-actions-when-logged.html"
     ).build());
   }
 
