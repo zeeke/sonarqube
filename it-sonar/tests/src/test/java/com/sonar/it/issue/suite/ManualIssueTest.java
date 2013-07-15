@@ -7,15 +7,10 @@ package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.sonar.wsclient.issue.Issue;
-import org.sonar.wsclient.issue.IssueComment;
-import org.sonar.wsclient.issue.IssueQuery;
-import org.sonar.wsclient.issue.Issues;
-import org.sonar.wsclient.issue.NewIssue;
+import org.junit.*;
+import org.sonar.wsclient.issue.*;
 
 import java.util.List;
 
@@ -27,19 +22,26 @@ import static org.fest.assertions.Fail.fail;
  */
 public class ManualIssueTest extends AbstractIssueTestCase {
 
-  private final static String COMPONENT_KEY = "sample:sample.Sample";
+  private final static String COMPONENT_KEY = "sample:sample/Sample.xoo";
+
+  @BeforeClass
+  public static void initManualRule(){
+    createManualRule();
+  }
+
+  @AfterClass
+  public static void purgeManualRules(){
+    deleteManualRules();
+  }
 
   @Before
   public void before() {
     orchestrator.getDatabase().truncateInspectionTables();
-    deleteManualRules();
     analyzeProject();
   }
 
   @Test
   public void create_manual_issue_on_line() {
-    createManualRule();
-
     // Create the manual issue
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("manual-issues-on-line",
       "/selenium/issue/manual-issue/create-manual-issue-on-line.html"
@@ -61,8 +63,6 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   @Test
   public void create_manual_issue_through_ws() throws Exception {
-    createManualRule();
-
     // Create the manual issue
     Issue newIssue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
       .rule("manual:invalidclassname")
@@ -89,8 +89,6 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   @Test
   public void scan_should_keep_manual_issues_open() throws Exception {
-    createManualRule();
-
     // Create the manual issue
     Issue newIssue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
       .rule("manual:invalidclassname")
@@ -121,11 +119,14 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   @Test
   public void scan_should_close_issues_on_deleted_manual_rules() throws Exception {
-    createManualRule();
+    // Create another manual rule
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule",
+      "/selenium/issue/manual-issue/create-manual-rule-to-be-removed.html"
+    ).build());
 
     // Create the manual issue
     Issue newIssue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
-      .rule("manual:invalidclassname")
+      .rule("manual:ruletoberemoved")
       .line(3)
       .severity("CRITICAL")
       .message("The name 'Sample' is too generic"));
@@ -147,8 +148,6 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   @Test
   public void scan_should_close_manual_resolved_issues() throws Exception {
-    createManualRule();
-
     // Create the manual issue
     Issue newIssue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
       .rule("manual:invalidclassname")
@@ -171,8 +170,6 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   @Test
   public void add_comment_to_manual_issue() throws Exception {
-    createManualRule();
-
     // Create the manual issue
     Issue manualIssue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
       .rule("manual:invalidclassname")
@@ -192,8 +189,6 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   @Test
   public void resolve_manual_issue() throws Exception {
-    createManualRule();
-
     // Create the manual issue
     Issue manualIssue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
       .rule("manual:invalidclassname")
@@ -226,7 +221,6 @@ public class ManualIssueTest extends AbstractIssueTestCase {
   @Test
   public void resolve_and_reopen_manual_issue() throws Exception {
     // Create the manual issue
-    createManualRule();
     Issue issue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
       .rule("manual:invalidclassname")
       .line(3)
@@ -288,7 +282,7 @@ public class ManualIssueTest extends AbstractIssueTestCase {
     try {
       adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
         // Not a manual rule
-        .rule("squid:S00119")
+        .rule("xoo:OneIssuePerLine")
         .line(3)
         .severity("CRITICAL")
         .message("The name 'Sample' is too generic"));
@@ -300,7 +294,7 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   @Test
   public void fail_if_rule_is_disabled() throws Exception {
-    // Create and delete the manual rule
+    // Create and delete a manual rule
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-and-delete-manual-rule",
       "/selenium/issue/manual-issue/create-and-delete-manual-rule.html"
     ).build());
@@ -308,7 +302,7 @@ public class ManualIssueTest extends AbstractIssueTestCase {
     try {
       adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
         // This rule is disabled
-        .rule("manual:invalidclassname")
+        .rule("manual:anotherinvalidclassname")
         .line(3)
         .severity("CRITICAL")
         .message("The name 'Sample' is too generic"));
@@ -320,7 +314,6 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   @Test
   public void fail_if_component_does_not_exist() throws Exception {
-    createManualRule();
     try {
       adminIssueClient().create(NewIssue.create().component("unknown component")
         .rule("manual:invalidclassname")
@@ -335,7 +328,6 @@ public class ManualIssueTest extends AbstractIssueTestCase {
 
   @Test
   public void fail_if_not_logged_in() throws Exception {
-    createManualRule();
     try {
       issueClient().create(NewIssue.create().component("unknown component")
         .rule("manual:invalidclassname")
@@ -355,12 +347,13 @@ public class ManualIssueTest extends AbstractIssueTestCase {
   }
 
   private void analyzeProject() {
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.cpd.skip", "true")
-      .setRunnerVersion("2.2.2");
-
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     // no active rules
-    orchestrator.executeBuild(scan);
+    SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("empty")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(runner);
   }
 
 }
