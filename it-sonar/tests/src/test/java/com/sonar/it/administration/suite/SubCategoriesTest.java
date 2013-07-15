@@ -25,7 +25,9 @@ public class SubCategoriesTest {
   @Test
   public void should_support_global_subcategories() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("subcategories",
-        "/selenium/administration/subcategories/global-subcategories.html"
+        "/selenium/administration/subcategories/global-subcategories.html",
+        // SONAR-4495
+        "/selenium/administration/subcategories/global-subcategories-no-default.html"
         ).build();
     orchestrator.executeSelenese(selenese);
     assertThat(getProperty("prop3", null)).isEqualTo("myValue");
@@ -39,7 +41,9 @@ public class SubCategoriesTest {
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/sample")));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("subcategories",
-        "/selenium/administration/subcategories/project-subcategories.html"
+        "/selenium/administration/subcategories/project-subcategories.html",
+        // SONAR-4495
+        "/selenium/administration/subcategories/project-subcategories-no-default.html"
         ).build();
     orchestrator.executeSelenese(selenese);
     assertThat(getProperty("prop3", "sample")).isEqualTo("myValue2");

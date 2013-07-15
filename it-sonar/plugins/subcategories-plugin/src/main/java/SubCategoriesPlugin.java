@@ -32,7 +32,18 @@ public class SubCategoriesPlugin extends SonarPlugin {
             .category("Category 1")
             .description("Foo")
             .onQualifiers(Qualifiers.PROJECT)
-            .build()
-        );
+            .build(),
+        PropertyDefinition.builder("prop2_1")
+            .category("Category 2")
+            .subCategory("Sub category 1 of 2")
+            .description("Foo")
+            .onQualifiers(Qualifiers.PROJECT)
+            .build(),
+        PropertyDefinition.builder("prop2_2")
+            .category("Category 2")
+            .subCategory("Sub category 2 of 2")
+            .description("Foo")
+            .onQualifiers(Qualifiers.PROJECT)
+            .build());
   }
 }
