@@ -26,6 +26,7 @@ import java.util.List;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class UserAdministrationTest {
+
   @ClassRule
   public static Orchestrator orchestrator = AdministrationTestSuite.ORCHESTRATOR;
 
