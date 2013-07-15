@@ -9,6 +9,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
@@ -27,6 +28,11 @@ public class IssueTest extends AbstractIssueTestCase {
   @Before
   public void resetData() {
     orchestrator.getDatabase().truncateInspectionTables();
+  }
+
+  @AfterClass
+  public static void purgeManualRules(){
+    deleteManualRules();
   }
 
   @Test

@@ -10,6 +10,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
@@ -50,6 +51,11 @@ public class IssueSearchTest extends AbstractIssueTestCase {
       .line(3)
       .severity("CRITICAL")
       .message("The name 'Sample' is too generic"));
+  }
+
+  @AfterClass
+  public static void purgeManualRules(){
+    deleteManualRules();
   }
 
   @Test
