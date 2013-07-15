@@ -13,6 +13,9 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.sonar.wsclient.SonarClient;
+import org.sonar.wsclient.permissions.PermissionParameters;
+import org.sonar.wsclient.user.UserParameters;
 
 /**
  * SONAR-4210
@@ -30,14 +33,22 @@ public class QualityProfileAdminPermissionTest {
 
   @Test
   public void create_user_and_profile_admin() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("create-user-and-profile-admin",
-        "/selenium/administration/profile-admin/create-user.html",
-        "/selenium/administration/profile-admin/create-profile-administrator.html",
+
+    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
+    UserParameters simpleUser = UserParameters.create().login("not_profileadm").name("Not a profile admin")
+      .password("userpwd").passwordConfirmation("userpwd");
+    client.userClient().create(simpleUser);
+    UserParameters profileAdmin = UserParameters.create().login("profileadm").name("Profile Admin")
+      .password("papwd").passwordConfirmation("papwd");
+    client.userClient().create(profileAdmin);
+    PermissionParameters profileAdministration = PermissionParameters.create().user("profileadm").permission("profileadmin");
+    client.permissionClient().addPermission(profileAdministration);
+
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("administrate-profiles",
         // Verify normal user is not allowed to do any modification
         "/selenium/administration/profile-admin/normal-user.html",
         // Verify profile admin is allowed to do modifications
         "/selenium/administration/profile-admin/profile-admin.html"
-
         ).build();
     orchestrator.executeSelenese(selenese);
   }

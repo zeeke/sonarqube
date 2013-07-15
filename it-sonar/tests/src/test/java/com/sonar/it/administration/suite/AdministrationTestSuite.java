@@ -19,6 +19,7 @@ import org.junit.runners.Suite;
   PermissionsTest.class,
   ProjectAdministrationTest.class,
   PropertySetsTest.class,
+  QualityProfileAdminPermissionTest.class,
   SubCategoriesTest.class,
   SystemAdminPermissionTest.class,
   UserAdministrationTest.class,
