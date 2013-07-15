@@ -6,7 +6,7 @@
 package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
@@ -24,18 +24,16 @@ import static org.fest.assertions.Fail.fail;
 
 public class ActionPlanTest extends AbstractIssueTestCase {
 
-  private static final String PROJECT_KEY = "com.sonarsource.it.samples:simple-sample";
+  private static final String PROJECT_KEY = "sample";
 
   @BeforeClass
   public static void analyzeProject() {
     orchestrator.getDatabase().truncateInspectionTables();
-
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("issues");
-    orchestrator.executeBuild(build);
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("one-issue-per-line");
+    orchestrator.executeBuild(scan);
   }
 
   @Before
