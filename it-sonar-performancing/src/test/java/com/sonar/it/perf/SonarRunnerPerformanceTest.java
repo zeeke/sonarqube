@@ -54,6 +54,19 @@ public class SonarRunnerPerformanceTest {
   }
 
   @Test
+  public void most_basic_scan() {
+    SonarRunner runner = newSonarRunner("-Xmx512m -server",
+      "sonar.dynamicAnalysis", "false",
+      "sonar.profile", "empty",
+      "sonar.cpd.skip", "true"
+    );
+    long start = System.currentTimeMillis();
+    orchestrator.executeBuild(runner);
+    long duration = System.currentTimeMillis() - start;
+    assertDuration(duration, 150000L);
+  }
+
+  @Test
   public void scan_with_no_rule_and_coverage_per_test() {
     SonarRunner runner = newSonarRunner("-Xmx512m -server",
       "sonar.dynamicAnalysis", "reuseReports",
