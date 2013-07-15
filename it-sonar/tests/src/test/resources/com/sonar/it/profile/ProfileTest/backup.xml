@@ -18,7 +18,7 @@
   <properties>
     <property>
       <key><![CDATA[sonar.permission.template.default]]></key>
-      <value><![CDATA[1]]></value>
+      <value><![CDATA[default_template]]></value>
     </property>
     <property>
       <key><![CDATA[sonar.profile.java]]></key>
