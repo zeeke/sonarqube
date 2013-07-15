@@ -63,10 +63,11 @@ public class SonarRunnerPerformanceTest {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDuration(duration, 150000L);
+    assertDuration(duration, 60000L);
   }
 
   @Test
+  @Ignore("To be enabled when most_basic_scan passes")
   public void scan_with_no_rule_and_coverage_per_test() {
     SonarRunner runner = newSonarRunner("-Xmx512m -server",
       "sonar.dynamicAnalysis", "reuseReports",
@@ -81,6 +82,7 @@ public class SonarRunnerPerformanceTest {
   }
 
   @Test
+  @Ignore("To be enabled when most_basic_scan passes")
   public void scan_with_rules_and_coverage_per_test() {
     // checkstyle, pmd and squid but no findbugs
     SonarRunner runner = newSonarRunner("-Xmx512m -server",
