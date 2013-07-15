@@ -199,6 +199,27 @@ public class MavenTest {
     assertThat(result.getLogs()).contains("The Compiler Plugin is used to compile the sources");
   }
 
+  /**
+   * SONAR-4245
+   */
+  @Test
+  public void should_prevent_analysis_of_module_then_project() {
+    MavenBuild scan = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample/module_a"))
+        .setProperty("sonar.dynamicAnalysis", "false")
+        .setCleanSonarGoals();
+    orchestrator.executeBuild(scan);
+
+    scan = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
+        .setProperty("sonar.dynamicAnalysis", "false")
+        .setCleanSonarGoals();
+    BuildResult result = orchestrator.executeBuildQuietly(scan);
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("The project 'com.sonarsource.it.samples:module_a' is already defined in SonarQube "
+      + "but not as a module of project 'com.sonarsource.it.samples:multi-modules-sample'. "
+      + "If you really want to stop directly analysing project 'com.sonarsource.it.samples:module_a', "
+      + "please first delete it from SonarQube and then relaunch the analysis of project 'com.sonarsource.it.samples:multi-modules-sample'.");
+  }
+
   private void checkBuildHelperFiles() {
     Resource project = getResource("com.sonarsource.it.samples:many-source-dirs");
     assertThat(project).isNotNull();
