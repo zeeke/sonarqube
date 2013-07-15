@@ -120,7 +120,7 @@ public class ManualIssueTest extends AbstractIssueTestCase {
   @Test
   public void scan_should_close_issues_on_deleted_manual_rules() throws Exception {
     // Create another manual rule
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule",
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule-to-be-removed",
       "/selenium/issue/manual-issue/create-manual-rule-to-be-removed.html"
     ).build());
 
