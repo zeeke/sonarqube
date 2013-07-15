@@ -278,7 +278,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_apply_bulk_change_on_limited_max_number_of_issues_from_console() {
+  public void should_apply_bulk_change_on_limited_max_number_of_issues_from_issues_console() {
     analyzeProjectWithALotOfIssues();
     final String newSeverity = "BLOCKER";
     int nbIssues = 500;
@@ -292,7 +292,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_apply_bulk_plan_on_issues_from_same_project_from_console() {
+  public void should_apply_bulk_plan_on_issues_from_same_project_from_issues_console() {
     analyzeSampleProjectWillSmallNumberOfIssues();
 
     // Create action plan
