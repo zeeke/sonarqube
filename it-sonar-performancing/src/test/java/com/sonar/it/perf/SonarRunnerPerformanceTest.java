@@ -67,6 +67,21 @@ public class SonarRunnerPerformanceTest {
   }
 
   @Test
+  public void scan_with_java_rules() {
+    // checkstyle, pmd and squid but not findbugs
+    SonarRunner runner = newSonarRunner("-Xmx512m -server",
+      "sonar.dynamicAnalysis", "false",
+      "sonar.profile", "sonar-way"
+    );
+    long start = System.currentTimeMillis();
+    orchestrator.executeBuild(runner);
+    long duration = System.currentTimeMillis() - start;
+
+    assertDuration(duration, 120000L);
+  }
+
+
+  @Test
   @Ignore("To be enabled when most_basic_scan passes")
   public void scan_with_no_rule_and_coverage_per_test() {
     SonarRunner runner = newSonarRunner("-Xmx512m -server",
@@ -79,23 +94,6 @@ public class SonarRunnerPerformanceTest {
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
     assertDuration(duration, 155600L);
-  }
-
-  @Test
-  @Ignore("To be enabled when most_basic_scan passes")
-  public void scan_with_rules_and_coverage_per_test() {
-    // checkstyle, pmd and squid but no findbugs
-    SonarRunner runner = newSonarRunner("-Xmx512m -server",
-      "sonar.dynamicAnalysis", "reuseReports",
-      "sonar.surefire.reportsPath", "target/surefire-reports",
-      "sonar.jacoco.reportPath", "target/jacoco.exec",
-      "sonar.profile", "sonar-way"
-    );
-    long start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    long duration = System.currentTimeMillis() - start;
-
-    assertDuration(duration, 235000L);
   }
 
   @Test
