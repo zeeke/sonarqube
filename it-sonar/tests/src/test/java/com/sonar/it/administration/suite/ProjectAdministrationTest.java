@@ -8,6 +8,7 @@ package com.sonar.it.administration.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.After;
@@ -105,6 +106,42 @@ public class ProjectAdministrationTest {
             "/selenium/administration/project-administration/project-quality-profile.html" // SONAR-3517
         ).build();
     orchestrator.executeSelenese(selenese);
+  }
+
+  // SONAR-4203
+  @Test
+  public void should_delete_version_of_multimodule_project() throws Exception {
+    GregorianCalendar today = new GregorianCalendar();
+    SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+        .setProperty("sonar.dynamicAnalysis", "false")
+        .setProperty("sonar.projectDate", (today.get(Calendar.YEAR) - 1) + "-01-01");
+    orchestrator.executeBuild(build);
+
+    // The analysis must be run once again to have an history so that it is possible
+    // to set/delete version on old snapshot
+    build.setProperty("sonar.projectDate", today.get(Calendar.YEAR) + "-01-01");
+    orchestrator.executeBuild(build);
+
+    // There are 7 modules
+    assertThat(count("events where category='Version'")).as("Different number of events").isEqualTo(7);
+
+    Selenese selenese = Selenese
+        .builder()
+        .setHtmlTestsInClasspath("delete_version_of_multimodule_project",
+            "/selenium/administration/project-administration/multimodule-project-modify-version.html"
+        ).build();
+    orchestrator.executeSelenese(selenese);
+
+    assertThat(count("events where category='Version'")).as("Different number of events").isEqualTo(14);
+
+    selenese = Selenese
+        .builder()
+        .setHtmlTestsInClasspath("delete_version_of_multimodule_project",
+            "/selenium/administration/project-administration/multimodule-project-delete-version.html"
+        ).build();
+    orchestrator.executeSelenese(selenese);
+
+    assertThat(count("events where category='Version'")).as("Different number of events").isEqualTo(7);
   }
 
   // SONAR-3326
@@ -293,6 +330,10 @@ public class ProjectAdministrationTest {
 
   private void scanSample() {
     scanSample(null, null);
+  }
+
+  private int count(String condition) {
+    return orchestrator.getDatabase().countSql("select count(*) from " + condition);
   }
 
 }
