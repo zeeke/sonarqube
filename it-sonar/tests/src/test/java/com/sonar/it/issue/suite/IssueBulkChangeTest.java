@@ -234,7 +234,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
   }
 
   @Test
-  @Ignore("Number of issues sent is too big (it fails from 159 issues), the bulk change execution returns a 413 HTTP code. Should find a way to not sent params in url but in the body")
+  @Ignore("Waiting for commit on org.sonar.wsclient.internal.HttprequestFactory to manage params in form for POST request")
   public void should_apply_bulk_change_with_maximum_number_of_issues() {
     analyzeProjectWithALotOfIssues();
     String newSeverity = "BLOCKER";
@@ -248,9 +248,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
         .actionParameter("set_severity", "severity", newSeverity)
     );
     assertThat(bulkChange.totalIssuesChanged()).isEqualTo(500);
-    for (Issue issue : search(IssueQuery.create().issues(issueKeys)).list()) {
-      assertThat(issue.severity()).isEqualTo(newSeverity);
-    }
+    assertThat(search(IssueQuery.create().severities(newSeverity)).paging().total()).isEqualTo(500);
   }
 
   /**
