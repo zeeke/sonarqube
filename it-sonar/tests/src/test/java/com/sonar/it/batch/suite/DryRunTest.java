@@ -71,7 +71,7 @@ public class DryRunTest {
 
   // SONAR-4488
   @Test
-  public void should_fail_if_dryrun_timout_is_too_short() {
+  public void should_fail_if_dryrun_timeout_is_too_short() {
     // Test access from task (ie BatchSettings)
     SonarRunner runner = configureRunner("shared/xoo-sample",
         "sonar.dryRun", "true",
@@ -80,7 +80,8 @@ public class DryRunTest {
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getStatus()).isNotEqualTo(0);
-    assertThat(result.getLogs()).contains("DryRun database read timed out after 1 ms. You can try to increase read timeout with property -Dsonar.dryRun.readTimeout");
+    assertThat(result.getLogs()).contains(
+        "DryRun database read timed out after 1000 ms. You can try to increase read timeout with property -Dsonar.dryRun.readTimeout (in seconds)");
   }
 
   // SONAR-4468
