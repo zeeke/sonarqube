@@ -11,7 +11,7 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.connectors.ConnectionException;
@@ -20,7 +20,6 @@ import org.sonar.wsclient.services.PropertyQuery;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import javax.annotation.Nullable;
-
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -32,10 +31,10 @@ public class ProjectAdministrationTest {
   @ClassRule
   public static Orchestrator orchestrator = AdministrationTestSuite.ORCHESTRATOR;
 
-  private static final String PROJECT_KEY = "com.sonarsource.it.samples:simple-sample";
-  private static final String FILE_KEY = "com.sonarsource.it.samples:simple-sample:sample.Sample";
+  private static final String PROJECT_KEY = "sample";
+  private static final String FILE_KEY = "sample:sample.Sample";
 
-  @After
+  @Before
   public void deleteAnalysisData() throws SQLException {
     orchestrator.getDatabase().truncateInspectionTables();
   }
@@ -79,8 +78,12 @@ public class ProjectAdministrationTest {
    */
   @Test
   public void test_project_deletion() throws Exception {
-    // This test must be done separately as the project will be deleted, so no other test can be done afterwards
-    scanSampleWithDate("2012-01-01");
+    // For an unknown reason, this test fails if the analysis id one with SonarRunner...
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
+        .setCleanSonarGoals()
+        .setProperty("sonar.dynamicAnalysis", "false");
+    orchestrator.executeBuild(build.setProperty("sonar.projectDate", "2012-01-01"));
+
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-deletion", "/selenium/administration/project-deletion/project-deletion.html").build();
     orchestrator.executeSelenese(selenese);
   }
@@ -88,10 +91,14 @@ public class ProjectAdministrationTest {
   @Test
   public void test_project_administration() throws Exception {
     GregorianCalendar today = new GregorianCalendar();
-    scanSampleWithDate((today.get(Calendar.YEAR) - 1) + "-01-01");
-    scanSampleWithDate(today.get(Calendar.YEAR) + "-01-01");// The analysis must be run once again to have an history so that it is possible
-                                                            // to
-    // delete a snapshot
+
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
+        .setCleanSonarGoals()
+        .setProperty("sonar.dynamicAnalysis", "false");
+    orchestrator.executeBuild(build.setProperty("sonar.projectDate", (today.get(Calendar.YEAR)- 1) + "-01-01"));
+    // The analysis must be run once again to have an history so that it is possible to delete a snapshot
+    orchestrator.executeBuild(build.setProperty("sonar.projectDate", (today.get(Calendar.YEAR)) + "-01-01"));
+
     Selenese selenese = Selenese
         .builder()
         .setHtmlTestsInClasspath("project-administration",
@@ -194,7 +201,7 @@ public class ProjectAdministrationTest {
         ).build();
     orchestrator.executeSelenese(selenese);
 
-    assertThat(orchestrator.getServer().getAdminWsClient().find(PropertyQuery.createForResource("sonar.skippedModules", "com.sonarsource.it.samples:simple-sample")).getValue())
+    assertThat(orchestrator.getServer().getAdminWsClient().find(PropertyQuery.createForResource("sonar.skippedModules", "sample")).getValue())
         .isEqualTo("my-excluded-module");
   }
 
@@ -308,16 +315,16 @@ public class ProjectAdministrationTest {
   }
 
   private void scanSample(@Nullable String date, @Nullable String profile) {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false");
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+        .setProperties("sonar.cpd.skip", "true")
+        .setRunnerVersion("2.2.2");
     if (date != null) {
-      build.setProperty("sonar.projectDate", date);
+      scan.setProperty("sonar.projectDate", date);
     }
     if (profile != null) {
-      build.setProperty("sonar.profile", profile);
+      scan.setProfile(profile);
     }
-    orchestrator.executeBuild(build);
+    orchestrator.executeBuild(scan);
   }
 
   private void scanSampleWithProfile(String profile) {
