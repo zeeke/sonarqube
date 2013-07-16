@@ -27,6 +27,7 @@ public class QualityProfileAdminPermissionTest {
 
   @BeforeClass
   public static void init() {
+    orchestrator.getDatabase().truncateInspectionTables();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/sample")));
   }

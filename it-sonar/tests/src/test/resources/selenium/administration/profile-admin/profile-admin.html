@@ -88,10 +88,30 @@
         <td>id=content</td>
         <td>Add project</td>
     </tr>
+    <!--<tr>-->
+      <!--<td>open</td>-->
+      <!--<td>/sonar</td>-->
+      <!--<td></td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+      <!--<td>clickAndWait</td>-->
+      <!--<td>link=Sample</td>-->
+      <!--<td></td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+      <!--<td>clickAndWait</td>-->
+      <!--<td>link=Quality Profiles</td>-->
+      <!--<td></td>-->
+    <!--</tr>-->
     <tr>
         <td>open</td>
-        <td>/sonar/project/profile/1</td>
+        <td>/sonar/project/profile/sample</td>
         <td></td>
+    </tr>
+    <tr>
+      <td>waitForVisible</td>
+      <td>id=submit-java</td>
+      <td></td>
     </tr>
     <tr>
         <td>assertValue</td>
