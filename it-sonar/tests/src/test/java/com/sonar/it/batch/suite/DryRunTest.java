@@ -75,8 +75,7 @@ public class DryRunTest {
     // Test access from task (ie BatchSettings)
     SonarRunner runner = configureRunner("shared/xoo-sample",
         "sonar.dryRun", "true",
-        "sonar.dryRun.readTimeout", "1",
-        "accessSecuredFromTask", "true");
+        "sonar.dryRun.readTimeout", "1");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getStatus()).isNotEqualTo(0);
