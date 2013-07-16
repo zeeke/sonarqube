@@ -49,64 +49,19 @@
 	<td>*Home*</td>
 </tr>
 <tr>
+	<td>assertElementNotPresent</td>
+	<td>remove-Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>activeProject</td>
+	<td>*Hotspots*</td>
+</tr>
+<tr>
 	<td>assertNotText</td>
-	<td>activeGlobal</td>
-	<td>*Remove from defaults*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.admin_page</td>
-	<td>*Project Dashboards*Dashboard*Fake<br /> Fake dashboard for integration tests*Hotspots*Time Machine*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>activeProject</td>
-	<td>*Dashboard*Fake<br /> Fake dashboard for integration tests*Hotspots*Issues*Time Machine*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.admin_page</td>
-	<td>*Shared Dashboards*</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=remove-Fake</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertConfirmation</td>
-	<td>Are you sure to remove it from default dashboards?</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
 	<td>shared</td>
-	<td>*Fake*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>activeProject</td>
-	<td>*Dashboard*Hotspots*Issues*Time Machine*</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=remove-Dashboard</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertConfirmation</td>
-	<td>Are you sure to remove it from default dashboards?</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>shared</td>
-	<td>*Dashboard*Fake*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>activeProject</td>
-	<td>*Hotspots*Issues*Time Machine*</td>
+	<td>*Hotspots*</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -121,52 +76,27 @@
 <tr>
 	<td>assertText</td>
 	<td>shared</td>
-	<td>*Dashboard*Fake*Hotspots*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>activeProject</td>
-	<td>*Issues*Time Machine*</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=remove-Issues</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertConfirmation</td>
-	<td>Are you sure to remove it from default dashboards?</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>shared</td>
-	<td>*Dashboard*Fake*Hotspots*Issues*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>activeProject</td>
-	<td>*Time Machine*</td>
+	<td>*Hotspots*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
 	<td>activeProject</td>
-	<td>*Time Machine*Remove from defaults*</td>
+	<td>*Hotspots*</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=add-Dashboard</td>
+	<td>add-Hotspots</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>activeProject</td>
-	<td>*Time Machine*Remove from defaults*Dashboard*Remove from defaults*</td>
+	<td>*Issues*Hotspots*</td>
 </tr>
 <tr>
-	<td>assertText</td>
+	<td>assertNotText</td>
 	<td>shared</td>
-	<td>*Fake*Hotspots*Issues*</td>
+	<td>*Hotspots*</td>
 </tr>
 </tbody>
 </table>
