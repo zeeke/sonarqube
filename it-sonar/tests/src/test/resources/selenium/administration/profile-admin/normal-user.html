@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>create-user</title>
+    <title>user-cannot-administrate-profile</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -39,19 +39,19 @@
         <td></td>
     </tr>
     <tr>
-        <td>assertElementNotPresent</td>
-        <td>id=restore-link</td>
-        <td></td>
+        <td>assertNotText</td>
+        <td>css=ul.operations</td>
+        <td>Restore Profile</td>
     </tr>
     <tr>
-        <td>assertElementNotPresent</td>
-        <td>id=create-link-java</td>
-        <td></td>
+        <td>assertNotText</td>
+        <td>id=content</td>
+        <td>Create</td>
     </tr>
     <tr>
-        <td>assertElementNotPresent</td>
-        <td>link=Set as default</td>
-        <td></td>
+        <td>assertNotText</td>
+        <td>id=profiles_java</td>
+        <td>Set as default</td>
     </tr>
     <tr>
         <td>clickAndWait</td>
@@ -59,8 +59,8 @@
         <td></td>
     </tr>
     <tr>
-        <td>assertElementPresent</td>
-        <td>xpath=//input[@type='checkbox' and @disabled]</td>
+        <td>waitForVisible</td>
+        <td>id=result_table</td>
         <td></td>
     </tr>
     <tr>
@@ -69,9 +69,9 @@
         <td></td>
     </tr>
     <tr>
-        <td>assertTextNotPresent</td>
+        <td>assertNotText</td>
+        <td>id=content</td>
         <td>Create alert</td>
-        <td></td>
     </tr>
     <tr>
         <td>clickAndWait</td>
@@ -79,9 +79,9 @@
         <td></td>
     </tr>
     <tr>
-        <td>assertTextNotPresent</td>
+        <td>assertNotText</td>
+        <td>id=content</td>
         <td>Add project</td>
-        <td></td>
     </tr>
     <tr>
         <td>open</td>
@@ -89,9 +89,19 @@
         <td></td>
     </tr>
     <tr>
-        <td>assertElementPresent</td>
-        <td>id=login</td>
+      <td>pause</td>
+      <td>10000</td>
+      <td></td>
+    </tr>
+    <tr>
+        <td>waitForVisible</td>
+        <td>id=login_form</td>
         <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>id=login_form</td>
+        <td>glob:*You are not authorized to access this page*</td>
     </tr>
     </tbody>
 </table>

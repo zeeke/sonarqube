@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>create-user</title>
+    <title>user-can-administrate-profile</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -39,19 +39,19 @@
         <td></td>
     </tr>
     <tr>
-        <td>assertElementPresent</td>
+        <td>assertText</td>
         <td>id=restore-link</td>
-        <td></td>
+        <td>Restore Profile</td>
     </tr>
     <tr>
-        <td>assertElementPresent</td>
+        <td>assertText</td>
         <td>id=create-link-java</td>
-        <td></td>
+        <td>Create</td>
     </tr>
     <tr>
-        <td>assertElementPresent</td>
+        <td>assertText</td>
         <td>link=Set as default</td>
-        <td></td>
+        <td>Set as default</td>
     </tr>
     <tr>
         <td>clickAndWait</td>
@@ -74,9 +74,9 @@
         <td></td>
     </tr>
     <tr>
-        <td>assertTextPresent</td>
-        <td>Create alert</td>
-        <td></td>
+        <td>assertText</td>
+        <td>id=new_alert_content</td>
+        <td>glob:*Create alert*</td>
     </tr>
     <tr>
         <td>clickAndWait</td>
@@ -84,9 +84,9 @@
         <td></td>
     </tr>
     <tr>
-        <td>assertTextPresent</td>
+        <td>assertNotText</td>
+        <td>id=content</td>
         <td>Add project</td>
-        <td></td>
     </tr>
     <tr>
         <td>open</td>
@@ -94,9 +94,9 @@
         <td></td>
     </tr>
     <tr>
-        <td>assertElementPresent</td>
+        <td>assertValue</td>
         <td>id=submit-java</td>
-        <td></td>
+        <td>glob:*Update*</td>
     </tr>
     </tbody>
 </table>

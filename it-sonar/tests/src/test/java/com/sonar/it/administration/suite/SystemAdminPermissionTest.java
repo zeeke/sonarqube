@@ -28,7 +28,8 @@ public class SystemAdminPermissionTest {
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
-    UserParameters userCreationParameters = UserParameters.create().login("user").name("user").password("password").passwordConfirmation("password");
+    UserParameters userCreationParameters = UserParameters.create().login("not_admin_user").name("Not a system admin")
+      .password("password").passwordConfirmation("password");
     client.userClient().create(userCreationParameters);
     UserParameters canShareDashboard = UserParameters.create().login("can_share").name("can_share")
       .password("password").passwordConfirmation("password");

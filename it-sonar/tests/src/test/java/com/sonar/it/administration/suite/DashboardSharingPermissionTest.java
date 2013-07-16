@@ -27,7 +27,7 @@ public class DashboardSharingPermissionTest {
     orchestrator.getDatabase().truncateInspectionTables();
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
-    UserParameters newUser = UserParameters.create().login("new_user").name("new_user")
+    UserParameters newUser = UserParameters.create().login("dashboard_user").name("dashboard_user")
       .password("password").passwordConfirmation("password");
     client.userClient().create(newUser);
     UserParameters canShareDashboard = UserParameters.create().login("can_share_dashboards").name("can_share_dashboards")

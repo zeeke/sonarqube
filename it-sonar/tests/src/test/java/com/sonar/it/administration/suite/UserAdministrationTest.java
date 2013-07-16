@@ -119,7 +119,7 @@ public class UserAdministrationTest {
   public void search_for_user_by_text() throws Exception {
     // no need for admin rights
     SonarClient client = ItUtils.newWsClientForAnonymous(orchestrator);
-    List<User> users = client.userClient().find(UserQuery.create().searchText("adm"));
+    List<User> users = client.userClient().find(UserQuery.create().searchText("istra"));
 
     assertThat(users).hasSize(1);
     assertThat(users.get(0).name()).isEqualTo("Administrator");

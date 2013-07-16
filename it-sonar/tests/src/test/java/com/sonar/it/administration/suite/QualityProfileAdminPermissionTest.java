@@ -32,7 +32,7 @@ public class QualityProfileAdminPermissionTest {
   }
 
   @Test
-  public void create_user_and_profile_admin() {
+  public void permission_should_grant_access_to_profile() {
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
     UserParameters simpleUser = UserParameters.create().login("not_profileadm").name("Not a profile admin")

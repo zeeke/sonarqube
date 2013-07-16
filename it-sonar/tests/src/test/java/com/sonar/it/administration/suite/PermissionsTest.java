@@ -9,6 +9,7 @@ package com.sonar.it.administration.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.junit.AfterClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
@@ -19,6 +20,16 @@ public class PermissionsTest {
 
   @ClassRule
   public static Orchestrator orchestrator = AdministrationTestSuite.ORCHESTRATOR;
+
+  @AfterClass
+  public static void restoreDefaultGroupsPermissions() {
+    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
+
+    PermissionParameters usersGroupShareDashboardParams = PermissionParameters.create().group("sonar-users").permission("shareDashboard");
+    client.permissionClient().removePermission(usersGroupShareDashboardParams);
+    PermissionParameters usersGroupProfileAdminParams = PermissionParameters.create().group("sonar-users").permission("profileadmin");
+    client.permissionClient().removePermission(usersGroupProfileAdminParams);
+  }
 
   /**
    * SONAR-4412
@@ -69,6 +80,5 @@ public class PermissionsTest {
       "/selenium/administration/permission-administration/manage-groups-permission-with-ws.html")
       .build();
     orchestrator.executeSelenese(selenese);
-
   }
 }
