@@ -13,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
+import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
 
 public class MeasureFiltersTest {
@@ -28,13 +29,7 @@ public class MeasureFiltersTest {
       .withDynamicAnalysis(true)
       .build();
     orchestrator.executeBuild(build);
-    createUser();
-  }
-
-  private static void createUser(){
-    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
-    UserParameters userCreationParameters = UserParameters.create().login("user-measure-filters").name("User Measure Filters").password("password").passwordConfirmation("password");
-    client.userClient().create(userCreationParameters);
+    createUser("user-measure-filters", "User Measure Filters");
   }
 
 
@@ -77,12 +72,27 @@ public class MeasureFiltersTest {
 
   @Test
   public void share_measure_filters() {
+    // SONAR-4099
+    createUser("user-measures-filter-with-sharing-perm", "User Measure Filters with sharing permission", "shareDashboard");
+
     //TODO
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("share_measure_filters",
       // SONAR-4469
       "/selenium/measures/measure_filters/should-unshare-filter-remove-other-filters-favourite.html"
     ).build();
     orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-4099
+   */
+  @Test
+  public void should_not_share_filter_when_user_have_no_sharing_permissions() {
+    createUser("user-measures-filter-with-no-share-perm", "User Measure Filters without sharing permission");
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_not_share_filter_when_user_have_no_sharing_permissions",
+      "/selenium/measures/measure_filters/should-not-share-filter-when-user-have-no-sharing-permissions.html"
+    ).build());
   }
 
   @Test
@@ -117,6 +127,20 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/list_widget_warning_if_missing_filter.html"
     ).build();
     orchestrator.executeSelenese(selenese);
+  }
+
+  private static void createUser(String login, String name){
+    createUser(login, name, null);
+  }
+
+  private static void createUser(String login, String name, String permission){
+    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
+    UserParameters userCreationParameters = UserParameters.create().login(login).name(name).password("password").passwordConfirmation("password");
+    client.userClient().create(userCreationParameters);
+
+    if (permission != null) {
+      client.permissionClient().addPermission(PermissionParameters.create().user(login).permission(permission));
+    }
   }
 
 }

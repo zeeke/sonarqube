@@ -13,6 +13,7 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
+import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
 
 /**
@@ -29,13 +30,7 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(runner);
 
-    createUser();
-  }
-
-  private static void createUser(){
-    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
-    UserParameters userCreationParameters = UserParameters.create().login("user-issue-filters").name("User Issue Filters").password("password").passwordConfirmation("password");
-    client.userClient().create(userCreationParameters);
+    createUser("user-issue-filters", "User Issue Filters");
   }
 
   /**
@@ -99,10 +94,12 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
   }
 
   /**
-   * SONAR-4394
+   * SONAR-4394, SONAR-4099
    */
   @Test
   public void should_share_filter() {
+    createUser("user-issue-filters-with-sharing-perm", "User Issue Filters with sharing permission", "shareDashboard");
+
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_share_filter",
       "/selenium/issue/issue-filters/should-share-filter.html",
       "/selenium/issue/issue-filters/should-share-filter-from-manage.html",
@@ -116,5 +113,31 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
       // SONAR-4469
       "/selenium/issue/issue-filters/should-unshare-filter-remove-other-filters-favourite.html"
     ).build());
+  }
+
+  /**
+   * SONAR-4099
+   */
+  @Test
+  public void should_not_share_filter_when_user_have_no_sharing_permissions() {
+    createUser("user-issue-filters-without-sharing-perm", "User Issue Filters without sharing permission");
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_not_share_filter_when_user_have_no_sharing_permissions",
+      "/selenium/issue/issue-filters/should-not-share-filter-when-user-have-no-sharing-permissions.html"
+    ).build());
+  }
+
+  private static void createUser(String login, String name){
+    createUser(login, name, null);
+  }
+
+  private static void createUser(String login, String name, String permission){
+    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
+    UserParameters userCreationParameters = UserParameters.create().login(login).name(name).password("password").passwordConfirmation("password");
+    client.userClient().create(userCreationParameters);
+
+    if (permission != null) {
+      client.permissionClient().addPermission(PermissionParameters.create().user(login).permission(permission));
+    }
   }
 }

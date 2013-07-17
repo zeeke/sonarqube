@@ -14,11 +14,6 @@
 	<td>FILTER_NAME</td>
 </tr>
 <tr>
-	<td>deleteAllVisibleCookies</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td>open</td>
 	<td>/sonar/sessions/new</td>
 	<td></td>
@@ -26,7 +21,7 @@
 <tr>
 	<td>type</td>
 	<td>login</td>
-	<td>user-issue-filters-with-sharing-perm</td>
+	<td>user-issue-filters-without-sharing-perm</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -76,12 +71,12 @@
 <tr>
 	<td>type</td>
 	<td>id=name</td>
-	<td>user_${FILTER_NAME}</td>
+	<td>${FILTER_NAME}</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=shared</td>
-	<td></td>
+  <td>assertNotText</td>
+  <td>save-as-filter-form</td>
+  <td>*Shared with all users*</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -91,77 +86,12 @@
 <tr>
 	<td>waitForText</td>
 	<td>filter-title</td>
-	<td>*user_${FILTER_NAME}*</td>
-</tr>
-<tr>
-	<td>deleteAllVisibleCookies</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>/sonar/sessions/new</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>login</td>
-	<td>admin</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>password</td>
-	<td>admin</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>commit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>/sonar/issues/manage</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>content</td>
-	<td>*My Filters*</td>
+	<td>*${FILTER_NAME}*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>shared-filters</td>
-	<td>*user_${FILTER_NAME}*</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=star-user_${FILTER_NAME}</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>sidebar-favourites</td>
-	<td>*user_${FILTER_NAME}*</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=user_${FILTER_NAME}</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertSelectedLabel</td>
-	<td>select-severities</td>
-	<td>Minor</td>
-</tr>
-<tr>
-	<td>assertSelectedLabel</td>
-	<td>select-status</td>
-	<td>Open</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>criteria-project</td>
-	<td>*Sample*</td>
+	<td>filter-title</td>
+	<td>*Private*</td>
 </tr>
 </tbody>
 </table>
