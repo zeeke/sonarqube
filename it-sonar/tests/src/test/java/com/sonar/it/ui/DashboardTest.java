@@ -83,6 +83,12 @@ public class DashboardTest {
     seleniumSuite("documentation_and_comments_widget", "/selenium/ui/widgets/documentation_and_comments_widget.html");
   }
 
+  // SONAR-4347
+  @Test
+  public void test_duplications_widget() {
+    seleniumSuite("duplications_widget", "/selenium/ui/widgets/duplications_widget.html");
+  }
+
   private void seleniumSuite(String suiteName, String... tests) {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath(suiteName, tests).build();
     orchestrator.executeSelenese(selenese);
