@@ -9,46 +9,51 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>deleteAllVisibleCookies</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/project_roles/index/sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=select-user-edit-groups</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>id=select_left_all</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=save</td>
-        <td></td>
-    </tr>
-    </tbody>
+	<td>deleteAllVisibleCookies</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/project_roles/index/sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=select-user-edit-groups</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>permission-groups-form</td>
+	<td>*Edit permissions*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=select_left_all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>submit-permission-groups-update</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

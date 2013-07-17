@@ -11,12 +11,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
@@ -107,8 +102,9 @@ public class ScanPermissionTest {
         ).build();
     orchestrator.executeSelenese(selenese);
 
-    orchestrator.executeBuild(build);
+    BuildResult result = orchestrator.executeBuildQuietly(build);
     // No error
+    assertThat(result.getStatus()).isEqualTo(0);
   }
 
 }
