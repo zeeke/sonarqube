@@ -17,7 +17,8 @@ public class SubCategoriesPlugin extends SonarPlugin {
             .build(),
         PropertyDefinition.builder("prop2")
             .index(1)
-            .category("Category 1")
+            // SONAR-4501 category are case insensitive
+            .category("category 1")
             .subCategory("Sub category 1")
             .description("Foo")
             .onQualifiers(Qualifiers.PROJECT)
@@ -25,6 +26,13 @@ public class SubCategoriesPlugin extends SonarPlugin {
         PropertyDefinition.builder("prop3")
             .category("Category 1")
             .subCategory("Sub category 2")
+            .description("Foo")
+            .onQualifiers(Qualifiers.PROJECT)
+            .build(),
+        PropertyDefinition.builder("prop5")
+            .category("Category 1")
+            // SONAR-4501 subcategory are case insensitive
+            .subCategory("sub category 2")
             .description("Foo")
             .onQualifiers(Qualifiers.PROJECT)
             .build(),

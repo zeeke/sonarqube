@@ -30,11 +30,11 @@ public class AdministrationTestSuite {
 
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
-    .setServerProperty("sonar.notifications.delay", "1")
-    .addPlugin(ItUtils.locateTestPlugin("crash-plugin"))
-    .addPlugin(ItUtils.locateTestPlugin("property-sets-plugin"))
-    .addPlugin(ItUtils.locateTestPlugin("subcategories-plugin"))
-    .addPlugin(ItUtils.locateTestPlugin("user-handler-plugin"))
-    .addPlugin(ItUtils.xooPlugin())
-    .build();
+      .setServerProperty("sonar.notifications.delay", "1")
+      .addPlugin(ItUtils.locateTestPlugin("crash-plugin"))
+      .addPlugin(ItUtils.locateTestPlugin("property-sets-plugin"))
+      .addPlugin(ItUtils.locateTestPlugin("sonar-subcategories-plugin"))
+      .addPlugin(ItUtils.locateTestPlugin("user-handler-plugin"))
+      .addPlugin(ItUtils.xooPlugin())
+      .build();
 }
