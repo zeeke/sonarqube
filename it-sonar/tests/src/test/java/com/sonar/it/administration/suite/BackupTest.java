@@ -50,15 +50,15 @@ public class BackupTest {
   public void should_backup_settings_xml_contains_only_database_properties() {
     String settings = getBackupSettings();
 
-    assertThat(settings).doesNotContain("sonar.web.deployDir")
+    assertThat(settings)
+      .doesNotContain("sonar.web.deployDir")
       .doesNotContain("java.home")
-      .doesNotContain("PWD")
-    ;
-    assertThat(settings).contains("sonar.permission.template.default")
+      .doesNotContain("PWD");
+
+    assertThat(settings)
       .contains("sonar.profile.java")
       .contains("sonar.core.version")
-      .contains("sonar.core.startTime")
-    ;
+      .contains("sonar.core.startTime");
   }
 
   @Test
