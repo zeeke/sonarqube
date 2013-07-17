@@ -143,17 +143,19 @@ public class IssueTest extends AbstractIssueTestCase {
    */
   @Test
   public void should_compute_issues_metrics_on_test_files() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/pmd-junit-rules.xml"));
+    String projectKey = "sample-with-tests";
+    String testKey = "sample-with-tests:sample/SampleTest.xoo";
+
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample-with-tests"))
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("one-issue-per-line");
+    orchestrator.executeBuild(scan);
 
     Sonar wsClient = orchestrator.getServer().getAdminWsClient();
 
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("issue/with-tests"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("pmd-junit");
-    orchestrator.executeBuild(scan);
-
     // Store current number of issues
-    Resource project = wsClient.find(ResourceQuery.createForMetrics("with-tests", "violations"));
+    Resource project = wsClient.find(ResourceQuery.createForMetrics(projectKey, "violations"));
     int issues = project.getMeasureIntValue("violations");
 
     // Create the manual rule
@@ -162,16 +164,16 @@ public class IssueTest extends AbstractIssueTestCase {
     ).build());
 
     // Create a issue on the test source file
-    adminIssueClient().create(NewIssue.create().component("with-tests:org.sonar.tests.HelloTest")
+    adminIssueClient().create(NewIssue.create().component(testKey)
       .severity("MAJOR")
-      .rule("manual:invalidclassname").line(3)
-      .message("The name 'HelloTest' is too generic"));
+      .rule("manual:invalidclassname").line(8)
+      .message("The name 'SampleTest' is too generic"));
 
     // Re-analyse the project
     orchestrator.executeBuild(scan);
 
     // And check that the number of issues metrics have changed
-    project = wsClient.find(ResourceQuery.createForMetrics("with-tests", "violations"));
+    project = wsClient.find(ResourceQuery.createForMetrics(projectKey, "violations"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(issues + 1);
   }
 
