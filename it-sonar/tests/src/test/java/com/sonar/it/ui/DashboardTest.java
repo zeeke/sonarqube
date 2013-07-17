@@ -77,6 +77,12 @@ public class DashboardTest {
     seleniumSuite("welcome_widget", "/selenium/ui/widgets/welcome_widget.html");
   }
 
+  // SONAR-4448
+  @Test
+  public void test_documentation_and_comments_widget() {
+    seleniumSuite("documentation_and_comments_widget", "/selenium/ui/widgets/documentation_and_comments_widget.html");
+  }
+
   private void seleniumSuite(String suiteName, String... tests) {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath(suiteName, tests).build();
     orchestrator.executeSelenese(selenese);
