@@ -28,17 +28,14 @@ public class SystemAdminPermissionTest {
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
-    UserParameters userCreationParameters = UserParameters.create().login("not_admin_user").name("Not a system admin")
-      .password("password").passwordConfirmation("password");
-    client.userClient().create(userCreationParameters);
     UserParameters canShareDashboard = UserParameters.create().login("can_share").name("can_share")
       .password("password").passwordConfirmation("password");
     client.userClient().create(canShareDashboard);
+    client.permissionClient().addPermission(PermissionParameters.create().user("can_share").permission("shareDashboard"));
+
     UserParameters cannotShareDashboard = UserParameters.create().login("cannot_share").name("cannot_share")
       .password("password").passwordConfirmation("password");
     client.userClient().create(cannotShareDashboard);
-    PermissionParameters dashboardSharing = PermissionParameters.create().user("can_share").permission("shareDashboard");
-    client.permissionClient().addPermission(dashboardSharing);
   }
 
   /**

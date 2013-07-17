@@ -9,6 +9,11 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
+      <td>storeEval</td>
+      <td>'filter_'+(new Date()).getTime()</td>
+      <td>FILTER_NAME</td>
+    </tr>
+    <tr>
         <td>deleteAllVisibleCookies</td>
         <td></td>
         <td></td>
@@ -40,7 +45,7 @@
     </tr>
     <tr>
         <td>clickAndWait</td>
-        <td>css=a[href$="measures/manage"]</td>
+        <td>link=Manage</td>
         <td></td>
     </tr>
     <tr>
@@ -54,9 +59,9 @@
         <td></td>
     </tr>
     <tr>
-        <td>waitForVisible</td>
-        <td>css=div.modal-body</td>
-        <td></td>
+      <td>waitForText</td>
+      <td>edit-filter-form</td>
+      <td>*Edit Filter*</td>
     </tr>
     <tr>
         <td>type</td>
