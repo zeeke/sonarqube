@@ -214,25 +214,6 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_apply_bulk_change_be_paginated() {
-    analyzeProjectWithALotOfIssues();
-    String newSeverity = "BLOCKER";
-    int nbIssues = 120;
-    String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
-
-    BulkChange bulkChange = adminIssueClient().bulkChange(
-      BulkChangeQuery.create()
-        .issues(issueKeys)
-        .actions("set_severity")
-        .actionParameter("set_severity", "severity", newSeverity)
-    );
-    assertThat(bulkChange.totalIssuesChanged()).isEqualTo(100);
-    for (Issue issue : search(IssueQuery.create().issues(issueKeys)).list()) {
-      assertThat(issue.severity()).isEqualTo(newSeverity);
-    }
-  }
-
-  @Test
   public void should_apply_bulk_change_with_limited_number_of_issues() {
     analyzeProjectWithALotOfIssues();
 
