@@ -13,7 +13,6 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.*;
 
@@ -234,9 +233,10 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
   }
 
   @Test
-  @Ignore("Waiting for commit on org.sonar.wsclient.internal.HttprequestFactory to manage params in form for POST request")
-  public void should_apply_bulk_change_with_maximum_number_of_issues() {
+  public void should_apply_bulk_change_with_limited_number_of_issues() {
     analyzeProjectWithALotOfIssues();
+
+    // Check that number of issues is limited from the ws
     String newSeverity = "BLOCKER";
     int nbIssues = 510;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create().pageSize(-1)).list(), nbIssues);
@@ -249,6 +249,11 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     );
     assertThat(bulkChange.totalIssuesChanged()).isEqualTo(500);
     assertThat(search(IssueQuery.create().severities(newSeverity)).paging().total()).isEqualTo(500);
+
+    // Check that number of issues is limited from the console bulk change (no change will ne made in this test)
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should-bulk-change-be-limited-in-number-of-issues",
+      "/selenium/issue/bulk-change/should-bulk-change-be-limited-in-number-of-issues.html"
+    ).build());
   }
 
   /**
@@ -273,20 +278,6 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
       assertThat(issue.comments()).hasSize(1);
       assertThat(issue.comments().get(0).htmlText()).isEqualTo("this is my <em>comment</em>");
     }
-  }
-
-  @Test
-  public void should_apply_bulk_change_on_limited_max_number_of_issues_from_issues_console() {
-    analyzeProjectWithALotOfIssues();
-    final String newSeverity = "BLOCKER";
-    int nbIssues = 500;
-
-    // The test will do a bulk change on the whole list of issues project and change the severity to Blocker
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_change_with_maximum_number_of_issues_from_console",
-      "/selenium/issue/bulk-change/should-apply-bulk-change-on-limited-max-number-of-issues.html"
-    ).build());
-
-    assertThat(search(IssueQuery.create().severities(newSeverity)).paging().total()).isEqualTo(nbIssues);
   }
 
   @Test
