@@ -7,7 +7,7 @@ package com.sonar.it.server;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -17,7 +17,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONValue;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Server;
 import org.sonar.wsclient.services.ServerQuery;
@@ -89,17 +88,16 @@ public class ServerAdministrationTest {
   }
 
   /**
-   * SONAR-4466 - Tests below are to be migrated to the new permission templates dedicated page
+   * SONAR-4465
+   * SONAR-4466
    */
   @Test
-  @Ignore
   public void configureRoles() {
-    MavenBuild build = MavenBuild.builder()
-        .setPom(ItUtils.locateProjectPom("shared/sample"))
-        .addSonarGoal()
-        .withDynamicAnalysis(false)
-        .build();
-    orchestrator.executeBuild(build);
+
+    SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+      .setProperties("sonar.dynamicAnalysis", "false")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(sonarRunnerBuild);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("roles",
         "/selenium/server/server-administration/roles/display-roles.html",
@@ -108,7 +106,7 @@ public class ServerAdministrationTest {
         "/selenium/server/server-administration/roles/grant-project-users-from-global-administration.html",
         "/selenium/server/server-administration/roles/grant-project-groups-from-global-administration.html",
 
-        // SONAR-3383
+//        // SONAR-3383
         "/selenium/server/server-administration/roles/search-projects.html"
 
         ).build();

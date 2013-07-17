@@ -9,6 +9,11 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
+        <td>store</td>
+        <td>Default%20template</td>
+        <td>TEMPLATE_NAME</td>
+    </tr>
+    <tr>
         <td>open</td>
         <td>/sonar/sessions/new</td>
         <td></td>
@@ -30,18 +35,23 @@
     </tr>
     <tr>
         <td>open</td>
-        <td>/sonar/roles/projects</td>
+        <td>/sonar/permission_templates</td>
         <td></td>
     </tr>
     <tr>
         <td>assertText</td>
-        <td>u-admin</td>
+        <td>u-admin-${TEMPLATE_NAME}</td>
         <td></td>
     </tr>
     <tr>
-        <td>clickAndWait</td>
-        <td>id=selectu-admin</td>
+        <td>click</td>
+        <td>id=selectu-admin-${TEMPLATE_NAME}</td>
         <td></td>
+    </tr>
+    <tr>
+      <td>waitForVisible</td>
+      <td>to</td>
+      <td></td>
     </tr>
     <tr>
         <td>assertSelectOptions</td>
@@ -65,12 +75,12 @@
     </tr>
     <tr>
         <td>clickAndWait</td>
-        <td>id=save</td>
+        <td>id=submit-permission-template-update</td>
         <td></td>
     </tr>
     <tr>
         <td>assertText</td>
-        <td>u-admin</td>
+        <td>u-admin-${TEMPLATE_NAME}</td>
         <td>Administrator</td>
     </tr>
     </tbody>
