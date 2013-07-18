@@ -17,11 +17,26 @@ public class PermissionTemplatesTest {
   public void should_manage_permission_templates() throws Exception {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-permission-templates",
-      "/selenium/administration/permission-templates/display-permission-template.html",
-      "/selenium/administration/permission-templates/create-permission-template.html",
-      "/selenium/administration/permission-templates/edit-permission-template.html",
-      "/selenium/administration/permission-templates/delete-permission-template.html"
+      "/selenium/administration/permission-templates/display-default-template.html",
+      "/selenium/administration/permission-templates/create-template.html",
+      "/selenium/administration/permission-templates/create-template-duplicate-name.html",
+      "/selenium/administration/permission-templates/create-template-empty-name.html",
+      "/selenium/administration/permission-templates/edit-template.html",
+      "/selenium/administration/permission-templates/delete-template.html"
       )
+      .build();
+    orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-4467
+   */
+  @Test
+  public void should_define_default_templates() throws Exception {
+
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-define-default-templates",
+      "/selenium/administration/permission-templates/set-default-projects-template.html"
+    )
       .build();
     orchestrator.executeSelenese(selenese);
   }
