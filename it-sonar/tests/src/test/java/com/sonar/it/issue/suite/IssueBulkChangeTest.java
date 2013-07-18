@@ -139,11 +139,11 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     BulkChange bulkChange = adminIssueClient().bulkChange(
       BulkChangeQuery.create()
         .issues(issueKeys)
-        .actions("do_transition", "assign", "set_severity", "comment")
+        .actions("do_transition", "assign", "set_severity")
         .actionParameter("do_transition", "transition", "confirm")
         .actionParameter("assign", "assignee", "admin")
         .actionParameter("set_severity", "severity", newSeverity)
-        .actionParameter("comment", "comment", "this is my *comment*")
+        .comment("this is my *comment*")
     );
 
     assertThat(bulkChange.totalIssuesChanged()).isEqualTo(nbIssues);
@@ -211,6 +211,35 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     } catch (Exception e) {
       verifyHttpException(e, 400);
     }
+  }
+
+  @Test
+  public void should_add_comment_only_on_issues_that_will_be_changed() {
+    analyzeSampleProjectWillSmallNumberOfIssues();
+    int nbIssues = 3;
+    String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
+
+    // Confirm an issue
+    adminIssueClient().doTransition(searchRandomIssue().key(), "confirm");
+
+    // Apply a bulk change on unconfirm transition
+    BulkChangeQuery query = (BulkChangeQuery.create()
+      .issues(issueKeys)
+      .actions("do_transition")
+      .actionParameter("do_transition", "transition", "unconfirm")
+      .comment("this is my comment")
+    );
+    BulkChange bulkChange = adminIssueClient().bulkChange(query);
+    assertThat(bulkChange.totalIssuesChanged()).isEqualTo(1);
+
+    int nbIssuesWithComment = 0;
+    for (Issue issue : search(IssueQuery.create().issues(issueKeys)).list()) {
+      if (!issue.comments().isEmpty()) {
+        nbIssuesWithComment++;
+      }
+    }
+    // Only one issue should have the comment
+    assertThat(nbIssuesWithComment).isEqualTo(1);
   }
 
   @Test
