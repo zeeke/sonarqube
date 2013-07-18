@@ -4,7 +4,7 @@
  * mailto:contact AT sonarsource DOT com
  */
 
-package com.sonar.it.administration.suite;
+package com.sonar.it.administration;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -14,7 +14,7 @@ import org.junit.Test;
 public class PermissionTemplatesTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = AdministrationTestSuite.ORCHESTRATOR;
+  public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv().build();
 
   /**
    * SONAR-4466
@@ -31,7 +31,7 @@ public class PermissionTemplatesTest {
       "/selenium/administration/permission-templates/delete-template.html"
       )
       .build();
-    orchestrator.executeSelenese(selenese);
+    ORCHESTRATOR.executeSelenese(selenese);
   }
 
   /**
@@ -44,6 +44,6 @@ public class PermissionTemplatesTest {
       "/selenium/administration/permission-templates/set-default-projects-template.html"
     )
       .build();
-    orchestrator.executeSelenese(selenese);
+    ORCHESTRATOR.executeSelenese(selenese);
   }
 }

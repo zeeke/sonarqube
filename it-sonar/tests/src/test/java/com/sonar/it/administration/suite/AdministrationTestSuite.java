@@ -17,7 +17,6 @@ import org.junit.runners.Suite;
   BulkDeletionTest.class,
   DashboardSharingPermissionTest.class,
   PermissionsTest.class,
-  PermissionTemplatesTest.class,
   ProjectAdministrationTest.class,
   PropertySetsTest.class,
   QualityProfileAdminPermissionTest.class,
