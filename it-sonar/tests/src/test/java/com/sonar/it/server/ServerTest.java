@@ -5,8 +5,6 @@
  */
 package com.sonar.it.server;
 
-import com.sonar.orchestrator.build.BuildResult;
-
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.OrchestratorBuilder;
@@ -227,8 +225,8 @@ public class ServerTest {
     orchestrator.start();
 
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-        .setRunnerVersion("2.2")
-        .setProperty("sonar.projectKey", "myproject.jsp"));
+      .setRunnerVersion("2.2")
+      .setProperty("sonar.projectKey", "myproject.jsp"));
     // Access dashboard
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("url_ending_by_jsp",
       "/selenium/server/url_ending_by_jsp.html").build();
