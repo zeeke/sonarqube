@@ -22,6 +22,7 @@ public class PermissionTemplatesTest {
 
   /**
    * SONAR-4466
+   * SONAR-4464
    */
   @Test
   public void should_manage_permission_templates() throws Exception {

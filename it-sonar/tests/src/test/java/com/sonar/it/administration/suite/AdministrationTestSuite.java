@@ -18,6 +18,7 @@ import org.junit.runners.Suite;
   DashboardSharingPermissionTest.class,
   PermissionsTest.class,
   ProjectAdministrationTest.class,
+  ProjectPermissionsTest.class,
   PropertySetsTest.class,
   QualityProfileAdminPermissionTest.class,
   SubCategoriesTest.class,
