@@ -11,6 +11,10 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+/**
+ * Note: those tests should be integrated in the Administration test suite when the permission data integrity can be guaranteed
+ * (i.e. with the use of a WS client to restore the default permissions)
+ */
 public class PermissionTemplatesTest {
 
   @ClassRule
