@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>display_default_permission_template</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+  <tbody>
+  <tr>
+    <td>store</td>
+    <td>Default%20template</td>
+    <td>TEMPLATE_REF</td>
+  </tr>
+  <tr>
+    <td>deleteAllVisibleCookies</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>open</td>
+    <td>/sonar/permission_templates</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>type</td>
+    <td>login</td>
+    <td>admin</td>
+  </tr>
+  <tr>
+    <td>type</td>
+    <td>password</td>
+    <td>admin</td>
+  </tr>
+  <tr>
+    <td>clickAndWait</td>
+    <td>commit</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>assertText</td>
+    <td>permission-templates</td>
+    <td>glob:*Default template*</td>
+  </tr>
+  <tr>
+    <td>assertText</td>
+    <td>u-admin-${TEMPLATE_REF}</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>assertText</td>
+    <td>g-admin-${TEMPLATE_REF}</td>
+    <td>sonar-administrators</td>
+  </tr>
+  <tr>
+    <td>assertText</td>
+    <td>u-user-${TEMPLATE_REF}</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>assertText</td>
+    <td>g-user-${TEMPLATE_REF}</td>
+    <td>Anyone, sonar-users</td>
+  </tr>
+  <tr>
+    <td>assertText</td>
+    <td>u-codeviewer-${TEMPLATE_REF}</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>assertText</td>
+    <td>g-codeviewer-${TEMPLATE_REF}</td>
+    <td>Anyone, sonar-users</td>
+  </tr>
+  <tr>
+    <td>assertElementPresent</td>
+    <td>is_active_${TEMPLATE_REF}</td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
