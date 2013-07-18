@@ -88,7 +88,7 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
   @Test
   public void should_flag_as_favorite() {
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_flag_as_favorite",
-      "/selenium/issue/issue-filters/should-flag-as-favorite-when-saving-filter.html",
+      "/selenium/issue/issue-filters/should-be-flagged-as-favorite-when-saving-filter.html",
       "/selenium/issue/issue-filters/should-unflag-as-favorite.html"
     ).build());
   }
