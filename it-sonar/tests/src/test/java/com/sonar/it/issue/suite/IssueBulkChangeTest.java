@@ -13,7 +13,6 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.*;
 
@@ -215,7 +214,6 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
   }
 
   @Test
-  @Ignore("Wait for next Sonar goldenisation that add http params in body")
   public void should_apply_bulk_change_with_limited_number_of_issues() {
     analyzeProjectWithALotOfIssues();
 
