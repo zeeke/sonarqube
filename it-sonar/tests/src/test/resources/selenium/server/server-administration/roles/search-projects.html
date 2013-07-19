@@ -9,61 +9,96 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/roles/projects</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=search-text</td>
-        <td>SAMple</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=submit-search</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>projects</td>
-        <td>*1 result*</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=search-text</td>
-        <td>this_does_not_exist</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=submit-search</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>projects</td>
-        <td>*No results*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/roles/projects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=search-text</td>
+	<td>SAMple</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=submit-search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>projects</td>
+	<td>*1 result*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=search-text</td>
+	<td>this_does_not_exist</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=submit-search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>projects</td>
+	<td>*No results*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=search-text</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=search-key</td>
+	<td>sam</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=submit-search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>projects</td>
+	<td>*1 result*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=search-key</td>
+	<td>this_does_not_exist</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=submit-search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>projects</td>
+	<td>*No results*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
