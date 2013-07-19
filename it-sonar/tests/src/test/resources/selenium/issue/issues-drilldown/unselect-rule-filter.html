@@ -16,48 +16,48 @@
     <tbody>
     <tr>
 	<td>open</td>
-	<td>/sonar/drilldown/issues/multi-modules-sample</td>
+	<td>/sonar/drilldown/issues/com.sonarsource.it.samples:multi-modules-sample</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
 	<td>css=.issues-content</td>
-	<td>*20 results*</td>
+	<td>*65 results*</td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>col_0</td>
-	<td>*Module B 10*</td>
+	<td>*Module B 29*</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=System Println</td>
+	<td>link=One Issue Per Module</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
 	<td>css=.issues-content</td>
-	<td>*4 results*</td>
+	<td>*7 results*</td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>col_0</td>
-	<td>*Module B 2*</td>
+	<td>*Module B 3*</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=System Println</td>
+	<td>link=One Issue Per Module</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
 	<td>css=.issues-content</td>
-	<td>*20 results*</td>
+	<td>*65 results*</td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>col_0</td>
-	<td>*Module B 10*</td>
+	<td>*Module B 29*</td>
 </tr>
 </tbody>
 </table>

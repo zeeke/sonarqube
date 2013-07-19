@@ -238,10 +238,10 @@ public class IssueTest extends AbstractIssueTestCase {
    */
   @Test
   public void test_issue_drilldown() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/multi-modules-sample"))
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
       .setProperties("sonar.cpd.skip", "true")
-      .setProfile("issues")
+      .setProfile("with-many-rules")
       // Multi module project have to use sonar-runner 2.2.2 to not fail
       .setRunnerVersion("2.2.2");
     orchestrator.executeBuild(scan);
