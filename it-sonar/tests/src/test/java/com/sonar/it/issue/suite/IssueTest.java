@@ -37,26 +37,26 @@ public class IssueTest extends AbstractIssueTestCase {
 
   @Test
   public void test_common_measures() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/multi-modules-sample"))
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
       .setProperties("sonar.cpd.skip", "true")
-      .setProfile("issues")
-      // Multi module project have to use sonar-runner 2.2.2 to not fail
+      .setProfile("with-many-rules")
+        // Multi module project have to use sonar-runner 2.2.2 to not fail
       .setRunnerVersion("2.2.2");
     orchestrator.executeBuild(scan);
 
-    String componentKey = "multi-modules-sample";
-    assertThat(searchIssuesByComponent(componentKey)).hasSize(20);
+    String projectKey = "com.sonarsource.it.samples:multi-modules-sample";
+    assertThat(searchIssuesByComponent(projectKey)).hasSize(65);
 
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(componentKey, "violations", "info_violations", "minor_violations", "major_violations",
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey, "violations", "info_violations", "minor_violations", "major_violations",
       "blocker_violations", "critical_violations", "violations_density"));
-    assertThat(project.getMeasureIntValue("violations")).isEqualTo(20);
-    assertThat(project.getMeasureIntValue("info_violations")).isEqualTo(8);
-    assertThat(project.getMeasureIntValue("minor_violations")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("major_violations")).isEqualTo(12);
+    assertThat(project.getMeasureIntValue("violations")).isEqualTo(65);
+    assertThat(project.getMeasureIntValue("info_violations")).isEqualTo(2);
+    assertThat(project.getMeasureIntValue("minor_violations")).isEqualTo(52);
+    assertThat(project.getMeasureIntValue("major_violations")).isEqualTo(4);
     assertThat(project.getMeasureIntValue("blocker_violations")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("critical_violations")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("violations_density")).isEqualTo(7);
+    assertThat(project.getMeasureIntValue("critical_violations")).isEqualTo(7);
+    assertThat(project.getMeasureIntValue("violations_density")).isEqualTo(0);
   }
 
   /**
@@ -183,13 +183,13 @@ public class IssueTest extends AbstractIssueTestCase {
   @Test
   public void should_get_issues_even_if_no_issue_on_line_of_code() {
     // all the detected issues are not attached to a line
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/backup-for-file-global-issues.xml"));
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("issue/file-global-issues"))
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-file-profile.xml"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.cpd.skip", "true")
-      .setProfile("global-issues");
+      .setProfile("one-issue-per-file");
     orchestrator.executeBuild(scan);
 
-    List<Issue> issues = searchIssuesByComponent("file-global-issues:sample.Sample");
+    List<Issue> issues = searchIssuesByComponent("sample:sample/Sample.xoo");
     assertThat(issues.size()).isGreaterThan(0);
     for (Issue issue : issues) {
       assertThat(issue.line()).describedAs("issue with line: " + issue.ruleKey()).isNull();

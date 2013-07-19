@@ -14,26 +14,26 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/file-global-issues:sample.Sample?tab=issues</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>body</td>
-        <td>*sample.Sample*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>class=code-global-issues</td>
-        <td>glob:*Newline At End Of File*</td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>css=table.code</td>
-        <td>glob:*Newline At End Of File*package*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/sample:sample%2FSample.xoo?tab=issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Sample*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>class=code-global-issues</td>
+	<td>glob:*One Issue Per File*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>css=table.code</td>
+	<td>glob:*One Issue Per File*package*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
