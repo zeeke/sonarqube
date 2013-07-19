@@ -217,23 +217,6 @@ public class IssueTest extends AbstractIssueTestCase {
   }
 
   /**
-   * See SONAR-413
-   */
-  @Test
-  public void should_not_have_issues_on_tests() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("issue/no-issue-on-tests"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("issues");
-    orchestrator.executeBuild(scan);
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("no-issue-on-tests",
-      "/selenium/issue/no-issue-on-tests.html"
-    ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  /**
    * SONAR-4210
    */
   @Test
