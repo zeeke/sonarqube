@@ -9,111 +9,106 @@
 <table cellpadding="1" cellspacing="1" border="1">
   <tbody>
   <tr>
-    <td>store</td>
-    <td>duplicate-template-name</td>
-    <td>TEMPLATE_NAME</td>
-  </tr>
-  <tr>
-    <td>store</td>
-    <td>My template description</td>
-    <td>TEMPLATE_DESCRIPTION</td>
-  </tr>
-  <tr>
-    <td>deleteAllVisibleCookies</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>open</td>
-    <td>/sonar/permission_templates</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>login</td>
-    <td>admin</td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>password</td>
-    <td>admin</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>commit</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>create-link-permission-template</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>name</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>name</td>
-    <td>${TEMPLATE_NAME}</td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>description</td>
-    <td>${TEMPLATE_DESCRIPTION}</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>submit-permission-template-create</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>permission-templates</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>permission-templates</td>
-    <td>glob:*${TEMPLATE_NAME}*${TEMPLATE_DESCRIPTION}*</td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>create-link-permission-template</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>name</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>name</td>
-    <td>${TEMPLATE_NAME}</td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>submit-permission-template-create</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>permission-template-error</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>permission-template-error</td>
-    <td>A template with that name already exists</td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>cancel-create-template</td>
-    <td></td>
-  </tr>
-  </tbody>
+	<td>store</td>
+	<td>duplicate-template-name</td>
+	<td>TEMPLATE_NAME</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>My template description</td>
+	<td>TEMPLATE_DESCRIPTION</td>
+</tr>
+<tr>
+	<td>deleteAllVisibleCookies</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/permission_templates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-link-permission-template</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>${TEMPLATE_NAME}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description</td>
+	<td>${TEMPLATE_DESCRIPTION}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>submit-permission-template-create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>permission-templates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>permission-templates</td>
+	<td>glob:*${TEMPLATE_NAME}*${TEMPLATE_DESCRIPTION}*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-link-permission-template</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>${TEMPLATE_NAME}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>submit-permission-template-create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>permission-template-form</td>
+	<td>*A template with that name already exists*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>cancel-create-template</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
