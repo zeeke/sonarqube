@@ -20,6 +20,7 @@ import org.sonar.wsclient.services.PropertyQuery;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import javax.annotation.Nullable;
+
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -95,7 +96,7 @@ public class ProjectAdministrationTest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
         .setCleanSonarGoals()
         .setProperty("sonar.dynamicAnalysis", "false");
-    orchestrator.executeBuild(build.setProperty("sonar.projectDate", (today.get(Calendar.YEAR)- 1) + "-01-01"));
+    orchestrator.executeBuild(build.setProperty("sonar.projectDate", (today.get(Calendar.YEAR) - 1) + "-01-01"));
     // The analysis must be run once again to have an history so that it is possible to delete a snapshot
     orchestrator.executeBuild(build.setProperty("sonar.projectDate", (today.get(Calendar.YEAR)) + "-01-01"));
 
@@ -197,7 +198,9 @@ public class ProjectAdministrationTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-settings",
         // SONAR-3425
-        "/selenium/administration/project-settings/override-global-settings.html"
+        "/selenium/administration/project-settings/override-global-settings.html",
+
+        "/selenium/administration/project-settings/only-on-project-settings.html"
         ).build();
     orchestrator.executeSelenese(selenese);
 
