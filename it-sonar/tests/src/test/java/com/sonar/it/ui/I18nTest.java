@@ -55,49 +55,6 @@ public class I18nTest {
   }
 
   @Test
-  public void checkstyleShouldUseSelectedLocale() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/ui/I18nTest/checkstyle-backup.xml"));
-    MavenBuild build = MavenBuild.builder()
-        .setPom(ItUtils.locateProjectPom("shared/sample"))
-        .addSonarGoal()
-        .withDynamicAnalysis(false)
-        .withProperty("sonar.profile", "checkstyle")
-        .withProperty("sonar.violationLocale", "fr")
-        .build();
-    orchestrator.executeBuild(build);
-
-    List<Violation> violations = orchestrator.getServer().getWsClient().findAll(
-        ViolationQuery.createForResource("com.sonarsource.it.samples:simple-sample").setDepth(-1)
-            .setRuleKeys("checkstyle:com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck"));
-    assertThat(violations.size()).isGreaterThan(0);
-    assertThat(violations.get(0).getMessage()).contains("Il est interdit d'affecter une valeur au paramètre");
-  }
-
-  /**
-   * SONAR-2594
-   */
-  @Test
-  public void findbugsShouldUseSelectedLocale() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/ui/I18nTest/findbugs-backup.xml"));
-    MavenBuild build = MavenBuild.builder()
-        .setPom(ItUtils.locateProjectPom("shared/sample"))
-        .addGoal("clean verify") // Findbugs requires bytecode
-        .addSonarGoal()
-        .withDynamicAnalysis(false)
-        .withProperty("sonar.profile", "findbugs")
-        .withProperty("sonar.violationLocale", "fr")
-        .withProperty("sonar.findbugs.confidenceLevel", "low")
-        .build();
-    orchestrator.executeBuild(build);
-
-    List<Violation> violations = orchestrator.getServer().getWsClient().findAll(
-        ViolationQuery.createForResource("com.sonarsource.it.samples:simple-sample").setDepth(-1)
-            .setRuleKeys("findbugs:UPM_UNCALLED_PRIVATE_METHOD"));
-    assertThat(violations.size()).isGreaterThan(0);
-    assertThat(violations.get(0).getMessage()).contains("La méthode privée sample.Sample.myMethod() n'est jamais appelée");
-  }
-
-  @Test
   public void should_search_rule_by_name_localized_in_pack() {
     RuleQuery ruleQuery = (RuleQuery) new RuleQuery("java")
         .setSearchText("Contrainte d'architecture")
@@ -155,4 +112,5 @@ public class I18nTest {
     // "org.sonar.l10n.squijava_fr"
     assertThat(rule.getDescription()).contains("Comment: NEW LOCATION for HTML description files (since Sonar 2.15).");
   }
+
 }
