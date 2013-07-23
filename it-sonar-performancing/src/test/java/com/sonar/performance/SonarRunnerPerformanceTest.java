@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.perf;
+package com.sonar.performance;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
@@ -21,6 +21,14 @@ import org.slf4j.LoggerFactory;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+/**
+ *
+ *
+ * AUTOMATED TEST
+ * This test is executed by Jenkins in a dedicated stable environment
+ *
+ *
+ */
 public class SonarRunnerPerformanceTest {
 
   private static final Logger LOG = LoggerFactory.getLogger(SonarRunnerPerformanceTest.class);
