@@ -15,26 +15,28 @@ import java.util.*;
 public class Report {
   private static final class Action {
     String name;
-    Map<String, Map<String, Counter>> countersByKeyAndVersion = new HashMap<String, Map<String, Counter>>();
+    Map<String, Map<String, Long>> valuesByKeyAndVersion = new HashMap<String, Map<String, Long>>();
 
     Action(String name) {
       this.name = name;
     }
 
     Action addCounters(String version, Counters counters) {
-      for (Counter counter : counters.all()) {
-        addCounter(version, counter);
+      for (Map.Entry<String, Long> entry : counters.values().entrySet()) {
+        String valName = entry.getKey();
+        Long value = entry.getValue();
+        addCounter(version, valName, value);
       }
       return this;
     }
 
-    Action addCounter(String version, Counter counter) {
-      Map<String, Counter> byVersion = countersByKeyAndVersion.get(counter.name());
+    Action addCounter(String version, String valName, Long value) {
+      Map<String, Long> byVersion = valuesByKeyAndVersion.get(valName);
       if (byVersion == null) {
-        byVersion = new HashMap<String, Counter>();
-        countersByKeyAndVersion.put(counter.name(), byVersion);
+        byVersion = new HashMap<String, Long>();
+        valuesByKeyAndVersion.put(valName, byVersion);
       }
-      byVersion.put(version, counter);
+      byVersion.put(version, value);
       return this;
     }
   }
@@ -65,28 +67,29 @@ public class Report {
     // header
     csv.append(",,");
     for (String version : versions) {
-      csv.append(version).append(",,");
+      csv.append(version).append(",");
     }
     csv.append("\n");
 
+    // body
     for (Action action : actionsByName.values()) {
-      for (Map.Entry<String, Map<String, Counter>> countersByKey : action.countersByKeyAndVersion.entrySet()) {
-        String counterName = countersByKey.getKey();
-        Map<String, Counter> valuesByVersion = countersByKey.getValue();
+      for (Map.Entry<String, Map<String, Long>> valuesByKey : action.valuesByKeyAndVersion.entrySet()) {
+        String counterName = valuesByKey.getKey();
+        Map<String, Long> valuesByVersion = valuesByKey.getValue();
         csv.append(action.name).append(",");
         csv.append(counterName).append(",");
         for (String version : versions) {
-          Counter counter = valuesByVersion.get(version);
-          if (counter == null) {
-            csv.append(",,");
-          } else {
-            csv.append(counter.val()).append(",").append(counter.unit()).append(",");
+          Long value = valuesByVersion.get(version);
+          if (value != null) {
+            csv.append(value);
           }
+          csv.append(",");
         }
         csv.append("\n");
       }
     }
 
+    // export
     File file = new File("target/sonar-performances.csv");
     FileUtils.write(file, csv.toString(), "UTF-8", false);
     System.out.println("Report exported to: " + file.getAbsolutePath());

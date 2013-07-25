@@ -8,14 +8,16 @@ package com.sonar.performance.tasks;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
+import com.sonar.performance.Counters;
+import com.sonar.performance.Task;
 
-public class RenameFindbugsProfile {
+public class RenameFindbugsProfile implements Task {
 
   /**
    * Just because we can't execute a scan with -Dsonar.profile='Sonar Way with Findbugs'. Orchestrator
    * does not support whitespaces.
    */
-  public static void execute(Orchestrator orchestrator) {
+  public void execute(Orchestrator orchestrator, Counters counters) {
     HttpRequest request = HttpRequest.get(orchestrator.getServer().getUrl() + "/profiles").basic("admin", "admin");
     if (!request.ok()) {
       throw new IllegalStateException("Fail to request Quality profiles: " + request.message());

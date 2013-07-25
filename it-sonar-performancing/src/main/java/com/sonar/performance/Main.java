@@ -8,6 +8,9 @@ package com.sonar.performance;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.performance.tasks.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Main {
 
   public static void main(String[] args) throws Exception {
@@ -26,9 +29,9 @@ public class Main {
 
 
     // migration runs must be executed BEFORE fresh runs, and in ascending order of versions
-    //migrationRun("3.7-SNAPSHOT");
+    migrationRun("3.7-SNAPSHOT");
 
-    //freshRun("3.5");
+    freshRun("3.5");
     freshRun("3.6.2");
     freshRun("3.7-SNAPSHOT");
 
@@ -54,47 +57,74 @@ public class Main {
   }
 
   private void run(Orchestrator orchestrator) throws Exception {
-    try {
-      report.add("Start Server", StartServer.execute(orchestrator));
-      report.add("Start server, second time", RestartServer.execute(orchestrator));
+    List<Task> tasks = Arrays.asList(
+      new StartServer("Start Server"),
+      new RestartServer("Start server - second time"),
 
       // Load cache of maven artifacts and build bytecode for Findbugs
-      Struts.mavenBuild(orchestrator);
+      new InitializeBuildEnvironment(),
 
       // Fix limitation of Orchestrator, which does not support whitespaces in the profile "Sonar way with Findbugs"
-      RenameFindbugsProfile.execute(orchestrator);
+      new RenameFindbugsProfile(),
 
       // Different scans
-      report.add("Struts Maven Scan, no unit tests", Struts.mavenScan(orchestrator, "sonar.dynamicAnalysis", "false"));
-      report.add("Struts Dry Maven Scan, no unit tests", Struts.mavenScan(orchestrator, "sonar.dynamicAnalysis", "false", "sonar.dryRun", "true"));
-      report.add("Struts Maven Scan, no unit tests, findbugs", Struts.mavenScan(orchestrator, "sonar.dynamicAnalysis", "false", "sonar.profile", "findbugs-profile"));
-      report.add("Struts Maven scan, no unit tests, cross-project duplications", Struts.mavenScan(orchestrator, "sonar.dynamicAnalysis", "false", "sonar.cpd.cross_project", "true"));
-      report.add("Struts Maven Scan, unit tests", Struts.mavenScan(orchestrator, "sonar.dynamicAnalysis", "true"));
+      new MavenScanStruts("Struts Maven Scan - no unit tests",
+        "sonar.dynamicAnalysis", "false"
+      ),
+      new MavenScanStruts("Struts Dry Maven Scan - no unit tests",
+        "sonar.dynamicAnalysis", "false", "sonar.dryRun", "true"
+      ),
+      new MavenScanStruts("Struts Maven Scan - no unit tests - findbugs",
+        "sonar.dynamicAnalysis", "false",
+        "sonar.profile", "findbugs-profile"
+      ),
+      new MavenScanStruts("Struts Maven scan - no unit tests - cross-project duplications",
+        "sonar.dynamicAnalysis", "false",
+        "sonar.cpd.cross_project", "true"
+      ),
+      new MavenScanStruts("Struts Maven Scan - unit tests",
+        "sonar.dynamicAnalysis", "true"
+      ),
 
       // Global pages
-      report.add("Homepage", RequestUrl.get(orchestrator, "/"));
-      report.add("Quality Profiles", RequestUrl.get(orchestrator, "/profiles"));
-      report.add("All Issues", RequestUrl.get(orchestrator, "/issues/search"));
-      report.add("All Projects", RequestUrl.get(orchestrator, "/all_projects?qualifier=TRK"));
-      report.add("Measures", RequestUrl.get(orchestrator, "/measures"));
-      report.add("Project Measures", RequestUrl.get(orchestrator, "/measures/search?qualifiers[]=TRK"));
-      report.add("File Measures", RequestUrl.get(orchestrator, "/measures/search?qualifiers[]=FIL"));
+      new RequestUrl("Homepage", "/"),
+      new RequestUrl("Quality Profiles", "/profiles"),
+      new RequestUrl("All Issues", "/issues/search"),
+      new RequestUrl("All Projects", "/all_projects?qualifier=TRK"),
+      new RequestUrl("Measures Filter", "/measures"),
+      new RequestUrl("Project Measures Filter", "/measures/search?qualifiers[]=TRK"),
+      new RequestUrl("File Measures Filter", "/measures/search?qualifiers[]=FIL"),
 
       // Project pages
-      report.add("Struts Dashboard", RequestUrl.get(orchestrator, "/dashboard/index/org.apache.struts:struts-parent"));
-      report.add("Struts Issues", RequestUrl.get(orchestrator, "/issues/search?componentRoots=org.apache.struts:struts-parent"));
-      report.add("Struts Violations Drilldown", RequestUrl.get(orchestrator, "/drilldown/violations/org.apache.struts:struts-parent"));
-      report.add("Struts Issues Drilldown", RequestUrl.get(orchestrator, "/drilldown/issues/org.apache.struts:struts-parent"));
-      report.add("Struts Measure Drilldown", RequestUrl.get(orchestrator, "/drilldown/measures/org.apache.struts:struts-parent?metric=ncloc"));
-      report.add("Struts Cloud", RequestUrl.get(orchestrator, "/cloud/index/org.apache.struts:struts-parent"));
-      report.add("Struts Hotspots", RequestUrl.get(orchestrator, "/dashboard/index/org.apache.struts:struts-parent?name=Hotspots"));
+      new RequestUrl("Struts Dashboard", "/dashboard/index/org.apache.struts:struts-parent"),
+      new RequestUrl("Struts Issues", "/issues/search?componentRoots=org.apache.struts:struts-parent"),
+      new RequestUrl("Struts Violations Drilldown", "/drilldown/violations/org.apache.struts:struts-parent"),
+      new RequestUrl("Struts Issues Drilldown", "/drilldown/issues/org.apache.struts:struts-parent"),
+      new RequestUrl("Struts Measure Drilldown", "/drilldown/measures/org.apache.struts:struts-parent?metric=ncloc"),
+      new RequestUrl("Struts Cloud", "/cloud/index/org.apache.struts:struts-parent"),
+      new RequestUrl("Struts Hotspots", "/dashboard/index/org.apache.struts:struts-parent?name=Hotspots"),
 
       // Static pages
-      report.add("sonar.css", RequestUrl.get(orchestrator, "/stylesheets/sonar.css"));
-      report.add("sonar.js", RequestUrl.get(orchestrator, "/javascripts/sonar.js"));
+      new RequestUrl("sonar.css", "/stylesheets/sonar.css"),
+      new RequestUrl("sonar.js", "/javascripts/sonar.js"),
 
-      report.add("Stop Server", StopServer.execute(orchestrator));
+      new StopServer("Stop Server")
+    );
 
+    try {
+      for (Task task : tasks) {
+        Counters counters = new Counters();
+        if (task instanceof PerformanceTask) {
+          PerformanceTask perfTask = (PerformanceTask) task;
+          System.out.println("\n\n************************* " + perfTask.name() + "\n\n");
+          for (int i = 0; i < perfTask.replay(); i++) {
+            task.execute(orchestrator, counters);
+          }
+          report.add(perfTask.name(), counters);
+        } else {
+          task.execute(orchestrator, counters);
+        }
+      }
     } finally {
       orchestrator.stop();
     }

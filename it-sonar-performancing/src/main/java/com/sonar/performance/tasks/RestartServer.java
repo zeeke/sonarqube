@@ -7,15 +7,24 @@ package com.sonar.performance.tasks;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.performance.Counters;
+import com.sonar.performance.PerformanceTask;
 import com.sonar.performance.ServerLogs;
 
-public class RestartServer {
+public class RestartServer extends PerformanceTask {
 
-  public static Counters execute(Orchestrator orchestrator) throws Exception {
+  public RestartServer(String name) {
+    super(name);
+  }
+
+  @Override
+  public int replay() {
+    return 1;
+  }
+
+  public void execute(Orchestrator orchestrator, Counters counters) throws Exception {
     ServerLogs.clear(orchestrator);
     orchestrator.restartSonar();
-
-    return new Counters().set("Time", StartServer.startupDuration(orchestrator), "ms");
+    counters.set("Time (ms)", StartServer.startupDuration(orchestrator));
   }
 
 }

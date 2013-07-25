@@ -11,29 +11,36 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.performance.Counters;
 import com.sonar.performance.MavenLogs;
+import com.sonar.performance.PerformanceTask;
 
-public class Struts {
+public class MavenScanStruts extends PerformanceTask {
 
-  public static void mavenBuild(Orchestrator orchestrator) {
-    MavenBuild build = newBuild();
-    build.setGoals("clean package sonar:sonar -V").setProperty("skipTests", "true").setProperty("sonar.dryRun", "true");
-    orchestrator.executeBuild(build);
+  private final String[] args;
+
+  public MavenScanStruts(String name, String... args) {
+    super(name);
+    this.args = args;
   }
 
-  public static Counters mavenScan(Orchestrator orchestrator, String... props) {
+  @Override
+  public int replay() {
+    return 3;
+  }
+
+  public void execute(Orchestrator orchestrator, Counters counters) {
     MavenBuild build = newBuild();
     build.setGoals("sonar:sonar --offline -V");
     build.setEnvironmentVariable("MAVEN_OPTS", "-Xmx1024m");
-    build.setProperties(props);
+    build.setProperties(args);
     BuildResult result = orchestrator.executeBuild(build);
 
-    return new Counters()
-      .set("Time", MavenLogs.extractTotalTime(result.getLogs()), "ms")
-      .set("End Memory", MavenLogs.extractEndMemory(result.getLogs()), "MB")
-      .set("Max Memory", MavenLogs.extractMaxMemory(result.getLogs()), "MB");
+    counters
+      .set("Time (ms)", MavenLogs.extractTotalTime(result.getLogs()))
+      .set("End Memory (Mb)", MavenLogs.extractEndMemory(result.getLogs()))
+      .set("Max Memory (Mb)", MavenLogs.extractMaxMemory(result.getLogs()));
   }
 
-  private static MavenBuild newBuild() {
+  static MavenBuild newBuild() {
     FileLocation strutsHome = FileLocation.ofShared("it-sonar-performancing/struts-1.3.9/pom.xml");
     return MavenBuild.create(strutsHome.getFile());
   }

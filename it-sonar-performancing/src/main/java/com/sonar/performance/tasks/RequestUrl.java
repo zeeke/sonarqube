@@ -8,12 +8,23 @@ package com.sonar.performance.tasks;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.performance.Counters;
+import com.sonar.performance.PerformanceTask;
 
-public class RequestUrl {
+public class RequestUrl extends PerformanceTask {
 
-  public static Counters get(Orchestrator orchestrator, String path) {
-    Counters counters = new Counters();
+  private final String path;
 
+  public RequestUrl(String name, String path) {
+    super(name);
+    this.path = path;
+  }
+
+  @Override
+  public int replay() {
+    return 3;
+  }
+
+  public void execute(Orchestrator orchestrator, Counters counters) {
     String url = orchestrator.getServer().getUrl() + path;
     long start = System.currentTimeMillis();
     HttpRequest request = HttpRequest.get(url).followRedirects(false).acceptJson();
@@ -21,8 +32,9 @@ public class RequestUrl {
     if (request.ok()) {
       long end = System.currentTimeMillis();
       long size = request.body().length();
-      counters.set("Time", end - start, "ms").set("Size", size, "b");
+      counters
+        .set("Time (ms)", end - start)
+        .set("Size (bytes)", size);
     }
-    return counters;
   }
 }

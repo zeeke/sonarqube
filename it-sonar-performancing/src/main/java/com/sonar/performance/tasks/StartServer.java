@@ -7,6 +7,7 @@ package com.sonar.performance.tasks;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.performance.Counters;
+import com.sonar.performance.PerformanceTask;
 import com.sonar.performance.ServerLogs;
 import org.apache.commons.io.FileUtils;
 import org.sonar.wsclient.services.Server;
@@ -19,11 +20,18 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class StartServer {
+public class StartServer extends PerformanceTask {
 
-  public static Counters execute(Orchestrator orchestrator) throws Exception {
-    Counters counters = new Counters();
+  public StartServer(String name) {
+    super(name);
+  }
 
+  @Override
+  public int replay() {
+    return 1;
+  }
+
+  public void execute(Orchestrator orchestrator, Counters counters) throws Exception {
     ServerLogs.clear(orchestrator);
     orchestrator.start();
 
@@ -31,12 +39,11 @@ public class StartServer {
       upgrade(orchestrator, counters);
     } else {
       long duration = startupDuration(orchestrator);
-      counters.set("Time", duration, "ms");
+      counters.set("Time (ms)", duration);
     }
-    return counters;
   }
 
-  private static void upgrade(Orchestrator orchestrator, Counters counters) throws IOException {
+  private void upgrade(Orchestrator orchestrator, Counters counters) throws IOException {
     ServerLogs.clear(orchestrator);
     long start = System.currentTimeMillis();
 
@@ -51,7 +58,12 @@ public class StartServer {
     List<String> lines = FileUtils.readLines(orchestrator.getServer().getLogs());
     Collections.reverse(lines);
     long end = ServerLogs.extractFirstDate(lines).getTime();
-    counters.set("Upgrade Time", (end - start), "ms");
+    counters.set("Upgrade Time (ms)", end - start);
+  }
+
+  private boolean requiresUpgrade(Orchestrator orchestrator) {
+    Server server = orchestrator.getServer().getAdminWsClient().find(new ServerQuery());
+    return server.getStatus() != Server.Status.UP;
   }
 
   static long startupDuration(Orchestrator orchestrator) throws IOException {
@@ -60,10 +72,5 @@ public class StartServer {
     Collections.reverse(lines);
     Date end = ServerLogs.extractFirstDate(lines);
     return end.getTime() - start.getTime();
-  }
-
-  private static boolean requiresUpgrade(Orchestrator orchestrator) {
-    Server server = orchestrator.getServer().getAdminWsClient().find(new ServerQuery());
-    return server.getStatus() != Server.Status.UP;
   }
 }

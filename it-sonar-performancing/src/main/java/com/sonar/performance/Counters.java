@@ -5,20 +5,23 @@
  */
 package com.sonar.performance;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Counters {
-  private List<Counter> list = new ArrayList<Counter>();
+  private Map<String, Long> values = new LinkedHashMap<String, Long>();
 
-  public Counters set(String name, Long value, String unit) {
+  public Counters set(String name, Long value) {
     if (value != null) {
-      list.add(new Counter(name, value, unit));
+      Long previousValue = values.get(name);
+      if (previousValue == null || value.longValue() < previousValue.longValue()) {
+        values.put(name, value);
+      }
     }
     return this;
   }
 
-  public List<Counter> all() {
-    return list;
+  public Map<String, Long> values() {
+    return values;
   }
 }
