@@ -10,16 +10,27 @@ import com.sonar.performance.tasks.*;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Prerequisites :
+ * <ol>
+ *   <li>Clone the Git repository it-sources and set the env variable $SONAR_IT_SOURCES</li>
+ *   <li>Orchestrator settings (see http://confluence.internal.sonarsource.com/display/DEV/Integration+Test+Settings)</li>
+ *   <li>If db migrations :
+ *     <ul>
+ *       <li>start database in a version prior or equal to the first version declared in {@link TestPlan#setVersionsOnExistingDb(String...)}</li>
+ *       <li>check that the sonar user "admin" with password "admin" exists</li>
+ *       <li>check that the quality profile "Sonar way with Findbugs" exists</li>
+ *     </ul>
+ *   </li>
+ * </ol>
+ *
+ * CSV report is generated in target/
+ * <p/>
+ * Known regressions are listed in http://confluence.internal.sonarsource.com/display/DEV/Performance+Tests
+ */
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    // Prerequisites
-    // - clone the Git repository it-sources and set the env variable $SONAR_IT_SOURCES
-    // - if migrations :
-    //   -- start database in a version prior or equal to the first target version
-    //   -- check that the sonar user "admin" with password "admin" exists
-    //   -- check that the quality profile "Sonar way with Findbugs" exists
-
     new TestPlan()
       .setVersionsOnExistingDb("3.7-SNAPSHOT")
       .setVersionsOnFreshDb("3.5", "3.6.2", "3.7-SNAPSHOT")
