@@ -5,7 +5,6 @@
  */
 package com.sonar.performance;
 
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.performance.tasks.*;
 
 import java.util.Arrays;
@@ -14,50 +13,22 @@ import java.util.List;
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    new Main().start();
-  }
-
-  private Report report = new Report();
-
-  public void start() throws Exception {
     // Prerequisites
     // - clone the Git repository it-sources and set the env variable $SONAR_IT_SOURCES
     // - if migrations :
-    //   -- start database in a version prior to the first target version
-    //   -- create the sonar user "admin" with password "admin"
-    //   -- create the quality profile "Sonar way with Findbugs" and enable all the Findbugs rules
+    //   -- start database in a version prior or equal to the first target version
+    //   -- check that the sonar user "admin" with password "admin" exists
+    //   -- check that the quality profile "Sonar way with Findbugs" exists
 
-
-    // migration runs must be executed BEFORE fresh runs, and in ascending order of versions
-    migrationRun("3.7-SNAPSHOT");
-
-    freshRun("3.5");
-    freshRun("3.6.2");
-    freshRun("3.7-SNAPSHOT");
-
-    report.dump();
+    new TestPlan()
+      //.setVersionsOnExistingDb("3.7-SNAPSHOT")
+      .setVersionsOnFreshDb("3.6.2", "3.7-SNAPSHOT")
+      .setTasks(tasks())
+      .execute();
   }
 
-  private void migrationRun(String sonarVersion) throws Exception {
-    report.setCurrentVersion(sonarVersion + " (FULL)");
-    Orchestrator orchestrator = Orchestrator.builderEnv()
-      .setSonarVersion(sonarVersion)
-      .setOrchestratorProperty("orchestrator.keepDatabase", "true")
-      .build();
-    run(orchestrator);
-  }
-
-  private void freshRun(String sonarVersion) throws Exception {
-    report.setCurrentVersion(sonarVersion + " (FRESH)");
-    Orchestrator orchestrator = Orchestrator.builderEnv()
-      .setSonarVersion(sonarVersion)
-      .setOrchestratorProperty("orchestrator.keepDatabase", "false")
-      .build();
-    run(orchestrator);
-  }
-
-  private void run(Orchestrator orchestrator) throws Exception {
-    List<Task> tasks = Arrays.asList(
+  private static List<Task> tasks() {
+    return Arrays.asList(
       new StartServer("Start Server"),
       new RestartServer("Start server - second time"),
 
@@ -110,23 +81,5 @@ public class Main {
 
       new StopServer("Stop Server")
     );
-
-    try {
-      for (Task task : tasks) {
-        Counters counters = new Counters();
-        if (task instanceof PerformanceTask) {
-          PerformanceTask perfTask = (PerformanceTask) task;
-          System.out.println("\n\n************************* " + perfTask.name() + "\n\n");
-          for (int i = 0; i < perfTask.replay(); i++) {
-            task.execute(orchestrator, counters);
-          }
-          report.add(perfTask.name(), counters);
-        } else {
-          task.execute(orchestrator, counters);
-        }
-      }
-    } finally {
-      orchestrator.stop();
-    }
   }
 }

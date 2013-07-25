@@ -51,6 +51,10 @@ public class Report {
     return this;
   }
 
+  public String currentVersion() {
+    return currentVersion;
+  }
+
   public Report add(String actionName, Counters counters) {
     Action action = actionsByName.get(actionName);
     if (action == null) {
