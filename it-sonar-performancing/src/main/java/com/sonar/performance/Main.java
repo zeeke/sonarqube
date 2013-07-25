@@ -58,26 +58,26 @@ public class Main {
       ),
 
       // Global pages
-      new RequestUrl("Homepage", "/"),
-      new RequestUrl("Quality Profiles", "/profiles"),
-      new RequestUrl("All Issues", "/issues/search"),
-      new RequestUrl("All Projects", "/all_projects?qualifier=TRK"),
-      new RequestUrl("Measures Filter", "/measures"),
-      new RequestUrl("Project Measures Filter", "/measures/search?qualifiers[]=TRK"),
-      new RequestUrl("File Measures Filter", "/measures/search?qualifiers[]=FIL"),
+      new RequestUrl("Web - Homepage", "/"),
+      new RequestUrl("Web - Quality Profiles", "/profiles"),
+      new RequestUrl("Web - All Issues", "/issues/search"),
+      new RequestUrl("Web - All Projects", "/all_projects?qualifier=TRK"),
+      new RequestUrl("Web - Measures Filter", "/measures"),
+      new RequestUrl("Web - Project Measures Filter", "/measures/search?qualifiers[]=TRK"),
+      new RequestUrl("Web - File Measures Filter", "/measures/search?qualifiers[]=FIL"),
 
       // Project pages
-      new RequestUrl("Struts Dashboard", "/dashboard/index/org.apache.struts:struts-parent"),
-      new RequestUrl("Struts Issues", "/issues/search?componentRoots=org.apache.struts:struts-parent"),
-      new RequestUrl("Struts Violations Drilldown", "/drilldown/violations/org.apache.struts:struts-parent"),
-      new RequestUrl("Struts Issues Drilldown", "/drilldown/issues/org.apache.struts:struts-parent"),
-      new RequestUrl("Struts Measure Drilldown", "/drilldown/measures/org.apache.struts:struts-parent?metric=ncloc"),
-      new RequestUrl("Struts Cloud", "/cloud/index/org.apache.struts:struts-parent"),
-      new RequestUrl("Struts Hotspots", "/dashboard/index/org.apache.struts:struts-parent?name=Hotspots"),
+      new RequestUrl("Web - Struts Dashboard", "/dashboard/index/org.apache.struts:struts-parent"),
+      new RequestUrl("Web - Struts Issues", "/issues/search?componentRoots=org.apache.struts:struts-parent"),
+      new RequestUrl("Web - Struts Violations Drilldown", "/drilldown/violations/org.apache.struts:struts-parent"),
+      new RequestUrl("Web - Struts Issues Drilldown", "/drilldown/issues/org.apache.struts:struts-parent"),
+      new RequestUrl("Web - Struts Measure Drilldown", "/drilldown/measures/org.apache.struts:struts-parent?metric=ncloc"),
+      new RequestUrl("Web - Struts Cloud", "/cloud/index/org.apache.struts:struts-parent"),
+      new RequestUrl("Web - Struts Hotspots", "/dashboard/index/org.apache.struts:struts-parent?name=Hotspots"),
 
       // Static pages
-      new RequestUrl("sonar.css", "/stylesheets/sonar.css"),
-      new RequestUrl("sonar.js", "/javascripts/sonar.js"),
+      new RequestUrl("Web - sonar.css", "/stylesheets/sonar.css"),
+      new RequestUrl("Web - sonar.js", "/javascripts/sonar.js"),
 
       new StopServer("Stop Server")
     );
