@@ -38,7 +38,7 @@ class TestPlan {
 
   private void run(Report report, String[] versions, boolean keepDatabase) throws Exception {
     for (String version : versions) {
-      report.setCurrentVersion(version + " (FULL DB)");
+      report.setCurrentVersion(version + (keepDatabase ? " (FULL DB)" : " (EMPTY DB)"));
       Orchestrator orchestrator = Orchestrator.builderEnv()
         .setSonarVersion(version)
         .setOrchestratorProperty("orchestrator.keepDatabase", String.valueOf(keepDatabase))
