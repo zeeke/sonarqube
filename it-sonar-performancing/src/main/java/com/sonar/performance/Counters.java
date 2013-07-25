@@ -14,7 +14,7 @@ public class Counters {
   public Counters set(String name, Long value) {
     if (value != null) {
       Long previousValue = values.get(name);
-      if (previousValue == null || value.longValue() < previousValue.longValue()) {
+      if (previousValue == null || value < previousValue) {
         values.put(name, value);
       }
     }
