@@ -27,12 +27,14 @@ import java.util.List;
  * CSV report is generated in target/
  * <p/>
  * Known regressions are listed in http://confluence.internal.sonarsource.com/display/DEV/Performance+Tests
+ * <p/>
+ * How to execute this test plan outside IDE : <code>mvn clean install exec:java -Dexec.mainClass=com.sonar.performance.Main</code>
  */
 public class Main {
 
   public static void main(String[] args) throws Exception {
     new TestPlan()
-      .setVersionsOnExistingDb("3.7-SNAPSHOT")
+      .setVersionsOnExistingDb("3.6.2", "3.7-SNAPSHOT")
       .setVersionsOnFreshDb("3.5", "3.6.2", "3.7-SNAPSHOT")
       .setTasks(tasks())
       .execute();
