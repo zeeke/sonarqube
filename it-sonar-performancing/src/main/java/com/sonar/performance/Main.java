@@ -21,8 +21,8 @@ public class Main {
     //   -- check that the quality profile "Sonar way with Findbugs" exists
 
     new TestPlan()
-      //.setVersionsOnExistingDb("3.7-SNAPSHOT")
-      .setVersionsOnFreshDb("3.6.2", "3.7-SNAPSHOT")
+      .setVersionsOnExistingDb("3.7-SNAPSHOT")
+      .setVersionsOnFreshDb("3.5", "3.6.2", "3.7-SNAPSHOT")
       .setTasks(tasks())
       .execute();
   }
