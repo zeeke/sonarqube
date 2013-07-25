@@ -13,10 +13,24 @@ import com.sonar.performance.PerformanceTask;
 public class RequestUrl extends PerformanceTask {
 
   private final String path;
+  private boolean post;
+  private boolean admin;
 
   public RequestUrl(String name, String path) {
     super(name);
     this.path = path;
+    this.post = false;
+    this.admin = false;
+  }
+
+  public RequestUrl post() {
+    this.post = true;
+    return this;
+  }
+
+  public RequestUrl admin() {
+    this.admin = true;
+    return this;
   }
 
   @Override
@@ -27,8 +41,11 @@ public class RequestUrl extends PerformanceTask {
   public void execute(Orchestrator orchestrator, Counters counters) {
     String url = orchestrator.getServer().getUrl() + path;
     long start = System.currentTimeMillis();
-    HttpRequest request = HttpRequest.get(url).followRedirects(false).acceptJson();
-
+    HttpRequest request = (post ? HttpRequest.post(url) : HttpRequest.get(url));
+    request.followRedirects(false).acceptJson().acceptCharset(HttpRequest.CHARSET_UTF8);
+    if (admin) {
+      request.basic("admin", "admin");
+    }
     if (request.ok()) {
       long end = System.currentTimeMillis();
       long size = request.body().length();
