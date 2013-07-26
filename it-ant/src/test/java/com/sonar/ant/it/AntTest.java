@@ -47,12 +47,6 @@ public class AntTest {
         .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-version.xml"))
         .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-project-metadata-java.xml"));
 
-    // SONAR-4358
-    // Wating for ORCH-184
-    if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("3.7")) {
-      builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.4-SNAPSHOT"));
-    }
-
     orchestrator = builder.build();
     orchestrator.start();
 
