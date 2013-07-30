@@ -38,7 +38,7 @@ public class ServerAdministrationTest {
 
   @Test
   public void getSonarVersion() {
-    assertThat(orchestrator.getServer().getWsClient().find(new ServerQuery()).getVersion(), startsWith("3."));
+    assertThat(orchestrator.getServer().getWsClient().find(new ServerQuery()).getVersion(), startsWith("4."));
   }
 
   @Test
@@ -95,8 +95,8 @@ public class ServerAdministrationTest {
   public void configureRoles() {
 
     SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setRunnerVersion("2.2.2");
+        .setProperties("sonar.dynamicAnalysis", "false")
+        .setRunnerVersion("2.2.2");
     orchestrator.executeBuild(sonarRunnerBuild);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("roles",
@@ -106,7 +106,7 @@ public class ServerAdministrationTest {
         "/selenium/server/server-administration/roles/grant-project-users-from-global-administration.html",
         "/selenium/server/server-administration/roles/grant-project-groups-from-global-administration.html",
 
-//        // SONAR-3383
+        // // SONAR-3383
         "/selenium/server/server-administration/roles/search-projects.html"
 
         ).build();
