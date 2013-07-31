@@ -32,19 +32,6 @@ public class DesignUITest {
     orchestrator.executeBuild(build);
   }
 
-  /**
-   * SONAR-3114
-   */
-  @Test
-  public void test_dependencies_tab() {
-    Selenese selenese = Selenese
-      .builder()
-      .setHtmlTestsInClasspath("design-pages-dependencies_tab",
-        "/selenium/design/pages/dependencies_tab/should-have-correct-values.html",
-        "/selenium/design/pages/dependencies_tab/should-open-links-in-popup.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
-
   @Test
   public void test_dependencies_page() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("design-page-dependencies_page",
