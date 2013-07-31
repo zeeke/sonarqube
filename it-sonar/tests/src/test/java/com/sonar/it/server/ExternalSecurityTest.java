@@ -40,8 +40,7 @@ public class ExternalSecurityTest {
 
   private void start(Map<String, String> securityProperties) {
     OrchestratorBuilder builder = Orchestrator.builderEnv()
-        .addPlugin(ItUtils.locateTestPlugin("security-plugin"))
-        .setServerProperty("sonar.authenticator.class", "FakeAuthenticator");
+        .addPlugin(ItUtils.locateTestPlugin("security-plugin"));
     for (Map.Entry<String, String> entry : securityProperties.entrySet()) {
       builder.setServerProperty(entry.getKey(), entry.getValue());
     }
@@ -82,6 +81,10 @@ public class ExternalSecurityTest {
     // with external details and groups
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details",
         "/selenium/server/external-security/external-user-details.html").build());
+
+    // SONAR-4462
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("system-info",
+        "/selenium/server/external-security/system-info.html").build());
   }
 
   /**
