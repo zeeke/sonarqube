@@ -14,12 +14,20 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import com.sonar.orchestrator.util.VersionUtils;
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.Source;
+import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,14 +77,14 @@ public class BatchTest {
     Sonar sonar = orchestrator.getServer().getAdminWsClient();
     // The parameter skippedModule considers key after first colon
     sonar.update(new PropertyUpdateQuery("sonar.skippedModules", "multi-modules-sample:module_b",
-      "com.sonarsource.it.samples:multi-modules-sample"));
+        "com.sonarsource.it.samples:multi-modules-sample"));
 
     try {
       scan("shared/xoo-multi-modules-sample");
       assertThat(getResource("com.sonarsource.it.samples:multi-modules-sample:module_b")).isNull();
 
       scan("shared/xoo-multi-modules-sample",
-        "sonar.branch", "mybranch");
+          "sonar.branch", "mybranch");
 
       assertThat(getResource("com.sonarsource.it.samples:multi-modules-sample:module_b:mybranch")).isNotNull();
     } finally {
@@ -97,7 +105,7 @@ public class BatchTest {
   @Test
   public void should_not_import_sources() {
     scan("batch/do-not-import-sources",
-      "sonar.importSources", "true");
+        "sonar.importSources", "true");
 
     Source source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/Hello.xoo"));
     assertThat(source).isNotNull();
@@ -105,7 +113,7 @@ public class BatchTest {
     assertThat(testSource).isNotNull();
 
     scan("batch/do-not-import-sources",
-      "sonar.importSources", "false");
+        "sonar.importSources", "false");
 
     source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/Hello.xoo"));
     assertThat(source).isNull();
@@ -113,11 +121,11 @@ public class BatchTest {
     assertThat(testSource).isNull();
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("do-not-import-sources",
-      "/selenium/batch/do-not-import-sources/display-issues-but-not-source.html",
-      "/selenium/batch/do-not-import-sources/do-not-display-sources.html",
+        "/selenium/batch/do-not-import-sources/display-issues-but-not-source.html",
+        "/selenium/batch/do-not-import-sources/do-not-display-sources.html",
 
-      // SONAR-2403
-      "/selenium/batch/do-not-import-sources/source-of-unit-test.html").build();
+        // SONAR-2403
+        "/selenium/batch/do-not-import-sources/source-of-unit-test.html").build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -127,13 +135,13 @@ public class BatchTest {
   @Test
   public void should_exclude_plugins() {
     BuildResult buildResult = inspectQuietly("shared/xoo-sample",
-      // exclude xoo plugin
-      "sonar.excludePlugins", "xoo",
-      "sonar.profile", "");
+        // exclude xoo plugin
+        "sonar.excludePlugins", "xoo",
+        "sonar.profile", "");
 
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains(
-      "Language with key 'xoo' not found");
+        "You must install a plugin that supports the language 'xoo'.");
   }
 
   /**
@@ -143,7 +151,7 @@ public class BatchTest {
   public void should_not_exclude_root_module() {
     thrown.expect(BuildFailureException.class);
     scan("shared/xoo-multi-modules-sample",
-      "sonar.skippedModules", "multi-modules-sample");
+        "sonar.skippedModules", "multi-modules-sample");
   }
 
   /**
@@ -165,11 +173,11 @@ public class BatchTest {
   @Test
   public void should_display_explicit_message_when_no_plugin_language_available() {
     BuildResult buildResult = inspectQuietly("shared/xoo-sample",
-      "sonar.language", "foo",
-      "sonar.profile", "");
+        "sonar.language", "foo",
+        "sonar.profile", "");
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains(
-      "You must install a plugin that supports the language 'foo'");
+        "You must install a plugin that supports the language 'foo'");
   }
 
   @Test
@@ -178,23 +186,23 @@ public class BatchTest {
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
 
       BuildResult buildResult = inspectQuietly("shared/xoo-sample",
-        "sonar.login", "",
-        "sonar.password", "");
+          "sonar.login", "",
+          "sonar.password", "");
       assertThat(buildResult.getStatus()).isEqualTo(1);
       assertThat(buildResult.getLogs()).contains(
-        "Not authorized. Analyzing this project requires to be authenticated. Please provide the values of the properties sonar.login and sonar.password.");
+          "Not authorized. Analyzing this project requires to be authenticated. Please provide the values of the properties sonar.login and sonar.password.");
 
       // SONAR-4048
       buildResult = inspectQuietly("shared/xoo-sample",
-        "sonar.login", "wrong_login",
-        "sonar.password", "wrong_password");
+          "sonar.login", "wrong_login",
+          "sonar.password", "wrong_password");
       assertThat(buildResult.getStatus()).isEqualTo(1);
       assertThat(buildResult.getLogs()).contains(
-        "Not authorized. Please check the properties sonar.login and sonar.password.");
+          "Not authorized. Please check the properties sonar.login and sonar.password.");
 
       buildResult = scan("shared/xoo-sample",
-        "sonar.login", "admin",
-        "sonar.password", "admin");
+          "sonar.login", "admin",
+          "sonar.password", "admin");
       assertThat(buildResult.getStatus()).isEqualTo(0);
 
     } finally {
@@ -213,18 +221,18 @@ public class BatchTest {
       BuildResult buildResult = inspectQuietly("shared/xoo-sample");
       assertThat(buildResult.getStatus()).isEqualTo(1);
       assertThat(buildResult.getLogs()).contains(
-        "Not authorized. Analyzing this project requires to be authenticated. Please provide the values of the properties sonar.login and sonar.password.");
+          "Not authorized. Analyzing this project requires to be authenticated. Please provide the values of the properties sonar.login and sonar.password.");
 
       buildResult = inspectQuietly("shared/xoo-sample",
-        "sonar.login", "wrong_login",
-        "sonar.password", "wrong_password");
+          "sonar.login", "wrong_login",
+          "sonar.password", "wrong_password");
       assertThat(buildResult.getStatus()).isEqualTo(1);
       assertThat(buildResult.getLogs()).contains(
-        "Not authorized. Please check the properties sonar.login and sonar.password.");
+          "Not authorized. Please check the properties sonar.login and sonar.password.");
 
       buildResult = scan("shared/xoo-sample",
-        "sonar.login", "admin",
-        "sonar.password", "admin");
+          "sonar.login", "admin",
+          "sonar.password", "admin");
       assertThat(buildResult.getStatus()).isEqualTo(0);
 
     } finally {
@@ -240,17 +248,17 @@ public class BatchTest {
     File userHome = temp.newFolder();
 
     BuildResult result = scan("shared/xoo-sample",
-      "sonar.userHome", userHome.getAbsolutePath());
+        "sonar.userHome", userHome.getAbsolutePath());
 
     File cache = new File(userHome, "cache");
     assertThat(cache).exists().isDirectory();
-    int cachedFiles = FileUtils.listFiles(cache, new String[]{"jar"}, true).size();
+    int cachedFiles = FileUtils.listFiles(cache, new String[] {"jar"}, true).size();
     assertThat(cachedFiles).isGreaterThan(5);
     assertThat(result.getLogs()).contains("User cache: " + cache.getAbsolutePath());
     assertThat(result.getLogs()).contains("Download sonar-findbugs-plugin-");
 
     result = scan("shared/xoo-sample",
-      "sonar.userHome", userHome.getAbsolutePath());
+        "sonar.userHome", userHome.getAbsolutePath());
     assertThat(cachedFiles).isEqualTo(cachedFiles);
     assertThat(result.getLogs()).contains("User cache: " + cache.getAbsolutePath());
     assertThat(result.getLogs()).doesNotContain("Download sonar-findbugs-plugin-");
@@ -269,7 +277,7 @@ public class BatchTest {
       + orchestrator.getServer().getUrl() + "/dashboard/index/com.sonarsource.it.samples:multi-modules-sample");
 
     result = scan("shared/xoo-multi-modules-sample",
-      "sonar.branch", "mybranch");
+        "sonar.branch", "mybranch");
 
     assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL, you can browse "
       + orchestrator.getServer().getUrl() + "/dashboard/index/com.sonarsource.it.samples:multi-modules-sample:mybranch");
@@ -288,12 +296,12 @@ public class BatchTest {
   @Test
   public void should_display_explicit_message_when_invalid_project_key_or_branch() {
     BuildResult buildResult = inspectQuietly("shared/xoo-sample",
-      "sonar.projectKey", "arg$l:");
+        "sonar.projectKey", "arg$l:");
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains("arg$l: is not a valid project or module key");
 
     buildResult = inspectQuietly("shared/xoo-sample",
-      "sonar.branch", "arg$l:");
+        "sonar.branch", "arg$l:");
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains("arg$l: is not a valid branch");
   }
@@ -304,7 +312,7 @@ public class BatchTest {
   @Test
   public void should_display_profiling() {
     BuildResult buildResult = scan("shared/xoo-sample",
-      "sonar.showProfiling", "true");
+        "sonar.showProfiling", "true");
     assertThat(buildResult.getLogs()).contains("Initializers execution time");
     assertThat(buildResult.getLogs()).contains("Sensors execution time breakdown");
     assertThat(buildResult.getLogs()).contains("Decorators execution time breakdown");
@@ -329,9 +337,9 @@ public class BatchTest {
 
   private SonarRunner configureRunner(String projectPath, String... props) {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
-      .setRunnerVersion("2.2.2")
-      .setProfile("one-issue-per-line")
-      .setProperties(props);
+        .setRunnerVersion("2.2.2")
+        .setProfile("one-issue-per-line")
+        .setProperties(props);
     return runner;
   }
 
