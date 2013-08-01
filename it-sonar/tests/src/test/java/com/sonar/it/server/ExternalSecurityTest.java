@@ -165,7 +165,7 @@ public class ExternalSecurityTest {
   @Test
   public void shouldFallback() {
     // Given clean Sonar installation and no users in external system
-    start(ImmutableMap.of("sonar.security.savePassword", "true"));
+    start(ImmutableMap.of("sonar.security.realm", "FakeRealm", "sonar.security.savePassword", "true"));
     String login = "tester";
     String oldPassword = "1234567";
     Map<String, String> users = Maps.newHashMap();
@@ -207,7 +207,7 @@ public class ExternalSecurityTest {
   @Test
   public void shouldNotFallback() {
     // Given clean Sonar installation and no users in external system
-    start(Maps.<String, String> newHashMap());
+    start(ImmutableMap.of("sonar.security.realm", "FakeRealm"));
     String login = "tester";
     String password = "1234567";
     Map<String, String> users = Maps.newHashMap();
@@ -233,7 +233,7 @@ public class ExternalSecurityTest {
   @Test
   public void shouldCreateNewUsers() {
     // Given clean Sonar installation and no users in external system
-    start(Maps.<String, String> newHashMap());
+    start(ImmutableMap.of("sonar.security.realm", "FakeRealm"));
     String username = "tester";
     String password = "1234567";
     Map<String, String> users = Maps.newHashMap();
@@ -259,7 +259,7 @@ public class ExternalSecurityTest {
   @Test
   public void shouldNotCreateNewUsers() {
     // Given clean Sonar installation and no users in external system
-    start(ImmutableMap.of("sonar.authenticator.createUsers", "false"));
+    start(ImmutableMap.of("sonar.security.realm", "FakeRealm", "sonar.authenticator.createUsers", "false"));
     String username = "tester";
     String password = "1234567";
     Map<String, String> users = Maps.newHashMap();
