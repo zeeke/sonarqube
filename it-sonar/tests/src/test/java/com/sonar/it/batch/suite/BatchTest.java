@@ -177,7 +177,7 @@ public class BatchTest {
         "sonar.profile", "");
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains(
-        "You must install a plugin that supports the language 'foo'");
+        "You must install a plugin that supports the language key 'foo'");
   }
 
   @Test
