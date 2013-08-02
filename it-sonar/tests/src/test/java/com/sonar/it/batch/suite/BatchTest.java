@@ -141,7 +141,7 @@ public class BatchTest {
 
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains(
-        "You must install a plugin that supports the language 'xoo'.");
+        "Language with key 'xoo' not found");
   }
 
   /**
