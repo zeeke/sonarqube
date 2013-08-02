@@ -7,6 +7,7 @@ package com.sonar.it.batch;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.MavenLocation;
@@ -22,9 +23,9 @@ public class MultiLanguageTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.0"))
-    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.0"))
-    .build();
+      .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.0"))
+      .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.0"))
+      .build();
 
   @After
   public void cleanDatabase() {
@@ -33,8 +34,17 @@ public class MultiLanguageTest {
 
   @Test
   public void test_maven_inspection() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/multi-languages")).setCleanSonarGoals();
-    orchestrator.executeBuild(build);
+    MavenBuild build = MavenBuild
+        .create(ItUtils.locateProjectPom("batch/multi-languages"))
+        .setCleanSonarGoals()
+        .setDebugLogs(true);
+    BuildResult result = orchestrator.executeBuild(build);
+
+    // SONAR-4515
+    assertThat(result.getLogs()).contains("Available languages:");
+    assertThat(result.getLogs()).contains("JavaScript => \"js\"");
+    assertThat(result.getLogs()).contains("Python => \"py\"");
+    assertThat(result.getLogs()).contains("Java => \"java\"");
 
     // modules
     Resource javaModule = getResource("com.sonarsource.it.projects.batch.multi-languages:java-module", "files");
