@@ -33,7 +33,7 @@
     <technicalDebtLatest>1.3-SNAPSHOT</technicalDebtLatest>
     <vbLatest>1.4-SNAPSHOT</vbLatest>
     <vbnetLatest>1.2-SNAPSHOT</vbnetLatest>
-    <viewsLatest>2.2-SNAPSHOT</viewsLatest>
+    <viewsLatest>2.3-SNAPSHOT</viewsLatest>
   </properties>
 
   <profiles>
