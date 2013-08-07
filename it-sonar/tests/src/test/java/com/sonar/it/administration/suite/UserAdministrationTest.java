@@ -48,10 +48,15 @@ public class UserAdministrationTest {
     orchestrator.executeSelenese(selenese);
   }
 
+  /**
+   * SONAR-4434
+   */
   @Test
   public void create_user() throws IOException {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-administration-create_user",
-      "/selenium/administration/user-administration/create-user.html").build();
+      "/selenium/administration/user-administration/create-user.html",
+      "/selenium/administration/user-administration/create-user-without-name-failure.html"
+    ).build();
     orchestrator.executeSelenese(selenese);
 
     File logs = orchestrator.getServer().getLogs();
@@ -134,10 +139,12 @@ public class UserAdministrationTest {
   public void should_create_user_using_ws() throws Exception {
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
-    UserParameters creationParameters = UserParameters.create().login("should_create_user").password("password").passwordConfirmation("password");
+    UserParameters creationParameters = UserParameters.create().login("should_create_user").name("should_create_user")
+      .password("password").passwordConfirmation("password");
     client.userClient().create(creationParameters);
 
-    UserParameters reactivationParameters = UserParameters.create().login("should_reactivate_user").password("password").passwordConfirmation("password");
+    UserParameters reactivationParameters = UserParameters.create().login("should_reactivate_user").name("should_reactivate_user")
+      .password("password").passwordConfirmation("password");
     client.userClient().create(reactivationParameters);
     client.userClient().deactivate("should_reactivate_user");
     client.userClient().create(reactivationParameters);
@@ -156,7 +163,8 @@ public class UserAdministrationTest {
   public void should_edit_user_using_ws() throws Exception {
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
-    UserParameters userCreationParameters = UserParameters.create().login("should_edit_user").password("password").passwordConfirmation("password");
+    UserParameters userCreationParameters = UserParameters.create().login("should_edit_user").name("should_edit_user")
+      .password("password").passwordConfirmation("password");
     client.userClient().create(userCreationParameters);
 
     UserParameters userEditionParameters = UserParameters.create().login("should_edit_user").email("should_edit_user@mail.net");
@@ -174,7 +182,8 @@ public class UserAdministrationTest {
   public void should_delete_user_using_ws() throws Exception {
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
-    UserParameters creationParameters = UserParameters.create().login("should_delete_user").password("password").passwordConfirmation("password");
+    UserParameters creationParameters = UserParameters.create().login("should_delete_user").name("should_delete_user")
+      .password("password").passwordConfirmation("password");
     client.userClient().create(creationParameters);
     client.userClient().deactivate("should_delete_user");
 
