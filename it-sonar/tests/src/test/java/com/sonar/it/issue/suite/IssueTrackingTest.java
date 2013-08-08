@@ -17,6 +17,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -184,6 +187,33 @@ public class IssueTrackingTest extends AbstractIssueTestCase {
       assertThat(reloadIssue.creationDate()).isEqualTo(issue.creationDate());
       assertThat(reloadIssue.updateDate()).isEqualTo(issue.updateDate());
     }
+  }
+
+  /**
+   * SONAR-4564
+   */
+  @Test
+  public void new_issues_measures() throws Exception {
+    // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
+
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).setProfile("one-issue-per-line");
+    orchestrator.executeBuild(scan);
+
+    assertThat(search(IssueQuery.create()).list()).isNotEmpty();
+    Resource file = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_violations").setIncludeTrends(true));
+    List<Measure> measures = file.getMeasures();
+    assertThat(measures.get(0).getVariation1().intValue()).isEqualTo(13);
+    assertThat(measures.get(0).getVariation2().intValue()).isEqualTo(13);
+
+    // second analysis, with exactly the same profile -> no new issues
+    orchestrator.executeBuild(scan);
+
+    assertThat(search(IssueQuery.create()).list()).isNotEmpty();
+    file = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_violations").setIncludeTrends(true));
+    measures = file.getMeasures();
+    assertThat(measures.get(0).getVariation1().intValue()).isEqualTo(0);
+    assertThat(measures.get(0).getVariation2().intValue()).isEqualTo(13);
   }
 
   private Issue getIssueOnLine(final Integer line, final String repoKey, final String ruleKey, List<Issue> issues) {
