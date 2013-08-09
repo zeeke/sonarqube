@@ -80,4 +80,13 @@ public class PermissionsTest {
       .build();
     orchestrator.executeSelenese(selenese);
   }
+
+  @Test
+  public void should_sort_by_name() throws Exception {
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should_sort_by_name",
+      "/selenium/administration/permission-administration/sort-global-permissions-by-name.html")
+      .build();
+    orchestrator.executeSelenese(selenese);
+
+  }
 }
