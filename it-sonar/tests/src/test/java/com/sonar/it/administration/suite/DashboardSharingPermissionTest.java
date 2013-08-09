@@ -45,7 +45,6 @@ public class DashboardSharingPermissionTest {
    */
   @Test
   public void should_enable_dashboard_sharing() throws Exception {
-
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("set-dashboard-sharing-permission",
       "/selenium/administration/dashboard-sharing-permission/user-dashboard-sharing-permission.html",
       "/selenium/administration/dashboard-sharing-permission/group-dashboard-sharing-permission.html")
@@ -58,7 +57,6 @@ public class DashboardSharingPermissionTest {
    */
   @Test
   public void should_share_global_dashboard() throws Exception {
-
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("global-dashboard-sharing-permission",
       "/selenium/administration/dashboard-sharing-permission/global-dashboard-sharing-allowed.html",
       "/selenium/administration/dashboard-sharing-permission/global-dashboard-sharing-denied.html")

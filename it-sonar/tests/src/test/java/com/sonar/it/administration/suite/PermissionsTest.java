@@ -66,7 +66,6 @@ public class PermissionsTest {
    */
   @Test
   public void should_manage_groups_permissions() throws Exception {
-
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
     PermissionParameters usersGroupProfileAdminParams = PermissionParameters.create().group("sonar-users").permission("shareDashboard");
