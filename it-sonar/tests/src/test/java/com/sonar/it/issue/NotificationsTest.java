@@ -102,7 +102,7 @@ public class NotificationsTest {
     message = emails.next().getMimeMessage();
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
     assertThat((String) message.getContent()).contains("sample.Sample");
-    assertThat((String) message.getContent()).contains("Assignee: Tester");
+    assertThat((String) message.getContent()).contains("Assignee changed to Tester");
     assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/issue/show/" + issue.key());
 
     assertThat(emails.hasNext()).isFalse();
