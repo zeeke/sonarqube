@@ -10,6 +10,7 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.wsclient.base.HttpException;
 import org.sonar.wsclient.issue.*;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -52,6 +53,22 @@ public class IssueActionTest extends AbstractIssueTestCase {
     assertThat(reloaded.comments().get(0).key()).isEqualTo(comment.key());
     assertThat(reloaded.comments().get(0).htmlText()).isEqualTo("this is my <em>comment</em>");
     assertThat(reloaded.updateDate().before(issue.creationDate())).isFalse();
+  }
+
+  /**
+   * SONAR-4450
+   */
+  @Test
+  public void should_reject_blank_comment() throws Exception {
+    try {
+      adminIssueClient().addComment(issue.key(), "  ");
+      fail();
+    } catch(HttpException ex) {
+      assertThat(ex.status()).isEqualTo(400);
+    }
+
+    Issue reloaded = searchIssueByKey(issue.key());
+    assertThat(reloaded.comments()).hasSize(0);
   }
 
   /**
