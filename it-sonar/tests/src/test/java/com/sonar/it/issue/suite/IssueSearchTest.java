@@ -10,6 +10,8 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -55,7 +57,12 @@ public class IssueSearchTest extends AbstractIssueTestCase {
 
   @AfterClass
   public static void purgeManualRules(){
-    deleteManualRules();
+    try {
+      deleteManualRules();
+    } catch (Exception e) {
+      // do not fail in test finalizers
+      e.printStackTrace();
+    }
   }
 
   @Test
@@ -184,6 +191,30 @@ public class IssueSearchTest extends AbstractIssueTestCase {
     for (Issue issue : issues) {
       assertThat(issue.severity()).isEqualTo("MAJOR");
     }
+  }
+
+  /**
+   * SONAR-4563
+   */
+  @Test
+  public void should_search_by_exact_creation_date() {
+    final Issue issue = search(IssueQuery.create()).list().get(0);
+    assertThat(issue.creationDate()).isNotNull();
+
+    // search with the same date
+    List<Issue> issues = search(IssueQuery.create().createdAt(issue.creationDate())).list();
+    assertThat(issues.size() > 0);
+    Issue sameIssue = (Issue) CollectionUtils.find(issues, new Predicate() {
+      @Override
+      public boolean evaluate(Object o) {
+        return ((Issue) o).key().equals(issue.key());
+      }
+    });
+    assertThat(sameIssue).isNotNull();
+
+    // search with future and past dates that do not match any issues
+    assertThat(search(IssueQuery.create().createdAt(toDate("2020-01-01"))).size()).isEqualTo(0);
+    assertThat(search(IssueQuery.create().createdAt(toDate("2010-01-01"))).size()).isEqualTo(0);
   }
 
   /**
