@@ -96,7 +96,7 @@ public class NotificationsTest {
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
     assertThat((String) message.getContent()).contains("Project: Sonar :: Integration Tests :: Simple Sample");
     assertThat((String) message.getContent()).contains("3 new issues");
-    assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/issues/search?componentRoots=com.sonarsource.it.samples%3Asimple-sample&createdAfter=2011-12-15T00%3A00%3A00%2B0100");
+    assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/issues/search?componentRoots=com.sonarsource.it.samples%3Asimple-sample&createdAt=2011-12-15T00%3A00%3A00%2B0100");
 
     assertThat(emails.hasNext()).isTrue();
     message = emails.next().getMimeMessage();
