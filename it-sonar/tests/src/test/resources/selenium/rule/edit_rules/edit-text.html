@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>edit-number</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+  <tbody>
+  <tr>
+	<td>store</td>
+	<td>javascript{''+(new Date()).getTime()}</td>
+	<td>PROFILE_NAME</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/profiles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=create-link-xoo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>create-profile-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>create-profile-name</td>
+	<td>${PROFILE_NAME}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>create-profile-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>profiles_xoo</td>
+	<td>*${PROFILE_NAME}*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=rules-xoo-${PROFILE_NAME}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>content</td>
+	<td>*Coding rules*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=searchtext</td>
+	<td>Rule with parameters</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>search_activation</td>
+	<td>Any</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=submit_search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>levels_check_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForEditable</td>
+	<td>levels_select_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Rule with parameters</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.rule_detail</td>
+	<td>*text*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>2</td>
+	<td>ab</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>submit_2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>css=.rule_detail</td>
+	<td>*Validation failed*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>submit_2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>css=.rule_detail</td>
+	<td>*Validation failed*</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

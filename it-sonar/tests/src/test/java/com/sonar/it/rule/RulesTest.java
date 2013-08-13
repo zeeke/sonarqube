@@ -8,6 +8,7 @@ package com.sonar.it.rule;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.BaseMatcher;
@@ -27,6 +28,7 @@ public class RulesTest {
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
       .addPlugin(ItUtils.locateTestPlugin("beta-rule-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("deprecated-rule-plugin"))
+      .addPlugin(ItUtils.xooPlugin())
       .build();
 
   @Test
@@ -70,12 +72,15 @@ public class RulesTest {
 
   @Test
   public void should_edit_rules() {
-    orchestrator.restoreDefaultSettings();
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/rule/RulesTest/rule-with-parameters-profile.xml"));
     Selenese selenese = Selenese
       .builder()
       .setHtmlTestsInClasspath("edit-rules",
-            "/selenium/rule/edit_rules/edit-xpath.html", // SONAR-1995
-            "/selenium/rule/edit_rules/edit-number.html" // SONAR-3432
+            "/selenium/rule/edit_rules/edit-string.html",
+            "/selenium/rule/edit_rules/edit-text.html", // SONAR-1995
+            "/selenium/rule/edit_rules/edit-integer.html", // SONAR-3432
+            "/selenium/rule/edit_rules/edit-float.html",
+            "/selenium/rule/edit_rules/edit-boolean.html" // SONAR-4568
         ).build();
     orchestrator.executeSelenese(selenese);
   }
