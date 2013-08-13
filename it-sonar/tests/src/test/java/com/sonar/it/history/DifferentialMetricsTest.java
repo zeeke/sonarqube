@@ -4,7 +4,7 @@
  * mailto:contact AT sonarsource DOT com
  */
 
-package com.sonar.it.history.suite;
+package com.sonar.it.history;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
