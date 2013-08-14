@@ -8,8 +8,9 @@ package com.sonar.it.ui;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
@@ -22,9 +23,9 @@ import static org.fest.assertions.Assertions.assertThat;
 public class SearchEngineTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv().build();
+  public static Orchestrator orchestrator = Orchestrator.builderEnv().addPlugin(ItUtils.xooPlugin()).build();
 
-  @After
+  @Before
   public void clean() {
     orchestrator.getDatabase().truncateInspectionTables();
   }
@@ -87,6 +88,21 @@ public class SearchEngineTest {
     // SONAR-3909
     assertThat(client.find(ResourceSearchQuery.create("pro%").setQualifiers(Resource.QUALIFIER_CLASS, Resource.QUALIFIER_PROJECT)).getTotal()).isZero();
     assertThat(client.find(ResourceSearchQuery.create("pro_").setQualifiers(Resource.QUALIFIER_CLASS, Resource.QUALIFIER_PROJECT)).getTotal()).isZero();
+  }
+
+  /**
+   * SONAR-3791
+   */
+  @Test
+  public void should_support_two_letters_long_projects() throws Exception {
+    SonarRunner twoLettersLongProjectScan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-two-letters-named"));
+    orchestrator.executeBuild(twoLettersLongProjectScan);
+
+    Selenese selenese = Selenese.builder()
+      .setHtmlTestsInClasspath("search-projects-with-short-name",
+        "/selenium/ui/search-engine/search-two-letters-long-project.html"
+      ).build();
+    orchestrator.executeSelenese(selenese);
   }
 
   private void inspect(String projectPath) {
