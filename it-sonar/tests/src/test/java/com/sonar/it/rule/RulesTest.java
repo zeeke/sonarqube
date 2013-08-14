@@ -78,7 +78,8 @@ public class RulesTest {
         "/selenium/rule/edit_rules/edit-text.html", // SONAR-1995
         "/selenium/rule/edit_rules/edit-integer.html", // SONAR-3432
         "/selenium/rule/edit_rules/edit-float.html",
-        "/selenium/rule/edit_rules/edit-boolean.html" // SONAR-4568
+        "/selenium/rule/edit_rules/edit-boolean.html", // SONAR-4568
+        "/selenium/rule/edit_rules/update-parameter-twice-to-null-value.html" // SONAR-4568
       ).build();
     orchestrator.executeSelenese(selenese);
   }
