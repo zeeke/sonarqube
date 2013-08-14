@@ -29,6 +29,9 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(runner);
+    SonarRunner twoLettersLongProjectScan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-two-letters-named"))
+      .setProfile("one-issue-per-line");
+    orchestrator.executeBuild(twoLettersLongProjectScan);
 
     createUser("user-issue-filters", "User Issue Filters");
   }
@@ -124,6 +127,16 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_not_share_filter_when_user_have_no_sharing_permissions",
       "/selenium/issue/issue-filters/should-not-share-filter-when-user-have-no-sharing-permissions.html"
+    ).build());
+  }
+
+  /**
+   * SONAR-4570
+   */
+  @Test
+  public void should_enable_filtering_on_two_letters_long_project() throws Exception {
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_enable_filtering_on_short_project_name",
+      "/selenium/issue/issue-filters/should-enable-filtering-on-short-project-name.html"
     ).build());
   }
 
