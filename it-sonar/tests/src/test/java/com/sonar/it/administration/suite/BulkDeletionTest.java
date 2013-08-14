@@ -8,6 +8,7 @@ package com.sonar.it.administration.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -65,6 +66,22 @@ public class BulkDeletionTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("ghost-bulk-deletion",
       "/selenium/administration/project-bulk-deletion/bulk-delete-ghosts.html"
     ).build();
+    orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-4560
+   */
+  @Test
+  public void should_support_two_letters_long_project_name() throws Exception {
+    SonarRunner twoLettersLongProjectScan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-two-letters-named"));
+    orchestrator.executeBuild(twoLettersLongProjectScan);
+
+    Selenese selenese = Selenese.builder()
+      .setHtmlTestsInClasspath("bulk-delete-projects-with-short-name",
+        "/selenium/administration/project-bulk-deletion/display-two-letters-long-project.html",
+        "/selenium/administration/project-bulk-deletion/filter-two-letters-long-project.html"
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
