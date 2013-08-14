@@ -14,66 +14,81 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/login</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/profiles</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=rules-java-Child%20Profile</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>link=Abstract Class Name</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>//input[@value=&quot;^Abstract.*$|^.*Factory$&quot;]</td>
-        <td>foo</td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>//input[@value=&quot;^Abstract.*$|^.*Factory$&quot;]/../../input</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>result_table</td>
-        <td>*Abstract Class Name*Rule overrides parent definition*Original value*com.puppycrawl.tools.checkstyle.checks.naming.AbstractClassNameCheck*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>result_table</td>
-        <td>*Original value:*Abstract*Factory*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/profiles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=rules-java-Child%20Profile</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Abstract Class Name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.rule_detail</td>
+	<td>*format*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=form[name=&quot;form-format&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
+	<td>foo</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=form[name=&quot;form-format&quot;] &gt; input[name=&quot;commit&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=form[name=&quot;form-format&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotVisible</td>
+	<td>css=form[name=&quot;form-format&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>css=form[name=&quot;form-format&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
+	<td>foo</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=form[name=&quot;form-format&quot;]</td>
+	<td>*Original value:*Abstract*Factory*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

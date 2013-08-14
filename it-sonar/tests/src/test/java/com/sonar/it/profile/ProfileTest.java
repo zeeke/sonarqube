@@ -129,7 +129,7 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-inheritance",
         "/selenium/profile/inheritance/check-inherited-rule.html",
-        "/selenium/profile/inheritance/check-overriden-rule.html",
+        "/selenium/profile/inheritance/check-overridden-rule.html",
         "/selenium/profile/inheritance/revert-to-parent-definition.html",
         "/selenium/profile/inheritance/modify-parameter-from-inherited-profile.html",
         "/selenium/profile/inheritance/go-to-parent-definition.html"
