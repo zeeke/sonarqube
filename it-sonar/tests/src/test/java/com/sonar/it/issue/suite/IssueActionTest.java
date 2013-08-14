@@ -8,6 +8,7 @@ package com.sonar.it.issue.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.wsclient.base.HttpException;
@@ -182,13 +183,14 @@ public class IssueActionTest extends AbstractIssueTestCase {
     adminIssueClient().plan(issue.key(), newActionPlan.key());
     assertThat(search(IssueQuery.create().actionPlans(newActionPlan.key())).list()).hasSize(1);
 
+    // Unplan
+    adminIssueClient().plan(issue.key(), null);
+    assertThat(search(IssueQuery.create().actionPlans(newActionPlan.key())).list()).hasSize(0);
+
     orchestrator.executeBuild(scan);
     Issue reloaded = searchIssueByKey(issue.key());
-    assertThat(reloaded.actionPlan()).isEqualTo(newActionPlan.key());
+    assertThat(reloaded.actionPlan()).isNull();
     assertThat(reloaded.creationDate()).isEqualTo(issue.creationDate());
-    ActionPlan actionPlan = search(IssueQuery.create().actionPlans(newActionPlan.key())).actionPlans(reloaded);
-    assertThat(actionPlan.name()).isEqualTo(newActionPlan.name());
-    assertThat(actionPlan.deadLine()).isEqualTo(newActionPlan.deadLine());
   }
 
   /**
@@ -211,4 +213,22 @@ public class IssueActionTest extends AbstractIssueTestCase {
     assertThat(reloaded.attribute("fake")).isEqualTo("fake action");
   }
 
+  /**
+   * SONAR-4375
+   */
+  @Test
+  public void display_issue_changelog_entries() throws Exception {
+    ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample")
+      .description("Short term issues").deadLine(toDate("2113-01-31")));
+    assertThat(newActionPlan.key()).isNotNull();
+
+    adminIssueClient().doTransition(issue.key(), "confirm");
+    adminIssueClient().assign(issue.key(), "admin");
+    adminIssueClient().setSeverity(issue.key(), "BLOCKER");
+    adminIssueClient().plan(issue.key(), newActionPlan.key());
+
+    Selenese selenese = Selenese.builder()
+      .setHtmlTestsInClasspath("display-issue-changelog", "/selenium/issue/should-display-issue-changelog.html").build();
+    orchestrator.executeSelenese(selenese);
+  }
 }
