@@ -90,12 +90,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>levels_check_1</td>
+	<td>css=input[type=&quot;checkbox&quot;]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForEditable</td>
-	<td>levels_select_1</td>
+	<td>css=input[type=&quot;checkbox&quot;]</td>
 	<td></td>
 </tr>
 <tr>
@@ -110,33 +110,63 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>1</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
 	<td>ab</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>submit_1</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; input[name=&quot;commit&quot;]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>css=.rule_detail</td>
-	<td>*Validation failed*</td>
+	<td>waitForVisible</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotVisible</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
+	<td>ab</td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; div[class=&quot;error&quot;]</td>
+	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>1</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>submit_1</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; input[name=&quot;commit&quot;]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>css=.rule_detail</td>
-	<td>*Validation failed*</td>
+	<td>waitForVisible</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotVisible</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>css=form[name=&quot;form-string&quot;] &gt; div[class=&quot;error&quot;]</td>
+	<td></td>
 </tr>
 </tbody>
 </table>

@@ -90,12 +90,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>levels_check_1</td>
+	<td>css=input[type=&quot;checkbox&quot;]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForEditable</td>
-	<td>levels_select_1</td>
+	<td>css=input[type=&quot;checkbox&quot;]</td>
 	<td></td>
 </tr>
 <tr>
@@ -110,42 +110,62 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>5</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
 	<td>20.5</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>submit_5</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; input[name=&quot;commit&quot;]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForNotText</td>
-	<td>css=.rule_detail</td>
-	<td>*Validation failed*</td>
+	<td>waitForVisible</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotVisible</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
+	<td>20.5</td>
 </tr>
 <tr>
 	<td>assertNotVisible</td>
-	<td>error_5</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; div[class=&quot;error&quot;]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>5</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>submit_5</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; input[name=&quot;commit&quot;]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForNotText</td>
-	<td>css=.rule_detail</td>
-	<td>*Validation failed*</td>
+	<td>waitForVisible</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForNotVisible</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; img[class=&quot;rule-param-loading&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; * &gt; input[name=&quot;value&quot;]</td>
+	<td></td>
 </tr>
 <tr>
 	<td>assertNotVisible</td>
-	<td>error_5</td>
+	<td>css=form[name=&quot;form-float&quot;] &gt; div[class=&quot;error&quot;]</td>
 	<td></td>
 </tr>
 </tbody>
