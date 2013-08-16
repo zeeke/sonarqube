@@ -173,7 +173,7 @@ public class IssueActionTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void un_plan() {
+  public void unplan() {
     assertThat(issue.actionPlan()).isNull();
 
     // Set action plan to issue
