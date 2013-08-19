@@ -14,52 +14,51 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/users</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>delete-admin</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertConfirmation</td>
-        <td>Warning : are you sure to delete this user?</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>user-admin</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertVisible</td>
-        <td>error</td>
-        <td></td>
-    </tr>
-
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>delete-admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Warning : are you sure to delete this user?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>users</td>
+	<td>*admin*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>error</td>
+	<td>*Self-deactivation is not possible*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
