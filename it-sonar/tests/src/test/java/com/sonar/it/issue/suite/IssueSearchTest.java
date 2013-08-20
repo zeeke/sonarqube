@@ -10,8 +10,6 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -201,24 +199,9 @@ public class IssueSearchTest extends AbstractIssueTestCase {
     final Issue issue = search(IssueQuery.create()).list().get(0);
     assertThat(issue.creationDate()).isNotNull();
 
-    // search with the same date
-
-    System.out.println("###### date : "+ new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(issue.creationDate()) + ", key : "+ issue.key());
-    System.out.println("######");
-
-    List<Issue> issues = search(IssueQuery.create().issues().createdAt(issue.creationDate())).list();
-    for(Issue i : issues) {
-      System.out.println("###### date : "+ new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(i.creationDate()) + ", key : "+ i.key());
-    }
-
-    assertThat(issues.size() > 0);
-    Issue sameIssue = (Issue) CollectionUtils.find(issues, new Predicate() {
-      @Override
-      public boolean evaluate(Object o) {
-        return ((Issue) o).key().equals(issue.key());
-      }
-    });
-    assertThat(sameIssue).isNotNull();
+    // search the issue key with the same date
+    List<Issue> issues = search(IssueQuery.create().issues().issues(issue.key()).createdAt(issue.creationDate())).list();
+    assertThat(issues).hasSize(1);
 
     // search with future and past dates that do not match any issues
     assertThat(search(IssueQuery.create().createdAt(toDate("2020-01-01"))).size()).isEqualTo(0);
