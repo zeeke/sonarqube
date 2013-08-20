@@ -14,51 +14,51 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/profiles</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=rules-java-profile_with_rule_to_be_removed_at_startup</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=Changelog</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>profile-changelog</td>
-        <td>*0 -&gt; 1*System*off*Deprecated rule*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/profiles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=rules-xoo-profile_with_rule_to_be_removed_at_startup</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Changelog</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>profile-changelog</td>
+	<td>*1 -&gt; 2*System*off*Deprecated rule*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

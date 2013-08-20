@@ -16,7 +16,7 @@ public final class DeprecatedRulesPluginRepository extends RuleRepository {
   @Override
   public List<Rule> createRules() {
     return Arrays.asList(
-      Rule.create("deprecated-repo", "deprecated-rule", "Deprecated Repo").setStatus("DEPRECATED").setDescription("This is a deprecated rule.")
+      Rule.create("deprecated-repo", "deprecated-rule", "Deprecated rule").setStatus("DEPRECATED").setDescription("This is a deprecated rule.")
     );
   }
 }
