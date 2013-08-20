@@ -203,9 +203,13 @@ public class IssueSearchTest extends AbstractIssueTestCase {
 
     // search with the same date
 
-    System.out.println("###### "+ new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(issue.creationDate()));
+    System.out.println("###### issue date : "+ new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(issue.creationDate()));
 
     List<Issue> issues = search(IssueQuery.create().issues().createdAt(issue.creationDate())).list();
+    for(Issue i : issues) {
+      System.out.println("###### "+ new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(i.creationDate()));
+    }
+
     assertThat(issues.size() > 0);
     Issue sameIssue = (Issue) CollectionUtils.find(issues, new Predicate() {
       @Override
