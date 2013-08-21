@@ -10,6 +10,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -200,8 +201,11 @@ public class IssueSearchTest extends AbstractIssueTestCase {
     assertThat(issue.creationDate()).isNotNull();
 
     // search the issue key with the same date
-    List<Issue> issues = search(IssueQuery.create().issues().issues(issue.key()).createdAt(issue.creationDate())).list();
-    assertThat(issues).hasSize(1);
+    assertThat(search(IssueQuery.create().issues().issues(issue.key()).createdAt(issue.creationDate())).list()).hasSize(1);
+
+    // search issue key with 1 second more and less should return nothing
+    assertThat(search(IssueQuery.create().issues().issues(issue.key()).createdAt(DateUtils.addSeconds(issue.creationDate(), 1))).size()).isEqualTo(0);
+    assertThat(search(IssueQuery.create().issues().issues(issue.key()).createdAt(DateUtils.addSeconds(issue.creationDate(), -1))).size()).isEqualTo(0);
 
     // search with future and past dates that do not match any issues
     assertThat(search(IssueQuery.create().createdAt(toDate("2020-01-01"))).size()).isEqualTo(0);
