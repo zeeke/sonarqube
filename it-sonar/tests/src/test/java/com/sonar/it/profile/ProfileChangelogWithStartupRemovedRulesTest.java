@@ -32,7 +32,7 @@ public class ProfileChangelogWithStartupRemovedRulesTest {
    */
   @Test
   public void should_add_removed_rules_to_changelog_when_rules_are_removed_at_startup() {
-    // Execute an analysis in order to create a profile version 2, otherwise no rule changes will be saved (due to SONAR-2986)
+    // Execute a first analysis in order to track profile's changelog (see SONAR-2986)
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("profile_with_rule_to_be_removed_at_startup");
     orchestrator.executeBuild(runner);
