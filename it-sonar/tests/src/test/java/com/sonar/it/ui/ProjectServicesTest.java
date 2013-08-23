@@ -187,4 +187,14 @@ public class ProjectServicesTest {
     orchestrator.executeSelenese(selenese);
   }
 
+  /**
+   * SONAR-4552
+   */
+  @Test
+  public void should_display_a_nice_error_when_requesting_unknown_project() {
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-display-nice-error-on-unknown-project",
+      "/selenium/ui/should-display-nice-error-on-unknown-project.html").build();
+    orchestrator.executeSelenese(selenese);
+  }
+
 }
