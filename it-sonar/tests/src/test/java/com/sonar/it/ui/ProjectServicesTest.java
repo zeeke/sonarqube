@@ -8,6 +8,7 @@ package com.sonar.it.ui;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
@@ -24,7 +25,9 @@ import static org.fest.assertions.Assertions.assertThat;
 public class ProjectServicesTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv().build();
+  public static Orchestrator orchestrator = Orchestrator.builderEnv()
+    .addPlugin(ItUtils.xooPlugin())
+    .build();
 
   @BeforeClass
   public static void inspectProject() {
@@ -169,6 +172,21 @@ public class ProjectServicesTest {
       "/selenium/ui/recent-activity/should-keep-history-order.html",
       "/selenium/ui/recent-activity/should-not-keep-files-in-history.html"
       ).build();
+    orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-4580
+   */
+  @Test
+  public void should_display_recent_activity_with_project_name_containing_a_quote(){
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.cpd.skip", "true", "sonar.projectName", "Sample's");
+    orchestrator.executeBuild(scan);
+
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-recent-activity-with-quote-in-project-name",
+      "/selenium/ui/recent-activity/should-display-project-with-quote-in-name.html"
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
