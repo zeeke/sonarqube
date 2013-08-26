@@ -9,7 +9,7 @@ import java.util.List;
 public final class DeprecatedRulesPluginRepository extends RuleRepository {
 
   public DeprecatedRulesPluginRepository() {
-    super("deprecated-repo", "");
+    super("deprecated-repo", "xoo");
     setName("Deprecated Repo");
   }
 
