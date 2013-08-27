@@ -8,10 +8,14 @@ package com.sonar.it.server;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class UpdateCenterSystemUpdateTest {
 
@@ -62,6 +66,10 @@ public class UpdateCenterSystemUpdateTest {
       "/selenium/server/updatecenter/system-updates-with-missing-installed-plugin-version.html"
     ).build();
     orchestrator.executeSelenese(selenese);
+
+    // Exception stacktrace should not be in logs
+    File logs = orchestrator.getServer().getLogs();
+    assertThat(FileUtils.readFileToString(logs)).doesNotContain("NoSuchElementException");
   }
 
 }
