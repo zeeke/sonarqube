@@ -27,8 +27,6 @@ public class DesignUITest {
       .addSonarGoal()
       .withDynamicAnalysis(false)
       .build();
-
-
     orchestrator.executeBuild(build);
   }
 
