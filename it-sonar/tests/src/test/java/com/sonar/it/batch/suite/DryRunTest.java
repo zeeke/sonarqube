@@ -40,7 +40,7 @@ public class DryRunTest {
   @Test
   public void test_dry_run() {
     BuildResult result = scan("shared/xoo-sample",
-        "sonar.dryRun", "true");
+      "sonar.dryRun", "true");
 
     // Analysis is not persisted in database
     Resource project = getResource("com.sonarsource.it.samples:simple-sample");
@@ -53,8 +53,8 @@ public class DryRunTest {
   public void should_fail_if_plugin_access_secured_properties() {
     // Test access from task (ie BatchSettings)
     SonarRunner runner = configureRunner("shared/xoo-sample",
-        "sonar.dryRun", "true",
-        "accessSecuredFromTask", "true");
+      "sonar.dryRun", "true",
+      "accessSecuredFromTask", "true");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getLogs()).contains("Access to the secured property 'foo.bar.secured' is not possible in local (dry run) SonarQube analysis. "
@@ -62,8 +62,8 @@ public class DryRunTest {
 
     // Test access from sensor (ie ModuleSettings)
     runner = configureRunner("shared/xoo-sample",
-        "sonar.dryRun", "true",
-        "accessSecuredFromSensor", "true");
+      "sonar.dryRun", "true",
+      "accessSecuredFromSensor", "true");
     result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getLogs()).contains("Access to the secured property 'foo.bar.secured' is not possible in local (dry run) SonarQube analysis. "
@@ -76,25 +76,43 @@ public class DryRunTest {
   public void should_fail_if_dryrun_timeout_is_too_short() {
     // Test access from task (ie BatchSettings)
     SonarRunner runner = configureRunner("shared/xoo-sample",
-        "sonar.dryRun", "true",
-        "sonar.dryRun.readTimeout", "1");
+      "sonar.dryRun", "true",
+      "sonar.dryRun.readTimeout", "1");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains(
-        "DryRun database read timed out after 1000 ms. You can try to increase read timeout with property -Dsonar.dryRun.readTimeout (in seconds)");
+      "DryRun database read timed out after 1000 ms. You can try to increase read timeout with property -Dsonar.dryRun.readTimeout (in seconds)");
   }
 
   // SONAR-4468
   @Test
   public void test_build_breaker_with_dry_run() {
     SonarRunner runner = configureRunner("shared/xoo-sample",
-        "sonar.dryRun", "true")
-        .setProfile("SimpleAlertProfile");
+      "sonar.dryRun", "true")
+      .setProfile("SimpleAlertProfile");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code > 5");
+    assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
+  }
+
+  // SONAR-4594
+  @Test
+  public void test_build_breaker_with_dry_run_and_differential_measures() {
+    // First analysis
+    SonarRunner runner = configureRunner("shared/xoo-sample");
+    BuildResult result = orchestrator.executeBuild(runner);
+
+    // Second analysis
+    runner = configureRunner("batch/dry-run-build-breaker",
+      "sonar.dryRun", "true")
+      .setProfile("VariationAlertProfile");
+    result = orchestrator.executeBuildQuietly(runner);
+
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code variation > 2 since previous analysis");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
   }
 
@@ -109,8 +127,8 @@ public class DryRunTest {
 
   private SonarRunner configureRunner(String projectPath, String... props) {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
-        .setRunnerVersion("2.2.2")
-        .setProperties(props);
+      .setRunnerVersion("2.2.2")
+      .setProperties(props);
     return runner;
   }
 
