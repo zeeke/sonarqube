@@ -8,8 +8,10 @@ package com.sonar.it.profile;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -18,7 +20,6 @@ import org.sonar.wsclient.services.EventQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import java.io.File;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -27,8 +28,12 @@ import static org.junit.Assert.fail;
 
 public class ProfileChangelogTest {
 
+  private static final String SELENIUM_CATEGORY = "profile-changelog";
+
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv().build();
+  public static Orchestrator orchestrator = Orchestrator.builderEnv()
+    .addPlugin(ItUtils.xooPlugin())
+    .build();
 
   @BeforeClass
   public static void restoreBackup() throws Exception {
@@ -36,10 +41,13 @@ public class ProfileChangelogTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileChangelogTest/profile_b.xml"));
   }
 
-  private static final String SELENIUM_CATEGORY = "profile-changelog";
+  @Before
+  public void deleteAnalysisData() {
+    orchestrator.getDatabase().truncateInspectionTables();
+  }
 
   @Test
-  public void shouldCreateChangelog() {
+  public void should_create_changelog() {
     firstAnalysis();
     analyseWithNewProfile();
     analyseWithModifiedProfile();
@@ -50,9 +58,27 @@ public class ProfileChangelogTest {
    * SONAR-2621
    */
   @Test
-  public void shouldBeAvailableToAnonymous() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath(SELENIUM_CATEGORY, "/selenium/profile-changelog/anonymous-access.html").build();
+  public void should_be_available_to_anonymous() {
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-be-available-to-anonymous", "/selenium/profile-changelog/anonymous-access.html").build();
     orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-2986
+   */
+  @Test
+  public void should_update_changelog_only_after_first_analysis() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileChangelogTest/should_update_changelog_only_after_first_analysis.xml"));
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should-not-update-changelog-before-first-analysis",
+      "/selenium/profile-changelog/should-not-update-changelog-before-first-analysis.html").build());
+
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("should_not_update_changelog_before_first_analysis");
+    orchestrator.executeBuild(scan);
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should-update-changelog-after-first-analysis",
+      "/selenium/profile-changelog/should-update-changelog-after-first-analysis.html").build());
   }
 
   private void firstAnalysis() {
