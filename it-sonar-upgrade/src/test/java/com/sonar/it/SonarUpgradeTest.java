@@ -46,6 +46,21 @@ public class SonarUpgradeTest {
     testDatabaseUpgrade("2.9", Orchestrator.builderEnv().getSonarVersion());
   }
 
+  /**
+   * SONAR-4608 - failed on oracle because of triggers created in 3.7
+   */
+  @Test
+  public void should_reindex_projects_in_3_0_when_upgrading_to_3_7() {
+    testDatabaseUpgrade("2.9", Orchestrator.builderEnv().getSonarVersion(), new BeforeUpgrade() {
+      @Override
+      public void execute() {
+        // force re-index
+        orchestrator.getDatabase().truncate("resource_index");
+      }
+    });
+    assertThat(orchestrator.getDatabase().countSql("select count(kee) from resource_index")).isGreaterThan(0);
+  }
+
   @Test
   public void test_upgrade_from_3_0() {
     testDatabaseUpgrade("3.0", Orchestrator.builderEnv().getSonarVersion());
@@ -61,13 +76,17 @@ public class SonarUpgradeTest {
     testDatabaseUpgrade("3.5.1", Orchestrator.builderEnv().getSonarVersion());
   }
 
-  private void testDatabaseUpgrade(String fromVersion, String toVersion) {
+  private void testDatabaseUpgrade(String fromVersion, String toVersion, BeforeUpgrade... tasks) {
     startServer(fromVersion, false);
     scanProject();
     int files = countFiles(PROJECT_KEY);
     assertThat(files).isGreaterThan(0);
-    stopServer();
 
+    for (BeforeUpgrade task : tasks) {
+      task.execute();
+    }
+
+    stopServer();
     startServer(toVersion, true);
     upgradeDatabase();
 
@@ -153,5 +172,9 @@ public class SonarUpgradeTest {
         connection.disconnect();
       }
     }
+  }
+
+  private static interface BeforeUpgrade {
+    void execute();
   }
 }
