@@ -41,7 +41,6 @@
   <modules>
     <module>access-secured-props-plugin</module>
     <module>custom-metric-plugin</module>
-    <module>dashboard-plugin</module>
     <module>deprecated-checkstyle-extension</module>
     <module>embedded-library-plugin</module>
     <module>extension-lifecycle-plugin</module>
@@ -80,6 +79,7 @@
     <module>update-center</module>
     <module>sonar-subcategories-plugin</module>
     <module>deprecated-xoo-rule-plugin</module>
+    <module>ui-plugin</module>
   </modules>
 
 </project>

@@ -6,16 +6,16 @@
     <artifactId>plugins</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>dashboard-plugin</artifactId>
-
+  <artifactId>ui-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <name>Plugins :: Dashboard</name>
+  <name>SonarQube Integration Tests :: Plugins :: UI</name>
+  <description>Main plugin for UI tests</description>
 
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>2.13</version>
+      <version>3.0</version>
     </dependency>
   </dependencies>
 
@@ -24,10 +24,10 @@
       <plugin>
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
+        <version>1.6</version>
         <extensions>true</extensions>
         <configuration>
-          <pluginClass>DashboardPlugin</pluginClass>
+          <pluginClass>UiPlugin</pluginClass>
         </configuration>
       </plugin>
     </plugins>
