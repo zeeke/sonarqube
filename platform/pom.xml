@@ -65,7 +65,7 @@
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:${scmActivityLatest},
           org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
           org.codehaus.sonar-plugins:sonar-sigmm-plugin:${sigmmLatest},
-          com.sonarsource.sqale:sonar-sqale-plugin:${sqaleLatest},
+          com.sonarsource.sqale:sonar-sqale-plugin:1.9.1,
           org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
           org.codehaus.sonar-plugins:sonar-technicaldebt-plugin:${technicalDebtLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
