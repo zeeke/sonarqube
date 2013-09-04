@@ -55,6 +55,13 @@ public class DashboardTest {
   }
 
   @Test
+  public void configure_widget() {
+    seleniumSuite("configure_widget",
+      "/selenium/ui/dashboard/configure_widget/add_project_widget_with_mandatory_properties.html");
+  }
+
+
+  @Test
   public void global_dashboard() {
     seleniumSuite("global_dashboard",
       // SONAR-3462

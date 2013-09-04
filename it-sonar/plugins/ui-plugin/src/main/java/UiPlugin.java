@@ -5,6 +5,6 @@ import java.util.List;
 
 public class UiPlugin extends SonarPlugin {
   public List getExtensions() {
-    return Arrays.asList(FakeDashboardTemplate.class);
+    return Arrays.asList(FakeDashboardTemplate.class, WidgetWithMandatoryProperties.class);
   }
 }
