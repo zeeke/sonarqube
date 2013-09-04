@@ -4,9 +4,10 @@
  * mailto:contact AT sonarsource DOT com
  */
 
-package com.sonar.it.issue.suite;
+package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
+import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -24,7 +25,7 @@ import java.util.List;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
 
-public class IssueSearchTest extends AbstractIssueTestCase {
+public class IssueSearchTest extends AbstractIssueTestCase2 {
 
   private static int DEFAULT_PAGINATED_RESULTS = 100;
 

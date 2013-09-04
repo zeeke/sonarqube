@@ -3,9 +3,10 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.issue.suite;
+package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
+import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
@@ -14,7 +15,7 @@ import org.sonar.wsclient.issue.Issue;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class IssueWorkflowTest extends AbstractIssueTestCase {
+public class IssueWorkflowTest extends AbstractIssueTestCase2 {
 
   Issue issue;
   SonarRunner scan;

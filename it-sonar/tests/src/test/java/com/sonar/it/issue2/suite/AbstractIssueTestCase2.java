@@ -4,9 +4,10 @@
  * mailto:contact AT sonarsource DOT com
  */
 
-package com.sonar.it.issue.suite;
+package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
+import com.sonar.it.issue.suite.IssueTestSuite;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
@@ -22,10 +23,10 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public abstract class AbstractIssueTestCase {
+public class AbstractIssueTestCase2 {
 
   @ClassRule
-  public static Orchestrator orchestrator = IssueTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = Issue2TestSuite.ORCHESTRATOR;
 
   protected Issue searchIssueByKey(String issueKey) {
     List<Issue> issues = search(IssueQuery.create().issues(issueKey)).list();

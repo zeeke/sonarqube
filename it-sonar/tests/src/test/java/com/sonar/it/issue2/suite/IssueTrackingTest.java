@@ -3,12 +3,13 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.issue.suite;
+package com.sonar.it.issue2.suite;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.sonar.it.ItUtils;
+import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
@@ -28,7 +29,7 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class IssueTrackingTest extends AbstractIssueTestCase {
+public class IssueTrackingTest extends AbstractIssueTestCase2 {
 
   private static final String OLD_DATE = "2010-01-01";
   private static final String NEW_DATE = "2013-05-18";

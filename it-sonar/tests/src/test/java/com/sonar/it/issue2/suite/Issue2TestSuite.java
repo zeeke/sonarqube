@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.issue.suite;
+package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -13,15 +13,13 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  ActionPlanTest.class, IssueActionTest.class, IssueFilterExtensionTest.class, IssueJsonReportTest.class,
-  IssuePurgeTest.class, IssueFiltersTest.class, IssueBulkChangeTest.class
+  IssueRuleWidgetsTest.class, IssueSearchTest.class, IssueTest.class, IssueTrackingTest.class,
+  IssueWidgetsTest.class, IssueWorkflowTest.class, ManualIssueTest.class
 })
-public class IssueTestSuite {
+public class Issue2TestSuite {
 
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
-    .addPlugin(ItUtils.locateTestPlugin("issue-filter-plugin"))
-    .addPlugin(ItUtils.locateTestPlugin("issue-action-plugin"))
     .build();
 }

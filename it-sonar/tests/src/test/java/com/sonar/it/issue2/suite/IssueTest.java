@@ -3,9 +3,10 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.issue.suite;
+package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
+import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -23,7 +24,7 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class IssueTest extends AbstractIssueTestCase {
+public class IssueTest extends AbstractIssueTestCase2 {
 
   @Before
   public void resetData() {
