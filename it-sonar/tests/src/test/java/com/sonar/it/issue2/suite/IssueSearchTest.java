@@ -133,9 +133,9 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   @Test
   public void search_issues_by_dates() {
     // issues have been created today
-    Date today = toDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-    Date past = toDate("2013-01-01");
-    Date future = toDate("2020-12-31");
+    Date today = ItUtils.toDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+    Date past = ItUtils.toDate("2013-01-01");
+    Date future = ItUtils.toDate("2020-12-31");
 
     // after date
     assertThat(search(IssueQuery.create().createdAfter(future)).list()).isEmpty();
@@ -155,7 +155,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   public void search_issues_by_action_plans() {
     // Create an action plan
     ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("org.apache.struts:struts-parent").description("Short term issues")
-      .deadLine(toDate("2113-01-31")));
+      .deadLine(ItUtils.toDate("2113-01-31")));
 
     // Associate this action plan to an issue
     adminIssueClient().plan(searchRandomIssue().key(), actionPlan.key());
@@ -209,8 +209,8 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     assertThat(search(IssueQuery.create().issues().issues(issue.key()).createdAt(DateUtils.addSeconds(issue.creationDate(), -1))).size()).isEqualTo(0);
 
     // search with future and past dates that do not match any issues
-    assertThat(search(IssueQuery.create().createdAt(toDate("2020-01-01"))).size()).isEqualTo(0);
-    assertThat(search(IssueQuery.create().createdAt(toDate("2010-01-01"))).size()).isEqualTo(0);
+    assertThat(search(IssueQuery.create().createdAt(ItUtils.toDate("2020-01-01"))).size()).isEqualTo(0);
+    assertThat(search(IssueQuery.create().createdAt(ItUtils.toDate("2010-01-01"))).size()).isEqualTo(0);
   }
 
   /**

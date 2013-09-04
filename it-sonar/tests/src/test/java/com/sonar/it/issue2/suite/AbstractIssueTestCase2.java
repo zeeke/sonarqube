@@ -42,14 +42,6 @@ public class AbstractIssueTestCase2 {
     return search(IssueQuery.create().componentRoots(componentKey).resolved(false)).list();
   }
 
-  protected List<Issue> searchIssuesBySeverities(String componentKey, String... severities) {
-    return search(IssueQuery.create().componentRoots(componentKey).severities(severities)).list();
-  }
-
-  protected List<Issue> searchIssuesByRules(String componentKey, String... rules) {
-    return search(IssueQuery.create().componentRoots(componentKey).rules(rules)).list();
-  }
-
   protected static Issue searchRandomIssue() {
     List<Issue> issues = search(IssueQuery.create()).list();
     assertThat(issues).isNotEmpty();
@@ -76,25 +68,10 @@ public class AbstractIssueTestCase2 {
     return ItUtils.newWsClientForAdmin(orchestrator).actionPlanClient();
   }
 
-  protected static ActionPlan firstActionPlan(String projectKey) {
-    List<ActionPlan> actionPlans = actionPlanClient().find(projectKey);
-    assertThat(actionPlans).hasSize(1);
-    return actionPlans.get(0);
-  }
-
   protected static void createManualRule(){
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule",
       "/selenium/issue/manual-issue/create-manual-rule.html"
     ).build());
-  }
-
-  protected static Date toDate(String sDate) {
-    try {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-      return sdf.parse(sDate);
-    } catch (ParseException e) {
-      throw new RuntimeException(e);
-    }
   }
 
   protected static void deleteManualRules(){

@@ -8,23 +8,15 @@ package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.ClassRule;
 import org.sonar.wsclient.base.HttpException;
 import org.sonar.wsclient.issue.*;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 public abstract class AbstractIssueTestCase {
 
-  @ClassRule
   public static Orchestrator orchestrator = IssueTestSuite.ORCHESTRATOR;
 
   protected Issue searchIssueByKey(String issueKey) {
@@ -33,20 +25,8 @@ public abstract class AbstractIssueTestCase {
     return issues.get(0);
   }
 
-  protected List<Issue> searchIssuesByComponent(String componentKey) {
-    return search(IssueQuery.create().componentRoots(componentKey)).list();
-  }
-
-  protected List<Issue> searchUnresolvedIssuesByComponent(String componentKey) {
-    return search(IssueQuery.create().componentRoots(componentKey).resolved(false)).list();
-  }
-
   protected List<Issue> searchIssuesBySeverities(String componentKey, String... severities) {
     return search(IssueQuery.create().componentRoots(componentKey).severities(severities)).list();
-  }
-
-  protected List<Issue> searchIssuesByRules(String componentKey, String... rules) {
-    return search(IssueQuery.create().componentRoots(componentKey).rules(rules)).list();
   }
 
   protected static Issue searchRandomIssue() {
@@ -79,30 +59,6 @@ public abstract class AbstractIssueTestCase {
     List<ActionPlan> actionPlans = actionPlanClient().find(projectKey);
     assertThat(actionPlans).hasSize(1);
     return actionPlans.get(0);
-  }
-
-  protected static void createManualRule(){
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule",
-      "/selenium/issue/manual-issue/create-manual-rule.html"
-    ).build());
-  }
-
-  protected static Date toDate(String sDate) {
-    try {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-      return sdf.parse(sDate);
-    } catch (ParseException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  protected static void deleteManualRules(){
-    try {
-      Connection connection = orchestrator.getDatabase().openConnection();
-      connection.prepareStatement("DELETE FROM rules WHERE rules.plugin_name='manual'").execute();
-    } catch (SQLException e) {
-      throw new IllegalStateException("Fail to remove manual rules", e);
-    }
   }
 
   protected void verifyHttpException(Exception e, int expectedCode){

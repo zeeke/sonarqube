@@ -16,6 +16,9 @@ import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 public final class ItUtils {
@@ -120,5 +123,14 @@ public final class ItUtils {
 
   public static String sanitizeTimezones(String s) {
     return s.replaceAll("[\\+\\-]\\d\\d\\d\\d", "+0000");
+  }
+
+  public static Date toDate(String sDate) {
+    try {
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+      return sdf.parse(sDate);
+    } catch (ParseException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

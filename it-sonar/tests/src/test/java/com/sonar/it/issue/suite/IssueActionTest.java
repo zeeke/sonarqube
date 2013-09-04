@@ -147,7 +147,7 @@ public class IssueActionTest extends AbstractIssueTestCase {
 
     // Set action plan to issue
     ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample")
-      .description("Short term issues").deadLine(toDate("2113-01-31")));
+      .description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
     assertThat(newActionPlan.key()).isNotNull();
     adminIssueClient().plan(issue.key(), newActionPlan.key());
     assertThat(search(IssueQuery.create().actionPlans(newActionPlan.key())).list()).hasSize(1);
@@ -178,7 +178,7 @@ public class IssueActionTest extends AbstractIssueTestCase {
 
     // Set action plan to issue
     ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample")
-      .description("Short term issues").deadLine(toDate("2113-01-31")));
+      .description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
     assertThat(newActionPlan.key()).isNotNull();
     adminIssueClient().plan(issue.key(), newActionPlan.key());
     assertThat(search(IssueQuery.create().actionPlans(newActionPlan.key())).list()).hasSize(1);
@@ -219,7 +219,7 @@ public class IssueActionTest extends AbstractIssueTestCase {
   @Test
   public void display_issue_changelog_entries() throws Exception {
     ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample")
-      .description("Short term issues").deadLine(toDate("2113-01-31")));
+      .description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
     assertThat(newActionPlan.key()).isNotNull();
 
     adminIssueClient().doTransition(issue.key(), "confirm");

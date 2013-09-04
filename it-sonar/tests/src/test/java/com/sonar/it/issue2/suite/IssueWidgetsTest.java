@@ -110,7 +110,7 @@ public class IssueWidgetsTest extends AbstractIssueTestCase2 {
   @Test
   public void test_action_plan_widget() throws Exception {
     // Create a action plan on the project
-    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
     // 3 issues will be affected to the action plan : 2 unresolved issues, and 1 resolved
 

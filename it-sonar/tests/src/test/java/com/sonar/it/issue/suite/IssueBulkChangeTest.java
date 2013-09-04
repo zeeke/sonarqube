@@ -92,7 +92,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
     // Create action plan
     ActionPlan newActionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(toDate("2113-01-31")));
+      NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
     int nbIssues = 3;
     String[] issueKeys = getIssueKeys(search(IssueQuery.create()).list(), nbIssues);
@@ -274,7 +274,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     analyzeSampleProjectWillSmallNumberOfIssues();
 
     // Create action plan
-    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(toDate("2113-01-31")));
+    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_change_from_console",
       "/selenium/issue/bulk-change/should-apply-bulk-change.html"
@@ -295,7 +295,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     analyzeSampleProjectWillSmallNumberOfIssues();
 
     // Create action plan
-    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(toDate("2113-01-31")));
+    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
     List<Issue> issues = search(IssueQuery.create()).list();
     assertThat(issues.size()).isGreaterThanOrEqualTo(2);

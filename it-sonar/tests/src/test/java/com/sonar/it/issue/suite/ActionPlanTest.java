@@ -64,7 +64,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
     assertThat(adminActionPlanClient().find(PROJECT_KEY)).isEmpty();
 
     ActionPlan newActionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
     assertThat(newActionPlan.key()).isNotNull();
 
     ActionPlan actionPlan = firstActionPlan(PROJECT_KEY);
@@ -83,7 +83,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   public void should_fail_create_action_plan_if_missing_project() {
     try {
       adminActionPlanClient().create(NewActionPlan.create().name("Short term")
-        .description("Short term issues").deadLine(toDate("2113-01-31")));
+        .description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
       fail();
     } catch (Exception e) {
       verifyHttpException(e, 400);
@@ -94,7 +94,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   public void should_fail_create_action_plan_if_missing_name() {
     try {
       adminActionPlanClient().create(NewActionPlan.create().project(PROJECT_KEY)
-        .description("Short term issues").deadLine(toDate("2113-01-31")));
+        .description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
       fail();
     } catch (Exception e) {
       verifyHttpException(e, 400);
@@ -104,10 +104,10 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   @Test
   public void should_update_action_plan() {
     ActionPlan newActionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
     ActionPlan updatedActionPlan = adminActionPlanClient().update(
-      UpdateActionPlan.create().key(newActionPlan.key()).name("Long term").description("Long term issues").deadLine(toDate("2114-12-01")));
+      UpdateActionPlan.create().key(newActionPlan.key()).name("Long term").description("Long term issues").deadLine(ItUtils.toDate("2114-12-01")));
     assertThat(updatedActionPlan).isNotNull();
 
     ActionPlan actionPlan = firstActionPlan(PROJECT_KEY);
@@ -123,7 +123,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   public void should_fail_update_action_plan_if_missing_name() {
     try {
       adminActionPlanClient().create(
-        NewActionPlan.create().project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+        NewActionPlan.create().project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
       fail();
     } catch (Exception e) {
       verifyHttpException(e, 400);
@@ -133,7 +133,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   @Test
   public void should_delete_action_plan() {
     ActionPlan newActionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
     adminActionPlanClient().delete(newActionPlan.key());
 
@@ -148,7 +148,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   public void should_delete_action_plan_also_unplan_linked_issues() {
     // Create action plan
     ActionPlan newActionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
     Issue issue = searchRandomIssue();
     // Link an issue to the action plan
@@ -164,7 +164,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   @Test
   public void should_close_action_plan() {
     ActionPlan newActionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
     assertThat(firstActionPlan(PROJECT_KEY).status()).isEqualTo("OPEN");
 
     adminActionPlanClient().close(newActionPlan.key());
@@ -176,7 +176,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   @Test
   public void should_open_action_plan() {
     ActionPlan newActionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
     adminActionPlanClient().close(newActionPlan.key());
     adminActionPlanClient().open(newActionPlan.key());
@@ -189,7 +189,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   public void should_find_action_plans() {
     assertThat(actionPlanClient().find(PROJECT_KEY)).isEmpty();
 
-    adminActionPlanClient().create(NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(toDate("2113-01-31")));
+    adminActionPlanClient().create(NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
     adminActionPlanClient().create(NewActionPlan.create().name("Long term").project(PROJECT_KEY).description("Long term issues"));
 
     assertThat(actionPlanClient().find(PROJECT_KEY)).hasSize(2);
