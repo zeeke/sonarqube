@@ -9,6 +9,8 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.orchestrator.locator.FileLocation;
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -18,6 +20,8 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
+import java.io.File;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -35,6 +39,8 @@ public class DryRunTest {
   @Before
   public void deleteData() {
     orchestrator.getDatabase().truncateInspectionTables();
+    File dryRunCache = new File(new File(orchestrator.getServer().getHome(), "temp"), "dryRun");
+    FileUtils.deleteQuietly(dryRunCache);
   }
 
   @Test
@@ -88,6 +94,7 @@ public class DryRunTest {
   // SONAR-4468
   @Test
   public void test_build_breaker_with_dry_run() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"));
     SonarRunner runner = configureRunner("shared/xoo-sample",
       "sonar.dryRun", "true")
       .setProfile("SimpleAlertProfile");
@@ -101,6 +108,8 @@ public class DryRunTest {
   // SONAR-4594
   @Test
   public void test_build_breaker_with_dry_run_and_differential_measures() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/VariationAlertProfile.xml"));
+
     // First analysis
     SonarRunner runner = configureRunner("shared/xoo-sample");
     BuildResult result = orchestrator.executeBuild(runner);
@@ -113,6 +122,27 @@ public class DryRunTest {
 
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code variation > 2 since previous analysis");
+    assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
+  }
+
+  // SONAR-4594
+  @Test
+  public void test_build_breaker_with_dry_run_and_differential_measures_last_version() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/VariationSinceLastVersionAlertProfile.xml"));
+
+    // First analysis 1.0-SNAPSHOT
+    SonarRunner runner = configureRunner("shared/xoo-sample");
+    orchestrator.executeBuild(runner);
+
+    // Second analysis 2.0-SNAPSHOT
+    runner = configureRunner("batch/dry-run-build-breaker",
+      "sonar.dryRun", "true",
+      "sonar.projectVersion", "2.0-SNAPSHOT")
+      .setProfile("VariationSinceLastVersionAlertProfile");
+    BuildResult result = orchestrator.executeBuildQuietly(runner);
+
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code variation > 2 since previous version (1.0-SNAPSHOT)");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
   }
 

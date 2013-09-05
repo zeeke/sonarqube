@@ -29,8 +29,6 @@ public class BatchTestSuite {
       // used by DryRunTest
       .addPlugin(ItUtils.locateTestPlugin("access-secured-props-plugin"))
       .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-build-breaker-plugin", "1.1"))
-      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"))
-      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/VariationAlertProfile.xml"))
 
       .build();
 }
