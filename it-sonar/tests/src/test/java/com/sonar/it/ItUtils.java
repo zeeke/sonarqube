@@ -16,6 +16,8 @@ import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -131,6 +133,23 @@ public final class ItUtils {
       return sdf.parse(sDate);
     } catch (ParseException e) {
       throw new RuntimeException(e);
+    }
+  }
+
+  public static void executeUpdate(Orchestrator orchestrator, String sql) {
+    Connection connection = null;
+    PreparedStatement statement;
+    try {
+      connection = orchestrator.getDatabase().openConnection();
+      statement = connection.prepareStatement(sql);
+      int result = statement.executeUpdate();
+      if (result != 1) {
+        throw new RuntimeException();
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } finally {
+      orchestrator.getDatabase().closeQuietly(connection);
     }
   }
 }

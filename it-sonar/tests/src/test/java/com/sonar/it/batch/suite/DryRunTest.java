@@ -22,6 +22,14 @@ import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -36,11 +44,13 @@ public class DryRunTest {
   @Rule
   public TemporaryFolder temp = new TemporaryFolder();
 
+  private File dryRunCacheLocation;
+
   @Before
   public void deleteData() {
     orchestrator.getDatabase().truncateInspectionTables();
-    File dryRunCache = new File(new File(orchestrator.getServer().getHome(), "temp"), "dryRun");
-    FileUtils.deleteQuietly(dryRunCache);
+    dryRunCacheLocation = new File(new File(orchestrator.getServer().getHome(), "temp"), "dryRun");
+    FileUtils.deleteQuietly(dryRunCacheLocation);
   }
 
   @Test
@@ -146,6 +156,116 @@ public class DryRunTest {
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
   }
 
+  // SONAR-4602
+  @Test
+  public void use_dry_run_cache_on_new_project() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+    // First dry run
+    String profileName = "one-issue-per-line";
+    SonarRunner runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile(profileName);
+    orchestrator.executeBuild(runner);
+
+    assertThat(dryRunCacheLocation.listFiles()).onProperty("name").containsOnly("default");
+    File cacheLocation = new File(dryRunCacheLocation, "default");
+
+    assertThat(cacheLocation.listFiles(new ExcludeLockFile())).hasSize(1);
+    File cachedDb = cacheLocation.listFiles(new ExcludeLockFile())[0];
+    long lastModified = cachedDb.lastModified();
+
+    // Remove quality profile using DB query to not invalidate cache to be sure
+    // next analysis will use cached DB that still contain removed profile
+    ItUtils.executeUpdate(orchestrator, "DELETE FROM rules_profiles WHERE name = '" + profileName + "'");
+
+    // Second dry run should not fail event if profile was removed from DB
+    runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile(profileName);
+    orchestrator.executeBuild(runner);
+
+    assertThat(cachedDb.lastModified()).isEqualTo(lastModified);
+  }
+
+  // SONAR-4602
+  @Test
+  public void use_dry_run_cache_on_existing_project() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+    // First run (not dry run)
+    String profileName = "one-issue-per-line";
+    SonarRunner runner = configureRunner("shared/xoo-sample")
+      .setProfile(profileName);
+    orchestrator.executeBuild(runner);
+
+    // First dry run
+    runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile(profileName);
+    orchestrator.executeBuild(runner);
+
+    // Here we can't guess project id
+    assertThat(dryRunCacheLocation.listFiles(new ExcludeLockFile())).hasSize(1);
+    File cacheLocation = dryRunCacheLocation.listFiles(new ExcludeLockFile())[0];
+    assertThat(cacheLocation.getName()).isNotEqualTo("default");
+
+    assertThat(cacheLocation.listFiles(new ExcludeLockFile())).hasSize(1);
+    File cachedDb = cacheLocation.listFiles(new ExcludeLockFile())[0];
+    long lastModified = cachedDb.lastModified();
+
+    // Remove quality profile using DB query to not invalidate cache to be sure
+    // next analysis will use cached DB that still contain removed profile
+    ItUtils.executeUpdate(orchestrator, "DELETE FROM rules_profiles WHERE name = '" + profileName + "'");
+
+    // Second dry run should not fail event if profile was removed from DB
+    runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile(profileName);
+    orchestrator.executeBuild(runner);
+
+    assertThat(cachedDb.lastModified()).isEqualTo(lastModified);
+  }
+
+  // SONAR-4602
+  @Test
+  public void concurrent_dry_run_access_cache_on_new_project() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+    runConcurrentDryRun();
+  }
+
+  // SONAR-4602
+  @Test
+  public void concurrent_dry_run_access_cache_on_existing_project() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+    SonarRunner runner = configureRunner("shared/xoo-sample")
+      .setProfile("one-issue-per-line");
+    orchestrator.executeBuild(runner);
+
+    runConcurrentDryRun();
+  }
+
+  private void runConcurrentDryRun() throws InterruptedException, ExecutionException {
+    final int nThreads = 5;
+    final String profileName = "one-issue-per-line";
+    ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
+    List<Callable<BuildResult>> tasks = new ArrayList<Callable<BuildResult>>();
+    for (int i = 0; i < nThreads; i++) {
+      tasks.add(new Callable<BuildResult>() {
+
+        public BuildResult call() throws Exception {
+          SonarRunner runner = configureRunner("shared/xoo-sample",
+            "sonar.working.directory", temp.newFolder().getAbsolutePath(),
+            "sonar.dryRun", "true")
+            .setProfile(profileName);
+          return orchestrator.executeBuild(runner);
+        }
+      });
+    }
+
+    for (Future<BuildResult> result : executorService.invokeAll(tasks)) {
+      result.get();
+    }
+  }
+
   private Resource getResource(String key) {
     return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(key, "lines"));
   }
@@ -160,6 +280,12 @@ public class DryRunTest {
       .setRunnerVersion("2.2.2")
       .setProperties(props);
     return runner;
+  }
+
+  private static class ExcludeLockFile implements FilenameFilter {
+    public boolean accept(File dir, String name) {
+      return !name.contains(".lock");
+    }
   }
 
 }

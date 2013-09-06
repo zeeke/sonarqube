@@ -75,28 +75,11 @@ public class SemaphoreTest {
   private void createSemaphore(String name) {
     String checksum = DigestUtils.md5Hex(name);
     if (!"oracle".equals(orchestrator.getDatabase().getClient().getDialect())) {
-      executeUpdate("INSERT INTO semaphores (name, checksum, created_at, updated_at, locked_at) " +
+      ItUtils.executeUpdate(orchestrator, "INSERT INTO semaphores (name, checksum, created_at, updated_at, locked_at) " +
         "VALUES ('" + name + "', '" + checksum + "', current_timestamp, current_timestamp, current_timestamp)");
     } else {
-      executeUpdate("INSERT INTO semaphores (id, name, checksum, created_at, updated_at, locked_at) " +
+      ItUtils.executeUpdate(orchestrator, "INSERT INTO semaphores (id, name, checksum, created_at, updated_at, locked_at) " +
         "VALUES (semaphores_seq.NEXTVAL, '" + name + "', '" + checksum + "', current_timestamp, current_timestamp, current_timestamp)");
-    }
-  }
-
-  private void executeUpdate(String sql) {
-    Connection connection = null;
-    PreparedStatement statement;
-    try {
-      connection = orchestrator.getDatabase().openConnection();
-      statement = connection.prepareStatement(sql);
-      int result = statement.executeUpdate();
-      if (result != 1) {
-        throw new RuntimeException();
-      }
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    } finally {
-      orchestrator.getDatabase().closeQuietly(connection);
     }
   }
 
