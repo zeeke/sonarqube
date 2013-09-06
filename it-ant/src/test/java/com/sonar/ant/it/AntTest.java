@@ -42,19 +42,19 @@ public class AntTest {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
 
     builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-groovy-plugin", "0.5"))
-        .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-groovy.xml"))
-        .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-classpath.xml"))
-        .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-version.xml"))
-        .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-project-metadata-java.xml"));
+      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-groovy.xml"))
+      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-classpath.xml"))
+      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-version.xml"))
+      .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-project-metadata-java.xml"));
 
     // SONAR-4358
     // Wating for ORCH-184
     if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("3.7")) {
       // Update to Sonar Java 1.4 in order to allow installation of Cobertura 1.4
       builder.removeDistributedPlugins()
-          .setOrchestratorProperty("javaVersion", "1.4-SNAPSHOT")
-          .addMavenPluginEnv("java", "org.codehaus.sonar-plugins.java", "sonar-java-plugin")
-          .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.4-SNAPSHOT"));
+        .setOrchestratorProperty("javaVersion", "1.4")
+        .addMavenPluginEnv("java", "org.codehaus.sonar-plugins.java", "sonar-java-plugin")
+        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.4"));
     }
 
     orchestrator = builder.build();
@@ -77,9 +77,9 @@ public class AntTest {
 
   private void build(String project, String target, String profile) {
     AntBuild build = AntBuild.create()
-        .setBuildLocation(FileLocation.of("projects/" + project + "/build.xml"))
-        .setTargets(target, "clean")
-        .setProperty("sonar.profile", profile);
+      .setBuildLocation(FileLocation.of("projects/" + project + "/build.xml"))
+      .setTargets(target, "clean")
+      .setProperty("sonar.profile", profile);
     orchestrator.executeBuild(build);
   }
 
@@ -137,7 +137,7 @@ public class AntTest {
     build("custom-layout", "all", "empty");
     checkProjectAnalysed("org.sonar.ant.tests:custom-layout", "empty");
     Resource project = orchestrator.getServer().getWsClient()
-        .find(ResourceQuery.createForMetrics("org.sonar.ant.tests:custom-layout", "packages", "files", "classes", "functions"));
+      .find(ResourceQuery.createForMetrics("org.sonar.ant.tests:custom-layout", "packages", "files", "classes", "functions"));
     assertThat(project.getMeasureValue("packages")).isEqualTo(1.0);
     assertThat(project.getMeasureValue("files")).isEqualTo(2.0);
     assertThat(project.getMeasureValue("classes")).isEqualTo(2.0);
@@ -160,9 +160,9 @@ public class AntTest {
     checkProjectAnalysed("org.sonar.ant.tests:java-without-bytecode", "empty");
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests:java-without-bytecode",
-        "lines", "violations",
-        "lcom4", "suspect_lcom4_density", "lcom4_distribution",
-        "rfc", "rfc_distribution"));
+      "lines", "violations",
+      "lcom4", "suspect_lcom4_density", "lcom4_distribution",
+      "rfc", "rfc_distribution"));
 
     assertThat(project.getMeasureValue("lines")).isGreaterThan(1.0);
     assertThat(project.getMeasureValue("violations")).isGreaterThanOrEqualTo(0.0);
@@ -233,10 +233,10 @@ public class AntTest {
     checkProjectAnalysed("org.sonar.ant.tests:cobertura", "empty");
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests:cobertura",
-        "line_coverage", "lines_to_cover", "uncovered_lines",
-        "branch_coverage", "conditions_to_cover", "uncovered_conditions",
-        "coverage",
-        "tests", "test_success_density"));
+      "line_coverage", "lines_to_cover", "uncovered_lines",
+      "branch_coverage", "conditions_to_cover", "uncovered_conditions",
+      "coverage",
+      "tests", "test_success_density"));
 
     assertThat(project.getMeasureValue("line_coverage")).isEqualTo(50.0);
     assertThat(project.getMeasureValue("lines_to_cover")).isEqualTo(4.0);
@@ -258,10 +258,10 @@ public class AntTest {
     checkProjectAnalysed("org.sonar.ant.tests:jacoco", "empty");
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests:jacoco",
-        "line_coverage", "lines_to_cover", "uncovered_lines",
-        "branch_coverage", "conditions_to_cover", "uncovered_conditions",
-        "coverage",
-        "tests", "test_success_density"));
+      "line_coverage", "lines_to_cover", "uncovered_lines",
+      "branch_coverage", "conditions_to_cover", "uncovered_conditions",
+      "coverage",
+      "tests", "test_success_density"));
 
     assertThat(project.getMeasureValue("line_coverage")).isEqualTo(50.0);
     assertThat(project.getMeasureValue("lines_to_cover")).isEqualTo(4.0);
@@ -284,9 +284,9 @@ public class AntTest {
 
     // Metrics on project
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests.jacoco-modules:root",
-        "lines",
-        "tests", "test_success_density",
-        "coverage"));
+      "lines",
+      "tests", "test_success_density",
+      "coverage"));
     assertThat(project.getMeasureValue("lines")).isEqualTo(52.0);
     assertThat(project.getMeasureValue("tests")).isEqualTo(4.0);
     assertThat(project.getMeasureValue("test_success_density")).isEqualTo(50.0);
@@ -294,9 +294,9 @@ public class AntTest {
 
     // Metrics on module
     Resource module = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests.jacoco-modules:root:one",
-        "lines",
-        "tests", "test_success_density",
-        "coverage"));
+      "lines",
+      "tests", "test_success_density",
+      "coverage"));
     assertThat(module.getMeasureValue("lines")).isEqualTo(26.0);
     assertThat(module.getMeasureValue("tests")).isEqualTo(2.0);
     assertThat(module.getMeasureValue("test_success_density")).isEqualTo(50.0);
@@ -309,10 +309,10 @@ public class AntTest {
     checkProjectAnalysed("org.sonar.ant.tests:testng", "empty");
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests:testng",
-        "line_coverage", "lines_to_cover", "uncovered_lines",
-        "branch_coverage", "conditions_to_cover", "uncovered_conditions",
-        "coverage",
-        "tests", "test_success_density"));
+      "line_coverage", "lines_to_cover", "uncovered_lines",
+      "branch_coverage", "conditions_to_cover", "uncovered_conditions",
+      "coverage",
+      "tests", "test_success_density"));
 
     assertThat(project.getMeasureValue("line_coverage")).isEqualTo(55.6);
     assertThat(project.getMeasureValue("lines_to_cover")).isEqualTo(9.0);
@@ -342,10 +342,10 @@ public class AntTest {
   @Test
   public void testShowSqlLogs() {
     AntBuild build = AntBuild.create()
-        .setBuildLocation(FileLocation.of("projects/shared/build.xml"))
-        .setTargets("all", "clean")
-        .setProperty("sonar.showSql", "true")
-        .setProperty("sonar.showSqlResults", "true");
+      .setBuildLocation(FileLocation.of("projects/shared/build.xml"))
+      .setTargets("all", "clean")
+      .setProperty("sonar.showSql", "true")
+      .setProperty("sonar.showSqlResults", "true");
     BuildResult analysisResults = orchestrator.executeBuild(build);
 
     String logs = analysisResults.getLogs();
@@ -369,9 +369,9 @@ public class AntTest {
   public void testVerbose() {
     assumeTrue(antTaskVersion.isGreaterThanOrEquals("2.1"));
     AntBuild build = AntBuild.create()
-        .setBuildLocation(FileLocation.of("projects/shared/build.xml"))
-        // Workaround for ORCH-174
-        .setTargets("all", "clean", "-v");
+      .setBuildLocation(FileLocation.of("projects/shared/build.xml"))
+      // Workaround for ORCH-174
+      .setTargets("all", "clean", "-v");
     BuildResult analysisResults = orchestrator.executeBuild(build);
 
     String logs = analysisResults.getLogs();
@@ -385,8 +385,8 @@ public class AntTest {
   @Test
   public void shouldFailIfMissingProperty() {
     AntBuild build = AntBuild.create()
-        .setBuildLocation(FileLocation.of("projects/missing-mandatory-properties/build.xml"))
-        .setTargets("sonar");
+      .setBuildLocation(FileLocation.of("projects/missing-mandatory-properties/build.xml"))
+      .setTargets("sonar");
 
     BuildResult analysisResults = orchestrator.executeBuildQuietly(build);
 
