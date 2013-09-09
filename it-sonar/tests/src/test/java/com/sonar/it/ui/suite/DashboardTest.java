@@ -67,6 +67,9 @@ public class DashboardTest {
       // SONAR-3462
       "/selenium/ui/dashboard/global_dashboard/edit-global-dashboards.html",
 
+      // SONAR-4630
+      "/selenium/ui/dashboard/global_dashboard/create-global-dashboards-error.html",
+
       // SONAR-3462
       "/selenium/ui/dashboard/global_dashboard/edit-project-dashboards.html",
 
@@ -96,6 +99,7 @@ public class DashboardTest {
 
       // SONAR-3457 SONAR-3563
       "/selenium/ui/dashboard/global_dashboard/project-widget.html"
+
     );
   }
 
