@@ -11,6 +11,9 @@ import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -23,14 +26,19 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static junit.framework.Assert.fail;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class DryRunTest {
@@ -223,6 +231,129 @@ public class DryRunTest {
     orchestrator.executeBuild(runner);
 
     assertThat(cachedDb.lastModified()).isEqualTo(lastModified);
+  }
+
+  // SONAR-4602
+  @Test
+  public void evict_dry_run_cache_after_new_analysis() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+    // First run (not dry run)
+    SonarRunner runner = configureRunner("shared/xoo-sample")
+      .setProfile("empty");
+    orchestrator.executeBuild(runner);
+
+    // First dry run
+    runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile("one-issue-per-line");
+    BuildResult result = orchestrator.executeBuild(runner);
+
+    // As many new issue as lines
+    assertThat(countIssues(result, true)).isEqualTo(13);
+
+    // Second run (not dry run) should invalidate cache
+    runner = configureRunner("shared/xoo-sample")
+      .setProfile("one-issue-per-line");
+    orchestrator.executeBuild(runner);
+
+    // Second dry run
+    runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile("one-issue-per-line");
+    result = orchestrator.executeBuild(runner);
+
+    // No new issue this time
+    assertThat(countIssues(result, true)).isEqualTo(0);
+  }
+
+  // SONAR-4602
+  @Test
+  public void evict_dry_run_cache_after_profile_change() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/one-issue-per-line-empty.xml"));
+    // First run (not dry run)
+    SonarRunner runner = configureRunner("shared/xoo-sample")
+      .setProfile("one-issue-per-line");
+    orchestrator.executeBuild(runner);
+
+    // First dry run
+    runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile("one-issue-per-line");
+    BuildResult result = orchestrator.executeBuild(runner);
+
+    // No new issues
+    assertThat(countIssues(result, true)).isEqualTo(0);
+
+    // Modification of QP should invalidate cache
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+
+    // Second dry run
+    runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile("one-issue-per-line");
+    result = orchestrator.executeBuild(runner);
+
+    // As many new issue as lines
+    assertThat(countIssues(result, true)).isEqualTo(13);
+  }
+
+  // SONAR-4602
+  @Test
+  public void evict_dry_run_cache_after_issue_change() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+    // First run (not dry run)
+    SonarRunner runner = configureRunner("shared/xoo-sample")
+      .setProfile("one-issue-per-line");
+    orchestrator.executeBuild(runner);
+
+    // First dry run
+    runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile("one-issue-per-line");
+    BuildResult result = orchestrator.executeBuild(runner);
+
+    // 13 issues
+    assertThat(countIssues(result, false)).isEqualTo(13);
+
+    // Flag one issue as false positive
+    JSONObject obj = getJSONReport(result);
+    String key = ((JSONObject) ((JSONArray) obj.get("issues")).get(0)).get("key").toString();
+    ItUtils.newWsClientForAdmin(orchestrator).issueClient().doTransition(key, "falsepositive");
+
+    // Second dry run
+    runner = configureRunner("shared/xoo-sample",
+      "sonar.dryRun", "true")
+      .setProfile("one-issue-per-line");
+    result = orchestrator.executeBuild(runner);
+
+    // False positive is not returned
+    assertThat(countIssues(result, false)).isEqualTo(12);
+  }
+
+  private JSONObject getJSONReport(BuildResult result) throws IOException {
+    Pattern pattern = Pattern.compile("Export results to (.*?).json");
+    Matcher m = pattern.matcher(result.getLogs());
+    if (m.find()) {
+      String s = m.group(1);
+      File path = new File(s + ".json");
+      assertThat(path).exists();
+      return (JSONObject) JSONValue.parse(FileUtils.readFileToString(path));
+    }
+    fail("Unable to locate json report");
+    return null;
+  }
+
+  private int countIssues(BuildResult result, boolean onlyNews) throws IOException {
+    JSONObject obj = getJSONReport(result);
+    JSONArray issues = (JSONArray) obj.get("issues");
+    int count = 0;
+    for (Iterator it = issues.iterator(); it.hasNext();) {
+      JSONObject issue = (JSONObject) it.next();
+      if (!onlyNews || (Boolean) issue.get("isNew")) {
+        count++;
+      }
+    }
+    return count;
   }
 
   // SONAR-4602
