@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>should-have-correct-values</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr>
+  <td rowspan="1" colspan="3">should-open-issue-filter</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>open</td>
+  <td>/sonar/sessions/logout</td>
+  <td></td>
+</tr>
+<tr>
+  <td>open</td>
+  <td>/sonar/sessions/new</td>
+  <td></td>
+</tr>
+<tr>
+  <td>type</td>
+  <td>login</td>
+  <td>admin</td>
+</tr>
+<tr>
+  <td>type</td>
+  <td>password</td>
+  <td>admin</td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>commit</td>
+  <td></td>
+</tr>
+<tr>
+  <td>open</td>
+  <td>/sonar/widget?id=my_reviews&amp;resource=sample</td>
+  <td></td>
+</tr>
+<tr>
+  <td>assertText</td>
+  <td>body</td>
+  <td>*My Unresolved Issues*6 results*</td>
+</tr>
+<!-- Paginate -->
+<tr>
+  <td>click</td>
+  <td>link=2</td>
+  <td></td>
+</tr>
+<!-- Open issues page -->
+<tr>
+  <td>clickAndWait</td>
+  <td>link=6</td>
+  <td></td>
+</tr>
+<!-- Assert view is not limited to 5 (SONAR-4620) -->
+<tr>
+  <td>assertXpathCount</td>
+  <td>xpath=(//div[@id='issues-list']/table/tbody/tr)</td>
+  <td>6</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

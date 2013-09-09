@@ -7,7 +7,6 @@
 package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -64,6 +63,28 @@ public class IssueWidgetsTest extends AbstractIssueTestCase2 {
   }
 
   /**
+   * SONAR-4620
+   */
+  @Test
+  public void test_open_issue_filter_from_issues_widget() throws Exception {
+    // By default page size is 5 so assign 6 issues to have pagination
+    List<Issue> issues = search(IssueQuery.create()).list();
+    int count = 0;
+    for (Issue issue : issues) {
+      adminIssueClient().assign(issue.key(), "admin");
+      if (++count >= 6) {
+        break;
+      }
+    }
+
+    orchestrator.executeSelenese(Selenese
+      .builder()
+      .setHtmlTestsInClasspath("open_issue_filter_from_issues_widget",
+        "/selenium/issue/widgets/open_issue_filter_from_issues_widget/should-open-issue-filter.html"
+      ).build());
+  }
+
+  /**
    * SONAR-4298
    */
   @Test
@@ -110,7 +131,8 @@ public class IssueWidgetsTest extends AbstractIssueTestCase2 {
   @Test
   public void test_action_plan_widget() throws Exception {
     // Create a action plan on the project
-    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
+    ActionPlan actionPlan = adminActionPlanClient().create(
+      NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
     // 3 issues will be affected to the action plan : 2 unresolved issues, and 1 resolved
 
@@ -147,7 +169,6 @@ public class IssueWidgetsTest extends AbstractIssueTestCase2 {
         "/selenium/issue/widgets/issue-filter-widget/should-open-links-on-issues.html"
       ).build());
   }
-
 
   private void analyzeProject() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
