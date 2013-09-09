@@ -53,7 +53,7 @@
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
           org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
           org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
-          com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
+          com.sonarsource.cpp:sonar-cpp-plugin:1.5,
           org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
           com.sonarsource.cobol:sonar-cobol-plugin:${cobolLatest},
           org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
@@ -265,7 +265,7 @@
           com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest}
         </plugins>
       </properties>
-    </profile>    
+    </profile>
   </profiles>
   <build>
     <plugins>
