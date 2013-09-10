@@ -1,4 +1,6 @@
-package com.sonar.it.issue2.suite;
+package com.sonar.it.exclusions.suite;
+
+import com.sonar.it.issue2.suite.AbstractIssueTestCase2;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
