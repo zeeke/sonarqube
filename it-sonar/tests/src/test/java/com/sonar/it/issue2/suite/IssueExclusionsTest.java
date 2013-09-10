@@ -13,7 +13,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class IssueExclusionsTest extends AbstractIssueTestCase2 {
 
   private static final String PROJECT_KEY = "com.sonarsource.it.samples:multi-modules-exclusions";
-  private static final String PROJECT_DIR = "issue/exclusions";
+  private static final String PROJECT_DIR = "exclusions/xoo-multi-modules";
 
   @Before
   public void resetData() {
