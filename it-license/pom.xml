@@ -24,6 +24,7 @@
   <modules>
     <module>plugins/sonar-faux-sqale-plugin</module>
     <module>plugins/sonar-faux-cobol-plugin</module>
+    <module>plugins/sonar-faux-cpp-plugin</module>
     <module>tests</module>
   </modules>
 
