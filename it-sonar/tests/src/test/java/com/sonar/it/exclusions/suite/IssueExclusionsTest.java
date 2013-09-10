@@ -181,6 +181,32 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
   }
 
   @Test
+  public void should_log_missing_block_start() {
+    checkAnalysisFails(
+      "sonar.issue.ignore.block", "1",
+      "sonar.issue.ignore.block.1.beginBlockRegexp", "",
+      "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR"
+    );
+  }
+
+  @Test
+  public void should_log_missing_block_end() {
+    checkAnalysisFails(
+      "sonar.issue.ignore.block", "1",
+      "sonar.issue.ignore.block.1.beginBlockRegexp", "MUTE-SONAR",
+      "sonar.issue.ignore.block.1.endBlockRegexp", ""
+    );
+  }
+
+  @Test
+  public void should_log_missing_whole_file_regexp() {
+    checkAnalysisFails(
+      "sonar.issue.ignore.allfile", "1",
+      "sonar.issue.ignore.allfile.1.fileRegexp", ""
+    );
+  }
+
+  @Test
   public void should_not_ignore_issues_if_line_range_is_empty() {
     scan(
       "sonar.issue.ignore.multicriteria", "1",
