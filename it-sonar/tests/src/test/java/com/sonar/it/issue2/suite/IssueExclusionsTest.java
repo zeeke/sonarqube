@@ -76,8 +76,7 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
     scan(
       "sonar.issue.ignore.block", "1",
       "sonar.issue.ignore.block.1.beginBlockRegexp", "MUTE-SONAR",
-      "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR",
-      "sonar.verbose", "true"
+      "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR"
       );
 
     checkIssueCountBySeverity(
@@ -89,11 +88,30 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
       7);
   }
 
+  @Test
+  public void should_ignore_one_per_line_on_single_package() {
+    scan(
+      "sonar.issue.ignore.multicriteria", "1",
+      "sonar.issue.ignore.multicriteria.1.resourceKey", "com/sonar/it/samples/modules/a1/*",
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine",
+      "sonar.issue.ignore.multicriteria.1.lineRange", "*"
+      );
+
+    checkIssueCountBySeverity(
+      70 - 18 /* lines in HelloA1.xoo */,
+      2,
+      57 - 18,
+      4,
+      0,
+      7);
+  }
+
   protected void scan(String... properties) {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir(PROJECT_DIR))
       .setProperties("sonar.cpd.skip", "true")
       .setProperties(properties)
+      //.setProperties("sonar.verbose", "true")
       .setProfile("with-many-rules")
       // Multi module project have to use sonar-runner 2.2.2 to not fail
       .setRunnerVersion("2.2.2");
