@@ -10,11 +10,13 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.fest.assertions.Assertions;
 import org.json.simple.JSONValue;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -25,11 +27,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.startsWith;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.fail;
+
 
 public class ServerAdministrationTest {
 
@@ -38,12 +38,15 @@ public class ServerAdministrationTest {
 
   @Test
   public void getSonarVersion() {
-    assertThat(orchestrator.getServer().getWsClient().find(new ServerQuery()).getVersion(), startsWith("4."));
+    String version = orchestrator.getServer().getWsClient().find(new ServerQuery()).getVersion();
+    if (!StringUtils.startsWithAny(version, new String[]{"3.7", "4."})) {
+      fail("Bad version: " + version);
+    }
   }
 
   @Test
   public void getServerStatus() {
-    assertThat(orchestrator.getServer().getWsClient().find(new ServerQuery()).getStatus(), is(Server.Status.UP));
+    Assertions.assertThat(orchestrator.getServer().getWsClient().find(new ServerQuery()).getStatus()).isEqualTo(Server.Status.UP);
   }
 
   @Test
@@ -123,13 +126,13 @@ public class ServerAdministrationTest {
       HttpGet get = new HttpGet(orchestrator.getServer().getUrl() + "/api/widgets");
       HttpResponse response = httpclient.execute(get);
 
-      assertThat(response.getStatusLine().getStatusCode(), is(200));
+      assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
       String json = IOUtils.toString(response.getEntity().getContent());
       List widgets = (List) JSONValue.parse(json);
-      assertThat(widgets.size(), greaterThan(10));
+      assertThat(widgets.size()).isGreaterThan(10);
 
       // quick test of the first widget
-      assertNotNull(((Map) widgets.get(0)).get("title"));
+      assertThat(((Map) widgets.get(0)).get("title")).isNotNull();
 
       EntityUtils.consume(response.getEntity());
 
