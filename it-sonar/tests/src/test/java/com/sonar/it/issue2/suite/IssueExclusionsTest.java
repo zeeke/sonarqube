@@ -106,6 +106,24 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
       7);
   }
 
+  @Test
+  public void should_ignore_one_per_line_everywhere_on_line_range() {
+    scan(
+      "sonar.issue.ignore.multicriteria", "1",
+      "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*",
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine",
+      "sonar.issue.ignore.multicriteria.1.lineRange", "[3-5]"
+      );
+
+    checkIssueCountBySeverity(
+      70 - 4 * 3 /* 3 lines per file */,
+      2,
+      57 - 4 * 3,
+      4,
+      0,
+      7);
+  }
+
   protected void scan(String... properties) {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir(PROJECT_DIR))
