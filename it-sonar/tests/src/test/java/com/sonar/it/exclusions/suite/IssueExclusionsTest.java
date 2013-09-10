@@ -5,9 +5,9 @@
  */
 package com.sonar.it.exclusions.suite;
 
-import com.sonar.it.issue2.suite.AbstractIssueTestCase2;
-
 import com.sonar.it.ItUtils;
+import com.sonar.it.issue2.suite.AbstractIssueTestCase2;
+import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.AfterClass;
@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
 import static org.fest.assertions.Assertions.assertThat;
 
 public class IssueExclusionsTest extends AbstractIssueTestCase2 {
@@ -37,17 +38,6 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
     scan();
 
     checkIssueCountBySeverity(70, 2, 57, 4, 0, 7);
-  }
-
-  private void checkIssueCountBySeverity(int total, int taggedXoo, int perLine, int perFile, int blocker, int perModule) {
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(PROJECT_KEY, "violations", "info_violations", "minor_violations", "major_violations",
-      "blocker_violations", "critical_violations"));
-    assertThat(project.getMeasureIntValue("violations")).isEqualTo(total);
-    assertThat(project.getMeasureIntValue("info_violations")).isEqualTo(taggedXoo);     // Has tag 'xoo'
-    assertThat(project.getMeasureIntValue("minor_violations")).isEqualTo(perLine);      // One per line
-    assertThat(project.getMeasureIntValue("major_violations")).isEqualTo(perFile);      // One per file
-    assertThat(project.getMeasureIntValue("blocker_violations")).isEqualTo(blocker);
-    assertThat(project.getMeasureIntValue("critical_violations")).isEqualTo(perModule); // One per module
   }
 
   @Test
@@ -160,7 +150,49 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
       7);
   }
 
-  protected void scan(String... properties) {
+  @Test
+  public void should_log_bad_line_range() {
+    checkAnalysisFails(
+      "sonar.issue.ignore.multicriteria", "1",
+      "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*",
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "*",
+      "sonar.issue.ignore.multicriteria.1.lineRange", "notALineRange"
+      );
+  }
+
+  @Test
+  public void should_log_missing_resource_key() {
+    checkAnalysisFails(
+      "sonar.issue.ignore.multicriteria", "1",
+      "sonar.issue.ignore.multicriteria.1.resourceKey", "",
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "*",
+      "sonar.issue.ignore.multicriteria.1.lineRange", "[]"
+      );
+  }
+
+  @Test
+  public void should_log_missing_rule_key() {
+    checkAnalysisFails(
+      "sonar.issue.ignore.multicriteria", "1",
+      "sonar.issue.ignore.multicriteria.1.resourceKey", "*",
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "",
+      "sonar.issue.ignore.multicriteria.1.lineRange", "[]"
+      );
+  }
+
+  @Test
+  public void should_not_ignore_issues_if_line_range_is_empty() {
+    scan(
+      "sonar.issue.ignore.multicriteria", "1",
+      "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*",
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "*",
+      "sonar.issue.ignore.multicriteria.1.lineRange", "[]"
+      );
+
+    checkIssueCountBySeverity(70, 2, 57, 4, 0, 7);
+  }
+
+  protected BuildResult scan(String... properties) {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir(PROJECT_DIR))
       .setProperties("sonar.cpd.skip", "true")
@@ -169,6 +201,23 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
       .setProfile("with-many-rules")
       // Multi module project have to use sonar-runner 2.2.2 to not fail
       .setRunnerVersion("2.2.2");
-    orchestrator.executeBuild(scan);
+    return orchestrator.executeBuildQuietly(scan);
+  }
+
+  private void checkIssueCountBySeverity(int total, int taggedXoo, int perLine, int perFile, int blocker, int perModule) {
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(PROJECT_KEY, "violations", "info_violations", "minor_violations", "major_violations",
+      "blocker_violations", "critical_violations"));
+    assertThat(project.getMeasureIntValue("violations")).isEqualTo(total);
+    assertThat(project.getMeasureIntValue("info_violations")).isEqualTo(taggedXoo);     // Has tag 'xoo'
+    assertThat(project.getMeasureIntValue("minor_violations")).isEqualTo(perLine);      // One per line
+    assertThat(project.getMeasureIntValue("major_violations")).isEqualTo(perFile);      // One per file
+    assertThat(project.getMeasureIntValue("blocker_violations")).isEqualTo(blocker);
+    assertThat(project.getMeasureIntValue("critical_violations")).isEqualTo(perModule); // One per module
+  }
+
+  private void checkAnalysisFails(String... properties) {
+    BuildResult buildResult = scan(properties);
+    assertThat(buildResult.getStatus()).isNotEqualTo(0);
+    assertThat(buildResult.getLogs().indexOf("SonarException")).isGreaterThan(0);
   }
 }
