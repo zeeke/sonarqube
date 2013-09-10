@@ -124,6 +124,35 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
       7);
   }
 
+  @Test
+  public void should_apply_exclusions_from_multiple_sources() {
+    scan(
+      "sonar.issue.ignore.allfile", "1",
+      "sonar.issue.ignore.allfile.1.fileRegexp", "EXTERMINATE-ALL-ISSUES",
+      "sonar.issue.ignore.block", "1",
+      "sonar.issue.ignore.block.1.beginBlockRegexp", "MUTE-SONAR",
+      "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR",
+      "sonar.issue.ignore.multicriteria", "1,2",
+      "sonar.issue.ignore.multicriteria.1.resourceKey", "com/sonar/it/samples/modules/b1/*",
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine",
+      "sonar.issue.ignore.multicriteria.1.lineRange", "*",
+      "sonar.issue.ignore.multicriteria.2.resourceKey", "**/*",
+      "sonar.issue.ignore.multicriteria.2.ruleKey", "xoo:OneIssuePerLine",
+      "sonar.issue.ignore.multicriteria.2.lineRange", "[3-5]"
+    );
+
+    checkIssueCountBySeverity(
+      70 - 1 /* tag in HelloA1.xoo */ - 1 /* tag in HelloA2.xoo */
+        - 18 /* lines in HelloA1.xoo */ - 5 /* lines in HelloA2.xoo */ - 12 /* lines in HelloB1.xoo */
+        - (4 - 2) * 3 /* 3 lines per file, HelloA1.xoo and HelloB1.xoo already silenced */
+        - 1 /* HelloA1.xoo file */,
+      2 - 2,
+      57 - 18 - 5 - 12 - (4 - 2) * 3,
+      4 - 1,
+      0,
+      7);
+  }
+
   protected void scan(String... properties) {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir(PROJECT_DIR))
