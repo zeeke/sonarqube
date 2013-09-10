@@ -11,11 +11,15 @@
   <packaging>sonar-plugin</packaging>
   <name>Plugins :: Resource Filter</name>
 
+  <properties>
+    <sonar.buildVersion>2.10</sonar.buildVersion>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>2.10</version>
+      <version>${sonar.buildVersion}</version>
     </dependency>
   </dependencies>
 

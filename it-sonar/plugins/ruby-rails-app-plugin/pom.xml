@@ -10,11 +10,15 @@
   <packaging>sonar-plugin</packaging>
   <name>Plugins :: Ruby Rails Application</name>
 
+  <properties>
+    <sonar.buildVersion>3.0</sonar.buildVersion>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>3.0</version>
+      <version>${sonar.buildVersion}</version>
     </dependency>
   </dependencies>
 

@@ -10,11 +10,15 @@
   <artifactId>self-l10ned-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
 
+  <properties>
+    <sonar.buildVersion>3.2</sonar.buildVersion>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>3.2</version>
+      <version>${sonar.buildVersion}</version>
     </dependency>
   </dependencies>
 

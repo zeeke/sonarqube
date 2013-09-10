@@ -13,7 +13,7 @@
   <description>Two basic tasks</description>
 
   <properties>
-    <sonar.buildVersion>3.6-RC1</sonar.buildVersion>
+    <sonar.buildVersion>3.6</sonar.buildVersion>
   </properties>
 
   <dependencies>

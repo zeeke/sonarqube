@@ -12,11 +12,15 @@
   <name>Plugins :: Crash</name>
   <description>Crash on demand</description>
 
+  <properties>
+    <sonar.buildVersion>3.3</sonar.buildVersion>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>3.3</version>
+      <version>${sonar.buildVersion}</version>
     </dependency>
   </dependencies>
 

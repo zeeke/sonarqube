@@ -15,19 +15,19 @@
 
   <properties>
     <sonar.pluginClass>FakeFrenchPackPlugin</sonar.pluginClass>
-    <sonar.version>2.12</sonar.version>
+    <sonar.buildVersion>2.12</sonar.buildVersion>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.version}</version>
+      <version>${sonar.buildVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-testing-harness</artifactId>
-      <version>${sonar.version}</version>
+      <version>${sonar.buildVersion}</version>
     </dependency>
   </dependencies>
 
