@@ -28,10 +28,11 @@
       <plugin>
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
+        <version>1.6</version>
         <extensions>true</extensions>
         <configuration>
           <pluginClass>org.sonar.samples.BetaRulesPlugin</pluginClass>
+          <pluginDescription>Rules marked as beta</pluginDescription>
         </configuration>
       </plugin>
     </plugins>

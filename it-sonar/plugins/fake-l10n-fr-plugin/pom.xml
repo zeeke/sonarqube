@@ -15,7 +15,7 @@
 
   <properties>
     <sonar.pluginClass>FakeFrenchPackPlugin</sonar.pluginClass>
-    <sonar.buildVersion>2.12</sonar.buildVersion>
+    <sonar.buildVersion>3.6</sonar.buildVersion>
   </properties>
 
   <dependencies>

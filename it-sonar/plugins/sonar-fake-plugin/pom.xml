@@ -15,7 +15,7 @@
   <name>Plugins :: Fake</name>
 
   <properties>
-    <sonar.buildVersion>3.1</sonar.buildVersion>
+    <sonar.buildVersion>3.6</sonar.buildVersion>
   </properties>
 
   <dependencies>

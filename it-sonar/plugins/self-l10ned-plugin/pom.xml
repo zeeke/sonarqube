@@ -11,7 +11,7 @@
   <packaging>sonar-plugin</packaging>
 
   <properties>
-    <sonar.buildVersion>3.2</sonar.buildVersion>
+    <sonar.buildVersion>3.6</sonar.buildVersion>
   </properties>
 
   <dependencies>

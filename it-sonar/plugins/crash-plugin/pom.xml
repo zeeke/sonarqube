@@ -13,7 +13,7 @@
   <description>Crash on demand</description>
 
   <properties>
-    <sonar.buildVersion>3.3</sonar.buildVersion>
+    <sonar.buildVersion>3.6</sonar.buildVersion>
   </properties>
 
   <dependencies>

@@ -11,7 +11,7 @@
   <name>Plugins :: Ruby API Tester</name>
 
   <properties>
-    <sonar.buildVersion>2.10</sonar.buildVersion>
+    <sonar.buildVersion>3.6</sonar.buildVersion>
   </properties>
 
   <dependencies>
