@@ -24,8 +24,23 @@
   <modules>
     <module>plugins/sonar-faux-sqale-plugin</module>
     <module>plugins/sonar-faux-cobol-plugin</module>
-    <module>plugins/sonar-faux-cpp-plugin</module>
     <module>tests</module>
   </modules>
+
+  <!-- Build cpp plugin only with license 2.4+ because it uses a new API -->
+  <profiles>
+    <profile>
+      <id>for-license-2.4</id>
+      <activation>
+        <property>
+          <name>licenseVersion</name>
+          <value>!2.3</value>
+        </property>
+      </activation>
+      <modules>
+        <module>plugins/sonar-faux-cpp-plugin</module>
+      </modules>
+    </profile>
+  </profiles>
 
 </project>
