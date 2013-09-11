@@ -18,6 +18,7 @@ import org.sonar.wsclient.services.PropertyUpdateQuery;
 import java.io.File;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 public class LanguagePluginTest {
 
@@ -79,6 +80,7 @@ public class LanguagePluginTest {
   // LICENSE-29
   @Test
   public void enable_several_languages_in_same_plugin() {
+    assumeTrue(LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.4"));
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/empty-cpp.xml"));
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/empty-c.xml"));
     String validLicense = orchestrator.plugins().licenses().get("cpp");
