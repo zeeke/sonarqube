@@ -6,12 +6,15 @@
 package com.sonar.license.it;
 
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.ResourceLocation;
-import org.junit.Rule;
+import com.sonar.orchestrator.version.Version;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 
@@ -22,11 +25,28 @@ import static org.junit.Assume.assumeTrue;
 
 public class LanguagePluginTest {
 
-  @Rule
-  public Orchestrator orchestrator = Orchestrator.builderEnv()
-    .addPlugin(FileLocation.of("../plugins/sonar-faux-cobol-plugin/target/sonar-faux-cobol-plugin-1.0-SNAPSHOT.jar"))
-    .addPlugin(FileLocation.of("../plugins/sonar-faux-cpp-plugin/target/sonar-faux-cpp-plugin-1.0-SNAPSHOT.jar"))
-    .build();
+  private static Orchestrator orchestrator = null;
+
+  @BeforeClass
+  public static void startServer() {
+    OrchestratorBuilder builder = Orchestrator.builderEnv()
+      .addPlugin(FileLocation.of("../plugins/sonar-faux-cobol-plugin/target/sonar-faux-cobol-plugin-1.0-SNAPSHOT.jar"));
+
+    // This plugin is only build with License 2.4+
+    if (Version.create(builder.getOrchestratorProperty("licenseVersion")).isGreaterThanOrEquals("2.4")) {
+      builder.addPlugin(FileLocation.of("../plugins/sonar-faux-cpp-plugin/target/sonar-faux-cpp-plugin-1.0-SNAPSHOT.jar"));
+    }
+
+    orchestrator = builder.build();
+    orchestrator.start();
+  }
+
+  @AfterClass
+  public static void stopServer() {
+    if (orchestrator != null) {
+      orchestrator.stop();
+    }
+  }
 
   /**
    * LICENSE-13
