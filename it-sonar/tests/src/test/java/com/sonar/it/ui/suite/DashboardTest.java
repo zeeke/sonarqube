@@ -33,7 +33,11 @@ public class DashboardTest {
     seleniumSuite("dashboard_extension",
       "/selenium/ui/dashboard/dashboard_extension/dashboard-should-be-registered.html",
       "/selenium/ui/dashboard/dashboard_extension/test-location-of-widgets.html",
-      "/selenium/ui/dashboard/dashboard_extension/test-name-l10n.html");
+      "/selenium/ui/dashboard/dashboard_extension/test-name-l10n.html",
+
+      // SSF-19
+      "/selenium/ui/dashboard/dashboard_extension/xss.html"
+    );
   }
 
   /**
