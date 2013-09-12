@@ -14,46 +14,46 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/project/settings/sample?category=exclusions</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=input_sonar.skippedModules</td>
-        <td>my-excluded-module</td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>id=submit_settings</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertValue</td>
-        <td>id=input_sonar.skippedModules</td>
-        <td>my-excluded-module</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/project/settings/sample?category=exclusions&amp;subcategory=files</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=input_sonar.skippedModules</td>
+	<td>my-excluded-module</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=submit_settings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>id=input_sonar.skippedModules</td>
+	<td>my-excluded-module</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
