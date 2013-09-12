@@ -86,6 +86,23 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
   }
 
   @Test
+  public void should_ignore_to_end_of_file() {
+    scan(
+      "sonar.issue.ignore.block", "1",
+      "sonar.issue.ignore.block.1.beginBlockRegexp", "MUTE-SONAR",
+      "sonar.issue.ignore.block.1.endBlockRegexp", ""
+      );
+
+    checkIssueCountBySeverity(
+      70 - 1 /* tag */ - 7 /* remaining lines in HelloA2.xoo */,
+      2 - 1,
+      57 - 7,
+      4,
+      0,
+      7);
+  }
+
+  @Test
   public void should_ignore_one_per_line_on_single_package() {
     scan(
       "sonar.issue.ignore.multicriteria", "1",
@@ -186,15 +203,6 @@ public class IssueExclusionsTest extends AbstractIssueTestCase2 {
       "sonar.issue.ignore.block", "1",
       "sonar.issue.ignore.block.1.beginBlockRegexp", "",
       "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR"
-    );
-  }
-
-  @Test
-  public void should_log_missing_block_end() {
-    checkAnalysisFails(
-      "sonar.issue.ignore.block", "1",
-      "sonar.issue.ignore.block.1.beginBlockRegexp", "MUTE-SONAR",
-      "sonar.issue.ignore.block.1.endBlockRegexp", ""
     );
   }
 
