@@ -73,6 +73,26 @@
 	<td>dashboards</td>
 	<td>*&lt;script&gt;alert('xss in name')&lt;/script&gt;*&lt;script&gt;alert('xss in description')&lt;/script&gt;*</td>
 </tr>
+<tr>
+	<td>click</td>
+	<td>id=delete-%3Cscript%3Ealert%28%27xss%20in%20name%27%29%3C%2Fscript%3E</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>delete-dashboard-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=confirm-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>dashboards</td>
+	<td>*alert*</td>
+</tr>
 </tbody>
 </table>
 </body>
