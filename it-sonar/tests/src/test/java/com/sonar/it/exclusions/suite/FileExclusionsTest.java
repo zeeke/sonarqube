@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.batch.suite;
+package com.sonar.it.exclusions.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -21,18 +21,18 @@ import java.util.List;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class FileExclusionsTest {
-  private static final String PROJECT = "exclusions";
+  static final String PROJECT = "exclusions";
 
   @ClassRule
-  public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = ExclusionsTestSuite.ORCHESTRATOR;
 
   @Before
-  public void truncateData() {
+  public void resetData() {
     orchestrator.getDatabase().truncateInspectionTables();
   }
 
   @Test
-  public void should_exclude_source_files() {
+  public void exclude_source_files() {
     scan(
         "sonar.global.exclusions", "**/*Ignore*.xoo",
         "sonar.exclusions", "**/*Exclude*.xoo,org/sonar/tests/packageToExclude/**",
@@ -49,7 +49,7 @@ public class FileExclusionsTest {
    * SONAR-2444 / SONAR-3758
    */
   @Test
-  public void should_exclude_test_files() {
+  public void exclude_test_files() {
     scan(
         "sonar.global.exclusions", "**/*Ignore*.xoo",
         "sonar.exclusions", "**/*Exclude*.xoo,org/sonar/tests/packageToExclude/**",
@@ -66,7 +66,7 @@ public class FileExclusionsTest {
    * SONAR-1896
    */
   @Test
-  public void should_include_source_files() {
+  public void include_source_files() {
     scan(
         "sonar.dynamicAnalysis", "false",
         "sonar.inclusions", "**/*One.xoo,**/*Two.xoo");
@@ -85,7 +85,7 @@ public class FileExclusionsTest {
    * SONAR-1896
    */
   @Test
-  public void should_include_test_files() {
+  public void include_test_files() {
     scan("sonar.test.inclusions", "**/*One*.xoo,**/*Two*.xoo");
 
     Resource project = projectWithMetrics("tests");
@@ -102,7 +102,7 @@ public class FileExclusionsTest {
    * SONAR-2760
    */
   @Test
-  public void should_include_and_exclude_files_by_absolute_path() {
+  public void include_and_exclude_files_by_absolute_path() {
     scan(
         // includes everything except ClassOnDefaultPackage
         "sonar.inclusions", "file:**/src/main/xoo/org/**/*.xoo",
@@ -120,7 +120,7 @@ public class FileExclusionsTest {
   @Test
   // TODO
   @Ignore("Xoo doesn't support coverage yet")
-  public void should_exclude_files_from_coverage() {
+  public void exclude_files_from_coverage() {
     scan(
         "sonar.global.exclusions", "**/*Ignore*.xoo",
         "sonar.exclusions", "**/*Exclude*.xoo,org/sonar/tests/packageToExclude/**",
@@ -137,7 +137,7 @@ public class FileExclusionsTest {
   @Test
   // TODO
   @Ignore("Xoo doesn't support duplication yet")
-  public void should_exclude_files_from_duplication() {
+  public void exclude_files_from_duplication() {
     scan(
         "sonar.global.exclusions", "**/*Ignore*.xoo",
         "sonar.exclusions", "**/*Exclude*.xoo,org/sonar/tests/packageToExclude/**",
