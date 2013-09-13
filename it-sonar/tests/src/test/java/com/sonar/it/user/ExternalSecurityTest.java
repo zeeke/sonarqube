@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.server;
+package com.sonar.it.user;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
@@ -39,8 +39,7 @@ public class ExternalSecurityTest {
   private static final String USERS_PROPERTY = "sonar.fakeauthenticator.users";
 
   private void start(Map<String, String> securityProperties) {
-    OrchestratorBuilder builder = Orchestrator.builderEnv()
-        .addPlugin(ItUtils.locateTestPlugin("security-plugin"));
+    OrchestratorBuilder builder = Orchestrator.builderEnv().addPlugin(ItUtils.locateTestPlugin("security-plugin"));
     for (Map.Entry<String, String> entry : securityProperties.entrySet()) {
       builder.setServerProperty(entry.getKey(), entry.getValue());
     }
@@ -80,11 +79,11 @@ public class ExternalSecurityTest {
         loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details",
-        "/selenium/server/external-security/external-user-details.html").build());
+      "/selenium/user/external-security/external-user-details.html").build());
 
     // SONAR-4462
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("system-info",
-        "/selenium/server/external-security/system-info.html").build());
+      "/selenium/user/external-security/system-info.html").build());
   }
 
   /**
@@ -109,7 +108,7 @@ public class ExternalSecurityTest {
         loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details",
-        "/selenium/server/external-security/external-user-details.html").build());
+      "/selenium/user/external-security/external-user-details.html").build());
 
     // Now update user details
     users.put(username + ".name", "Tester2 Testerovich");
@@ -120,7 +119,7 @@ public class ExternalSecurityTest {
         loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups updated
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details2",
-        "/selenium/server/external-security/external-user-details2.html").build());
+      "/selenium/user/external-security/external-user-details2.html").build());
   }
 
   /**
@@ -145,7 +144,7 @@ public class ExternalSecurityTest {
         loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details",
-        "/selenium/server/external-security/external-user-details.html").build());
+      "/selenium/user/external-security/external-user-details.html").build());
 
     // Now update user details
     users.put(username + ".name", "Tester2 Testerovich");
@@ -156,7 +155,7 @@ public class ExternalSecurityTest {
         loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups not updated
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details",
-        "/selenium/server/external-security/external-user-details.html").build());
+      "/selenium/user/external-security/external-user-details.html").build());
   }
 
   /**
@@ -285,7 +284,7 @@ public class ExternalSecurityTest {
 
     // Let's create and delete the user "tester" in Sonar DB
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-create-and-delete-user",
-        "/selenium/server/external-security/create-and-delete-user.html").build());
+      "/selenium/user/external-security/create-and-delete-user.html").build());
 
     // And now update the security with the user that was deleted
     String login = "tester";

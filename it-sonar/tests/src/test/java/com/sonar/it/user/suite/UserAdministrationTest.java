@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.administration.suite;
+package com.sonar.it.user.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -28,7 +28,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class UserAdministrationTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = AdministrationTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = UserTestSuite.ORCHESTRATOR;
 
   @BeforeClass
   public static void init() {
@@ -40,10 +40,10 @@ public class UserAdministrationTest {
    * SONAR-3788
    */
   @Test
-  public void should_change_user_password() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-administration-change-password",
-      "/selenium/administration/user-administration/change-password.html",
-      "/selenium/administration/user-administration/change-password-with-existing-deactivate-user.html"
+  public void change_password() {
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("change_password",
+      "/selenium/user/user-administration/change-password.html",
+      "/selenium/user/user-administration/change-password-with-existing-deactivate-user.html"
     ).build();
     orchestrator.executeSelenese(selenese);
   }
@@ -53,9 +53,9 @@ public class UserAdministrationTest {
    */
   @Test
   public void create_user() throws IOException {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-administration-create_user",
-      "/selenium/administration/user-administration/create-user.html",
-      "/selenium/administration/user-administration/create-user-without-name-failure.html"
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("create_user",
+      "/selenium/user/user-administration/create-user.html",
+      "/selenium/user/user-administration/create-user-without-name-failure.html"
     ).build();
     orchestrator.executeSelenese(selenese);
 
@@ -65,8 +65,8 @@ public class UserAdministrationTest {
 
   @Test
   public void delete_and_reactivate_user() throws IOException {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-administration-delete_and_reactivate_user",
-      "/selenium/administration/user-administration/reactivate-user.html").build();
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("delete_and_reactivate_user",
+      "/selenium/user/user-administration/reactivate-user.html").build();
     orchestrator.executeSelenese(selenese);
 
     File logs = orchestrator.getServer().getLogs();
@@ -77,8 +77,8 @@ public class UserAdministrationTest {
   public void allow_users_to_sign_up() throws IOException {
     orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.allowUsersToSignUp", "true"));
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-administration-allow_users_to_sign_up",
-      "/selenium/administration/user-administration/allow_users_to_sign_up.html").build();
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("allow_users_to_sign_up",
+      "/selenium/user/user-administration/allow_users_to_sign_up.html").build();
     orchestrator.executeSelenese(selenese);
 
     File logs = orchestrator.getServer().getLogs();
@@ -136,7 +136,7 @@ public class UserAdministrationTest {
    * SONAR-4411
    */
   @Test
-  public void should_create_user_using_ws() throws Exception {
+  public void create_user_using_ws() throws Exception {
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
     UserParameters creationParameters = UserParameters.create().login("should_create_user").name("should_create_user")
@@ -149,9 +149,9 @@ public class UserAdministrationTest {
     client.userClient().deactivate("should_reactivate_user");
     client.userClient().create(reactivationParameters);
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-creation-using-ws",
-      "/selenium/administration/user-administration/create-user-with-ws.html",
-      "/selenium/administration/user-administration/reactivate-user-with-ws.html")
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("create_user_using_ws",
+      "/selenium/user/user-administration/create-user-with-ws.html",
+      "/selenium/user/user-administration/reactivate-user-with-ws.html")
       .build();
     orchestrator.executeSelenese(selenese);
   }
@@ -160,7 +160,7 @@ public class UserAdministrationTest {
    * SONAR-4411
    */
   @Test
-  public void should_edit_user_using_ws() throws Exception {
+  public void edit_user_using_ws() throws Exception {
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
     UserParameters userCreationParameters = UserParameters.create().login("should_edit_user").name("should_edit_user")
@@ -170,8 +170,8 @@ public class UserAdministrationTest {
     UserParameters userEditionParameters = UserParameters.create().login("should_edit_user").email("should_edit_user@mail.net");
     client.userClient().update(userEditionParameters);
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-edition-using-ws",
-      "/selenium/administration/user-administration/edit-user-with-ws.html").build();
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("edit_user_using_ws",
+      "/selenium/user/user-administration/edit-user-with-ws.html").build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -179,7 +179,7 @@ public class UserAdministrationTest {
    * SONAR-4411
    */
   @Test
-  public void should_delete_user_using_ws() throws Exception {
+  public void delete_user_using_ws() throws Exception {
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
     UserParameters creationParameters = UserParameters.create().login("should_delete_user").name("should_delete_user")
@@ -187,8 +187,8 @@ public class UserAdministrationTest {
     client.userClient().create(creationParameters);
     client.userClient().deactivate("should_delete_user");
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("user-deletion-using-ws",
-      "/selenium/administration/user-administration/delete-user-with-ws.html").build();
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("delete_user_using_ws",
+      "/selenium/user/user-administration/delete-user-with-ws.html").build();
     orchestrator.executeSelenese(selenese);
   }
 }

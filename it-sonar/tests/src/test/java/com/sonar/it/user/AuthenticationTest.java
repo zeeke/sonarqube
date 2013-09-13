@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.server;
+package com.sonar.it.user;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -27,12 +27,12 @@ public class AuthenticationTest {
     orchestrator = Orchestrator.builderEnv().build();
     orchestrator.start();
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("server-authentication",
-      "/selenium/server/authentication/login_cancel.html",
-      "/selenium/server/authentication/login_successful.html",
-      "/selenium/server/authentication/login_wrong_password.html",
-      "/selenium/server/authentication/redirect_to_original_url_after_direct_login.html", // SONAR-2132
-      "/selenium/server/authentication/redirect_to_original_url_after_indirect_login.html" // SONAR-2009
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("authentication",
+      "/selenium/user/authentication/login_cancel.html",
+      "/selenium/user/authentication/login_successful.html",
+      "/selenium/user/authentication/login_wrong_password.html",
+      "/selenium/user/authentication/redirect_to_original_url_after_direct_login.html", // SONAR-2132
+      "/selenium/user/authentication/redirect_to_original_url_after_indirect_login.html" // SONAR-2009
     ).build();
     orchestrator.executeSelenese(selenese);
   }
@@ -45,8 +45,8 @@ public class AuthenticationTest {
     orchestrator = Orchestrator.builderEnv().setServerProperty("sonar.forceAuthentication", "true").build();
     orchestrator.start();
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("server-force-authentication",
-      "/selenium/server/authentication/force-authentication.html"
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("force_authentication",
+      "/selenium/user/authentication/force-authentication.html"
     ).build();
     orchestrator.executeSelenese(selenese);
   }
