@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.batch;
+package com.sonar.it.exclusions.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -21,16 +21,14 @@ import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class SourceFiltersTest {
-  public static final String PROJECT = "com.sonarsource.it.projects.batch:source-filters";
+  static final String PROJECT = "com.sonarsource.it.projects.batch:source-filters";
 
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .addPlugin(ItUtils.locateTestPlugin("resource-filter-plugin"))
-    .build();
-
+  public static Orchestrator orchestrator = ExclusionsTestSuite.ORCHESTRATOR;
 
   @BeforeClass
-  public static void analyzeProject() {
+  public static void scanProject() {
+    orchestrator.getDatabase().truncateInspectionTables();
     MavenBuild build = MavenBuild.builder()
       .setPom(ItUtils.locateProjectPom("batch/source-filters"))
       .withProperty("sonar.exclusions", "sourceFilters/**/*ByProperty.java")

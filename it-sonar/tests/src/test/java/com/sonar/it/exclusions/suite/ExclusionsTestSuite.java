@@ -13,12 +13,16 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  IssueExclusionsTest.class
+  IssueExclusionsTest.class, SourceFiltersTest.class
 })
 public class ExclusionsTestSuite {
 
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
+
+    // used by SourceFiltersTest
+    .addPlugin(ItUtils.locateTestPlugin("resource-filter-plugin"))
+
     .build();
 }
