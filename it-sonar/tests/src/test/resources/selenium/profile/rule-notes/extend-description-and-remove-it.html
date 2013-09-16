@@ -3,10 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>add-delete-note-on-active-rule</title>
+    <title>extend-description</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">extend-description</td>
+    </tr>
+    </thead>
     <tbody>
     <tr>
 	<td>open</td>
@@ -49,59 +54,71 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
+	<td>assertText</td>
 	<td>result_table</td>
-	<td>*One Issue Per Line*Add Note*</td>
+	<td>*One Issue Per Line*Extend Description*Add Note*</td>
 </tr>
+<!--Add extended description-->
 <tr>
 	<td>click</td>
-	<td>link=Add Note</td>
+	<td>link=Extend Description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>link=Extend Description</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>css=textarea[name='note']</td>
-	<td>This is my note</td>
-</tr>
-<tr>
-	<td>typeKeys</td>
-	<td>css=textarea[name='note']</td>
-	<td>Type keys to activate Add note button</td>
-</tr>
-<tr>
-	<td>waitForEditable</td>
-	<td>name=submit-active-note</td>
-	<td></td>
+	<td>css=textarea[name='text']</td>
+	<td>More description</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>name=submit-active-note</td>
+	<td>css=input[value='Extend Description']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
 	<td>result_table</td>
-	<td>*One Issue Per Line*Administrator*Edit*Delete*This is my note*</td>
+	<td>*One Issue Per Line*More description*Extend Description*Add Note*</td>
+</tr>
+<tr>
+	<td>assertVisible</td>
+	<td>link=Extend Description</td>
+	<td></td>
+</tr>
+<!--Remove extended description-->
+<tr>
+	<td>click</td>
+	<td>link=Extend Description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>link=Extend Description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=textarea[name='text']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=input[value='Extend Description']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>result_table</td>
+	<td>*One Issue Per Line*Extend Description*Add Note*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
 	<td>result_table</td>
-	<td>*Add Note*</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Delete</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertConfirmation</td>
-	<td>Do you really want to delete this note?</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>result_table</td>
-	<td>*Add Note*</td>
+	<td>*More description*</td>
 </tr>
 </tbody>
 </table>

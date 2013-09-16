@@ -9,71 +9,71 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/login</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/profiles</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=rules-java-One%20Rule%20Profile</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=searchtext</td>
-        <td>File Length</td>
-    </tr>
-    <tr>
-        <td>select</td>
-        <td>id=search_activation</td>
-        <td>label=Inactive</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=submit_search</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>link=File Length</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>body</td>
-        <td>*File Length*Extend Description*</td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>body</td>
-        <td>*Add Note*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/profiles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=rules-xoo-One%20Rule%20Profile</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=searchtext</td>
+	<td>One Issue Per File</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=search_activation</td>
+	<td>label=Inactive</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=submit_search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=One Issue Per File</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>result_table</td>
+	<td>*One Issue Per File*Extend Description*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>result_table</td>
+	<td>*Add Note*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

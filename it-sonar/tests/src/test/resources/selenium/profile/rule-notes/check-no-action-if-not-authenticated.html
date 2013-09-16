@@ -14,36 +14,36 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/profiles</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=rules-java-One%20Rule%20Profile</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>link=Line Length</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>body</td>
-        <td>*Line Length*</td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>body</td>
-        <td>*Extend Description*Add Note*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/profiles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=rules-xoo-One%20Rule%20Profile</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=One Issue Per Line</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>result_table</td>
+	<td>*One Issue Per Line*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>result_table</td>
+	<td>*Extend Description*Add Note*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

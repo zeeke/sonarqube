@@ -184,12 +184,12 @@ public class ProfileTest {
   // SONAR-1492
   @Test
   public void test_rule_notes() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/one-rule-profile.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/one-rule-profile.xml"));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-rule-notes",
       "/selenium/profile/rule-notes/check-no-action-if-not-authenticated.html",
-      // SONAR-3382
-      "/selenium/profile/rule-notes/extend-description.html",
+      // SONAR-3382, SONAR-4657
+      "/selenium/profile/rule-notes/extend-description-and-remove-it.html",
       // "/selenium/profile/rule-notes/add-delete-note-on-active-rule.html", disabled, fails on servers
       "/selenium/profile/rule-notes/cant-add-note-on-inactive-rule.html"
       ).build();
