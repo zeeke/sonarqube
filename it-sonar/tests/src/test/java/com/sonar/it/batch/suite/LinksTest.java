@@ -6,7 +6,7 @@
 package com.sonar.it.batch.suite;
 
 import com.google.common.collect.Lists;
-import com.sonar.it.batch.suite.BatchTestSuite;
+import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class LinksTest {
    */
   @Test
   public void shouldUseLinkProperties() {
-    SonarRunner runner = SonarRunner.create(new File("projects/batch/links-project"))
+    SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("batch/links-project"))
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(runner);
 
@@ -59,7 +58,7 @@ public class LinksTest {
    */
   @Test
   public void shouldUseLinkPropertiesOverPomLinksInMaven() {
-    MavenBuild build = MavenBuild.create(new File("projects/batch/links-project/pom.xml"))
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/links-project"))
       .setCleanPackageSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
