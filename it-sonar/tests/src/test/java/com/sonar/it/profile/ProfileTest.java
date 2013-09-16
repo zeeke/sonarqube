@@ -190,7 +190,7 @@ public class ProfileTest {
       "/selenium/profile/rule-notes/check-no-action-if-not-authenticated.html",
       // SONAR-3382, SONAR-4657
       "/selenium/profile/rule-notes/extend-description-and-remove-it.html",
-      // "/selenium/profile/rule-notes/add-delete-note-on-active-rule.html", disabled, fails on servers
+      "/selenium/profile/rule-notes/add-delete-note-on-active-rule.html",
       "/selenium/profile/rule-notes/cant-add-note-on-inactive-rule.html"
       ).build();
     orchestrator.executeSelenese(selenese);
