@@ -8,6 +8,7 @@ package com.sonar.it.issue.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
+import org.junit.ClassRule;
 import org.sonar.wsclient.base.HttpException;
 import org.sonar.wsclient.issue.*;
 
@@ -17,6 +18,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public abstract class AbstractIssueTestCase {
 
+  @ClassRule
   public static Orchestrator orchestrator = IssueTestSuite.ORCHESTRATOR;
 
   protected Issue searchIssueByKey(String issueKey) {

@@ -262,7 +262,9 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
     // Check that number of issues is limited from the console bulk change (no change will ne made in this test)
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should-bulk-change-be-limited-in-number-of-issues",
-      "/selenium/issue/bulk-change/should-bulk-change-be-limited-in-number-of-issues.html"
+      "/selenium/issue/bulk-change/should-bulk-change-be-limited-in-number-of-issues.html",
+      // SONAR-4654
+      "/selenium/issue/bulk-change/should-bulk-change-be-limited-in-number-of-issues-with-pagination.html"
     ).build());
   }
 
