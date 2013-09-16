@@ -79,6 +79,7 @@
     <module>update-center</module>
     <module>sonar-subcategories-plugin</module>
     <module>deprecated-xoo-rule-plugin</module>
+    <module>batch-plugin</module>
     <module>ui-plugin</module>
   </modules>
 
