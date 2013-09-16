@@ -28,11 +28,9 @@ public class FavouritesWebServiceTest {
 
   @Before
   public void inspectProject() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/sample"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }
 
