@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
 import org.sonar.wsclient.issue.NewIssue;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -285,6 +286,22 @@ public class IssueTest extends AbstractIssueTestCase2 {
         "/selenium/issue/issue-detail/should-open-changelog.html",
         "/selenium/issue/issue-detail/should-display-actions-when-logged.html"
     ).build());
+  }
+
+  @Test
+  public void plugin_can_override_profile_severity() throws Exception {
+    // The rule "OneBlockerIssuePerFile" is enabled with severity "INFO"
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue2/IssueTest/override-profile-severity.xml"));
+
+    // But it's hardcoded "blocker" when plugin generates the issue
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).setProfile("override-profile-severity");
+    orchestrator.executeBuild(scan);
+
+    Issues issues = search(IssueQuery.create().rules("xoo:OneBlockerIssuePerFile"));
+    assertThat(issues.size()).isGreaterThan(0);
+    for (Issue issue : issues.list()) {
+      assertThat(issue.severity()).isEqualTo("BLOCKER");
+    }
   }
 
   @Test
