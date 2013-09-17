@@ -28,7 +28,7 @@
     <scmActivityLatest>1.6-SNAPSHOT</scmActivityLatest>
     <securityRulesLatest>0.4-SNAPSHOT</securityRulesLatest>
     <sigmmLatest>1.1-SNAPSHOT</sigmmLatest>
-    <sqaleLatest>1.10-SNAPSHOT</sqaleLatest>
+    <sqaleLatest>2.0-SNAPSHOT</sqaleLatest>
     <taglistLatest>1.1-SNAPSHOT</taglistLatest>
     <technicalDebtLatest>1.3-SNAPSHOT</technicalDebtLatest>
     <vbLatest>1.4-SNAPSHOT</vbLatest>
