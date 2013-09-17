@@ -13,7 +13,7 @@
   <description>Main plugin for batch tests</description>
 
   <properties>
-    <sonar.buildVersion>3.6</sonar.buildVersion>
+    <sonar.buildVersion>4.0-M2</sonar.buildVersion>
   </properties>
 
   <dependencies>

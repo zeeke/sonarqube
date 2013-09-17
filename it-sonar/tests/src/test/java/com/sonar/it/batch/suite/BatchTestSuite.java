@@ -22,10 +22,13 @@ public class BatchTestSuite {
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
     .setContext("/")
+
+    // used by BatchTest
     .addPlugin(ItUtils.locateTestPlugin("batch-plugin"))
 
     // used by MavenTest
     .addPlugin(ItUtils.locateTestPlugin("maven-execution-plugin"))
+
     // used by DryRunTest
     .addPlugin(ItUtils.locateTestPlugin("access-secured-props-plugin"))
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-build-breaker-plugin", "1.1"))

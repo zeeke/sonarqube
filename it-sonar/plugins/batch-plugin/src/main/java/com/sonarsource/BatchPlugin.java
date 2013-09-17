@@ -7,7 +7,7 @@ import java.util.List;
 public class BatchPlugin extends SonarPlugin {
 
   public List getExtensions() {
-    return Arrays.asList(DumpSettingsInitializer.class);
+    return Arrays.asList(DumpSettingsInitializer.class, RaiseMessageException.class);
   }
 
 }

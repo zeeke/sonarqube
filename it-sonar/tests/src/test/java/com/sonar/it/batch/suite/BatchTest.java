@@ -14,20 +14,12 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import com.sonar.orchestrator.util.VersionUtils;
 import org.apache.commons.io.FileUtils;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.*;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.PropertyDeleteQuery;
-import org.sonar.wsclient.services.PropertyUpdateQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.Source;
-import org.sonar.wsclient.services.SourceQuery;
+import org.sonar.wsclient.services.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -166,7 +158,7 @@ public class BatchTest {
    */
   @Test
   public void should_exclude_plugins() {
-    BuildResult buildResult = inspectQuietly("shared/xoo-sample",
+    BuildResult buildResult = scanQuietly("shared/xoo-sample",
       // exclude xoo plugin
       "sonar.excludePlugins", "xoo",
       "sonar.profile", "");
@@ -191,7 +183,7 @@ public class BatchTest {
    */
   @Test
   public void should_display_explicit_message_when_duplicate_source_files() {
-    BuildResult buildResult = inspectQuietly("batch/duplicate-source");
+    BuildResult buildResult = scanQuietly("batch/duplicate-source");
 
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains("Duplicate source for resource");
@@ -204,7 +196,7 @@ public class BatchTest {
    */
   @Test
   public void should_display_explicit_message_when_no_plugin_language_available() {
-    BuildResult buildResult = inspectQuietly("shared/xoo-sample",
+    BuildResult buildResult = scanQuietly("shared/xoo-sample",
       "sonar.language", "foo",
       "sonar.profile", "");
     assertThat(buildResult.getStatus()).isEqualTo(1);
@@ -217,7 +209,7 @@ public class BatchTest {
     try {
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
 
-      BuildResult buildResult = inspectQuietly("shared/xoo-sample",
+      BuildResult buildResult = scanQuietly("shared/xoo-sample",
         "sonar.login", "",
         "sonar.password", "");
       assertThat(buildResult.getStatus()).isEqualTo(1);
@@ -225,7 +217,7 @@ public class BatchTest {
         "Not authorized. Analyzing this project requires to be authenticated. Please provide the values of the properties sonar.login and sonar.password.");
 
       // SONAR-4048
-      buildResult = inspectQuietly("shared/xoo-sample",
+      buildResult = scanQuietly("shared/xoo-sample",
         "sonar.login", "wrong_login",
         "sonar.password", "wrong_password");
       assertThat(buildResult.getStatus()).isEqualTo(1);
@@ -250,12 +242,12 @@ public class BatchTest {
     try {
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
 
-      BuildResult buildResult = inspectQuietly("shared/xoo-sample");
+      BuildResult buildResult = scanQuietly("shared/xoo-sample");
       assertThat(buildResult.getStatus()).isEqualTo(1);
       assertThat(buildResult.getLogs()).contains(
         "Not authorized. Analyzing this project requires to be authenticated. Please provide the values of the properties sonar.login and sonar.password.");
 
-      buildResult = inspectQuietly("shared/xoo-sample",
+      buildResult = scanQuietly("shared/xoo-sample",
         "sonar.login", "wrong_login",
         "sonar.password", "wrong_password");
       assertThat(buildResult.getStatus()).isEqualTo(1);
@@ -327,12 +319,12 @@ public class BatchTest {
    */
   @Test
   public void should_display_explicit_message_when_invalid_project_key_or_branch() {
-    BuildResult buildResult = inspectQuietly("shared/xoo-sample",
+    BuildResult buildResult = scanQuietly("shared/xoo-sample",
       "sonar.projectKey", "arg$l:");
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains("arg$l: is not a valid project or module key");
 
-    buildResult = inspectQuietly("shared/xoo-sample",
+    buildResult = scanQuietly("shared/xoo-sample",
       "sonar.branch", "arg$l:");
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains("arg$l: is not a valid branch");
@@ -353,6 +345,21 @@ public class BatchTest {
     assertThat(buildResult.getLogs()).contains("Profiling for purge:");
   }
 
+  /**
+   * SONAR-4547
+   */
+  @Test
+  public void display_MessageException_without_stacktrace() throws Exception {
+    BuildResult result = scanQuietly("shared/xoo-sample", "raiseMessageException", "true");
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs())
+      // message
+      .contains("Error message from plugin")
+
+        // but not stacktrace
+      .doesNotContain("at com.sonarsource.RaiseMessageException");
+  }
+
   private Resource getResource(String key) {
     return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(key, "lines"));
   }
@@ -362,7 +369,7 @@ public class BatchTest {
     return orchestrator.executeBuild(runner);
   }
 
-  private BuildResult inspectQuietly(String projectPath, String... props) {
+  private BuildResult scanQuietly(String projectPath, String... props) {
     SonarRunner runner = configureRunner(projectPath, props);
     return orchestrator.executeBuildQuietly(runner);
   }
