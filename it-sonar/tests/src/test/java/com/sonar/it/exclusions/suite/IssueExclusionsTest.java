@@ -6,31 +6,29 @@
 package com.sonar.it.exclusions.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.it.issue2.suite.AbstractIssueTestCase2;
+import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class IssueExclusionsTest extends AbstractIssueTestCase2 {
+public class IssueExclusionsTest {
 
   private static final String PROJECT_KEY = "com.sonarsource.it.samples:multi-modules-exclusions";
   private static final String PROJECT_DIR = "exclusions/xoo-multi-modules";
 
+  @ClassRule
+  public static Orchestrator orchestrator = ExclusionsTestSuite.ORCHESTRATOR;
+
   @Before
   public void resetData() {
     orchestrator.getDatabase().truncateInspectionTables();
-  }
-
-  @AfterClass
-  public static void purgeManualRules(){
-    deleteManualRules();
   }
 
   @Test
