@@ -232,4 +232,16 @@ public class ServerTest {
       "/selenium/server/url_ending_by_jsp.html").build();
     orchestrator.executeSelenese(selenese);
   }
+
+  @Test
+  public void support_install_dir_with_whitespaces() throws Exception {
+    String dirName = "target/has space";
+    FileUtils.deleteDirectory(new File(dirName));
+    orchestrator = Orchestrator.builderEnv().setOrchestratorProperty("orchestrator.workspaceDir", dirName).build();
+    orchestrator.start();
+
+    Server.Status status = orchestrator.getServer().getAdminWsClient().find(new ServerQuery()).getStatus();
+    assertThat(status).isEqualTo(Server.Status.UP);
+  }
+
 }
