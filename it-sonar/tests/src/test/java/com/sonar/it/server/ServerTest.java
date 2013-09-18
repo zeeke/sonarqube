@@ -33,6 +33,7 @@ import java.net.URL;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class ServerTest {
+
   private Orchestrator orchestrator;
 
   @Rule
@@ -46,8 +47,10 @@ public class ServerTest {
   }
 
   @Test
-  public void testLoadingOfEmbeddedLibraries() throws IOException {
-    orchestrator = Orchestrator.builderEnv().addPlugin(ItUtils.locateTestPlugin("embedded-library-plugin")).build();
+  public void load_embedded_libraries() throws IOException {
+    orchestrator = Orchestrator.builderEnv()
+      .addPlugin(ItUtils.locateTestPlugin("embedded-library-plugin"))
+      .build();
     orchestrator.start();
 
     // Should raise an exception because server is not started
@@ -59,7 +62,7 @@ public class ServerTest {
   }
 
   @Test
-  public void testRubyWebServiceExtension() {
+  public void test_ruby_web_service_extension() {
     orchestrator = Orchestrator.builderEnv()
       .addPlugin(ItUtils.locateTestPlugin("ruby-ws-plugin"))
       .build();
@@ -74,7 +77,7 @@ public class ServerTest {
    * See http://jira.codehaus.org/browse/SONAR-2727
    */
   @Test
-  public void shouldDisplayWarningsWhenUsingH2() {
+  public void display_warnings_when_using_h2() {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
     if (builder.getOrchestratorConfiguration().getString("sonar.jdbc.dialect").equals("h2")) {
       orchestrator = builder.build();
@@ -90,7 +93,7 @@ public class ServerTest {
    * See http://jira.codehaus.org/browse/SONAR-2840
    */
   @Test
-  public void hideJdbcSettingsToNonAdmin() {
+  public void hide_jdbc_settings_to_non_admin() {
     orchestrator = Orchestrator.createEnv();
     orchestrator.start();
 
@@ -138,13 +141,14 @@ public class ServerTest {
   public void property_relocation() {
     orchestrator = Orchestrator.builderEnv()
       .addPlugin(ItUtils.locateTestPlugin("property-relocation-plugin"))
+      .addPlugin(ItUtils.xooPlugin())
       .setServerProperty("sonar.deprecatedKey", "true")
       .build();
     orchestrator.start();
 
-    SonarRunner withDeprecatedKey = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+    SonarRunner withDeprecatedKey = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperty("sonar.deprecatedKey", "true");
-    SonarRunner withNewKey = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+    SonarRunner withNewKey = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperty("sonar.newKey", "true");
     // should not fail
     orchestrator.executeBuilds(withDeprecatedKey, withNewKey);
@@ -155,12 +159,11 @@ public class ServerTest {
     orchestrator.executeSelenese(selenese);
   }
 
-
   /**
    * SONAR-3105
    */
   @Test
-  public void testProjectsWebService() throws IOException {
+  public void test_projects_web_service() throws IOException {
     orchestrator = Orchestrator.createEnv();
     orchestrator.start();
 
@@ -192,7 +195,7 @@ public class ServerTest {
    * SONAR-3320
    */
   @Test
-  public void globalPropertyChangeExtensionPoint() {
+  public void global_property_change_extension_point() {
     orchestrator = Orchestrator.builderEnv()
       .addPlugin(ItUtils.locateTestPlugin("global-property-change-plugin"))
       .build();
@@ -222,7 +225,7 @@ public class ServerTest {
    * SONAR-3962
    */
   @Test
-  public void should_not_fail_with_url_ending_by_jsp() {
+  public void not_fail_with_url_ending_by_jsp() {
     orchestrator = Orchestrator.builderEnv().build();
     orchestrator.start();
 
