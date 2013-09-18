@@ -13,7 +13,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  FileExclusionsTest.class, IssueExclusionsTest.class, SourceFiltersTest.class
+  FileExclusionsTest.class, IssueExclusionsTest.class, SourceFiltersTest.class, CoverageExclusionsTest.class
 })
 public class ExclusionsTestSuite {
 
