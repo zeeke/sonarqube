@@ -38,8 +38,7 @@ public class ProjectPermissionsTest {
    * SONAR-4453
    */
   @Test
-  public void should_bulk_apply_permission_template() throws Exception {
-
+  public void bulk_apply_permission_template() throws Exception {
     SonarRunner sampleProject = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.dynamicAnalysis", "false")
       .setRunnerVersion("2.2.2");
@@ -65,8 +64,7 @@ public class ProjectPermissionsTest {
    * SONAR-4454
    */
   @Test
-  public void should_apply_template_to_single_project() throws Exception {
-
+  public void apply_template_to_single_project() throws Exception {
     SonarRunner sampleProject = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.dynamicAnalysis", "false")
       .setRunnerVersion("2.2.2");
@@ -75,6 +73,40 @@ public class ProjectPermissionsTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("apply-permission-template-to-project",
       "/selenium/administration/project-permissions/apply-permission-template-to-project.html")
       .build();
+    orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-4465
+   */
+  @Test
+  public void manage_permissions() {
+    SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(sonarRunnerBuild);
+
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-permissions",
+      "/selenium/administration/project-permissions/display-permissions.html",
+      "/selenium/administration/project-permissions/grant-project-users-from-global-administration.html",
+      "/selenium/administration/project-permissions/grant-project-groups-from-global-administration.html"
+    ).build();
+    orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-3383
+   */
+  @Test
+  public void search_projects() {
+    SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false")
+      .setRunnerVersion("2.2.2");
+    orchestrator.executeBuild(sonarRunnerBuild);
+
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("search-projects",
+      "/selenium/administration/project-permissions/search-projects.html"
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 }

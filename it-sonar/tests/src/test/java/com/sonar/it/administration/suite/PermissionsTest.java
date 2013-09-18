@@ -35,7 +35,7 @@ public class PermissionsTest {
    * SONAR-4412
    */
   @Test
-  public void should_manage_user_permissions_using_ws() throws Exception {
+  public void manage_user_permissions_using_ws() throws Exception {
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
@@ -65,7 +65,7 @@ public class PermissionsTest {
    * SONAR-4412
    */
   @Test
-  public void should_manage_groups_permissions() throws Exception {
+  public void manage_groups_permissions() throws Exception {
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
     PermissionParameters usersGroupProfileAdminParams = PermissionParameters.create().group("sonar-users").permission("shareDashboard");
@@ -82,7 +82,7 @@ public class PermissionsTest {
   }
 
   @Test
-  public void should_sort_by_name() throws Exception {
+  public void sort_by_name() throws Exception {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should_sort_by_name",
       "/selenium/administration/permission-administration/sort-global-permissions-by-name.html")
       .build();

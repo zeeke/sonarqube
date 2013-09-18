@@ -5,9 +5,7 @@
  */
 package com.sonar.it.server;
 
-import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -63,55 +61,6 @@ public class ServerAdministrationTest {
   public void display_system_info() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("server-administration",
       "/selenium/server/server-administration/system_info.html"
-    ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  @Test
-  public void manage_users() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("users",
-      "/selenium/server/server-administration/users/min-login-size.html",
-      "/selenium/server/server-administration/users/accept-login-with-uppercase.html",
-      "/selenium/server/server-administration/users/accept-login-with-whitespace.html",
-      "/selenium/server/server-administration/users/add-user-to-group.html",
-      "/selenium/server/server-administration/users/admin-has-default-groups.html",
-      "/selenium/server/server-administration/users/affect-new-user-to-default-group.html",
-      "/selenium/server/server-administration/users/affect-user-to-group.html",
-      "/selenium/server/server-administration/users/can-not-delete-myself.html",
-      "/selenium/server/server-administration/users/change-username-without-changing-password.html",
-      "/selenium/server/server-administration/users/confirm-password-when-creating-user.html",
-      "/selenium/server/server-administration/users/create-and-delete-groups.html",
-      "/selenium/server/server-administration/users/create-and-delete-users.html",
-      "/selenium/server/server-administration/users/my-profile-display-basic-data.html",
-      "/selenium/server/server-administration/users/authenticate-new-user.html",
-      "/selenium/server/server-administration/users/delete-and-reactivate-user.html", // SONAR-3258
-      "/selenium/server/server-administration/users/delete-user-and-check-not-available-in-selections.html" // SONAR-3258
-    ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  /**
-   * SONAR-4465
-   * SONAR-4466
-   */
-  @Test
-  public void configure_roles() {
-
-    SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setRunnerVersion("2.2.2");
-    orchestrator.executeBuild(sonarRunnerBuild);
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("roles",
-      "/selenium/server/server-administration/roles/display-roles.html",
-      "/selenium/server/server-administration/roles/grant-default-project-groups.html",
-      "/selenium/server/server-administration/roles/grant-default-project-users.html",
-      "/selenium/server/server-administration/roles/grant-project-users-from-global-administration.html",
-      "/selenium/server/server-administration/roles/grant-project-groups-from-global-administration.html",
-
-      // // SONAR-3383
-      "/selenium/server/server-administration/roles/search-projects.html"
-
     ).build();
     orchestrator.executeSelenese(selenese);
   }

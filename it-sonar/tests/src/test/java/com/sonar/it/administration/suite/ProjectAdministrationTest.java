@@ -256,12 +256,12 @@ public class ProjectAdministrationTest {
    * SONAR-3956
    */
   @Test
-  public void manage_project_roles() {
+  public void manage_permissions() {
     scanSample();
 
     Selenese selenese = Selenese
         .builder()
-        .setHtmlTestsInClasspath("manage_project_roles",
+        .setHtmlTestsInClasspath("manage-permissions",
             "/selenium/administration/manage_project_roles/change_roles_of_users.html",
             "/selenium/administration/manage_project_roles/change_roles_of_groups.html"
         ).build();

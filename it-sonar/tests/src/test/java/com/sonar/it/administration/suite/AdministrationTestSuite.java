@@ -15,6 +15,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
   BackupTest.class,
   BulkDeletionTest.class,
+  UserAdministrationTest.class,
   DashboardSharingPermissionTest.class,
   PermissionsTest.class,
   ProjectAdministrationTest.class,
