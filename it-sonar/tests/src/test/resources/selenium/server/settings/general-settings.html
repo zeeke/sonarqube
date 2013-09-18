@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>system_info</title>
+    <title>settings_on_core_plugins</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
     <thead>
     <tr>
-        <td rowspan="1" colspan="3">system_info</td>
+        <td rowspan="1" colspan="3">settings_on_core_plugins</td>
     </tr>
     </thead>
     <tbody>
@@ -19,8 +19,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/sonar/sessions/new</td>
+	<td>assertText</td>
+	<td>link=Log in</td>
+	<td>Log in</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Log in</td>
 	<td></td>
 </tr>
 <tr>
@@ -40,23 +45,13 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/system/index</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertElementPresent</td>
-	<td>system_info</td>
+	<td>/sonar/settings/index</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>sonar</td>
-	<td>*Version*.*-SNAPSHOT*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>system_properties</td>
-	<td>*java.class.path*java.specification.version*</td>
+	<td>plugins</td>
+	<td>*General*</td>
 </tr>
 </tbody>
 </table>

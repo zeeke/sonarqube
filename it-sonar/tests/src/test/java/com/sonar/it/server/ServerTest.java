@@ -100,7 +100,7 @@ public class ServerTest {
   }
 
   @Test
-  public void testSettings() {
+  public void test_settings() {
     URL secretKeyUrl = getClass().getResource("/com/sonar/it/server/ServerTest/sonar-secret.txt");
     orchestrator = Orchestrator.builderEnv()
       .addPlugin(ItUtils.locateTestPlugin("settings-plugin"))
@@ -110,6 +110,8 @@ public class ServerTest {
     orchestrator.start();
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("settings",
+      "/selenium/server/settings/general-settings.html",
+
       // SONAR-2869 the annotation @Properties can be used on extensions and not only on plugin entry points
       "/selenium/server/settings/hidden-extension-property.html",
       "/selenium/server/settings/global-extension-property.html",
@@ -140,9 +142,9 @@ public class ServerTest {
       .build();
     orchestrator.start();
 
-    SonarRunner withDeprecatedKey = SonarRunner.create(new File("projects/shared/sample"))
+    SonarRunner withDeprecatedKey = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
       .setProperty("sonar.deprecatedKey", "true");
-    SonarRunner withNewKey = SonarRunner.create(new File("projects/shared/sample"))
+    SonarRunner withNewKey = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
       .setProperty("sonar.newKey", "true");
     // should not fail
     orchestrator.executeBuilds(withDeprecatedKey, withNewKey);
