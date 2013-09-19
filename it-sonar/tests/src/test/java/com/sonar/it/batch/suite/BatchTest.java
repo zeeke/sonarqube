@@ -324,6 +324,12 @@ public class BatchTest {
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains("arg$l: is not a valid project or module key");
 
+    // SONAR-4629
+    buildResult = scanQuietly("shared/xoo-sample",
+      "sonar.projectKey", "12345");
+    assertThat(buildResult.getStatus()).isEqualTo(1);
+    assertThat(buildResult.getLogs()).contains("12345 is not a valid project or module key");
+
     buildResult = scanQuietly("shared/xoo-sample",
       "sonar.branch", "arg$l:");
     assertThat(buildResult.getStatus()).isEqualTo(1);
