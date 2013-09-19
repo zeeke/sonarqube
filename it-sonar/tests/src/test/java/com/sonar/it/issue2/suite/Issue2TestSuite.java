@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
   IssueRuleWidgetsTest.class, IssueSearchTest.class, IssueTest.class, IssueTrackingTest.class,
-  IssueWidgetsTest.class, IssueWorkflowTest.class, ManualIssueTest.class
+  IssueWidgetsTest.class, IssueWorkflowTest.class, ManualIssueTest.class, IssuePermissionTest.class
 })
 public class Issue2TestSuite {
 
