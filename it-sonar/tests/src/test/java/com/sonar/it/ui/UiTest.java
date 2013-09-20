@@ -8,6 +8,7 @@ package com.sonar.it.ui;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -40,6 +41,7 @@ public class UiTest {
       .addPlugin(ItUtils.locateTestPlugin("ruby-rails-app-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("page-decoration-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("resource-configuration-extension-plugin"))
+      .addPlugin(ItUtils.xooPlugin())
       .build();
 
   @After
@@ -93,10 +95,12 @@ public class UiTest {
   }
 
   @Test
-  public void test_sidebar() {
-    scanSample();
+  public void keep_period_select_between_pages() {
+    scanXooSample();
+    // Execute the scan a second times in order to be able to select the "previous analysis" period
+    scanXooSample();
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("left-menu",
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("keep-period-between-pages",
       // SONAR-3088
       "/selenium/ui/sidebar/keep-period-between-pages.html"
     ).build();
@@ -193,6 +197,12 @@ public class UiTest {
     orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
         .setCleanSonarGoals()
         .setProperties("sonar.dynamicAnalysis", "false"));
+  }
+
+  private void scanXooSample() {
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false");
+    orchestrator.executeBuild(scan);
   }
 
 }
