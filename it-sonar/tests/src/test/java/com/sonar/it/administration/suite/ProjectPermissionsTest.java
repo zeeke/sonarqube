@@ -64,7 +64,7 @@ public class ProjectPermissionsTest {
    * SONAR-4454
    */
   @Test
-  public void apply_template_to_single_project() throws Exception {
+  public void apply_template_to_single_project_from_global_settings() throws Exception {
     SonarRunner sampleProject = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.dynamicAnalysis", "false")
       .setRunnerVersion("2.2.2");

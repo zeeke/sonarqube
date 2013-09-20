@@ -27,17 +27,17 @@ public class DashboardSharingPermissionTest {
     orchestrator.getDatabase().truncateInspectionTables();
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
-    UserParameters newUser = UserParameters.create().login("dashboard_user").name("dashboard_user")
-      .password("password").passwordConfirmation("password");
-    client.userClient().create(newUser);
-    UserParameters canShareDashboard = UserParameters.create().login("can_share_dashboards").name("can_share_dashboards")
-      .password("password").passwordConfirmation("password");
-    client.userClient().create(canShareDashboard);
-    UserParameters cannotShareDashboard = UserParameters.create().login("cannot_share_dashboards").name("cannot_share_dashboards")
-      .password("password").passwordConfirmation("password");
-    client.userClient().create(cannotShareDashboard);
-    PermissionParameters dashboardSharing = PermissionParameters.create().user("can_share_dashboards").permission("shareDashboard");
-    client.permissionClient().addPermission(dashboardSharing);
+
+    client.userClient().create(UserParameters.create().login("dashboard_user").name("dashboard_user")
+      .password("password").passwordConfirmation("password"));
+    client.userClient().create( UserParameters.create().login("can_share_dashboards").name("can_share_dashboards")
+      .password("password").passwordConfirmation("password"));
+    client.userClient().create(UserParameters.create().login("cannot_share_dashboards").name("cannot_share_dashboards")
+      .password("password").passwordConfirmation("password"));
+
+    client.permissionClient().addPermission(
+      PermissionParameters.create().user("can_share_dashboards").permission("shareDashboard")
+    );
   }
 
   /**
