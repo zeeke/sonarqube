@@ -51,6 +51,25 @@ public class IssueExclusionsTest {
   }
 
   @Test
+  public void should_enforce_only_on_one_file() {
+    scan(
+      "sonar.issue.enforce.multicriteria", "1",
+      "sonar.issue.enforce.multicriteria.1.resourceKey", "**/HelloA1.xoo",
+      "sonar.issue.enforce.multicriteria.1.ruleKey", "*",
+      "sonar.issue.enforce.multicriteria.1.lineRange", "*"
+      );
+
+    checkIssueCountBySeverity(
+      1 /* tag */ + 18 /* lines in HelloA1.xoo */ + 1 /* file */ + 7,
+      0 + 1,
+      0 + 18,
+      0 + 1,
+      0,
+      7);
+  }
+
+
+  @Test
   public void should_ignore_files_with_regexp() {
     scan(
       "sonar.issue.ignore.allfile", "1",
