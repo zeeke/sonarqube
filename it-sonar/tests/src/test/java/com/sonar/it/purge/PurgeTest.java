@@ -12,11 +12,13 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -24,10 +26,10 @@ public class PurgeTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-2.7.xml"))
-      .build();
+    .restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-2.7.xml"))
+    .build();
 
-  @After
+  @Before
   public void deleteProjectData() {
     orchestrator.getDatabase().truncateInspectionTables();
   }
@@ -44,9 +46,21 @@ public class PurgeTest {
     assertThat(count("projects where qualifier in ('PAC')")).as("Wrong number of packages").isEqualTo(31);
     assertThat(count("projects where qualifier in ('CLA')")).as("Wrong number of files").isEqualTo(320);
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
+    int nbOfProjectsWithoutUnitTests = 355;
 
-    // count measures
-    int expectedMeasures = 17206 + /* SONAR-4330 */401 + /* due to SONARJAVA-133 (1 more measure per TRK,BRC,PAC,CLA) */355;
+    // count measures 
+    measures("TRK", 118);
+    measures("BRC", 286);
+    measures("PAC", 2021);
+    measures("CLA", 13138);
+    measures("UTS", 28);
+
+    // No new_* metrics measure should be recorded the first time
+    assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
+      .as("Wrong number of measure of new_ metrics")
+      .isEqualTo(0);
+
+    int expectedMeasures = 15236 + /* due to SONARJAVA-133 (1 more measure per TRK,BRC,PAC,CLA) */ nbOfProjectsWithoutUnitTests;
     assertThat(count("project_measures")).as("Wrong number of measures").isEqualTo(expectedMeasures);
     assertThat(count("measure_data")).as("Wrong number of measure_data").isEqualTo(1157);
 
@@ -62,8 +76,19 @@ public class PurgeTest {
     // must be a different date, else a single snapshot is kept per day
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
 
+    measures("TRK", 239);
+    measures("BRC", 581);
+    measures("PAC", 2521);
+    measures("CLA", 14809);
+    measures("UTS", 28);
+
+    // Measures on new_* metrics should be recorded
+    assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
+      .as("Wrong number of measure of new_ metrics")
+      .isEqualTo(2371);
+
     // added measures relate to project and new_* metrics
-    expectedMeasures += 200 + /* SONAR-4330 */12 + /* due to SONARJAVA-133 (1 more measure per TRK, BRC) */4;
+    expectedMeasures += 2583 + /* due to SONARJAVA-133 (1 more measure per TRK, BRC) */4;
     assertThat(count("project_measures")).as("Wrong number of measures after second analysis").isEqualTo(expectedMeasures);
 
     assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
@@ -87,7 +112,7 @@ public class PurgeTest {
   }
 
   /**
-   * SONAR-2807 & SONAR-3378
+   * SONAR-2807 & SONAR-3378 & SONAR-4710
    */
   @Test
   public void should_keep_only_one_snapshot_per_day() {
@@ -100,7 +125,10 @@ public class PurgeTest {
     // to keep only 1 snapshot per day
     scan("shared/struts-1.3.9-diet", "sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay", "0");
     assertThat(count("snapshots where qualifier<>'LIB'")).as("Different number of snapshots").isEqualTo(snapshotsCount);
-    assertThat(count("project_measures")).as("Different number of measures").isEqualTo(measuresCount);
+
+    int measureOnNewMetrics = count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'");
+    // Number of measures should be the same as previous, with the measures on new metrics
+    assertThat(count("project_measures")).as("Different number of measures").isEqualTo(measuresCount + measureOnNewMetrics);
   }
 
   /**
@@ -161,11 +189,11 @@ public class PurgeTest {
     int directorySnapshots = count(select);
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false")
-        .setProfile("sonar-way-2.7")
-        .setProperty("sonar.projectDate", "2012-02-02")
-        .setProperty("sonar.dbcleaner.cleanDirectory", "false");
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setProfile("sonar-way-2.7")
+      .setProperty("sonar.projectDate", "2012-02-02")
+      .setProperty("sonar.dbcleaner.cleanDirectory", "false");
     orchestrator.executeBuild(build);
 
     assertThat(count(select)).isEqualTo(2 * directorySnapshots);
@@ -206,9 +234,9 @@ public class PurgeTest {
 
   private MavenBuild scan(String path, String... extraProperties) {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom(path))
-        .setCleanPackageSonarGoals()
-        .setProperty("skipTests", "true")
-        .setProfile("sonar-way-2.7");
+      .setCleanPackageSonarGoals()
+      .setProperty("skipTests", "true")
+      .setProfile("sonar-way-2.7");
     if (extraProperties != null) {
       build.setProperties(extraProperties);
     }
@@ -219,4 +247,30 @@ public class PurgeTest {
   private int count(String condition) {
     return orchestrator.getDatabase().countSql("select count(*) from " + condition);
   }
+
+  private int measures(String qualifier, int count) {
+    int result = countMeasures(qualifier);
+    if (result != count) {
+      logMeasures(qualifier);
+      assertThat(result).isEqualTo(count);
+    }
+    return result;
+  }
+
+  private int countMeasures(String qualifier) {
+    String sql = "SELECT count(pm.id) FROM project_measures pm, snapshots s, metrics m where pm.snapshot_id=s.id and pm.metric_id=m.id and s.qualifier='" + qualifier + "'";
+    return orchestrator.getDatabase().countSql(sql);
+  }
+
+  private void logMeasures(String qualifier) {
+    String sql = "SELECT m.name as metricName, pm.value as value, pm.text_value as textValue, pm.variation_value_1, pm.variation_value_2, pm.variation_value_3 FROM project_measures pm, snapshots s, metrics m where pm.snapshot_id=s.id and pm.metric_id=m.id and s.qualifier='"
+      + qualifier + "'";
+    List<Map<String, String>> rows = orchestrator.getDatabase().executeSql(sql);
+
+    System.out.println("---- measures on qualifier = [" + qualifier + "]");
+    for (Map<String, String> row : rows) {
+      System.out.println("  " + row);
+    }
+  }
+
 }
