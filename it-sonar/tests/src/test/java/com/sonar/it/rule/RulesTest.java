@@ -71,8 +71,7 @@ public class RulesTest {
   @Test
   public void should_edit_rules() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/rule/RulesTest/rule-with-parameters-profile.xml"));
-    Selenese selenese = Selenese
-      .builder()
+    Selenese selenese = Selenese.builder()
       .setHtmlTestsInClasspath("edit-rules",
         "/selenium/rule/edit_rules/edit-string.html",
         "/selenium/rule/edit_rules/edit-text.html", // SONAR-1995

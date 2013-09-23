@@ -9,7 +9,6 @@ import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.sonar.it.ItUtils;
-import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
@@ -196,6 +195,10 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
   @Test
   public void new_issues_measures() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
+
+    // Execute an analysis in the past to have a past snapshot
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperty("sonar.projectDate", "2013-01-01"));
 
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).setProfile("one-issue-per-line");
