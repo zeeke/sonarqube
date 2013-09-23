@@ -26,7 +26,6 @@ public class HistoryTest {
   public static Orchestrator orchestrator = HistoryTestSuite.ORCHESTRATOR;
 
   private static final String PROJECT = "com.sonarsource.it.samples:history";
-  private static final String FILE = "com.sonarsource.it.samples:history:org.sonar.tests.Hello";
 
   @BeforeClass
   public static void initialize() {
