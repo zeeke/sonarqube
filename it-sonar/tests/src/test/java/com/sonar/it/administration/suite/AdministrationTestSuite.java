@@ -6,7 +6,6 @@
 package com.sonar.it.administration.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.it.permission.suite.*;
 import com.sonar.orchestrator.Orchestrator;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
@@ -17,16 +16,9 @@ import org.junit.runners.Suite;
   BackupTest.class,
   BulkDeletionTest.class,
   UserAdministrationTest.class,
-  DashboardSharingPermissionTest.class,
-  PermissionsTest.class,
   ProjectAdministrationTest.class,
-  ProjectPermissionsTest.class,
   PropertySetsTest.class,
-  QualityProfileAdminPermissionTest.class,
-  SubCategoriesTest.class,
-  SystemAdminPermissionTest.class,
-  ScanPermissionTest.class,
-  DryRunScanPermissionTest.class
+  SubCategoriesTest.class
 })
 public class AdministrationTestSuite {
 
