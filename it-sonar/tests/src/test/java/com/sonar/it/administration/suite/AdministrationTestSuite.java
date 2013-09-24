@@ -6,6 +6,7 @@
 package com.sonar.it.administration.suite;
 
 import com.sonar.it.ItUtils;
+import com.sonar.it.permission.suite.*;
 import com.sonar.orchestrator.Orchestrator;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;

@@ -4,7 +4,7 @@
  * mailto:contact AT sonarsource DOT com
  */
 
-package com.sonar.it.administration.suite;
+package com.sonar.it.permission.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -19,7 +19,7 @@ import org.sonar.wsclient.user.UserParameters;
 public class PermissionsTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = AdministrationTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = PermissionTestSuite.ORCHESTRATOR;
 
   @AfterClass
   public static void restoreDefaultGroupsPermissions() {
@@ -56,7 +56,7 @@ public class PermissionsTest {
     client.permissionClient().removePermission(secondUserProfileAdminParams);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-users-permissions-using-ws",
-      "/selenium/administration/permission-administration/manage-users-permission-with-ws.html")
+      "/selenium/permission/permission-administration/manage-users-permission-with-ws.html")
       .build();
     orchestrator.executeSelenese(selenese);
   }
@@ -76,7 +76,7 @@ public class PermissionsTest {
     client.permissionClient().addPermission(usersGroupShareDashboardParams);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-groups-permissions-using-ws",
-      "/selenium/administration/permission-administration/manage-groups-permission-with-ws.html")
+      "/selenium/permission/permission-administration/manage-groups-permission-with-ws.html")
       .build();
     orchestrator.executeSelenese(selenese);
   }
@@ -84,7 +84,7 @@ public class PermissionsTest {
   @Test
   public void sort_by_name() throws Exception {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should_sort_by_name",
-      "/selenium/administration/permission-administration/sort-global-permissions-by-name.html")
+      "/selenium/permission/permission-administration/sort-global-permissions-by-name.html")
       .build();
     orchestrator.executeSelenese(selenese);
 

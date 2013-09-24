@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.administration.suite;
+package com.sonar.it.permission.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -23,13 +23,15 @@ import org.sonar.wsclient.user.UserParameters;
 public class QualityProfileAdminPermissionTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = AdministrationTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = PermissionTestSuite.ORCHESTRATOR;
 
   @BeforeClass
   public static void init() {
     orchestrator.getDatabase().truncateInspectionTables();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/sample")));
+    orchestrator.executeBuild(
+      SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+    );
   }
 
   @Test
@@ -47,9 +49,9 @@ public class QualityProfileAdminPermissionTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("administrate-profiles",
         // Verify normal user is not allowed to do any modification
-        "/selenium/administration/profile-admin/normal-user.html",
+      "/selenium/permission/quality-profile-admin-permission/normal-user.html",
         // Verify profile admin is allowed to do modifications
-        "/selenium/administration/profile-admin/profile-admin.html"
+      "/selenium/permission/quality-profile-admin-permission/profile-admin.html"
         ).build();
     orchestrator.executeSelenese(selenese);
   }

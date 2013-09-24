@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>with-code-viewer-permission-source-code-from-issue-detail-is-visible</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+  <tbody>
+  <tr>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>with-code-viewer-permission</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=This issue is generated on each line</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issue-detail</td>
+	<td>*sample*</td>
+</tr>
+<tr>
+	<td>assertVisible</td>
+	<td>css=.sources2</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

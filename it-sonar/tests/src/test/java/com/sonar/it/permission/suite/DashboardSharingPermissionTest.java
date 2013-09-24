@@ -4,7 +4,7 @@
  * mailto:contact AT sonarsource DOT com
  */
 
-package com.sonar.it.administration.suite;
+package com.sonar.it.permission.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -20,7 +20,7 @@ import org.sonar.wsclient.user.UserParameters;
 public class DashboardSharingPermissionTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = AdministrationTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = PermissionTestSuite.ORCHESTRATOR;
 
   @BeforeClass
   public static void setUpUsers() {
@@ -46,8 +46,8 @@ public class DashboardSharingPermissionTest {
   @Test
   public void should_enable_dashboard_sharing() throws Exception {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("set-dashboard-sharing-permission",
-      "/selenium/administration/dashboard-sharing-permission/user-dashboard-sharing-permission.html",
-      "/selenium/administration/dashboard-sharing-permission/group-dashboard-sharing-permission.html")
+      "/selenium/permission/dashboard-sharing-permission/user-dashboard-sharing-permission.html",
+      "/selenium/permission/dashboard-sharing-permission/group-dashboard-sharing-permission.html")
     .build();
     orchestrator.executeSelenese(selenese);
   }
@@ -58,8 +58,8 @@ public class DashboardSharingPermissionTest {
   @Test
   public void should_share_global_dashboard() throws Exception {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("global-dashboard-sharing-permission",
-      "/selenium/administration/dashboard-sharing-permission/global-dashboard-sharing-allowed.html",
-      "/selenium/administration/dashboard-sharing-permission/global-dashboard-sharing-denied.html")
+      "/selenium/permission/dashboard-sharing-permission/global-dashboard-sharing-allowed.html",
+      "/selenium/permission/dashboard-sharing-permission/global-dashboard-sharing-denied.html")
       .build();
     orchestrator.executeSelenese(selenese);
   }
@@ -72,8 +72,8 @@ public class DashboardSharingPermissionTest {
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/sample")));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-dashboard-sharing-permission",
-      "/selenium/administration/dashboard-sharing-permission/project-dashboard-sharing-allowed.html",
-      "/selenium/administration/dashboard-sharing-permission/project-dashboard-sharing-denied.html")
+      "/selenium/permission/dashboard-sharing-permission/project-dashboard-sharing-allowed.html",
+      "/selenium/permission/dashboard-sharing-permission/project-dashboard-sharing-denied.html")
       .build();
     orchestrator.executeSelenese(selenese);
   }

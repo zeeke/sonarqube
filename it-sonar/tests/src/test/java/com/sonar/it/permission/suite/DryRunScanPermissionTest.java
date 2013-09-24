@@ -4,7 +4,7 @@
  * mailto:contact AT sonarsource DOT com
  */
 
-package com.sonar.it.administration.suite;
+package com.sonar.it.permission.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -21,12 +21,12 @@ import static org.fest.assertions.Assertions.assertThat;
 /**
  * SONAR-4397
  */
-public class ScanPermissionTest {
+public class DryRunScanPermissionTest {
 
-  private final static String USER_LOGIN = "scanperm";
+  private final static String USER_LOGIN = "dryrunscan";
 
   @ClassRule
-  public static Orchestrator orchestrator = AdministrationTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = PermissionTestSuite.ORCHESTRATOR;
   private static SonarClient client;
 
   @BeforeClass
@@ -43,11 +43,8 @@ public class ScanPermissionTest {
   }
 
   @After
-  public void restorePermissions() {
-    PermissionParameters permissionParameters = PermissionParameters.create().group("anyone").permission("scan");
-    client.permissionClient().addPermission(permissionParameters);
-
-    permissionParameters = PermissionParameters.create().group("anyone").permission("dryRunScan");
+  public void restorePermissionAndCleanup() {
+    PermissionParameters permissionParameters = PermissionParameters.create().group("anyone").permission("dryRunScan");
     client.permissionClient().addPermission(permissionParameters);
   }
 
@@ -57,38 +54,28 @@ public class ScanPermissionTest {
   }
 
   @Test
-  public void should_fail_if_no_scan_role() throws Exception {
+  public void should_fail_if_no_dryrunscan_role() throws Exception {
     SonarRunner build = SonarRunner.create()
-        .setRunnerVersion("2.2.1")
         .setProperty("sonar.login", USER_LOGIN)
         .setProperty("sonar.password", "thewhite")
+        .setProperty("sonar.dryRun", "true")
         .setProjectDir(ItUtils.locateProjectDir("shared/xoo-sample"));
     orchestrator.executeBuild(build);
     // No error
 
-    // Remove Anyone from scan permission
-    PermissionParameters permissionParameters = PermissionParameters.create().group("anyone").permission("scan");
+    // Remove Anyone from dryrun permission
+    PermissionParameters permissionParameters = PermissionParameters.create().group("anyone").permission("dryRunScan");
     client.permissionClient().removePermission(permissionParameters);
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
-    assertThat(result.getLogs()).contains(
-        "You're only authorized to execute a local (dry run) SonarQube analysis without pushing the results to the SonarQube server. Please contact your SonarQube administrator.");
-
-    // Remove Anyone from dryrun permission
-    permissionParameters = PermissionParameters.create().group("anyone").permission("dryRunScan");
-    client.permissionClient().removePermission(permissionParameters);
-
-    result = orchestrator.executeBuildQuietly(build);
-    assertThat(result.getStatus()).isNotEqualTo(0);
-    assertThat(result.getLogs()).contains("You're not authorized to execute any SonarQube analysis. Please contact your SonarQube administrator.");
+    assertThat(result.getLogs()).contains("You're not authorized to execute a dry run analysis. Please contact your SonarQube administrator.");
   }
 
   @Test
-  public void should_not_fail_if_no_project_role() throws Exception {
+  public void should_fail_if_no_project_role() throws Exception {
     // Do a first analysis
     SonarRunner build = SonarRunner.create()
-        .setRunnerVersion("2.2.1")
         .setProperty("sonar.login", USER_LOGIN)
         .setProperty("sonar.password", "thewhite")
         .setProjectDir(ItUtils.locateProjectDir("shared/xoo-sample"));
@@ -98,13 +85,14 @@ public class ScanPermissionTest {
     // Remove all groups from project users
     Selenese selenese = Selenese.builder()
         .setHtmlTestsInClasspath("remove_project_user_roles",
-            "/selenium/administration/remove-project-user-roles/remove_project_user_roles.html"
+          "/selenium/permission/remove-project-user-roles/remove_project_user_roles.html"
         ).build();
     orchestrator.executeSelenese(selenese);
 
+    build.setProperty("sonar.dryRun", "true");
     BuildResult result = orchestrator.executeBuildQuietly(build);
-    // No error
-    assertThat(result.getStatus()).isEqualTo(0);
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("You're not authorized to access to project 'Sample', please contact your SonarQube administrator");
   }
 
 }

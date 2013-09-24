@@ -4,7 +4,7 @@
  * mailto:contact AT sonarsource DOT com
  */
 
-package com.sonar.it.administration;
+package com.sonar.it.permission;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -37,12 +37,12 @@ public class PermissionTemplatesTest {
   @Test
   public void manage_permission_templates() throws Exception {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-permission-templates",
-      "/selenium/administration/permission-templates/display-default-template.html",
-      "/selenium/administration/permission-templates/create-template.html",
-      "/selenium/administration/permission-templates/create-template-duplicate-name.html",
-      "/selenium/administration/permission-templates/create-template-empty-name.html",
-      "/selenium/administration/permission-templates/edit-template.html",
-      "/selenium/administration/permission-templates/delete-template.html"
+      "/selenium/permission/permission-templates/display-default-template.html",
+      "/selenium/permission/permission-templates/create-template.html",
+      "/selenium/permission/permission-templates/create-template-duplicate-name.html",
+      "/selenium/permission/permission-templates/create-template-empty-name.html",
+      "/selenium/permission/permission-templates/edit-template.html",
+      "/selenium/permission/permission-templates/delete-template.html"
       )
       .build();
     orchestrator.executeSelenese(selenese);
@@ -54,7 +54,7 @@ public class PermissionTemplatesTest {
   @Test
   public void define_default_templates() throws Exception {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-define-default-templates",
-      "/selenium/administration/permission-templates/set-default-projects-template.html"
+      "/selenium/permission/permission-templates/set-default-projects-template.html"
     )
       .build();
     orchestrator.executeSelenese(selenese);
@@ -67,13 +67,12 @@ public class PermissionTemplatesTest {
   @Test
   public void grant_permissions() {
     SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setRunnerVersion("2.2.2");
+      .withoutDynamicAnalysis();
     orchestrator.executeBuild(sonarRunnerBuild);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("grant-permissions",
-      "/selenium/administration/permission-templates/grant-default-project-groups.html",
-      "/selenium/administration/permission-templates/grant-default-project-users.html"
+      "/selenium/permission/permission-templates/grant-default-project-groups.html",
+      "/selenium/permission/permission-templates/grant-default-project-users.html"
     ).build();
     orchestrator.executeSelenese(selenese);
   }
