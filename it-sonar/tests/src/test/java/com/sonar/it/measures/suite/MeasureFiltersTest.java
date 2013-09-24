@@ -9,6 +9,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -29,18 +30,29 @@ public class MeasureFiltersTest {
       .withDynamicAnalysis(true)
       .build();
     orchestrator.executeBuild(build);
+
     createUser("user-measure-filters", "User Measure Filters");
+  }
+
+  @AfterClass
+  public static void deleteTestUser() {
+    ItUtils.newWsClientForAdmin(orchestrator).userClient().deactivate("user-measure-filters");
   }
 
 
   @Test
   public void execute_measure_filters() {
+
     // TODO delete columns, list pagination, no results if no criteria, date criteria, period criteria, favourites, language, root
+
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("execution_of_measure_filters",
       "/selenium/measures/measure_filters/link_from_main_header.html",
       "/selenium/measures/measure_filters/initial_search_form.html",
       "/selenium/measures/measure_filters/search_for_projects.html",
       "/selenium/measures/measure_filters/search_for_files.html",
+      // SONAR-4195
+      "/selenium/measures/measure_filters/search-by-key.html",
+      "/selenium/measures/measure_filters/search-by-name.html",
       "/selenium/measures/measure_filters/empty_filter.html"
     ).build();
     orchestrator.executeSelenese(selenese);
@@ -73,14 +85,21 @@ public class MeasureFiltersTest {
   @Test
   public void share_measure_filters() {
     // SONAR-4099
-    createUser("user-measures-filter-with-sharing-perm", "User Measure Filters with sharing permission", "shareDashboard");
+    String user = "user-measures-filter-with-sharing-perm";
+    createUser(user, "User Measure Filters with sharing permission", "shareDashboard");
 
     //TODO
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("share_measure_filters",
-      // SONAR-4469
-      "/selenium/measures/measure_filters/should-unshare-filter-remove-other-filters-favourite.html"
-    ).build();
-    orchestrator.executeSelenese(selenese);
+
+    try {
+      Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("share_measure_filters",
+        // SONAR-4469
+        "/selenium/measures/measure_filters/should-unshare-filter-remove-other-filters-favourite.html"
+      ).build();
+      orchestrator.executeSelenese(selenese);
+
+    } finally {
+      ItUtils.newWsClientForAdmin(orchestrator).userClient().deactivate(user);
+    }
   }
 
   /**
@@ -88,11 +107,16 @@ public class MeasureFiltersTest {
    */
   @Test
   public void should_not_share_filter_when_user_have_no_sharing_permissions() {
-    createUser("user-measures-filter-with-no-share-perm", "User Measure Filters without sharing permission");
+    String user = "user-measures-filter-with-no-share-perm";
+    createUser(user, "User Measure Filters without sharing permission");
 
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_not_share_filter_when_user_have_no_sharing_permissions",
-      "/selenium/measures/measure_filters/should-not-share-filter-when-user-have-no-sharing-permissions.html"
-    ).build());
+    try {
+      orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_not_share_filter_when_user_have_no_sharing_permissions",
+        "/selenium/measures/measure_filters/should-not-share-filter-when-user-have-no-sharing-permissions.html"
+      ).build());
+    } finally {
+      ItUtils.newWsClientForAdmin(orchestrator).userClient().deactivate(user);
+    }
   }
 
   @Test
@@ -129,11 +153,11 @@ public class MeasureFiltersTest {
     orchestrator.executeSelenese(selenese);
   }
 
-  private static void createUser(String login, String name){
+  private static void createUser(String login, String name) {
     createUser(login, name, null);
   }
 
-  private static void createUser(String login, String name, String permission){
+  private static void createUser(String login, String name, String permission) {
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
     UserParameters userCreationParameters = UserParameters.create().login(login).name(name).password("password").passwordConfirmation("password");
     client.userClient().create(userCreationParameters);

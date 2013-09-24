@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>search-by-key</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+  <tbody>
+  <tr>
+	<td>open</td>
+	<td>/sonar/measures</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>select-qualifiers</td>
+	<td>Projects</td>
+</tr>
+<tr>
+	<td>clickAt</td>
+	<td>css=#more-td .select2-choice &gt; div &gt; b</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeKeys</td>
+	<td>css=.select2-drop-active input.select2-input</td>
+	<td>key</td>
+</tr>
+<tr>
+	<td>clickAt</td>
+	<td>css=.select2-result-label:contains('Key')</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=keySearch</td>
+	<td>pAche</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=search-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>measures-table</td>
+	<td>*Struts*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=#measures-table tfoot</td>
+	<td>*1 results*</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
