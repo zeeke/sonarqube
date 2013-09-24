@@ -179,7 +179,7 @@ public class HistoryTest {
    * SONAR-4334
    */
   @Test
-  public void should_fail_if_project_date_is_older_than_latest_snapshot() {
+  public void fail_if_project_date_is_older_than_latest_snapshot() {
     BuildResult result = orchestrator.executeBuildQuietly(MavenBuild.create(ItUtils.locateProjectPom("history/history-v1"))
       .setCleanSonarGoals()
       .setProperties("sonar.dynamicAnalysis", "false")
