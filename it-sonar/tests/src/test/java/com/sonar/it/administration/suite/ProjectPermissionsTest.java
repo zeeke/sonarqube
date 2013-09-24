@@ -70,10 +70,23 @@ public class ProjectPermissionsTest {
       .setRunnerVersion("2.2.2");
     orchestrator.executeBuild(sampleProject);
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("apply-permission-template-to-project",
-      "/selenium/administration/project-permissions/apply-permission-template-to-project.html")
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("apply-permission-template-to-project-from-global-settings",
+      "/selenium/administration/project-permissions/apply-permission-template-to-project-from-global-settings.html")
       .build();
     orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-4521
+   */
+  @Test
+  public void apply_template_to_single_project_from_project_settings() throws Exception {
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .withoutDynamicAnalysis());
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("apply-permission-template-to-project-from-project--settings",
+      "/selenium/administration/project-permissions/apply-permission-template-to-project-from-project-settings.html")
+      .build());
   }
 
   /**

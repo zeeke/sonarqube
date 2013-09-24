@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>apply_permission_template_to_project</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+  <tbody>
+  <tr>
+	<td>store</td>
+	<td>template-to-apply</td>
+	<td>TEMPLATE_NAME</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/project_roles/index/sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>apply-template-sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>apply-template-form</td>
+	<td>*Apply Permission Template*</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>template_key</td>
+	<td>${TEMPLATE_NAME}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>apply-template-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>admin-role-users</td>
+	<td>Administrator</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>admin-role-groups</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>user-role-users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>user-role-groups</td>
+	<td>sonar-users</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>codeviewer-role-users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>codeviewer-role-groups</td>
+	<td>Anyone</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
