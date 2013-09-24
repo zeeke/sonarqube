@@ -35,8 +35,9 @@ public class ScanPermissionTest {
   public static void createUser() {
     client = ItUtils.newWsClientForAdmin(orchestrator);
 
-    UserParameters userCreationParameters = UserParameters.create().login(USER_LOGIN).name(USER_LOGIN).password("thewhite").passwordConfirmation("thewhite");
-    client.userClient().create(userCreationParameters);
+    ItUtils.newWsClientForAdmin(orchestrator).userClient().create(
+      UserParameters.create().login(USER_LOGIN).name(USER_LOGIN).password("thewhite").passwordConfirmation("thewhite")
+    );
   }
 
   @Before

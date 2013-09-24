@@ -10,6 +10,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -30,33 +31,46 @@ public class DashboardSharingPermissionTest {
 
     client.userClient().create(UserParameters.create().login("dashboard_user").name("dashboard_user")
       .password("password").passwordConfirmation("password"));
-    client.userClient().create( UserParameters.create().login("can_share_dashboards").name("can_share_dashboards")
+    client.userClient().create(UserParameters.create().login("can_share_dashboards").name("can_share_dashboards")
       .password("password").passwordConfirmation("password"));
     client.userClient().create(UserParameters.create().login("cannot_share_dashboards").name("cannot_share_dashboards")
       .password("password").passwordConfirmation("password"));
 
-    client.permissionClient().addPermission(
-      PermissionParameters.create().user("can_share_dashboards").permission("shareDashboard")
-    );
+    client.permissionClient().addPermission(PermissionParameters.create().user("can_share_dashboards").permission("shareDashboard"));
+  }
+
+  @AfterClass
+  public static void deactivateUsers() {
+    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
+    client.userClient().deactivate("dashboard_user");
+    client.userClient().deactivate("can_share_dashboards");
+    client.userClient().deactivate("cannot_share_dashboards");
   }
 
   /**
    * SONAR-4099
    */
   @Test
-  public void should_enable_dashboard_sharing() throws Exception {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("set-dashboard-sharing-permission",
-      "/selenium/permission/dashboard-sharing-permission/user-dashboard-sharing-permission.html",
-      "/selenium/permission/dashboard-sharing-permission/group-dashboard-sharing-permission.html")
-    .build();
-    orchestrator.executeSelenese(selenese);
+  public void enable_dashboard_sharing() throws Exception {
+    try {
+      Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("set-dashboard-sharing-permission",
+        "/selenium/permission/dashboard-sharing-permission/user-dashboard-sharing-permission.html",
+        "/selenium/permission/dashboard-sharing-permission/group-dashboard-sharing-permission.html")
+        .build();
+      orchestrator.executeSelenese(selenese);
+    } finally {
+      // Restore global permissions state that have been changed by selenium tests
+      ItUtils.newWsClientForAdmin(orchestrator).permissionClient().removePermission(
+        PermissionParameters.create().group("sonar-users").permission("shareDashboard")
+      );
+    }
   }
 
   /**
    * SONAR-4136
    */
   @Test
-  public void should_share_global_dashboard() throws Exception {
+  public void share_global_dashboard() throws Exception {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("global-dashboard-sharing-permission",
       "/selenium/permission/dashboard-sharing-permission/global-dashboard-sharing-allowed.html",
       "/selenium/permission/dashboard-sharing-permission/global-dashboard-sharing-denied.html")
@@ -68,8 +82,8 @@ public class DashboardSharingPermissionTest {
    * SONAR-4136
    */
   @Test
-  public void should_share_project_dashboard() throws Exception {
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/sample")));
+  public void share_project_dashboard() throws Exception {
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-dashboard-sharing-permission",
       "/selenium/permission/dashboard-sharing-permission/project-dashboard-sharing-allowed.html",
