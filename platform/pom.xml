@@ -179,11 +179,11 @@
       <activation>
         <property>
           <name>sonarVersion</name>
-          <value>3.7.1</value>
+          <value>3.7</value>
         </property>
       </activation>
       <properties>
-        <sonar.runtimeVersion>3.7</sonar.runtimeVersion>
+        <sonar.runtimeVersion>3.7.2-SNAPSHOT</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
           org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
