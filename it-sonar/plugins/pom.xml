@@ -71,6 +71,7 @@
     <module>ruby-ws-plugin</module>
     <module>security-plugin</module>
     <module>self-l10ned-plugin</module>
+    <module>server-plugin</module>
     <module>settings-encryption-plugin</module>
     <module>settings-plugin</module>
     <module>several-profiles-plugin</module>

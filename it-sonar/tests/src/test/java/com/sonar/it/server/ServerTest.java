@@ -133,7 +133,7 @@ public class ServerTest {
 
       // SONAR-3127 - hide passwords
       "/selenium/server/settings/hide-passwords.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -155,7 +155,7 @@ public class ServerTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("property_relocation",
       "/selenium/server/settings/property_relocation.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -247,6 +247,19 @@ public class ServerTest {
 
     Server.Status status = orchestrator.getServer().getAdminWsClient().find(new ServerQuery()).getStatus();
     assertThat(status).isEqualTo(Server.Status.UP);
+  }
+
+  // SONAR-4404
+  @Test
+  public void should_get_settings_default_value() {
+    orchestrator = Orchestrator.builderEnv()
+      .addPlugin(ItUtils.locateTestPlugin("server-plugin"))
+      .build();
+    orchestrator.start();
+
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("settings-default-value",
+      "/selenium/server/settings-default-value.html").build();
+    orchestrator.executeSelenese(selenese);
   }
 
 }
