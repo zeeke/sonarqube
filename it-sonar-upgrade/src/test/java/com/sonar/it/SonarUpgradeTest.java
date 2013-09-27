@@ -125,7 +125,7 @@ public class SonarUpgradeTest {
     }
     if (VersionUtils.isGreaterThanOrEqual(version, "4.0")) {
       // Java plugins are not installed on upgrades, but only on fresh installs
-      builder.addPlugin("java");
+      builder.setOrchestratorProperty("javaVersion", "RELEASE").addPlugin("java");
     }
     orchestrator = builder.build();
     orchestrator.start();
