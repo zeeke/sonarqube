@@ -33,12 +33,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.Measure;
-import org.sonar.wsclient.services.PropertyUpdateQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.SourceQuery;
-import org.sonar.wsclient.services.ViolationQuery;
+import org.sonar.wsclient.services.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +41,7 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 public class PlatformTest {
 
@@ -228,6 +224,8 @@ public class PlatformTest {
 
   @Test
   public void viewsTechnicalDebt() {
+    assumeTrue(!orchestrator.getServer().version().isGreaterThanOrEquals("4.0"));
+
     if (orchestrator.getServer().version().isGreaterThanOrEquals("3.4")) {
       // JAVA-17
       assertThat(getMeasure(JAVA_VIEWS, "technical_debt").getValue(), is(495719.3));

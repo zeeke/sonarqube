@@ -251,7 +251,6 @@
           org.codehaus.sonar-plugins:sonar-sigmm-plugin:${sigmmLatest},
           com.sonarsource.sqale:sonar-sqale-plugin:${sqaleLatest},
           org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
-          org.codehaus.sonar-plugins:sonar-technicaldebt-plugin:${technicalDebtLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
