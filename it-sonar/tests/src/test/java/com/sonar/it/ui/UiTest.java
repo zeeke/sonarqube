@@ -115,18 +115,13 @@ public class UiTest {
       HttpResponse response = httpclient.execute(get);
 
       assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
-      long sizeWithoutGzip = response.getEntity().getContentLength();
-      assertThat(sizeWithoutGzip).isGreaterThan(0L);
       assertThat(response.getLastHeader("Content-Encoding")).isNull();
       EntityUtils.consume(response.getEntity());
 
       get = new HttpGet(orchestrator.getServer().getUrl());
       get.addHeader("Accept-Encoding", "gzip, deflate");
       response = httpclient.execute(get);
-      long sizeWithGzip = response.getEntity().getContentLength();
-      assertThat(sizeWithGzip).isGreaterThan(0L);
       assertThat(response.getLastHeader("Content-Encoding").getValue()).isEqualTo("gzip");
-      assertThat(sizeWithGzip).isLessThan(sizeWithoutGzip);
       EntityUtils.consume(response.getEntity());
 
     } finally {

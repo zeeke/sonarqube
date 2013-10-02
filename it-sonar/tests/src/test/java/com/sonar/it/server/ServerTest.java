@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
 
 public class ServerTest {
 
@@ -212,13 +213,16 @@ public class ServerTest {
    */
   @Test
   public void check_minimal_sonar_version_at_startup() throws Exception {
-    thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("Can't start sonar");
-
-    orchestrator = Orchestrator.builderEnv()
-      .addPlugin(FileLocation.of(new File(ServerTest.class.getResource("/com/sonar/it/server/ServerTest/incompatible-plugin-1.0.jar").toURI())))
-      .build();
-    orchestrator.start();
+    try {
+      orchestrator = Orchestrator.builderEnv()
+        .addPlugin(FileLocation.of(new File(ServerTest.class.getResource("/com/sonar/it/server/ServerTest/incompatible-plugin-1.0.jar").toURI())))
+        .build();
+      orchestrator.start();
+      fail();
+    } catch (Exception e) {
+      assertThat(FileUtils.readFileToString(orchestrator.getServer().getLogs())).contains("Plugin incompatibleplugin needs a more recent version of SonarQube")
+        .contains("At least 5.9 is expected");
+    }
   }
 
   /**
