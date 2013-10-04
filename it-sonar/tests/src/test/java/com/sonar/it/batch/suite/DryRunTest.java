@@ -69,7 +69,7 @@ public class DryRunTest {
     // Analysis is not persisted in database
     Resource project = getResource("com.sonarsource.it.samples:simple-sample");
     assertThat(project).isNull();
-    assertThat(result.getLogs()).contains("Dry run");
+    assertThat(result.getLogs()).contains("Preview");
     assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL");
   }
 
