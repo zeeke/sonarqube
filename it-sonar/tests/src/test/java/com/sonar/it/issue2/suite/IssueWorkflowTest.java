@@ -26,8 +26,7 @@ public class IssueWorkflowTest extends AbstractIssueTestCase2 {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.cpd.skip", "true")
-      .setProfile("one-issue-per-line")
-      .setRunnerVersion("2.2.2");
+      .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
     issue = searchRandomIssue();

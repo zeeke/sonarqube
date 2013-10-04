@@ -68,8 +68,7 @@ public class IssueRuleWidgetsTest extends AbstractIssueTestCase2 {
 
   private void analyzeProject() {
     Build scan = SonarRunner.create(ItUtils.locateProjectDir("issue/rule-widgets"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7", "sonar.cpd.skip", "true")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7", "sonar.cpd.skip", "true");
     orchestrator.executeBuild(scan);
   }
 

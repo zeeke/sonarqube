@@ -106,8 +106,7 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.cpd.skip", "true",
         "sonar.projectDate", OLD_DATE)
-      .setProfile("empty")
-      .setRunnerVersion("2.2.2");
+      .setProfile("empty");
     orchestrator.executeBuild(runner);
   }
 
@@ -116,8 +115,7 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
       .setProperties(
         "sonar.cpd.skip", "true",
         "sonar.projectDate", NEW_DATE)
-      .setProfile("empty")
-      .setRunnerVersion("2.2.2");
+      .setProfile("empty");
     orchestrator.executeBuild(runner);
   }
 

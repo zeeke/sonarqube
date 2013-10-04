@@ -352,8 +352,7 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
     // no active rules
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.cpd.skip", "true")
-      .setProfile("empty")
-      .setRunnerVersion("2.2.2");
+      .setProfile("empty");
     orchestrator.executeBuild(runner);
   }
 

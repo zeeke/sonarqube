@@ -148,7 +148,6 @@ public class ProfileTest {
 
     // Just to be sure it also works with sonar-runner 2.2 (before moving reactor builder into sonar)
     build = configureRunner("shared/xoo-sample")
-      .setRunnerVersion("2.2.2")
       // Use profile defined in UI
       .setProfile("");
     result = orchestrator.executeBuild(build);
@@ -264,7 +263,6 @@ public class ProfileTest {
 
   private SonarRunner configureRunner(String projectPath, String... props) {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
-      .setRunnerVersion("2.3")
       .setProperties(props);
     return runner;
   }

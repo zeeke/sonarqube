@@ -68,7 +68,6 @@ public class SemaphoreTest {
 
   private SonarRunner buildSampleProject(boolean crash) {
     return SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setRunnerVersion("2.2.2")
         .setProperty("crash", Boolean.toString(crash));
   }
 

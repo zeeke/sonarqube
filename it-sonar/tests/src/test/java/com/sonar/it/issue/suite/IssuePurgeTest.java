@@ -33,8 +33,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
 
     // Generate some issues
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7");
     orchestrator.executeBuilds(scan);
 
     // All the issues are open
@@ -45,8 +44,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
 
     // Second scan with empty profile -> all issues are resolve and closed -> deleted by purge because property value is zero
     scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "0")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "0");
     orchestrator.executeBuilds(scan);
     issues = search(IssueQuery.create()).list();
     assertThat(issues).isEmpty();
@@ -61,8 +59,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
 
     // Generate some issues
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7", "sonar.projectDate", "2010-01-01")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7", "sonar.projectDate", "2010-01-01");
     orchestrator.executeBuilds(scan);
 
     // All the issues are open
@@ -74,8 +71,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     // Second scan with empty profile -> all issues are resolve and closed
     // -> Not delete because less than 30 days long
     scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.projectDate", "2010-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.projectDate", "2010-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30");
     orchestrator.executeBuilds(scan);
     issues = search(IssueQuery.create()).list();
     for (Issue issue : issues) {
@@ -85,8 +81,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
 
     // Third scan much later -> closed issues are deleted
     scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.projectDate", "2013-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30")
-      .setRunnerVersion("2.2.2");
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.projectDate", "2013-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30");
     orchestrator.executeBuilds(scan);
     issues = search(IssueQuery.create()).list();
     assertThat(issues.isEmpty());

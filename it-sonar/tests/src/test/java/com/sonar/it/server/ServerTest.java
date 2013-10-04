@@ -234,7 +234,6 @@ public class ServerTest {
     orchestrator.start();
 
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setRunnerVersion("2.2")
       .setProperty("sonar.projectKey", "myproject.jsp"));
     // Access dashboard
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("url_ending_by_jsp",

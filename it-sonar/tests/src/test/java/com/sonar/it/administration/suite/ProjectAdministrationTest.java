@@ -319,8 +319,7 @@ public class ProjectAdministrationTest {
 
   private void scanSample(@Nullable String date, @Nullable String profile) {
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-        .setProperties("sonar.cpd.skip", "true")
-        .setRunnerVersion("2.2.2");
+        .setProperties("sonar.cpd.skip", "true");
     if (date != null) {
       scan.setProperty("sonar.projectDate", date);
     }

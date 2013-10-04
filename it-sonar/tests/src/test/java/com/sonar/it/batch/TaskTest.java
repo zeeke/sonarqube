@@ -38,7 +38,6 @@ public class TaskTest {
   @Test
   public void test_sonar_runner_scan() {
     SonarRunner build = SonarRunner.create()
-        .setRunnerVersion("2.1")
         .setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"))
         .setProperty("sonar.task", "scan");
     orchestrator.executeBuild(build);
@@ -59,7 +58,6 @@ public class TaskTest {
   @Test
   public void test_list_tasks() {
     SonarRunner build = SonarRunner.create()
-        .setRunnerVersion("2.1")
         .setProjectDir(ItUtils.locateProjectDir("batch/empty-folder"))
         .setProperty("sonar.task", "list");
     BuildResult buildResult = orchestrator.executeBuild(build);
@@ -77,7 +75,6 @@ public class TaskTest {
   @Test
   public void should_display_error_when_running_project_task_and_no_project() {
     SonarRunner build = SonarRunner.create()
-        .setRunnerVersion("2.1")
         .setProjectDir(ItUtils.locateProjectDir("batch/empty-folder"))
         .setProperty("sonar.task", "my-project-task")
         .setDebugLogs(true);
@@ -90,7 +87,6 @@ public class TaskTest {
   @Test
   public void test_project_less_task() {
     SonarRunner build = SonarRunner.create()
-        .setRunnerVersion("2.1")
         .setProjectDir(ItUtils.locateProjectDir("batch/empty-folder"))
         .setProperty("sonar.task", "my-task")
         .setProperty("sonar.taskCanReadSettings", "true");
@@ -102,7 +98,6 @@ public class TaskTest {
   @Test
   public void test_project_task() {
     SonarRunner build = SonarRunner.create()
-        .setRunnerVersion("2.1")
         .setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"))
         .setProperty("sonar.task", "my-project-task");
     BuildResult buildResult = orchestrator.executeBuild(build);

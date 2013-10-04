@@ -249,9 +249,7 @@ public class IssueExclusionsTest {
       .setProperties("sonar.cpd.skip", "true")
       .setProperties(properties)
       //.setProperties("sonar.verbose", "true")
-      .setProfile("with-many-rules")
-      // Multi module project have to use sonar-runner 2.2.2 to not fail
-      .setRunnerVersion("2.2.2");
+      .setProfile("with-many-rules");
     return orchestrator.executeBuildQuietly(scan);
   }
 

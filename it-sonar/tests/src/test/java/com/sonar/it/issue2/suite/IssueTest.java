@@ -42,9 +42,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
       .setProperties("sonar.cpd.skip", "true")
-      .setProfile("with-many-rules")
-        // Multi module project have to use sonar-runner 2.2.2 to not fail
-      .setRunnerVersion("2.2.2");
+      .setProfile("with-many-rules");
     orchestrator.executeBuild(scan);
 
     String projectKey = "com.sonarsource.it.samples:multi-modules-sample";
@@ -226,9 +224,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
       .setProperties("sonar.cpd.skip", "true")
-      .setProfile("with-many-rules")
-      // Multi module project have to use sonar-runner 2.2.2 to not fail
-      .setRunnerVersion("2.2.2");
+      .setProfile("with-many-rules");
     orchestrator.executeBuild(scan);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("issues-drilldown",

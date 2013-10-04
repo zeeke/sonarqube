@@ -61,7 +61,7 @@ public class MultiLanguageTest {
 
   @Test
   public void test_sonar_runner_inspection() {
-    SonarRunner build = SonarRunner.create().setRunnerVersion("2.0").setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"));
+    SonarRunner build = SonarRunner.create().setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"));
     orchestrator.executeBuild(build);
 
     // modules

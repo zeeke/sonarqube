@@ -408,7 +408,6 @@ public class DryRunTest {
 
   private SonarRunner configureRunner(String projectPath, String... props) {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
-      .setRunnerVersion("2.2.2")
       .setProperties(props);
     return runner;
   }

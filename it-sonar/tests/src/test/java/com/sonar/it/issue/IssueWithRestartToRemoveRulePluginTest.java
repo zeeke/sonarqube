@@ -39,8 +39,7 @@ public class IssueWithRestartToRemoveRulePluginTest {
     orchestrator.getDatabase().truncateInspectionTables();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-deprecated-rule-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProfile("with-deprecated-rule")
-      .setRunnerVersion("2.2.2");
+      .setProfile("with-deprecated-rule");
     orchestrator.executeBuild(scan);
 
     Issue issue = issueClient.find(IssueQuery.create().rules("deprecated-repo:deprecated-rule")).list().get(0);

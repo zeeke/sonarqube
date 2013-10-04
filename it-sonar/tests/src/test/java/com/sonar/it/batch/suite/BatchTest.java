@@ -382,7 +382,6 @@ public class BatchTest {
 
   private SonarRunner configureRunner(String projectPath, String... props) {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
-      .setRunnerVersion("2.2.2")
       .setProfile("one-issue-per-line")
       .setProperties(props);
     return runner;
