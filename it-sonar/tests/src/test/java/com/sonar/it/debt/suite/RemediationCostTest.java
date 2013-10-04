@@ -11,12 +11,13 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
 
 import java.util.List;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class RemediationCostTest {
 
@@ -32,7 +33,6 @@ public class RemediationCostTest {
    * SONAR-4716
    */
   @Test
-  @Ignore("Currently fqiling becquse remediation cost seems to not be set on issues")
   public void set_remediation_cost_on_issue() throws Exception {
     // Generate some issues
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
@@ -41,12 +41,11 @@ public class RemediationCostTest {
         .withoutDynamicAnalysis()
         .setProfile("one-issue-per-line"));
 
-    // All the issues have a remediation cost
+    // All the issues should have a remediation cost
     List<Issue> issues = ItUtils.newWsClientForAnonymous(orchestrator).issueClient().find(IssueQuery.create()).list();
     for (Issue issue : issues) {
-//      assertThat(issue.remediationCost()).isNotNull();
+      assertThat(issue.remediationCost()).isNotNull();
     }
   }
-
 
 }
