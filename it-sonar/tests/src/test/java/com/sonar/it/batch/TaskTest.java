@@ -99,6 +99,7 @@ public class TaskTest {
   public void test_project_task() {
     SonarRunner build = SonarRunner.create()
         .setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"))
+        .setRunnerVersion("2.1")
         .setProperty("sonar.task", "my-project-task");
     BuildResult buildResult = orchestrator.executeBuild(build);
 
