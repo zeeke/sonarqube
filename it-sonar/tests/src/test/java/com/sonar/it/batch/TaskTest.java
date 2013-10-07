@@ -25,10 +25,10 @@ public class TaskTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.locateTestPlugin("task-plugin"))
-      .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.0"))
-      .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.0"))
-      .build();
+    .addPlugin(ItUtils.locateTestPlugin("task-plugin"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.0"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.0"))
+    .build();
 
   @After
   public void deleteData() {
@@ -38,8 +38,8 @@ public class TaskTest {
   @Test
   public void test_sonar_runner_scan() {
     SonarRunner build = SonarRunner.create()
-        .setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"))
-        .setProperty("sonar.task", "scan");
+      .setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"))
+      .setProperty("sonar.task", "scan");
     orchestrator.executeBuild(build);
 
     // modules
@@ -58,38 +58,25 @@ public class TaskTest {
   @Test
   public void test_list_tasks() {
     SonarRunner build = SonarRunner.create()
-        .setProjectDir(ItUtils.locateProjectDir("batch/empty-folder"))
-        .setProperty("sonar.task", "list");
+      .setProjectDir(ItUtils.locateProjectDir("batch/empty-folder"))
+      .setProperty("sonar.task", "list");
     BuildResult buildResult = orchestrator.executeBuild(build);
 
     // Check that no inspection was conducted
     assertThat(getResource("multi-languages", "files")).isNull();
 
     assertThat(buildResult.getLogs())
-        .contains("Available tasks:")
-        .contains("my-project-task: A simple task that requires a project")
-        .contains("my-task: A simple task")
-        .contains("scan: Scan project");
+      .contains("Available tasks:")
+      .contains("my-task: A simple task")
+      .contains("scan: Scan project");
   }
 
   @Test
-  public void should_display_error_when_running_project_task_and_no_project() {
+  public void test_component_injection_and_settings() {
     SonarRunner build = SonarRunner.create()
-        .setProjectDir(ItUtils.locateProjectDir("batch/empty-folder"))
-        .setProperty("sonar.task", "my-project-task")
-        .setDebugLogs(true);
-    BuildResult buildResult = orchestrator.executeBuildQuietly(build);
-
-    assertThat(buildResult.getStatus()).isNotEqualTo(0);
-    assertThat(buildResult.getLogs()).contains("This task was expected to be run on project with key multi-languages");
-  }
-
-  @Test
-  public void test_project_less_task() {
-    SonarRunner build = SonarRunner.create()
-        .setProjectDir(ItUtils.locateProjectDir("batch/empty-folder"))
-        .setProperty("sonar.task", "my-task")
-        .setProperty("sonar.taskCanReadSettings", "true");
+      .setProjectDir(ItUtils.locateProjectDir("batch/empty-folder"))
+      .setProperty("sonar.task", "my-task")
+      .setProperty("sonar.taskCanReadSettings", "true");
     BuildResult buildResult = orchestrator.executeBuild(build);
 
     assertThat(buildResult.getLogs()).contains("Executing my-task");

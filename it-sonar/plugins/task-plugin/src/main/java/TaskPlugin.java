@@ -7,9 +7,7 @@ public class TaskPlugin extends SonarPlugin {
   public List getExtensions() {
     return Arrays.asList(
         MyTask.class,
-        MyTask.DEFINITION,
-        MyProjectTask.class,
-        MyProjectTask.DEFINITION
+        MyTask.DEFINITION
     );
   }
 }
