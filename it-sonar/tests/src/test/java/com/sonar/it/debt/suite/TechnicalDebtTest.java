@@ -17,7 +17,9 @@ import org.sonar.wsclient.issue.IssueQuery;
 
 import java.util.List;
 
-public class RemediationCostTest {
+import static org.fest.assertions.Assertions.assertThat;
+
+public class TechnicalDebtTest {
 
   @ClassRule
   public static Orchestrator orchestrator = DebtTestSuite.ORCHESTRATOR;
@@ -31,7 +33,7 @@ public class RemediationCostTest {
    * SONAR-4716
    */
   @Test
-  public void set_remediation_cost_on_issue() throws Exception {
+  public void set_technical_debt_on_issue() throws Exception {
     // Generate some issues
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
     orchestrator.executeBuild(
@@ -39,10 +41,13 @@ public class RemediationCostTest {
         .withoutDynamicAnalysis()
         .setProfile("one-issue-per-line"));
 
-    // All the issues should have a remediation cost
+    // All the issues should have a technical debt
     List<Issue> issues = ItUtils.newWsClientForAnonymous(orchestrator).issueClient().find(IssueQuery.create()).list();
     for (Issue issue : issues) {
-//      assertThat(issue.remediationCost()).isNotNull();
+      assertThat(issue.technicalDebt()).isNotNull();
+      assertThat(issue.technicalDebt().days()).isEqualTo(0);
+      assertThat(issue.technicalDebt().hours()).isEqualTo(1);
+      assertThat(issue.technicalDebt().minutes()).isEqualTo(0);
     }
   }
 
