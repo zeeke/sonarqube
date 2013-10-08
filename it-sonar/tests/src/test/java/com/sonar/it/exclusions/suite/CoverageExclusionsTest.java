@@ -28,6 +28,9 @@ public class CoverageExclusionsTest {
     orchestrator.getDatabase().truncateInspectionTables();
   }
 
+  /**
+   * SONAR-766
+   */
   @Test
   public void should_compute_coverage_on_project() {
     scan("exclusions/java-half-covered");
@@ -36,6 +39,9 @@ public class CoverageExclusionsTest {
     assertThat(project.getMeasureValue("coverage")).isEqualTo(50.0, delta(0.1));
   }
 
+  /**
+   * SONAR-766
+   */
   @Test
   public void should_ignore_coverage_on_full_path() {
     scan("exclusions/java-half-covered",
@@ -45,6 +51,9 @@ public class CoverageExclusionsTest {
     assertThat(project.getMeasureValue("coverage")).isEqualTo(100.0);
   }
 
+  /**
+   * SONAR-766
+   */
   @Test
   public void should_ignore_coverage_on_pattern() {
     scan("exclusions/java-half-covered",
@@ -54,6 +63,9 @@ public class CoverageExclusionsTest {
     assertThat(project.getMeasureValue("coverage")).isEqualTo(100.0);
   }
 
+  /**
+   * SONAR-766
+   */
   @Test
   public void should_not_have_coverage_at_all() {
     scan("exclusions/java-half-covered",
