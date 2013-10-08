@@ -43,8 +43,7 @@ public class IssueExclusionsTest {
     scan(
       "sonar.issue.ignore.multicriteria", "1",
       "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*.xoo",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "*",
-      "sonar.issue.ignore.multicriteria.1.lineRange", "*"
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "*"
       );
 
     checkIssueCountBySeverity(7, 0, 0, 0, 0, 7);
@@ -55,19 +54,55 @@ public class IssueExclusionsTest {
     scan(
       "sonar.issue.enforce.multicriteria", "1",
       "sonar.issue.enforce.multicriteria.1.resourceKey", "**/HelloA1.xoo",
-      "sonar.issue.enforce.multicriteria.1.ruleKey", "*",
-      "sonar.issue.enforce.multicriteria.1.lineRange", "*"
+      "sonar.issue.enforce.multicriteria.1.ruleKey", "*"
       );
 
     checkIssueCountBySeverity(
-      1 /* tag */ + 18 /* lines in HelloA1.xoo */ + 1 /* file */ + 7,
+      1 /* tag */ + 18 /* lines in HelloA1.xoo */ + 1 /* file */,
       0 + 1,
       0 + 18,
       0 + 1,
       0,
-      7);
+      0);
   }
 
+  @Test
+  public void should_enforce_on_two_files_with_same_rule() {
+    scan(
+      "sonar.issue.enforce.multicriteria", "1,2",
+      "sonar.issue.enforce.multicriteria.1.resourceKey", "**/HelloA1.xoo",
+      "sonar.issue.enforce.multicriteria.1.ruleKey", "*",
+      "sonar.issue.enforce.multicriteria.2.resourceKey", "**/HelloA2.xoo",
+      "sonar.issue.enforce.multicriteria.2.ruleKey", "*"
+      );
+
+    checkIssueCountBySeverity(
+      2 /* tags */ + 18 /* lines in HelloA1.xoo */ + 15 /* lines in HelloA2.xoo */ + 2 /* files */,
+      0 + 2,
+      0 + 18 + 15,
+      0 + 2,
+      0,
+      0);
+  }
+
+  @Test
+  public void should_enforce_on_two_files_with_different_rule() {
+    scan(
+      "sonar.issue.enforce.multicriteria", "1,2",
+      "sonar.issue.enforce.multicriteria.1.resourceKey", "**/HelloA1.xoo",
+      "sonar.issue.enforce.multicriteria.1.ruleKey", "xoo:OneIssuePerLine",
+      "sonar.issue.enforce.multicriteria.2.resourceKey", "**/HelloA2.xoo",
+      "sonar.issue.enforce.multicriteria.2.ruleKey", "xoo:HasTag"
+      );
+
+    checkIssueCountBySeverity(
+      1 /* tag in HelloA2 */ + 18 /* lines in HelloA1.xoo */ + 4 /* files */ + 7 /* modules */,
+      0 + 1,
+      0 + 18,
+      4,
+      0,
+      7);
+  }
 
   @Test
   public void should_ignore_files_with_regexp() {
@@ -124,32 +159,13 @@ public class IssueExclusionsTest {
     scan(
       "sonar.issue.ignore.multicriteria", "1",
       "sonar.issue.ignore.multicriteria.1.resourceKey", "com/sonar/it/samples/modules/a1/*",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine",
-      "sonar.issue.ignore.multicriteria.1.lineRange", "*"
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine"
       );
 
     checkIssueCountBySeverity(
       70 - 18 /* lines in HelloA1.xoo */,
       2,
       57 - 18,
-      4,
-      0,
-      7);
-  }
-
-  @Test
-  public void should_ignore_one_per_line_everywhere_on_line_range() {
-    scan(
-      "sonar.issue.ignore.multicriteria", "1",
-      "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine",
-      "sonar.issue.ignore.multicriteria.1.lineRange", "[3-5]"
-      );
-
-    checkIssueCountBySeverity(
-      70 - 4 * 3 /* 3 lines per file */,
-      2,
-      57 - 4 * 3,
       4,
       0,
       7);
@@ -163,35 +179,20 @@ public class IssueExclusionsTest {
       "sonar.issue.ignore.block", "1",
       "sonar.issue.ignore.block.1.beginBlockRegexp", "MUTE-SONAR",
       "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR",
-      "sonar.issue.ignore.multicriteria", "1,2",
+      "sonar.issue.ignore.multicriteria", "1",
       "sonar.issue.ignore.multicriteria.1.resourceKey", "com/sonar/it/samples/modules/b1/*",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine",
-      "sonar.issue.ignore.multicriteria.1.lineRange", "*",
-      "sonar.issue.ignore.multicriteria.2.resourceKey", "**/*",
-      "sonar.issue.ignore.multicriteria.2.ruleKey", "xoo:OneIssuePerLine",
-      "sonar.issue.ignore.multicriteria.2.lineRange", "[3-5]"
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine"
     );
 
     checkIssueCountBySeverity(
       70 - 1 /* tag in HelloA1.xoo */ - 1 /* tag in HelloA2.xoo */
         - 18 /* lines in HelloA1.xoo */ - 5 /* lines in HelloA2.xoo */ - 12 /* lines in HelloB1.xoo */
-        - (4 - 2) * 3 /* 3 lines per file, HelloA1.xoo and HelloB1.xoo already silenced */
         - 1 /* HelloA1.xoo file */,
-      2 - 2,
-      57 - 18 - 5 - 12 - (4 - 2) * 3,
+      0,
+      57 - 18 - 5 - 12,
       4 - 1,
       0,
       7);
-  }
-
-  @Test
-  public void should_log_bad_line_range() {
-    checkAnalysisFails(
-      "sonar.issue.ignore.multicriteria", "1",
-      "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "*",
-      "sonar.issue.ignore.multicriteria.1.lineRange", "notALineRange"
-      );
   }
 
   @Test
@@ -199,8 +200,7 @@ public class IssueExclusionsTest {
     checkAnalysisFails(
       "sonar.issue.ignore.multicriteria", "1",
       "sonar.issue.ignore.multicriteria.1.resourceKey", "",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "*",
-      "sonar.issue.ignore.multicriteria.1.lineRange", "[]"
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "*"
       );
   }
 
@@ -209,8 +209,7 @@ public class IssueExclusionsTest {
     checkAnalysisFails(
       "sonar.issue.ignore.multicriteria", "1",
       "sonar.issue.ignore.multicriteria.1.resourceKey", "*",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "",
-      "sonar.issue.ignore.multicriteria.1.lineRange", "[]"
+      "sonar.issue.ignore.multicriteria.1.ruleKey", ""
       );
   }
 
@@ -231,24 +230,12 @@ public class IssueExclusionsTest {
     );
   }
 
-  @Test
-  public void should_not_ignore_issues_if_line_range_is_empty() {
-    scan(
-      "sonar.issue.ignore.multicriteria", "1",
-      "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "*",
-      "sonar.issue.ignore.multicriteria.1.lineRange", "[]"
-      );
-
-    checkIssueCountBySeverity(70, 2, 57, 4, 0, 7);
-  }
-
   protected BuildResult scan(String... properties) {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir(PROJECT_DIR))
       .setProperties("sonar.cpd.skip", "true")
       .setProperties(properties)
-      //.setProperties("sonar.verbose", "true")
+      .setProperties("sonar.verbose", "true")
       .setProfile("with-many-rules");
     return orchestrator.executeBuildQuietly(scan);
   }
