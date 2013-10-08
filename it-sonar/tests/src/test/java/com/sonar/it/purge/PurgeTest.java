@@ -84,16 +84,16 @@ public class PurgeTest {
     measures("TRK", measuresOnTrk + 144);
     measures("BRC", measuresOnBrc + 359);
     measures("PAC", measuresOnPac + 500);
-    measures("CLA", measuresOnCla + 1671);
+    measures("CLA", measuresOnCla + 873);
     measures("UTS", measuresOnUts);
 
     // Measures on new_* metrics should be recorded
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
       .as("Wrong number of measure of new_ metrics")
-      .isEqualTo(2371);
+      .isEqualTo(1573);
 
     // added measures relate to project and new_* metrics
-    expectedMeasures += 144 + 359 + 500 + 1671;
+    expectedMeasures += 144 + 359 + 500 + 873;
     assertThat(count("project_measures")).as("Wrong number of measures after second analysis").isEqualTo(expectedMeasures);
 
     assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
@@ -268,7 +268,8 @@ public class PurgeTest {
   }
 
   private void logMeasures(String qualifier) {
-    String sql = "SELECT m.name as metricName, pm.value as value, pm.text_value as textValue, pm.variation_value_1, pm.variation_value_2, pm.variation_value_3, pm.rule_id, pm.characteristic_id " +
+    String sql = "SELECT m.name as metricName, pm.value as value, pm.text_value as textValue, pm.variation_value_1, pm.variation_value_2, pm.variation_value_3, pm.rule_id, pm.characteristic_id "
+      +
       "FROM project_measures pm, snapshots s, metrics m " +
       "WHERE pm.snapshot_id=s.id and pm.metric_id=m.id and s.qualifier='"
       + qualifier + "'";
