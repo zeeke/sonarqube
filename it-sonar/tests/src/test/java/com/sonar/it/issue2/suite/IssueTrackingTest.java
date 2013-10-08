@@ -106,20 +106,17 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
 
   @Test
   public void should_track_issues_on_dry_run() throws Exception {
-    // The PMD rule System.out is enabled
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTrackingTest/issue-tracking-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTrackingTest/issue-on-tag-foobar.xml"));
 
     // version 1
-    MavenBuild firstScan = MavenBuild.create(ItUtils.locateProjectPom("issue/tracking-v1"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", OLD_DATE)
-      .setProfile("issue-tracking");
+    SonarRunner firstScan = SonarRunner.create(ItUtils.locateProjectDir("issue/xoo-tracking-v1"))
+      .setProperties("sonar.projectDate", OLD_DATE)
+      .setProfile("issue-on-tag-foobar");
 
     // version 2, dry run
-    MavenBuild secondScan = MavenBuild.create(ItUtils.locateProjectPom("issue/tracking-v2"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.dryRun", "true", "sonar.projectDate", NEW_DATE)
-      .setProfile("issue-tracking");
+    SonarRunner secondScan = SonarRunner.create(ItUtils.locateProjectDir("issue/xoo-tracking-v2"))
+      .setProperties("sonar.dryRun", "true", "sonar.projectDate", NEW_DATE)
+      .setProfile("issue-on-tag-foobar");
 
     orchestrator.executeBuilds(firstScan, secondScan);
 
@@ -215,9 +212,55 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
 
     assertThat(search(IssueQuery.create()).list()).isNotEmpty();
     file = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_violations").setIncludeTrends(true));
-    measures = file.getMeasures();
-    assertThat(measures.get(0).getVariation1().intValue()).isEqualTo(0);
-    assertThat(measures.get(0).getVariation2().intValue()).isEqualTo(13);
+    // No variation => measure is purged
+    assertThat(file).isNull();
+  }
+
+  /**
+   * SONAR-3647
+   */
+  @Test
+  public void new_issues_measures_consistent_with_variations() throws Exception {
+    // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTrackingTest/issue-on-tag-foobar.xml"));
+
+    // Execute an analysis in the past to have a past snapshot
+    // version 1
+    SonarRunner firstScan = SonarRunner.create(ItUtils.locateProjectDir("issue/xoo-tracking-v1"))
+      .setProfile("issue-on-tag-foobar");
+    orchestrator.executeBuilds(firstScan);
+
+    // version 2 with 2 new violations and 3 more ncloc
+    SonarRunner secondScan = SonarRunner.create(ItUtils.locateProjectDir("issue/xoo-tracking-v2"))
+      .setProfile("issue-on-tag-foobar");
+    orchestrator.executeBuilds(secondScan);
+
+    assertThat(search(IssueQuery.create()).list()).isNotEmpty();
+    Resource file = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample", "new_violations", "violations", "ncloc").setIncludeTrends(true));
+    List<Measure> measures = file.getMeasures();
+    Measure newIssues = find(measures, "new_violations");
+    assertThat(newIssues.getVariation1().intValue()).isEqualTo(2);
+    assertThat(newIssues.getVariation2().intValue()).isEqualTo(2);
+
+    Measure violations = find(measures, "violations");
+    assertThat(violations.getValue().intValue()).isEqualTo(3);
+    assertThat(violations.getVariation1().intValue()).isEqualTo(2);
+    assertThat(violations.getVariation2().intValue()).isEqualTo(2);
+
+    Measure ncloc = find(measures, "ncloc");
+    assertThat(ncloc.getValue().intValue()).isEqualTo(16);
+    assertThat(ncloc.getVariation1().intValue()).isEqualTo(3);
+    assertThat(ncloc.getVariation2().intValue()).isEqualTo(3);
+
+  }
+
+  private Measure find(List<Measure> measures, String metricKey) {
+    for (Measure measure : measures) {
+      if (measure.getMetricKey().equals(metricKey)) {
+        return measure;
+      }
+    }
+    return null;
   }
 
   private Issue getIssueOnLine(final Integer line, final String repoKey, final String ruleKey, List<Issue> issues) {
