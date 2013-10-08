@@ -45,24 +45,36 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
     createManualIssue();
   }
 
+  /**
+   * SONAR-3387
+   */
   @Test
   public void should_move_manual_issue_if_same_line_found() {
     analyzeModifiedProject("issue/xoo-sample-v2");
     checkManualIssueOpenAt(6);
   }
 
+  /**
+   * SONAR-3387
+   */
   @Test
   public void should_not_touch_issue_if_same_line_not_found() {
     analyzeModifiedProject("issue/xoo-sample-v3");
     checkManualIssueOpenAt(3);
   }
 
+  /**
+   * SONAR-3387
+   */
   @Test
   public void should_not_touch_issue_if_same_line_found_multiple_times() {
     analyzeModifiedProject("issue/xoo-sample-v4");
     checkManualIssueOpenAt(3);
   }
 
+  /**
+   * SONAR-3387
+   */
   @Test
   public void should_close_issue_if_same_line_not_found_and_old_line_out_of_new_source() {
     analyzeModifiedProject("issue/xoo-sample-v5");
