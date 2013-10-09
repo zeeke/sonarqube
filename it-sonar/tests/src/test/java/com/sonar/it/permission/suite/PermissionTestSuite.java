@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
   PermissionsTest.class, IssuePermissionTest.class, ProjectPermissionsTest.class,
   DashboardSharingPermissionTest.class, DryRunScanPermissionTest.class, ScanPermissionTest.class, SystemAdminPermissionTest.class,
-  QualityProfileAdminPermissionTest.class, SourceCodePermissionTest.class
+  QualityProfileAdminPermissionTest.class, SourceCodePermissionTest.class, ProvisioningPermissionTest.class
 })
 public class PermissionTestSuite {
 
