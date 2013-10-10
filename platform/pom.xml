@@ -25,7 +25,7 @@
     <qualityIndexLatest>1.2-SNAPSHOT</qualityIndexLatest>
     <plsqlLatest>2.5-SNAPSHOT</plsqlLatest>
     <reportLatest>1.4-SNAPSHOT</reportLatest>
-    <scmActivityLatest>1.6-SNAPSHOT</scmActivityLatest>
+    <scmActivityLatest>1.7-SNAPSHOT</scmActivityLatest>
     <securityRulesLatest>0.4-SNAPSHOT</securityRulesLatest>
     <sigmmLatest>1.1-SNAPSHOT</sigmmLatest>
     <sqaleLatest>2.0-SNAPSHOT</sqaleLatest>
