@@ -7,7 +7,6 @@
 package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -16,7 +15,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
-import org.sonar.wsclient.issue.*;
+import org.sonar.wsclient.issue.ActionPlan;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
+import org.sonar.wsclient.issue.NewActionPlan;
+import org.sonar.wsclient.issue.NewIssue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,7 +60,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   }
 
   @AfterClass
-  public static void purgeManualRules(){
+  public static void purgeManualRules() {
     try {
       deleteManualRules();
     } catch (Exception e) {
@@ -215,6 +219,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
 
   /**
    * SONAR-4301
+   * SONAR-4486
    */
   @Test
   public void search_issues_from_ui() {
@@ -233,7 +238,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
       "/selenium/issue/issues-search/should-sort-by-severity.html",
       "/selenium/issue/issues-search/should-sort-by-status.html",
       "/selenium/issue/issues-search/should-sort-by-assignee.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
