@@ -42,7 +42,7 @@ public class SearchEngineTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("search-engine",
       "/selenium/ui/search-engine/search-project.html",
       "/selenium/ui/search-engine/search-module.html",
-      "/selenium/ui/search-engine/search-directory.html",
+      "/selenium/ui/search-engine/directories-should-not-be-indexed.html",
       "/selenium/ui/search-engine/search-file.html",
       "/selenium/ui/search-engine/search-unknown-file.html",
       "/selenium/ui/search-engine/search-unit-test-file.html",
@@ -50,7 +50,7 @@ public class SearchEngineTest {
       "/selenium/ui/search-engine/open-file-viewers.html",
       // SONAR-3909
       "/selenium/ui/search-engine/search-with-pourcent-and-underscore-characters.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -61,7 +61,7 @@ public class SearchEngineTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("search-engine-project-renaming",
       "/selenium/ui/search-engine-project-renaming/rename-project.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
