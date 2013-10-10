@@ -36,7 +36,7 @@ public class TechnicalDebtMeasureTest {
   private static final String DIRECTORY = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:com/sonar/it/samples/modules/a1";
   private static final String FILE = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:com/sonar/it/samples/modules/a1/HelloA1.xoo";
 
-  private static final String TECHNICAL_DEBT_MEASURE = "technical_debt";
+  private static final String TECHNICAL_DEBT_MEASURE = "sqale_index";
 
 
   @BeforeClass
@@ -152,7 +152,7 @@ public class TechnicalDebtMeasureTest {
 
   private Measure getCharacteristicMeasure(String resource, String metricKey, String characteristicKey) {
     Resource res = orchestrator.getServer().getWsClient().find(
-      ResourceQuery.createForMetrics(resource, metricKey).setCharacteristicKeys("TECHNICAL_DEBT", characteristicKey));
+      ResourceQuery.createForMetrics(resource, metricKey).setCharacteristicKeys("SQALE", characteristicKey));
     if (res == null) {
       return null;
     }
