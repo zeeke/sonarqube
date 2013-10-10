@@ -3,20 +3,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>display-differential-values</title>
+<title>should-open-technical-debt-on-drilldown-service</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
-<tbody>
+<thead>
+<tr><td rowspan="1" colspan="3">should-open-remediationcost-on-drilldown-service</td></tr>
+</thead><tbody>
 	<tr>
 	<td>open</td>
-	<td>/sonar/widget?id=technical_debt&amp;resource=com.sonarsource.it.samples:multi-modules-sample&amp;period=1</td>
+	<td>/sonar/widget?id=technical_debt&amp;resource=com.sonarsource.it.samples:multi-modules-sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=1.5 days</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>block_1</td>
-	<td>*1.5 days*(+0.2)*30.8 (-6.1)</td>
+	<td>content</td>
+	<td>*Technical Debt*1.5*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>content</td>
+	<td>*Module A*com/sonar/it/samples/modules/a1*HelloA1.xoo*</td>
 </tr>
 </tbody></table>
 </body>
