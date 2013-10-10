@@ -7,7 +7,6 @@
 package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.Build;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
@@ -34,8 +33,7 @@ public class IssueRuleWidgetsTest extends AbstractIssueTestCase2 {
       .setHtmlTestsInClasspath("rules-widget",
         "/selenium/issue/widgets/rules/should-have-correct-values.html",
         "/selenium/issue/widgets/rules/should-open-issues-by-severity.html",
-        "/selenium/issue/widgets/rules/should-open-issues-count.html",
-        "/selenium/issue/widgets/rules/should-open-weighted-issues.html"
+        "/selenium/issue/widgets/rules/should-open-issues-count.html"
       ).build());
   }
 

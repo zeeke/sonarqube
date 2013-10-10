@@ -115,7 +115,7 @@ public class DashboardTest {
       // SONAR-4448 TODO to be moved in another category
       "/selenium/ui/dashboard/default_widgets/documentation_and_comments_widget.html",
 
-      // SONAR-4347 TODO to be moved in another category
+      // SONAR-4347 TODO to be moved in category duplications
       "/selenium/ui/dashboard/default_widgets/duplications_widget.html");
   }
 
