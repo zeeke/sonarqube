@@ -37,8 +37,7 @@ public class TechnicalDebtWidgetTest {
     orchestrator.executeSelenese(Selenese.builder()
       .setHtmlTestsInClasspath("technical-debt-widget",
         "/selenium/debt/widgets/technical-debt/should-have-correct-values.html",
-        "/selenium/debt/widgets/technical-debt/should-open-technical-debt-on-drilldown-service.html",
-        "/selenium/debt/widgets/technical-debt/should-open-technical-debt-density-on-drilldown-service.html",
+        "/selenium/debt/widgets/technical-debt/should-open-remediationcost-on-drilldown-service.html",
         "/selenium/debt/widgets/technical-debt/display-differential-values.html",
         // SONAR-4754
         "/selenium/debt/widgets/technical-debt/is-in-project-dashboard.html"

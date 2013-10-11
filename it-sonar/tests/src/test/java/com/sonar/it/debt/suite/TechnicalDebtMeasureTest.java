@@ -171,11 +171,11 @@ public class TechnicalDebtMeasureTest {
    */
   @Test
   public void technical_debt_density_measures() {
-    assertThat(getMeasure(PROJECT, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(30.8);
-    assertThat(getMeasure(MODULE, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(28.3);
-    assertThat(getMeasure(SUB_MODULE, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(23.1);
-    assertThat(getMeasure(DIRECTORY, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(12.7);
-    assertThat(getMeasure(FILE, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(12.7);
+    assertThat(getMeasure(PROJECT, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.03, DELTA);
+    assertThat(getMeasure(MODULE, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.028, DELTA);
+    assertThat(getMeasure(SUB_MODULE, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.023, DELTA);
+    assertThat(getMeasure(DIRECTORY, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.012, DELTA);
+    assertThat(getMeasure(FILE, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.0122, DELTA);
   }
 
 
