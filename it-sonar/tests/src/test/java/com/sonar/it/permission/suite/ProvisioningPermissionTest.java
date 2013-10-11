@@ -11,15 +11,27 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.sonar.wsclient.SonarClient;
+import org.sonar.wsclient.base.HttpException;
 import org.sonar.wsclient.permissions.PermissionParameters;
+import org.sonar.wsclient.project.NewProject;
+import org.sonar.wsclient.project.Project;
 import org.sonar.wsclient.user.UserParameters;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class ProvisioningPermissionTest {
 
+  private static final String PASSWORD = "password";
+
   @ClassRule
   public static Orchestrator orchestrator = PermissionTestSuite.ORCHESTRATOR;
+
+  @Rule
+  public static final ExpectedException thrown = ExpectedException.none();
 
   private static final String ADMIN_WITH_PROVISIONING = "admin-with-provisioning";
   private static final String ADMIN_WITHOUT_PROVISIONING = "admin-without-provisioning";
@@ -31,21 +43,21 @@ public class ProvisioningPermissionTest {
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 
     client.userClient().create(UserParameters.create().login(ADMIN_WITH_PROVISIONING).name(ADMIN_WITH_PROVISIONING)
-      .password("password").passwordConfirmation("password"));
+      .password(PASSWORD).passwordConfirmation(PASSWORD));
     client.permissionClient().addPermission(PermissionParameters.create().user(ADMIN_WITH_PROVISIONING).permission("admin"));
     client.permissionClient().addPermission(PermissionParameters.create().user(ADMIN_WITH_PROVISIONING).permission("provisioning"));
 
     client.userClient().create(UserParameters.create().login(ADMIN_WITHOUT_PROVISIONING).name(ADMIN_WITHOUT_PROVISIONING)
-      .password("password").passwordConfirmation("password"));
+      .password(PASSWORD).passwordConfirmation(PASSWORD));
     client.permissionClient().addPermission(PermissionParameters.create().user(ADMIN_WITHOUT_PROVISIONING).permission("admin"));
     client.permissionClient().removePermission(PermissionParameters.create().user(ADMIN_WITHOUT_PROVISIONING).permission("provisioning"));
 
     client.userClient().create(UserParameters.create().login(USER_WITH_PROVISIONING).name(USER_WITH_PROVISIONING)
-      .password("password").passwordConfirmation("password"));
+      .password(PASSWORD).passwordConfirmation(PASSWORD));
     client.permissionClient().addPermission(PermissionParameters.create().user(USER_WITH_PROVISIONING).permission("provisioning"));
 
     client.userClient().create(UserParameters.create().login(USER_WITHOUT_PROVISIONING).name(USER_WITHOUT_PROVISIONING)
-      .password("password").passwordConfirmation("password"));
+      .password(PASSWORD).passwordConfirmation(PASSWORD));
     client.permissionClient().removePermission(PermissionParameters.create().user(USER_WITHOUT_PROVISIONING).permission("provisioning"));
   }
 
@@ -61,10 +73,9 @@ public class ProvisioningPermissionTest {
   /**
    * SONAR-3871
    * SONAR-4709
-   * @throws Exception
    */
   @Test
-  public void should_not_see_provisioning_section() throws Exception {
+  public void should_not_see_provisioning_section() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-not-see-provisioning-section",
       "/selenium/permission/provisioning/provisioning-page-hidden.html"
     ).build();
@@ -74,13 +85,43 @@ public class ProvisioningPermissionTest {
   /**
    * SONAR-3871
    * SONAR-4709
-   * @throws Exception
    */
   @Test
-  public void should_see_provisioning_section() throws Exception {
+  public void should_see_provisioning_section() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-see-provisioning-section",
       "/selenium/permission/provisioning/provisioning-page-allowed.html"
     ).build();
     orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-3871
+   * SONAR-4709
+   */
+  @Test
+  public void should_be_allowed_on_ws_with_permission() {
+    final String newKey = "new-project";
+    final String newName = "New Project";
+
+    SonarClient client = orchestrator.getServer().wsClient(USER_WITH_PROVISIONING, PASSWORD);
+
+    Project created = client.projectClient().create(NewProject.create().key(newKey).name(newName));
+
+    assertThat(created).isNotNull();
+    assertThat(created.key()).isEqualTo(newKey);
+    assertThat(created.name()).isEqualTo(newName);
+  }
+
+  /**
+   * SONAR-3871
+   * SONAR-4709
+   */
+  @Test
+  public void should_not_be_allowed_on_ws_without_permission() {
+    SonarClient client = orchestrator.getServer().wsClient(USER_WITHOUT_PROVISIONING, PASSWORD);
+
+    thrown.expect(HttpException.class);
+    thrown.expectMessage("Error 401");
+    client.projectClient().create(NewProject.create().key("new-project").name("New Project"));
   }
 }
