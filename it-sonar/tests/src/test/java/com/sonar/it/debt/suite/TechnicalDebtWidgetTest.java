@@ -33,14 +33,14 @@ public class TechnicalDebtWidgetTest {
    * SONAR-4717
    */
   @Test
-  public void technical_debt_widget() {
+  public void technical_debt_in_issues_widget() {
     orchestrator.executeSelenese(Selenese.builder()
-      .setHtmlTestsInClasspath("technical-debt-widget",
+      .setHtmlTestsInClasspath("technical-debt-in-issues-widget",
         "/selenium/debt/widgets/technical-debt/should-have-correct-values.html",
         "/selenium/debt/widgets/technical-debt/should-open-remediationcost-on-drilldown-service.html",
         "/selenium/debt/widgets/technical-debt/display-differential-values.html",
-        // SONAR-4754
-        "/selenium/debt/widgets/technical-debt/is-in-project-dashboard.html"
+        // SONAR-4717
+        "/selenium/debt/widgets/technical-debt/is-in-issues-widget.html"
       ).build());
   }
 
