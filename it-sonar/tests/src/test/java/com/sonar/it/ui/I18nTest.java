@@ -8,17 +8,12 @@ package com.sonar.it.ui;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
-import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Rule;
 import org.sonar.wsclient.services.RuleQuery;
-import org.sonar.wsclient.services.Violation;
-import org.sonar.wsclient.services.ViolationQuery;
-
-import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -35,8 +30,12 @@ public class I18nTest {
     orchestrator.getDatabase().truncateInspectionTables();
   }
 
+  /**
+   * TODO This test should use a fake widget that display a fake metric with decimals instead of using provided metric
+   */
   @Test
   public void test_localization() {
+
     MavenBuild build = MavenBuild.builder()
         .setPom(ItUtils.locateProjectPom("shared/sample"))
         .addSonarGoal()
