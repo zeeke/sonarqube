@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
   UserAdministrationTest.class,
   ProjectAdministrationTest.class,
   PropertySetsTest.class,
-  SubCategoriesTest.class
+  SubCategoriesTest.class,
+  ProjectProvisioningTest.class
 })
 public class AdministrationTestSuite {
 
