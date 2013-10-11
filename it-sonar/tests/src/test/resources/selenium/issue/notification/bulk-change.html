@@ -7,9 +7,81 @@
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
   <tbody>
-  <tr>
-      <td>open</td>
-      <td>/sonar/sessions/logout</td>
+<tr>
+  <td>open</td>
+  <td>/sonar/sessions/logout</td>
+  <td></td>
+</tr>
+<tr>
+  <td>open</td>
+  <td>/sonar/sessions/new</td>
+  <td></td>
+</tr>
+<tr>
+  <td>type</td>
+  <td>login</td>
+  <td>tester</td>
+</tr>
+<tr>
+  <td>type</td>
+  <td>password</td>
+  <td>tester</td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>commit</td>
+  <td></td>
+</tr>
+<tr>
+  <td>open</td>
+  <td>/sonar/issues</td>
+  <td></td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>search-button</td>
+  <td></td>
+</tr>
+<tr>
+  <td>assertText</td>
+  <td>issue-filters-operations</td>
+  <td>*Bulk Change*</td>
+</tr>
+<!-- Bulk change without notifications -->
+<tr>
+  <td>click</td>
+  <td>id=bulk-change</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForText</td>
+  <td>bulk-change-form</td>
+  <td>*Change 13 issues*</td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>id=assign-action</td>
+  <td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>id=set-severity-action</td>
+  <td></td>
+</tr>
+<tr>
+  <td>select</td>
+  <td>severity</td>
+  <td>Minor</td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>id=bulk-change-submit</td>
+  <td></td>
+</tr>
+<!-- Bulk change with notifications -->
+<tr>
+  <td>open</td>
+  <td>/sonar/sessions/logout</td>
   <td></td>
 </tr>
 <tr>
@@ -38,24 +110,9 @@
   <td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>select-project</td>
-  <td>sample</td>
-</tr>
-<tr>
   <td>clickAndWait</td>
   <td>search-button</td>
   <td></td>
-</tr>
-<tr>
-  <td>assertText</td>
-  <td>content</td>
-  <td>*Open*</td>
-</tr>
-<tr>
-  <td>assertText</td>
-  <td>issue-filters-operations</td>
-  <td>*Bulk Change*</td>
 </tr>
 <tr>
   <td>click</td>
@@ -66,21 +123,6 @@
   <td>waitForText</td>
   <td>bulk-change-form</td>
   <td>*Change 13 issues*</td>
-</tr>
-<tr>
-  <td>assertText</td>
-  <td>bulk-change-form</td>
-  <td>*Assign*Plan*Change severity*Transition*Comment*Send notifications*</td>
-</tr>
-<tr>
-  <td>click</td>
-  <td>id=assign-action</td>
-  <td></td>
-</tr>
-<tr>
-  <td>click</td>
-  <td>id=plan-action</td>
-  <td></td>
 </tr>
 <tr>
   <td>click</td>
@@ -94,23 +136,13 @@
 </tr>
 <tr>
   <td>click</td>
-  <td>transition-confirm</td>
+  <td>id=send-notifications</td>
   <td></td>
-</tr>
-<tr>
-  <td>type</td>
-  <td>name=comment</td>
-  <td>this is my *comment*</td>
 </tr>
 <tr>
   <td>clickAndWait</td>
   <td>id=bulk-change-submit</td>
   <td></td>
-</tr>
-<tr>
-  <td>assertText</td>
-  <td>content</td>
-  <td>*Confirmed*</td>
 </tr>
 </tbody>
 </table>

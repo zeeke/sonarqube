@@ -111,16 +111,25 @@ public final class ItUtils {
     return build;
   }
 
+  /**
+   * @deprecated
+   */
   public static SonarClient newWsClient(Orchestrator o, String login, String password) {
-    return SonarClient.builder().login(login).password(password).url(o.getServer().getUrl()).build();
+    return o.getServer().wsClient(login, password);
   }
 
+  /**
+   * @deprecated
+   */
   public static SonarClient newWsClientForAdmin(Orchestrator o) {
-    return newWsClient(o, "admin", "admin");
+    return o.getServer().adminWsClient();
   }
 
+  /**
+   * @deprecated
+   */
   public static SonarClient newWsClientForAnonymous(Orchestrator o) {
-    return newWsClient(o, null, null);
+    return o.getServer().wsClient();
   }
 
   public static String sanitizeTimezones(String s) {
