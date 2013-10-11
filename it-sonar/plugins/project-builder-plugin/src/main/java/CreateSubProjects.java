@@ -1,7 +1,7 @@
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.bootstrap.ProjectBuilder;
 import org.sonar.api.batch.bootstrap.ProjectDefinition;
 import org.sonar.api.batch.bootstrap.ProjectReactor;
+import org.sonar.api.config.Settings;
 
 import java.io.File;
 
@@ -10,13 +10,13 @@ import java.io.File;
  */
 public final class CreateSubProjects extends ProjectBuilder {
 
-  private Configuration conf;
+  private Settings settings;
 
-  public CreateSubProjects(ProjectReactor reactor, Configuration conf) {
+  public CreateSubProjects(ProjectReactor reactor, Settings settings) {
     super(reactor);
 
     // A real implementation should for example use the configuration
-    this.conf = conf;
+    this.settings = settings;
   }
 
   @Override
