@@ -20,6 +20,9 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+/**
+ * SONAR-4715
+ */
 public class TechnicalDebtMeasureTest {
 
   @ClassRule
@@ -34,7 +37,6 @@ public class TechnicalDebtMeasureTest {
   private static final String FILE = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:com/sonar/it/samples/modules/a1/HelloA1.xoo";
 
   private static final String TECHNICAL_DEBT_MEASURE = "sqale_index";
-  private static final String TECHNICAL_DEBT_DENSITY_MEASURE = "technical_debt_density";
 
 
   @BeforeClass
@@ -47,13 +49,6 @@ public class TechnicalDebtMeasureTest {
       .setProfile("with-many-rules"));
   }
 
-  // **********************************************************************
-  // Technical debt measure test
-  // **********************************************************************
-
-  /**
-   * SONAR-4715
-   */
   @Test
   public void technical_debt_measures() {
     assertThat(getMeasure(PROJECT, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(1.48, DELTA);
@@ -63,9 +58,6 @@ public class TechnicalDebtMeasureTest {
     assertThat(getMeasure(FILE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(0.152, DELTA);
   }
 
-  /**
-   * SONAR-4715
-   */
   @Test
   public void technical_debt_measures_on_characteristics_on_project() {
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "PORTABILITY").getValue()).isEqualTo(0.0, DELTA);
@@ -84,9 +76,6 @@ public class TechnicalDebtMeasureTest {
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(0.5, DELTA);
   }
 
-  /**
-   * SONAR-4715
-   */
   @Test
   public void technical_debt_measures_on_characteristics_on_modules() {
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "PORTABILITY").getValue()).isEqualTo(0.0, DELTA);
@@ -105,9 +94,6 @@ public class TechnicalDebtMeasureTest {
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(0.25, DELTA);
   }
 
-  /**
-   * SONAR-4715
-   */
   @Test
   public void technical_debt_measures_on_characteristics_on_directory() {
     assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "PORTABILITY")).isNull();
@@ -126,9 +112,6 @@ public class TechnicalDebtMeasureTest {
     assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(0.125, DELTA);
   }
 
-  /**
-   * SONAR-4715
-   */
   @Test
   public void technical_debt_measures_on_characteristics_on_file() {
     assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "PORTABILITY")).isNull();
@@ -152,30 +135,10 @@ public class TechnicalDebtMeasureTest {
   public void technical_debt_measures_on_requirements_on_project() {
   }
 
-  /**
-   * SONAR-4715
-   */
   @Test
   public void not_save_zero_value_on_non_top_characteristics() throws Exception {
     String sqlRequest = "SELECT count(*) FROM project_measures WHERE characteristic_id IN (select id from characteristics where depth > 1) AND value = 0";
     assertThat(orchestrator.getDatabase().countSql(sqlRequest)).isEqualTo(0);
-  }
-
-
-  // **********************************************************************
-  // Technical debt density measure test
-  // **********************************************************************
-
-  /**
-   * SONAR-4753
-   */
-  @Test
-  public void technical_debt_density_measures() {
-    assertThat(getMeasure(PROJECT, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.03, DELTA);
-    assertThat(getMeasure(MODULE, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.028, DELTA);
-    assertThat(getMeasure(SUB_MODULE, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.023, DELTA);
-    assertThat(getMeasure(DIRECTORY, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.012, DELTA);
-    assertThat(getMeasure(FILE, TECHNICAL_DEBT_DENSITY_MEASURE).getValue()).isEqualTo(0.0122, DELTA);
   }
 
 
