@@ -65,6 +65,17 @@ public class NotificationsTest {
         "/selenium/issue/notification/email_configuration.html",
         "/selenium/issue/notification/create_user_with_email.html").build();
     orchestrator.executeSelenese(selenese);
+
+    // We need to wait until all notifications will be delivered
+    Thread.sleep(5000);
+
+    Iterator<WiserMessage> emails = smtpServer.getMessages().iterator();
+
+    MimeMessage message = emails.next().getMimeMessage();
+    assertThat(message.getHeader("To", null)).isEqualTo("<test@example.org>");
+    assertThat((String) message.getContent()).contains("This is a test message from SonarQube");
+
+    assertThat(emails.hasNext()).isFalse();
   }
 
   @AfterClass
@@ -77,6 +88,7 @@ public class NotificationsTest {
   @Before
   public void prepare() {
     orchestrator.getDatabase().truncateInspectionTables();
+    smtpServer.getMessages().clear();
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("issue/notifications"))
       .setProperty("sonar.projectDate", "2011-12-15")
       .setProperty("sonar.profile", "one-issue-per-line");
@@ -93,16 +105,12 @@ public class NotificationsTest {
     issueClient.assign(issue.key(), "tester");
 
     // We need to wait until all notifications will be delivered
-    Thread.sleep(10000);
+    Thread.sleep(5000);
 
     Iterator<WiserMessage> emails = smtpServer.getMessages().iterator();
 
-    MimeMessage message = emails.next().getMimeMessage();
-    assertThat(message.getHeader("To", null)).isEqualTo("<test@example.org>");
-    assertThat((String) message.getContent()).contains("This is a test message from SonarQube");
-
     assertThat(emails.hasNext()).isTrue();
-    message = emails.next().getMimeMessage();
+    MimeMessage message = emails.next().getMimeMessage();
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
     assertThat((String) message.getContent()).contains("Sample project for notifications");
     assertThat((String) message.getContent()).contains("13 new issues");
@@ -142,16 +150,12 @@ public class NotificationsTest {
       .sendNotifications(true));
 
     // We need to wait until all notifications will be delivered
-    Thread.sleep(10000);
+    Thread.sleep(5000);
 
     Iterator<WiserMessage> emails = smtpServer.getMessages().iterator();
 
-    MimeMessage message = emails.next().getMimeMessage();
-    assertThat(message.getHeader("To", null)).isEqualTo("<test@example.org>");
-    assertThat((String) message.getContent()).contains("This is a test message from SonarQube");
-
     assertThat(emails.hasNext()).isTrue();
-    message = emails.next().getMimeMessage();
+    MimeMessage message = emails.next().getMimeMessage();
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
     assertThat((String) message.getContent()).contains("Sample project for notifications");
     assertThat((String) message.getContent()).contains("13 new issues");
@@ -179,16 +183,12 @@ public class NotificationsTest {
       ).build());
 
     // We need to wait until all notifications will be delivered
-    Thread.sleep(10000);
+    Thread.sleep(5000);
 
     Iterator<WiserMessage> emails = smtpServer.getMessages().iterator();
 
-    MimeMessage message = emails.next().getMimeMessage();
-    assertThat(message.getHeader("To", null)).isEqualTo("<test@example.org>");
-    assertThat((String) message.getContent()).contains("This is a test message from SonarQube");
-
     assertThat(emails.hasNext()).isTrue();
-    message = emails.next().getMimeMessage();
+    MimeMessage message = emails.next().getMimeMessage();
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
     assertThat((String) message.getContent()).contains("Sample project for notifications");
     assertThat((String) message.getContent()).contains("13 new issues");
