@@ -44,7 +44,7 @@
 <tr>
   <td>type</td>
   <td>id=key</td>
-  <td>new-from-admin</td>
+  <td>123456/hjkfds</td>
 </tr>
 <tr>
   <td>click</td>
@@ -69,7 +69,22 @@
 <tr>
   <td>waitForText</td>
   <td>css=p.error</td>
-  <td>Could not create resource, key already exists: new-from-admin</td>
+  <td>Malformed key for Project: 123456/hjkfds</td>
+</tr>
+<tr>
+  <td>type</td>
+  <td>id=key</td>
+  <td>new-from-admin</td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>id=save-submit</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForText</td>
+  <td>css=p.error</td>
+  <td>Could not create Project, key already exists: new-from-admin</td>
 </tr>
 <tr>
   <td>click</td>
