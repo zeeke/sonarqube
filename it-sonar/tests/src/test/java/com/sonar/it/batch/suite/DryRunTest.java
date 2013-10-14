@@ -9,7 +9,10 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.orchestrator.build.SonarRunnerInstaller;
+import com.sonar.orchestrator.config.FileSystem;
 import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.version.Version;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -81,8 +84,8 @@ public class DryRunTest {
       "accessSecuredFromTask", "true");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
-    assertThat(result.getLogs()).contains("Access to the secured property 'foo.bar.secured' is not possible in local (dry run) SonarQube analysis. "
-      + "The SonarQube plugin which requires this property must be deactivated in dry run mode.");
+    assertThat(result.getLogs()).contains("Access to the secured property 'foo.bar.secured' is not possible in preview mode. "
+      + "The SonarQube plugin which requires this property must be deactivated in preview mode.");
 
     // Test access from sensor (ie ModuleSettings)
     runner = configureRunner("shared/xoo-sample",
@@ -90,8 +93,8 @@ public class DryRunTest {
       "accessSecuredFromSensor", "true");
     result = orchestrator.executeBuildQuietly(runner);
 
-    assertThat(result.getLogs()).contains("Access to the secured property 'foo.bar.secured' is not possible in local (dry run) SonarQube analysis. "
-      + "The SonarQube plugin which requires this property must be deactivated in dry run mode.");
+    assertThat(result.getLogs()).contains("Access to the secured property 'foo.bar.secured' is not possible in preview mode. "
+      + "The SonarQube plugin which requires this property must be deactivated in preview mode.");
   }
 
   // SONAR-4488
@@ -106,7 +109,7 @@ public class DryRunTest {
 
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains(
-      "DryRun database read timed out after 1000 ms. You can try to increase read timeout with property -Dsonar.dryRun.readTimeout (in seconds)");
+      "Preview database read timed out after 1000 ms. You can try to increase read timeout with property -Dsonar.preview.readTimeout (in seconds)");
   }
 
   // SONAR-4468
@@ -375,6 +378,9 @@ public class DryRunTest {
   }
 
   private void runConcurrentDryRun() throws InterruptedException, ExecutionException {
+    // Install sonar-runner in advance to avoid concurrent unzip issues
+    FileSystem fileSystem = orchestrator.getConfiguration().fileSystem();
+    new SonarRunnerInstaller(fileSystem).install(Version.create(SonarRunner.DEFAULT_RUNNER_VERSION), fileSystem.workspace());
     final int nThreads = 5;
     final String profileName = "one-issue-per-line";
     ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
@@ -412,7 +418,7 @@ public class DryRunTest {
     return runner;
   }
 
-  private static class ExcludeLockFile implements FilenameFilter {
+  public static class ExcludeLockFile implements FilenameFilter {
     public boolean accept(File dir, String name) {
       return !name.contains(".lock");
     }
