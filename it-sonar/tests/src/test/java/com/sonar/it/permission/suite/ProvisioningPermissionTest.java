@@ -5,7 +5,6 @@
  */
 package com.sonar.it.permission.suite;
 
-import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.AfterClass;
@@ -40,7 +39,7 @@ public class ProvisioningPermissionTest {
 
   @BeforeClass
   public static void init() {
-    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
+    SonarClient client = orchestrator.getServer().adminWsClient();
 
     client.userClient().create(UserParameters.create().login(ADMIN_WITH_PROVISIONING).name(ADMIN_WITH_PROVISIONING)
       .password(PASSWORD).passwordConfirmation(PASSWORD));
@@ -63,7 +62,7 @@ public class ProvisioningPermissionTest {
 
   @AfterClass
   public static void deactivateUsers() {
-    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
+    SonarClient client = orchestrator.getServer().adminWsClient();
     client.userClient().deactivate(ADMIN_WITH_PROVISIONING);
     client.userClient().deactivate(ADMIN_WITHOUT_PROVISIONING);
     client.userClient().deactivate(USER_WITH_PROVISIONING);

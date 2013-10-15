@@ -43,7 +43,7 @@ public class ProjectProvisioningTest {
 
   @Before
   public void initClient() {
-    client = ItUtils.newWsClientForAdmin(orchestrator);
+    client = orchestrator.getServer().adminWsClient();
   }
 
   /**
