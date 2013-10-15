@@ -366,6 +366,18 @@ public class BatchTest {
       .doesNotContain("at com.sonarsource.RaiseMessageException");
   }
 
+  /**
+   * SONAR-4751
+   */
+  @Test
+  public void file_extensions_are_case_insensitive() throws Exception {
+    scan("batch/case-sensitive-file-extensions");
+
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("case-sensitive-file-extensions", "files", "ncloc"));
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
+    assertThat(project.getMeasureIntValue("ncloc")).isEqualTo(5+2);
+  }
+
   private Resource getResource(String key) {
     return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(key, "lines"));
   }
