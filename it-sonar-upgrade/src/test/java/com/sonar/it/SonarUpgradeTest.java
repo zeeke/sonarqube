@@ -13,9 +13,12 @@ import com.sonar.orchestrator.util.VersionUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
+import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.services.ResourceQuery;
 import org.sonar.wsclient.services.ServerSetup;
 import org.sonar.wsclient.services.ServerSetupQuery;
+import org.sonar.wsclient.system.Migration;
+import org.sonar.wsclient.system.SystemClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -111,10 +114,10 @@ public class SonarUpgradeTest {
   }
 
   private void upgradeDatabase() {
-    ServerSetupQuery query = new ServerSetupQuery();
-    query.setTimeoutMilliseconds(5 * 60 * 1000); // 5 minutes
-    ServerSetup setup = orchestrator.getServer().getAdminWsClient().create(query);
-    assertThat(setup.isSuccessful()).isTrue();
+    SystemClient systemClient = SonarClient.create(orchestrator.getServer().getUrl()).systemClient();
+    Migration migration = systemClient.migrate(/* timeout in ms */5L * 60 * 1000, 3L * 1000);
+    assertThat(migration.operationalWebapp()).isTrue();
+    assertThat(migration.status()).isEqualTo(Migration.Status.MIGRATION_SUCCEEDED);
   }
 
   private void startServer(String version, boolean keepDatabase) {

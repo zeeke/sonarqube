@@ -17,7 +17,7 @@
   <inceptionYear>2009</inceptionYear>
 
   <properties>
-    <sonar.buildVersion>3.0</sonar.buildVersion>
+    <sonar.buildVersion>4.0-SNAPSHOT</sonar.buildVersion>
     <surefire.argLine>-server</surefire.argLine>
   </properties>
 
