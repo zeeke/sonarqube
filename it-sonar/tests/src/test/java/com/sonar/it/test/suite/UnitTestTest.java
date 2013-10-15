@@ -30,11 +30,9 @@ public class UnitTestTest {
 
   @Test
   public void testDynamicAnalysis() {
-    MavenBuild analysis = MavenBuild.builder()
+    MavenBuild analysis = MavenBuild.create()
         .setPom(ItUtils.locateProjectPom("test/with-tests"))
-        .withDynamicAnalysis(true)
-        .addSonarGoal()
-        .build();
+        .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/with-tests"), analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:with-tests",
@@ -53,11 +51,10 @@ public class UnitTestTest {
   }
 
   private MavenBuild newBuild(String projectPath) {
-    return MavenBuild.builder()
+    return MavenBuild.create()
         .setPom(ItUtils.locateProjectPom(projectPath))
-        .addGoal("clean install")
-        .withProperty("skipTests", "true")
-        .build();
+        .setGoals("clean", "install")
+        .setProperty("skipTests", "true");
   }
 
   /**
@@ -90,11 +87,9 @@ public class UnitTestTest {
    */
   @Test
   public void testDynamicAnalysisWithNoTests() {
-    MavenBuild analysis = MavenBuild.builder()
+    MavenBuild analysis = MavenBuild.create()
         .setPom(ItUtils.locateProjectPom("test/no-tests"))
-        .withDynamicAnalysis(true)
-        .addSonarGoal()
-        .build();
+        .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/no-tests"), analysis);
 
     // check project measures
@@ -123,11 +118,10 @@ public class UnitTestTest {
 
   @Test
   public void shouldNotHaveTestMeasuresOnStaticAnalysis() {
-    MavenBuild analysis = MavenBuild.builder()
+    MavenBuild analysis = MavenBuild.create()
         .setPom(ItUtils.locateProjectPom("test/with-tests"))
-        .withDynamicAnalysis(false)
-        .addSonarGoal()
-        .build();
+        .withoutDynamicAnalysis()
+        .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/with-tests"), analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:with-tests",
@@ -146,11 +140,9 @@ public class UnitTestTest {
    */
   @Test
   public void surefireShouldBeDisabled() {
-    MavenBuild analysis = MavenBuild.builder()
+    MavenBuild analysis = MavenBuild.create()
         .setPom(ItUtils.locateProjectPom("test/disable-surefire"))
-        .withDynamicAnalysis(true)
-        .addSonarGoal()
-        .build();
+        .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/disable-surefire"), analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:disable-surefire",
@@ -169,11 +161,9 @@ public class UnitTestTest {
    */
   @Test
   public void shouldHaveTestFailures() {
-    MavenBuild analysis = MavenBuild.builder()
+    MavenBuild analysis = MavenBuild.create()
         .setPom(ItUtils.locateProjectPom("test/test-failures"))
-        .withDynamicAnalysis(true)
-        .addSonarGoal()
-        .build();
+        .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/test-failures"), analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.test-failures:parent",
@@ -196,16 +186,14 @@ public class UnitTestTest {
 
   @Test
   public void shouldReuseSurefireReports() {
-    MavenBuild build = MavenBuild.builder()
+    MavenBuild build = MavenBuild.create()
         .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
-        .addGoal("clean install") // surefire are executed during build
-        .build();
+        .setGoals("clean", "install"); // surefire are executed during build
 
-    MavenBuild analysis = MavenBuild.builder()
+    MavenBuild analysis = MavenBuild.create()
         .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
-        .addSonarGoal()
-        .withProperty("sonar.dynamicAnalysis", "reuseReports")
-        .build();
+        .addGoal("sonar:sonar")
+        .setProperty("sonar.dynamicAnalysis", "reuseReports");
     orchestrator.executeBuilds(build, analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:reuse-surefire-reports",
@@ -223,12 +211,11 @@ public class UnitTestTest {
    */
   @Test
   public void shouldNotReuseTestSuiteReportFileIfNotAlone() {
-    MavenBuild build = MavenBuild.builder()
+    MavenBuild build = MavenBuild.create()
         .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
-        .addSonarGoal()
-        .withProperty("sonar.dynamicAnalysis", "reuseReports")
-        .withProperty("sonar.surefire.reportsPath", "existing-test-and-testsuite-reports")
-        .build();
+        .addGoal("sonar:sonar")
+        .setProperty("sonar.dynamicAnalysis", "reuseReports")
+        .setProperty("sonar.surefire.reportsPath", "existing-test-and-testsuite-reports");
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:reuse-surefire-reports",
@@ -246,12 +233,11 @@ public class UnitTestTest {
    */
   @Test
   public void shouldReuseTestSuiteReportFileIfAlone() {
-    MavenBuild build = MavenBuild.builder()
+    MavenBuild build = MavenBuild.create()
         .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
-        .addSonarGoal()
-        .withProperty("sonar.dynamicAnalysis", "reuseReports")
-        .withProperty("sonar.surefire.reportsPath", "existing-testsuite-report")
-        .build();
+        .addGoal("sonar:sonar")
+        .setProperty("sonar.dynamicAnalysis", "reuseReports")
+        .setProperty("sonar.surefire.reportsPath", "existing-testsuite-report");
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:reuse-surefire-reports",
