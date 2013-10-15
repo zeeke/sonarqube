@@ -15,7 +15,7 @@
     <tbody>
     <tr>
         <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples:with-tests:org.sonar.tests.Hello?tab=coverage</td>
+        <td>/sonar/resource/index/com.sonarsource.it.exclusions:java-half-covered:org.sonar.tests.halfcovered.Covered?tab=coverage</td>
         <td></td>
     </tr>
     <tr>
@@ -23,23 +23,10 @@
         <td>class=accordion-item</td>
         <td></td>
     </tr>
-    <!-- branch coverage -->
     <tr>
-        <td>assertText</td>
+        <td>assertNotText</td>
         <td>id=coverage_header</td>
-        <td>glob:*Branch coverage: 50.0% (1/2)*</td>
-    </tr>
-    <!-- hits -->
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>glob:*1*1*1*0*</td>
-    </tr>
-    <!-- conditions -->
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>glob:*1/2*</td>
+        <td>glob:*Branch coverage*</td>
     </tr>
     </tbody>
 </table>

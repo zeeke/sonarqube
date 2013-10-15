@@ -61,6 +61,31 @@ public class UnitTestTest {
   }
 
   /**
+   * SONAR-4241
+   */
+  @Test
+  public void should_not_display_branch_coverage_when_no_branch() {
+    MavenBuild analysis = MavenBuild.create()
+        .setPom(ItUtils.locateProjectPom("exclusions/java-half-covered"))
+        .setCleanPackageSonarGoals();
+    orchestrator.executeBuilds(analysis);
+
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.exclusions:java-half-covered",
+        "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
+    assertThat(project.getMeasureIntValue("tests")).isEqualTo(1);
+    assertThat(project.getMeasureValue("coverage")).isEqualTo(50.0, Delta.delta(0.1));
+    assertThat(project.getMeasureIntValue("test_failures")).isEqualTo(0);
+    assertThat(project.getMeasureIntValue("test_errors")).isEqualTo(0);
+    assertThat(project.getMeasureIntValue("test_success_density")).isEqualTo(100);
+    assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
+    assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
+
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("no-branch-coverage",
+        "/selenium/test/branch-coverage-hidden-if-no-branch.html").build();
+    orchestrator.executeSelenese(selenese);
+  }
+
+  /**
    * See SONAR-2371
    */
   @Test
