@@ -105,17 +105,4 @@ public class RulesTest {
     }));
   }
 
-  /**
-   * SONAR-4193
-   */
-  @Test
-  public void should_display_link_to_to_another_rule_in_description_rule() {
-    orchestrator.restoreDefaultSettings();
-    Selenese selenese = Selenese
-      .builder()
-      .setHtmlTestsInClasspath("should_display_link_to_to_another_rule_in_description_rule",
-        "/selenium/rule/show-rule/display-link-to-another-rule-in-description-rule.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
-  }
 }

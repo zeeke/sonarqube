@@ -5,6 +5,7 @@
  */
 package com.sonar.it.rule.suite;
 
+import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
@@ -12,10 +13,13 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  ManualRulesTest.class, RuleWidgetsTest.class, SonarCommonRulesTest.class
+  ManualRulesTest.class, RuleWidgetsTest.class, SonarCommonRulesTest.class, RulesTest.class
 })
 public class RuleTestSuite {
 
   @ClassRule
-  public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv().build();
+  public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
+    .addPlugin(ItUtils.locateTestPlugin("deprecated-xoo-rule-plugin"))
+    .addPlugin(ItUtils.xooPlugin())
+    .build();
 }
