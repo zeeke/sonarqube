@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>display-requirement-debt-details-on-issue</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<tbody>
+	<tr>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples:multi-modules-sample:module_a:module_a2:com%2Fsonar%2Fit%2Fsamples%2Fmodules%2Fa2%2FHelloA2.xoo?display_title=true&amp;metric=95&amp;period=&amp;rule=</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*com/sonar/it/samples/modules/a2/HelloA2.xoo*</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>name=rule</td>
+	<td>Has Tag (1)</td>
+</tr>
+<tr>
+	<td>waitForNotText</td>
+	<td>css=.code</td>
+	<td>*One Issue Per Line*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>toggle-issue-technicaldebt</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.issue-technicaldebt</td>
+	<td>*Maintainability &gt; Readability*</td>
+</tr>
+</tbody></table>
+</body>
+</html>

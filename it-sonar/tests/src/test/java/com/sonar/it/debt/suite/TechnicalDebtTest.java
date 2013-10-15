@@ -9,6 +9,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -49,6 +50,27 @@ public class TechnicalDebtTest {
       assertThat(issue.technicalDebt().hours()).isEqualTo(1);
       assertThat(issue.technicalDebt().minutes()).isEqualTo(0);
     }
+  }
+
+  /**
+   * SONAR-4716
+   */
+  @Test
+  public void display_requirement_details_on_issue() throws Exception {
+    // Generate some issues
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/with-many-rules.xml"));
+    orchestrator.executeBuild(
+      SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+        .withoutDynamicAnalysis()
+        .setProfile("with-many-rules"));
+
+    orchestrator.executeSelenese(Selenese.builder()
+      .setHtmlTestsInClasspath("display-requirement-debt-details-on-issue",
+        "/selenium/debt/requirement-details/display-linear-requirement-detail.html",
+        "/selenium/debt/requirement-details/display-linear-offset-requirement-detail.html",
+        "/selenium/debt/requirement-details/display-linear-threshold-requirement-detail.html",
+        "/selenium/debt/requirement-details/display-constant-per-file-requirement-detail.html"
+      ).build());
   }
 
 }
