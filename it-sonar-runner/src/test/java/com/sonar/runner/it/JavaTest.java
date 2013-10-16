@@ -69,7 +69,7 @@ public class JavaTest extends RunnerTestCase {
     SonarRunner build = newRunner(new File("projects/java-sample"))
         .setProperty("sonarRunner.mode", "fork")
         .setProperty("sonar.verbose", "true")
-        .setAdditionalArguments("-e", "-X")
+        .addArguments("-e", "-X")
         .setProfile("sonar-way");
     // SONARPLUGINS-3061
     if (Util.runnerVersion(orchestrator).isGreaterThanOrEquals("2.3")) {
