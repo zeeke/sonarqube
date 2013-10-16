@@ -16,7 +16,6 @@ import com.sonar.orchestrator.version.Version;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -29,22 +28,17 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static junit.framework.Assert.fail;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class DryRunTest {
+public class PreviewModeTest {
 
   @ClassRule
   public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
@@ -252,7 +246,7 @@ public class DryRunTest {
     BuildResult result = orchestrator.executeBuild(runner);
 
     // As many new issue as lines
-    assertThat(countIssues(result, true)).isEqualTo(13);
+    assertThat(ItUtils.countIssuesInJsonReport(result, true)).isEqualTo(13);
 
     // Second run (not dry run) should invalidate cache
     runner = configureRunner("shared/xoo-sample")
@@ -266,7 +260,7 @@ public class DryRunTest {
     result = orchestrator.executeBuild(runner);
 
     // No new issue this time
-    assertThat(countIssues(result, true)).isEqualTo(0);
+    assertThat(ItUtils.countIssuesInJsonReport(result, true)).isEqualTo(0);
   }
 
   // SONAR-4602
@@ -285,7 +279,7 @@ public class DryRunTest {
     BuildResult result = orchestrator.executeBuild(runner);
 
     // No new issues
-    assertThat(countIssues(result, true)).isEqualTo(0);
+    assertThat(ItUtils.countIssuesInJsonReport(result, true)).isEqualTo(0);
 
     // Modification of QP should invalidate cache
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
@@ -297,7 +291,7 @@ public class DryRunTest {
     result = orchestrator.executeBuild(runner);
 
     // As many new issue as lines
-    assertThat(countIssues(result, true)).isEqualTo(13);
+    assertThat(ItUtils.countIssuesInJsonReport(result, true)).isEqualTo(13);
   }
 
   // SONAR-4602
@@ -316,10 +310,10 @@ public class DryRunTest {
     BuildResult result = orchestrator.executeBuild(runner);
 
     // 13 issues
-    assertThat(countIssues(result, false)).isEqualTo(13);
+    assertThat(ItUtils.countIssuesInJsonReport(result, false)).isEqualTo(13);
 
     // Flag one issue as false positive
-    JSONObject obj = getJSONReport(result);
+    JSONObject obj = ItUtils.getJSONReport(result);
     String key = ((JSONObject) ((JSONArray) obj.get("issues")).get(0)).get("key").toString();
     ItUtils.newWsClientForAdmin(orchestrator).issueClient().doTransition(key, "falsepositive");
 
@@ -330,33 +324,7 @@ public class DryRunTest {
     result = orchestrator.executeBuild(runner);
 
     // False positive is not returned
-    assertThat(countIssues(result, false)).isEqualTo(12);
-  }
-
-  private JSONObject getJSONReport(BuildResult result) throws IOException {
-    Pattern pattern = Pattern.compile("Export results to (.*?).json");
-    Matcher m = pattern.matcher(result.getLogs());
-    if (m.find()) {
-      String s = m.group(1);
-      File path = new File(s + ".json");
-      assertThat(path).exists();
-      return (JSONObject) JSONValue.parse(FileUtils.readFileToString(path));
-    }
-    fail("Unable to locate json report");
-    return null;
-  }
-
-  private int countIssues(BuildResult result, boolean onlyNews) throws IOException {
-    JSONObject obj = getJSONReport(result);
-    JSONArray issues = (JSONArray) obj.get("issues");
-    int count = 0;
-    for (Iterator it = issues.iterator(); it.hasNext();) {
-      JSONObject issue = (JSONObject) it.next();
-      if (!onlyNews || (Boolean) issue.get("isNew")) {
-        count++;
-      }
-    }
-    return count;
+    assertThat(ItUtils.countIssuesInJsonReport(result, false)).isEqualTo(12);
   }
 
   // SONAR-4602

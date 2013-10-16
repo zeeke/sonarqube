@@ -6,22 +6,33 @@
 package com.sonar.it;
 
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static junit.framework.Assert.fail;
+import static org.fest.assertions.Assertions.assertThat;
 
 public final class ItUtils {
 
@@ -160,5 +171,35 @@ public final class ItUtils {
     } finally {
       orchestrator.getDatabase().closeQuietly(connection);
     }
+  }
+
+  public static JSONObject getJSONReport(BuildResult result) {
+    Pattern pattern = Pattern.compile("Export results to (.*?).json");
+    Matcher m = pattern.matcher(result.getLogs());
+    if (m.find()) {
+      String s = m.group(1);
+      File path = new File(s + ".json");
+      assertThat(path).exists();
+      try {
+        return (JSONObject) JSONValue.parse(FileUtils.readFileToString(path));
+      } catch (IOException e) {
+        throw new RuntimeException("Unable to read JSON report", e);
+      }
+    }
+    fail("Unable to locate json report");
+    return null;
+  }
+
+  public static int countIssuesInJsonReport(BuildResult result, boolean onlyNews) {
+    JSONObject obj = getJSONReport(result);
+    JSONArray issues = (JSONArray) obj.get("issues");
+    int count = 0;
+    for (Iterator it = issues.iterator(); it.hasNext();) {
+      JSONObject issue = (JSONObject) it.next();
+      if (!onlyNews || (Boolean) issue.get("isNew")) {
+        count++;
+      }
+    }
+    return count;
   }
 }
