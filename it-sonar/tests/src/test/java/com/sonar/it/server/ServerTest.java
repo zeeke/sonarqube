@@ -35,7 +35,7 @@ import static org.fest.assertions.Fail.fail;
 
 public class ServerTest {
 
-  private Orchestrator orchestrator;
+  Orchestrator orchestrator;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
