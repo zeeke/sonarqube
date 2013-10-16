@@ -14,8 +14,10 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.ResourceLocation;
 import com.sonar.orchestrator.version.Version;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 
 import java.io.File;
@@ -46,6 +48,12 @@ public class LanguagePluginTest {
     if (orchestrator != null) {
       orchestrator.stop();
     }
+  }
+
+  @Before
+  public void resetLicense() {
+    orchestrator.getServer().getAdminWsClient().delete(new PropertyDeleteQuery("sonar.cobol.license.secured"));
+    orchestrator.getServer().getAdminWsClient().delete(new PropertyDeleteQuery("sonar.cpp.license.secured"));
   }
 
   /**
