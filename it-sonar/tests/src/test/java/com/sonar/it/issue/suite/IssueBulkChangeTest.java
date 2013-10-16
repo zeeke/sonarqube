@@ -14,7 +14,12 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.wsclient.issue.*;
+import org.sonar.wsclient.issue.ActionPlan;
+import org.sonar.wsclient.issue.BulkChange;
+import org.sonar.wsclient.issue.BulkChangeQuery;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.NewActionPlan;
 
 import java.util.List;
 
@@ -260,10 +265,11 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     assertThat(bulkChange.totalIssuesChanged()).isEqualTo(500);
     assertThat(search(IssueQuery.create().severities(newSeverity)).paging().total()).isEqualTo(500);
 
-    // Check that number of issues is limited from the console bulk change (no change will ne made in this test)
+    // Check that number of issues is limited from the console bulk change
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should-bulk-change-be-limited-in-number-of-issues",
       "/selenium/issue/bulk-change/should-bulk-change-be-limited-in-number-of-issues.html",
       // SONAR-4654
+      // SONAR-4723
       "/selenium/issue/bulk-change/should-bulk-change-be-limited-in-number-of-issues-with-pagination.html"
     ).build());
   }
