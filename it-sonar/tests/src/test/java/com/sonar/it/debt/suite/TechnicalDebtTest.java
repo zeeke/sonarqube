@@ -66,10 +66,7 @@ public class TechnicalDebtTest {
 
     orchestrator.executeSelenese(Selenese.builder()
       .setHtmlTestsInClasspath("display-requirement-debt-details-on-issue",
-        "/selenium/debt/requirement-details/display-linear-requirement-detail.html",
-        "/selenium/debt/requirement-details/display-linear-offset-requirement-detail.html",
-        "/selenium/debt/requirement-details/display-linear-threshold-requirement-detail.html",
-        "/selenium/debt/requirement-details/display-constant-per-file-requirement-detail.html"
+        "/selenium/debt/requirement-details/display-requirement-detail.html"
       ).build());
   }
 
