@@ -9,6 +9,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.util.NetworkUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
@@ -117,17 +119,38 @@ public class HttpsTest {
         return true;
       }
     };
-
-    URL url = new URL("https://localhost:" + httpsPort + "/sonar");
+    URL url = new URL("https://localhost:" + httpsPort + "/sonar/sessions/login");
     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+    connection.setRequestMethod("POST");
+    connection.setAllowUserInteraction(true);
     connection.setSSLSocketFactory(untrustedSocketFactory);
     connection.setHostnameVerifier(allHostsValid);
+
     InputStream input = connection.getInputStream();
+    checkCookieFlags(connection);
     try {
       String html = IOUtils.toString(input);
       assertThat(html).contains("<body");
     } finally {
       IOUtils.closeQuietly(input);
+    }
+  }
+
+  /**
+   * SSF-13 HttpOnly flag
+   * SSF-16 Secure flag
+   */
+  private void checkCookieFlags(HttpsURLConnection connection) {
+    List<String> cookies = connection.getHeaderFields().get("Set-Cookie");
+    boolean foundSessionCookie = false;
+    for (String cookie : cookies) {
+      if (StringUtils.containsIgnoreCase(cookie, "JSESSIONID")) {
+        foundSessionCookie = true;
+        assertThat(cookie).containsIgnoringCase("Secure").containsIgnoringCase("HttpOnly");
+      }
+    }
+    if (!foundSessionCookie) {
+      fail("Session cookie not found");
     }
   }
 }
