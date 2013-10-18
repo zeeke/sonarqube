@@ -14,82 +14,96 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/users</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>store</td>
-        <td>javascript{new Date().getTime()}</td>
-        <td>userId</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>user_login</td>
-        <td>${userId}</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>user_name</td>
-        <td>Name of ${userId}</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>user_password</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>user_password_confirmation</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTextPresent</td>
-        <td>glob:User*created</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>user-${userId}</td>
-        <td>glob:*Name of ${userId}*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>user-${userId}</td>
-        <td>glob:*sonar-users*</td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>user-${userId}</td>
-        <td>glob:*sonar-administrators*</td>
-    </tr>
-
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>javascript{new Date().getTime()}</td>
+	<td>userId</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-link-user</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>user_create_form</td>
+	<td>*Add new user*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>user_login</td>
+	<td>${userId}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>user_name</td>
+	<td>Name of ${userId}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>user_password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>user_password_confirmation</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>info</td>
+	<td>*User is created.*</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>glob:User*created</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>user-${userId}</td>
+	<td>glob:*Name of ${userId}*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>user-${userId}</td>
+	<td>glob:*sonar-users*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>user-${userId}</td>
+	<td>glob:*sonar-administrators*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
