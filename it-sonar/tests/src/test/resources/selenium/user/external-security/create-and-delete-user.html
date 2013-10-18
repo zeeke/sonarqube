@@ -14,116 +14,141 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/users</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>store</td>
-        <td>tester</td>
-        <td>userId</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>user_login</td>
-        <td>${userId}</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>user_name</td>
-        <td>Name of ${userId}</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>user_password</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>user_password_confirmation</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>delete-${userId}</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertConfirmation</td>
-        <td>Warning : are you sure to delete this user?</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertVisible</td>
-        <td>info</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTextNotPresent</td>
-        <td>user-${userId}</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>mouseOver</td>
-        <td>user-panel</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>Link=Log out</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>tester</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>login_form</td>
-        <td>*Authentication failed*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>javascript{new Date().getTime()}</td>
+	<td>userId</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=create-link-user</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>user_create_form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>user_login</td>
+	<td>${userId}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>user_name</td>
+	<td>Name of ${userId}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>user_password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>user_password_confirmation</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>info</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>info</td>
+	<td>*User is created.*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>delete-${userId}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>confirm-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.modal-body</td>
+	<td>*Warning : are you sure to delete this user?*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>users</td>
+	<td>user-${userId}</td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>user-panel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>Link=Log out</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>tester</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>login_form</td>
+	<td>*Authentication failed*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

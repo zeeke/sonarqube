@@ -35,14 +35,12 @@ public class UserAdministrationTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
   }
 
-  /**
-   * SONAR-3667
-   * SONAR-3788
-   */
   @Test
   public void change_password() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("change_password",
+      // SONAR-3667
       "/selenium/user/user-administration/change-password.html",
+      // SONAR-3788
       "/selenium/user/user-administration/change-password-with-existing-deactivate-user.html"
     ).build();
     orchestrator.executeSelenese(selenese);

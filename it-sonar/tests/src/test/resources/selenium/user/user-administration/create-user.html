@@ -9,66 +9,76 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/users</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_login</td>
-        <td>simon</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_name</td>
-        <td>Simon</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_password</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_password_confirmation</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>infomsg</td>
-        <td>*User is created*</td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>user-simon</td>
-        <td></td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=create-link-user</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>user_create_form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_login</td>
+	<td>simon</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_name</td>
+	<td>Simon</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_password_confirmation</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>infomsg</td>
+	<td>*User is created*</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>user-simon</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

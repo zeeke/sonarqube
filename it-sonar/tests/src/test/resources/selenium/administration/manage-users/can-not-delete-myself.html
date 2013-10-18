@@ -39,23 +39,28 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>delete-admin</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertConfirmation</td>
-	<td>Warning : are you sure to delete this user?</td>
-	<td></td>
-</tr>
-<tr>
 	<td>assertText</td>
 	<td>users</td>
 	<td>*admin*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>error</td>
+	<td>click</td>
+	<td>delete-admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>confirm-form</td>
+	<td>*Delete user Administrator*Warning : are you sure to delete this user?*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.error</td>
 	<td>*Self-deactivation is not possible*</td>
 </tr>
 </tbody>

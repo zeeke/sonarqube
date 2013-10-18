@@ -9,112 +9,156 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/users</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_login</td>
-        <td>reactivated</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_name</td>
-        <td>Reactivated</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_password</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_password_confirmation</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>id=delete-reactivated</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertConfirmation</td>
-        <td>Warning : are you sure to delete this user?</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>infomsg</td>
-        <td>*User is deleted*</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_login</td>
-        <td>reactivated</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_name</td>
-        <td>Reactivated</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_password</td>
-        <td>newpassword</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_password_confirmation</td>
-        <td>newpassword</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>content</td>
-        <td>*A user with login &quot;reactivated&quot; already exists*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>infomsg</td>
-        <td>*User was successfully reactivated*</td>
-    </tr>
-
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=create-link-user</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>user_create_form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_login</td>
+	<td>reactivated</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_name</td>
+	<td>Reactivated</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_password_confirmation</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=delete-reactivated</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>confirm-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>confirm-form</td>
+	<td>*Delete user Reactivated*Warning : are you sure to delete this user?*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>confirm-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>info</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>info</td>
+	<td>*User is deleted.*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=create-link-user</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>user_create_form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_login</td>
+	<td>reactivated</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_name</td>
+	<td>Reactivated</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_password</td>
+	<td>newpassword</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_password_confirmation</td>
+	<td>newpassword</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>user_form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>user_form</td>
+	<td>*Reactivate user?*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>info</td>
+	<td>*User was successfully reactivated.*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>users</td>
+	<td>*reactivated*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
