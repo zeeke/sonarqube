@@ -10,6 +10,6 @@ import java.util.List;
 })
 public class ServerPlugin extends SonarPlugin {
   public List getExtensions() {
-    return Arrays.asList(WidgetDisplayingProperties.class);
+    return Arrays.asList(WidgetDisplayingProperties.class, TempFolderExtension.class);
   }
 }

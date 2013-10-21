@@ -265,4 +265,28 @@ public class ServerTest {
     orchestrator.executeSelenese(selenese);
   }
 
+  // SONAR-4748
+  @Test
+  public void should_create_in_temp_folder() throws Exception {
+    orchestrator = Orchestrator.builderEnv()
+      .addPlugin(ItUtils.locateTestPlugin("server-plugin"))
+      .setServerProperty("sonar.createTempFiles", "true")
+      .build();
+    orchestrator.start();
+
+    File tempDir = new File(orchestrator.getServer().getHome(), "temp/tmp");
+
+    String logs = FileUtils.readFileToString(orchestrator.getServer().getLogs());
+    assertThat(logs).contains("Creating temp directory: " + tempDir.getAbsolutePath() + "/sonar-it");
+    assertThat(logs).contains("Creating temp file: " + tempDir.getAbsolutePath() + "/sonar-it");
+
+    // Verify temp folder is created
+    assertThat(new File(tempDir, "sonar-it")).doesNotExist();
+
+    orchestrator.stop();
+
+    // Verify temp folder is deleted after shutdown
+    assertThat(new File(tempDir, "sonar-it")).doesNotExist();
+  }
+
 }
