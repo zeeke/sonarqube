@@ -61,11 +61,15 @@ public class TempFolderTest {
     String oldTmp = System.getProperty("java.io.tmpdir");
     try {
       File tmp = temp.newFolder();
-      System.setProperty("java.io.tmpdir", tmp.getAbsolutePath());
       assertThat(tmp.list()).isEmpty();
 
-      scan("shared/xoo-sample");
-      assertThat(tmp.list()).isEmpty();
+      SonarRunner runner = configureRunner("shared/xoo-sample")
+        .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-Djava.io.tmpdir=" + tmp.getAbsolutePath());
+      orchestrator.executeBuild(runner);
+
+      // TODO There is one remaining file waiting for SONARPLUGINS-3185
+      assertThat(tmp.list()).hasSize(1);
+      assertThat(tmp.list()[0]).matches("sonar-runner-batch(.*).jar");
     } finally {
       System.setProperty("java.io.tmpdir", oldTmp);
     }
