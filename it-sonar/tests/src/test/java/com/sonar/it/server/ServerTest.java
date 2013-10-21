@@ -277,8 +277,8 @@ public class ServerTest {
     File tempDir = new File(orchestrator.getServer().getHome(), "temp/tmp");
 
     String logs = FileUtils.readFileToString(orchestrator.getServer().getLogs());
-    assertThat(logs).contains("Creating temp directory: " + tempDir.getAbsolutePath() + "/sonar-it");
-    assertThat(logs).contains("Creating temp file: " + tempDir.getAbsolutePath() + "/sonar-it");
+    assertThat(logs).contains("Creating temp directory: " + tempDir.getAbsolutePath() + File.separator + "sonar-it");
+    assertThat(logs).contains("Creating temp file: " + tempDir.getAbsolutePath() + File.separator + "sonar-it");
 
     // Verify temp folder is created
     assertThat(new File(tempDir, "sonar-it")).doesNotExist();

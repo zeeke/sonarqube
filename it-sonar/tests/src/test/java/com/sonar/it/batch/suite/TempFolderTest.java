@@ -48,8 +48,10 @@ public class TempFolderTest {
     assertThat(result.getLogs()).excludes("Creating temp file:");
 
     result = scan("shared/xoo-sample", "sonar.createTempFiles", "true");
-    assertThat(result.getLogs()).contains("Creating temp directory: " + projectDir.getAbsolutePath() + "/.sonar/.sonartmp/sonar-it");
-    assertThat(result.getLogs()).contains("Creating temp file: " + projectDir.getAbsolutePath() + "/.sonar/.sonartmp/sonar-it");
+    assertThat(result.getLogs()).contains(
+      "Creating temp directory: " + projectDir.getAbsolutePath() + File.separator + ".sonar" + File.separator + ".sonartmp" + File.separator + "sonar-it");
+    assertThat(result.getLogs()).contains(
+      "Creating temp file: " + projectDir.getAbsolutePath() + File.separator + ".sonar" + File.separator + ".sonartmp" + File.separator + "sonar-it");
 
     // Verify temp folder is deleted after analysis
     assertThat(new File(projectDir, ".sonar/.sonartmp/sonar-it")).doesNotExist();
