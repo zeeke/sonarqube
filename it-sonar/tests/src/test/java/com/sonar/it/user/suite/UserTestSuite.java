@@ -13,14 +13,14 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  UserAdministrationTest.class
+  UserTest.class, UserAdministrationTest.class
 })
 public class UserTestSuite {
 
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
 
-    // used by UserAdministrationTest
+    // used by UserTest
     .addPlugin(ItUtils.locateTestPlugin("user-handler-plugin"))
 
     .build();
