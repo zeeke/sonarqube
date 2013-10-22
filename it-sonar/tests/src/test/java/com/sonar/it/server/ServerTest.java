@@ -281,7 +281,7 @@ public class ServerTest {
     assertThat(logs).contains("Creating temp file: " + tempDir.getAbsolutePath() + File.separator + "sonar-it");
 
     // Verify temp folder is created
-    assertThat(new File(tempDir, "sonar-it")).doesNotExist();
+    assertThat(new File(tempDir, "sonar-it")).isDirectory().exists();
 
     orchestrator.stop();
 
