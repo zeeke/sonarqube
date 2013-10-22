@@ -38,7 +38,6 @@ public class UserAdministrationTest {
   @Test
   public void manage_groups() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-groups",
-      "/selenium/user/manage-groups/add-user-to-group.html",
       "/selenium/user/manage-groups/admin-has-default-groups.html",
       "/selenium/user/manage-groups/affect-new-user-to-default-group.html",
       "/selenium/user/manage-groups/affect-user-to-group.html",
