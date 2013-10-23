@@ -34,6 +34,21 @@
 	<td></td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>link-create-rule</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>manual-rules-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=#manual-rules-form .modal-head</td>
+	<td>*Create Manual Rule*</td>
+</tr>
+<tr>
 	<td>type</td>
 	<td>name=name</td>
 	<td>New rule</td>
@@ -59,9 +74,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
+	<td>waitForVisible</td>
 	<td>manual-rules-form</td>
-	<td>*Edit Manual Rule*</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=#manual-rules-form .modal-head</td>
+	<td>*Edit Manual Rule: New rule*</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -79,17 +99,27 @@
 	<td>*New rule*Description updated*</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>link=Delete</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertConfirmation</td>
-	<td>Are you sure?</td>
+	<td>waitForVisible</td>
+	<td>confirm-form</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
+	<td>assertText</td>
+	<td>css=#confirm-form .modal-head</td>
+	<td>*Delete rule: New rule*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
 	<td>manual-rules</td>
 	<td>*New rule*</td>
 </tr>
