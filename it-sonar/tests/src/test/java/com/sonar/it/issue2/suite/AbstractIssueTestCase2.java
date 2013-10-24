@@ -60,10 +60,6 @@ public class AbstractIssueTestCase2 {
     return ItUtils.newWsClientForAdmin(orchestrator).issueClient();
   }
 
-  protected static ActionPlanClient actionPlanClient() {
-    return ItUtils.newWsClientForAnonymous(orchestrator).actionPlanClient();
-  }
-
   protected static ActionPlanClient adminActionPlanClient() {
     return ItUtils.newWsClientForAdmin(orchestrator).actionPlanClient();
   }
