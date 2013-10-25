@@ -75,7 +75,6 @@ public class UnitTestTest {
     assertThat(project.getMeasureIntValue("test_errors")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("test_success_density")).isEqualTo(100);
     assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("no-branch-coverage",
         "/selenium/test/branch-coverage-hidden-if-no-branch.html").build();
