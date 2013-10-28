@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2009-2012 SonarSource SA
+  ~ All rights reserved
+  ~ mailto:contact AT sonarsource DOT com
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>grant-project-users-from-global-administration</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <tbody>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>with-admin-permission-on-project</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/project_roles/index/sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>admin-role-users</td>
+	<td>*with-admin-permission-on-project*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>admin-role-users</td>
+	<td>*Administrator*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>select-admin-edit-users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>to</td>
+	<td></td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>id=from</td>
+	<td>label=Administrator</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=select_right</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertSelectOptions</td>
+	<td>to</td>
+	<td>*Administrator*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=submit-permission-users-update</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>admin-role-users</td>
+	<td>*Administrator*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>admin-role-users</td>
+	<td>*with-admin-permission-on-project*</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

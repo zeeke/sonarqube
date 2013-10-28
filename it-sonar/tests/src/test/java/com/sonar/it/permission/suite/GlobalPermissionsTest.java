@@ -15,7 +15,7 @@ import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
 
-public class PermissionsTest {
+public class GlobalPermissionsTest {
 
   @ClassRule
   public static Orchestrator orchestrator = PermissionTestSuite.ORCHESTRATOR;

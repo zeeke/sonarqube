@@ -26,12 +26,12 @@
 <tr>
 	<td>type</td>
 	<td>login</td>
-	<td>admin</td>
+	<td>with-admin-permission-on-project</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>password</td>
-	<td>admin</td>
+	<td>password</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -56,6 +56,32 @@
 <tr>
 	<td>clickAndWait</td>
 	<td>apply-template-submit</td>
+	<td></td>
+</tr>
+<!--Need to relog as admin as connected user has no permission in template applied-->
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/project_roles/index/sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
 	<td></td>
 </tr>
 <tr>

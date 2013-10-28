@@ -13,7 +13,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  PermissionsTest.class, IssuePermissionTest.class, ProjectPermissionsTest.class,
+  GlobalPermissionsTest.class, IssuePermissionTest.class, ProjectPermissionsTest.class, ProjectTemplatePermissionsTest.class,
   DashboardSharingPermissionTest.class, DryRunScanPermissionTest.class, ScanPermissionTest.class, SystemAdminPermissionTest.class,
   QualityProfileAdminPermissionTest.class, SourceCodePermissionTest.class, ProvisioningPermissionTest.class
 })
