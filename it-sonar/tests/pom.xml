@@ -13,7 +13,7 @@
   <name>Sonar :: Integration Tests :: Tests</name>
 
   <properties>
-    <sonar.buildVersion>4.0-SNAPSHOT</sonar.buildVersion>
+    <sonar.buildVersion>4.0-RC1</sonar.buildVersion>
     <category>*</category>
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
     <surefire.argLine>-Xmx128m -server</surefire.argLine>
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>com.sonarsource.orchestrator</groupId>
       <artifactId>sonar-orchestrator</artifactId>
-      <version>2.11.1</version>
+      <version>2.12-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -108,4 +108,13 @@
       </dependencies>
     </profile>
   </profiles>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>
