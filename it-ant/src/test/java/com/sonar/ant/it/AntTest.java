@@ -41,7 +41,7 @@ public class AntTest {
   public static void startServer() {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
 
-    builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-groovy-plugin", "0.5"))
+    builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-groovy-plugin", "0.6"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-groovy.xml"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-classpath.xml"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-version.xml"))
@@ -50,7 +50,7 @@ public class AntTest {
     // SONAR-4358
     // Wating for ORCH-184
     if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("3.7")) {
-      // Update to Sonar Java 1.4 in order to allow installation of Cobertura 1.4
+      // Update to Sonar Java 1.5 in order to allow installation of Cobertura 1.4
       builder.removeDistributedPlugins()
         .setOrchestratorProperty("javaVersion", "1.5")
         .addPlugin("java")

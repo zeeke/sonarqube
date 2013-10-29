@@ -55,8 +55,8 @@
     <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
       <classpath path="../ant-libs/JaCoCo/jacocoant.jar" />
     </taskdef>
-  	
-  	<jacoco:coverage destfile="target/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant">
+
+    <jacoco:coverage destfile="target/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant">
       <junit fork="yes" dir="${basedir}" failureProperty="test.failed">
         <classpath location="${classes.dir}" />
         <classpath refid="classpath" />
@@ -68,7 +68,7 @@
           </fileset>
         </batchtest>
       </junit>
-  	</jacoco:coverage>
+    </jacoco:coverage>
 
     <junitreport todir="${reports.junit.html.dir}">
       <fileset dir="${reports.junit.xml.dir}">
@@ -85,9 +85,9 @@
   <property name="sonar.sources" value="${src.dir}" />
   <property name="sonar.binaries" value="${classes.dir}" />
   <property name="sonar.dynamicAnalysis" value="reuseReports" />
-  <property name="sonar.surefire.reportsPath" value="${reports.junit.xml.dir}" />
+  <property name="sonar.junit.reportsPath" value="${reports.junit.xml.dir}" />
   <property name="sonar.core.codeCoveragePlugin" value="jacoco" />
-	
+
   <target name="sonar">
     <!-- Import Sonar Ant tasks -->
     <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml">

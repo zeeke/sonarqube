@@ -33,8 +33,8 @@
     <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
       <classpath path="../../ant-libs/JaCoCo/jacocoant.jar" />
     </taskdef>
-  	
-  	<jacoco:coverage destfile="target/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant">
+
+    <jacoco:coverage destfile="target/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant">
       <junit fork="yes" dir="${basedir}">
         <classpath location="${classes.dir}" />
         <classpath refid="submodule.path" />
@@ -56,10 +56,10 @@
   <property name="sonar.sources" value="src" />
   <property name="sonar.binaries" value="target/classes" />
   <property name="sonar.dynamicAnalysis" value="reuseReports" />
-  <property name="sonar.surefire.reportsPath" value="target/junit" />
+  <property name="sonar.junit.reportsPath" value="target/junit" />
   <property name="sonar.core.codeCoveragePlugin" value="jacoco" />
   <property name="sonar.modules" value="one,two" />
-	
+
   <target name="sonar" depends="test">
     <!-- Import Sonar Ant tasks -->
     <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml">
