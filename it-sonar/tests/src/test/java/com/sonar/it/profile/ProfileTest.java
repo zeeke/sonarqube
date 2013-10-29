@@ -252,15 +252,6 @@ public class ProfileTest {
     orchestrator.executeSelenese(selenese);
   }
 
-  @Ignore("Requires http://jira.sonarsource.com/browse/ORCH-131")
-  @Test
-  public void should_not_restore_provided_profiles() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("provided-profiles", "/selenium/profile/delete-sonar-way.html").build();
-    orchestrator.executeSelenese(selenese);
-
-    // TODO restart and check that profile "sonar way" has not been restored
-  }
-
   private SonarRunner configureRunner(String projectPath, String... props) {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
       .setProperties(props);
