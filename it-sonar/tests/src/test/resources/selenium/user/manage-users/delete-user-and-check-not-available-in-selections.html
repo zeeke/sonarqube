@@ -86,7 +86,7 @@
 <tr>
 	<td>waitForText</td>
 	<td>confirm-form</td>
-	<td>*Delete user: ${userId}*arning : are you sure to delete the user "Name of ${userId}"?*</td>
+	<td>*Delete user: ${userId}*arning : are you sure to delete the user &quot;Name of ${userId}&quot;?*</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -109,19 +109,24 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>id=select-sonar-administrators</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>content</td>
-	<td>*Group*Administrator*</td>
+	<td>waitForText</td>
+	<td>id=modal</td>
+	<td>*Group*administrator*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>class=select-list-list</td>
+	<td>*Administrator*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>content</td>
-	<td>*${userId}</td>
+	<td>class=select-list-list</td>
+	<td>*${userId}*</td>
 </tr>
 <tr>
 	<td>open</td>
