@@ -52,8 +52,8 @@ public class AntTest {
     if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("3.7")) {
       // Update to Sonar Java 1.4 in order to allow installation of Cobertura 1.4
       builder.removeDistributedPlugins()
-        .setOrchestratorProperty("javaVersion", "1.4")
-        .addMavenPluginEnv("java", "org.codehaus.sonar-plugins.java", "sonar-java-plugin")
+        .setOrchestratorProperty("javaVersion", "1.5")
+        .addPlugin("java")
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.4"));
     }
 
