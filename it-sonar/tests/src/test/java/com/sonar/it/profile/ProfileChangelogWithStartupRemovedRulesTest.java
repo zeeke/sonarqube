@@ -24,7 +24,7 @@ public class ProfileChangelogWithStartupRemovedRulesTest {
 
   @BeforeClass
   public static void restoreBackup() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileChangelogTest/profile_with_rule_to_be_removed_at_startup.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileChangelogWithStartupRemovedRulesTest/profile_with_rule_to_be_removed_at_startup.xml"));
   }
 
   /**
@@ -39,7 +39,7 @@ public class ProfileChangelogWithStartupRemovedRulesTest {
 
     // Remove rule plugin with updatecenter web console because there's no way to do that with the Orchestrator API.
     orchestrator.executeSelenese(
-      Selenese.builder().setHtmlTestsInClasspath("remove-rule-plugin", "/selenium/profile-changelog/remove-rule-plugin.html").build()
+      Selenese.builder().setHtmlTestsInClasspath("remove-rule-plugin", "/selenium/profile-changelog/remove-deprecated-xoo-rule-plugin.html").build()
     );
     orchestrator.restartSonar();
 
