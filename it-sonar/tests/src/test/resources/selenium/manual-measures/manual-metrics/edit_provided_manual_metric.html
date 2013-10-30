@@ -14,66 +14,76 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/login</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/metrics</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>metrics</td>
-        <td>*burned_budget*Edit*Delete*business_value*Edit*Delete*team_size*Edit*Delete*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=edit_Burned budget</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=metric_short_name</td>
-        <td>NewName</td>
-    </tr>
-    <tr>
-        <td>select</td>
-        <td>id=metric_domain</td>
-        <td>label=Complexity</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>metrics</td>
-        <td>*burned_budget*NewName*Complexity*Edit*Delete*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/metrics</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>metrics</td>
+	<td>*burned_budget*Edit*Delete*business_value*Edit*Delete*team_size*Edit*Delete*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=edit_Burned budget</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>metric_edit_form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=#metric_edit_form .modal-head</td>
+	<td>*Edit Manual Metric: burned_budget*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=metric_short_name</td>
+	<td>NewName</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=metric_domain</td>
+	<td>label=Complexity</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>metric_name_burned_budget</td>
+	<td>*NewName*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

@@ -14,48 +14,46 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/login</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-
-    <tr>
-        <td>open</td>
-        <td>/sonar/metrics</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTextPresent</td>
-        <td>Business value</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTextPresent</td>
-        <td>Team size</td>
-        <td></td>
-    </tr>
-
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/metrics</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>metrics</td>
+	<td>*Business value*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>metrics</td>
+	<td>*Team size*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

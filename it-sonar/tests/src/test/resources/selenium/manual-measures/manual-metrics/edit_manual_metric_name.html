@@ -14,76 +14,106 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/login</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/metrics</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=metric_short_name</td>
-        <td>test_manual_metric_to_edit</td>
-    </tr>
-    <tr>
-        <td>select</td>
-        <td>id=metric_domain</td>
-        <td>label=Complexity</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>metrics</td>
-        <td>*test_manual_metric_to_edit*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=edit_test_manual_metric_to_edit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=metric_short_name</td>
-        <td>new_name</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=metric_key_test_manual_metric_to_edit</td>
-        <td>test_manual_metric_to_edit</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/metrics</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-link-metric</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>metric_create_form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=#metric_create_form .modal-head</td>
+	<td>*Create Manual Metric*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=metric_short_name</td>
+	<td>test_manual_metric_to_edit</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=metric_domain</td>
+	<td>label=Complexity</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>metrics</td>
+	<td>*test_manual_metric_to_edit*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=edit_test_manual_metric_to_edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>metric_edit_form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=#metric_edit_form .modal-head</td>
+	<td>*Edit Manual Metric: test_manual_metric_to_edit*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=metric_short_name</td>
+	<td>new_name</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=metric_key_test_manual_metric_to_edit</td>
+	<td>*test_manual_metric_to_edit*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>metric_name_test_manual_metric_to_edit</td>
+	<td>*new_name*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
