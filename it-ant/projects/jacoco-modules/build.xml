@@ -59,6 +59,8 @@
   <property name="sonar.junit.reportsPath" value="target/junit" />
   <property name="sonar.core.codeCoveragePlugin" value="jacoco" />
   <property name="sonar.modules" value="one,two" />
+  <!-- Deprecated property needed for IT with Sonar 3.0 -->
+  <property name="sonar.surefire.reportsPath" value="target/junit" />
 
   <target name="sonar" depends="test">
     <!-- Import Sonar Ant tasks -->
