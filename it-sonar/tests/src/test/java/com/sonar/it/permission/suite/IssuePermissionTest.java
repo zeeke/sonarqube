@@ -11,22 +11,25 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class IssuePermissionTest {
 
   @ClassRule
   public static Orchestrator orchestrator = PermissionTestSuite.ORCHESTRATOR;
 
-
-  private static final String WITH_CODE_VIEWER_PERMISSION = "with-code-viewer-permission";
-  private static final String WITHOUT_CODE_VIEWER_PERMISSION = "without-code-viewer-permission";
-
-  @BeforeClass
-  public static void init() {
+  @Before
+  public void init() {
     orchestrator.getDatabase().truncateInspectionTables();
 
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/permission/one-issue-per-line-profile.xml"));
@@ -34,22 +37,6 @@ public class IssuePermissionTest {
       .withoutDynamicAnalysis()
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(sampleProject);
-
-    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
-    client.userClient().create(UserParameters.create().login(WITH_CODE_VIEWER_PERMISSION).name(WITH_CODE_VIEWER_PERMISSION)
-      .password("password").passwordConfirmation("password"));
-    client.permissionClient().addPermission(PermissionParameters.create().user(WITH_CODE_VIEWER_PERMISSION).component("sample").permission("codeviewer"));
-
-    client.userClient().create(UserParameters.create().login(WITHOUT_CODE_VIEWER_PERMISSION).name(WITHOUT_CODE_VIEWER_PERMISSION)
-      .password("password").passwordConfirmation("password"));
-    client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("codeviewer"));
-  }
-
-  @AfterClass
-  public static void deactivateUsers() {
-    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
-    client.userClient().deactivate(WITH_CODE_VIEWER_PERMISSION);
-    client.userClient().deactivate(WITHOUT_CODE_VIEWER_PERMISSION);
   }
 
   /**
@@ -57,23 +44,92 @@ public class IssuePermissionTest {
    */
   @Test
   public void need_code_viewer_permission_to_see_source_code_from_issue_detail() {
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("need-code-viewer-permission-to-see-source-code-from-issue-detail",
-      "/selenium/permission/issue-permissions/without-code-viewer-permission-source-code-from-issue-detail-is-hidden.html",
-      "/selenium/permission/issue-permissions/with-code-viewer-permission-source-code-from-issue-detail-is-visible.html"
-    ).build());
+    SonarClient client = orchestrator.getServer().adminWsClient();
+
+    String withCodeViewerPermission = "with-code-viewer-permission";
+    String withoutCodeViewerPermission = "without-code-viewer-permission";
+
+    try {
+      client.userClient().create(UserParameters.create().login(withCodeViewerPermission).name(withCodeViewerPermission)
+        .password("password").passwordConfirmation("password"));
+      client.permissionClient().addPermission(PermissionParameters.create().user(withCodeViewerPermission).component("sample").permission("codeviewer"));
+
+      client.userClient().create(UserParameters.create().login(withoutCodeViewerPermission).name(withoutCodeViewerPermission)
+        .password("password").passwordConfirmation("password"));
+      // By default, it's the group anyone that have the permission codeviewer, it would be better to remove all groups on this permission
+      client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("codeviewer"));
+
+      orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("need-code-viewer-permission-to-see-source-code-from-issue-detail",
+        "/selenium/permission/issue-permissions/without-code-viewer-permission-source-code-from-issue-detail-is-hidden.html",
+        "/selenium/permission/issue-permissions/with-code-viewer-permission-source-code-from-issue-detail-is-visible.html"
+      ).build());
+
+    } finally {
+      client.userClient().deactivate(withCodeViewerPermission);
+      client.userClient().deactivate(withoutCodeViewerPermission);
+    }
   }
 
-  // TODO
   @Test
-  @Ignore
-  public void need_browse_permission_to_see_issue() {
+  public void need_user_permission_on_project_to_see_issue() {
+    SonarClient client = orchestrator.getServer().adminWsClient();
 
+    String withBrowsePermission = "with-browse-permission";;
+    String withoutBrowsePermission = "without-browse-permission";
+
+    try {
+      client.userClient().create(UserParameters.create().login(withBrowsePermission).name(withBrowsePermission)
+        .password("password").passwordConfirmation("password"));
+      client.permissionClient().addPermission(PermissionParameters.create().user(withBrowsePermission).component("sample").permission("user"));
+
+      client.userClient().create(UserParameters.create().login(withoutBrowsePermission).name(withoutBrowsePermission)
+        .password("password").passwordConfirmation("password"));
+      // By default, it's the group anyone that have the permission user, it would be better to remove all groups on this permission
+      client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("user"));
+
+      // Without user permission, a user cannot see issues on the project
+      assertThat(orchestrator.getServer().wsClient(withoutBrowsePermission, "password").issueClient().find(
+        IssueQuery.create().componentRoots("sample")).list()).isEmpty();
+
+      // Without user permission, a user cannot see issues on the project
+      assertThat(orchestrator.getServer().wsClient(withBrowsePermission, "password").issueClient().find(
+        IssueQuery.create().componentRoots("sample")).list()).isNotEmpty();
+
+    } finally {
+      client.userClient().deactivate(withBrowsePermission);
+      client.userClient().deactivate(withoutBrowsePermission);
+    }
   }
 
-  // TODO
   @Test
-  @Ignore
-  public void need_browse_permission_to_see_issue_changelog() {
+  @Ignore("Permission is not still check when searching for changelog")
+  public void need_user_permission_on_project_to_see_issue_changelog() {
+    SonarClient client = orchestrator.getServer().adminWsClient();
+    Issue issue = client.issueClient().find(IssueQuery.create()).list().get(0);
+    client.issueClient().assign(issue.key(), "admin");
 
+    String withBrowsePermission = "with-browse-permission";;
+    String withoutBrowsePermission = "without-browse-permission";
+
+    try {
+      client.userClient().create(UserParameters.create().login(withBrowsePermission).name(withBrowsePermission)
+        .password("password").passwordConfirmation("password"));
+      client.permissionClient().addPermission(PermissionParameters.create().user(withBrowsePermission).component("sample").permission("user"));
+
+      client.userClient().create(UserParameters.create().login(withoutBrowsePermission).name(withoutBrowsePermission)
+        .password("password").passwordConfirmation("password"));
+      // By default, it's the group anyone that have the permission user, it would be better to remove all groups on this permission
+      client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("user"));
+
+      // Without user permission, a user cannot see issue changelog on the project
+      assertThat(orchestrator.getServer().wsClient(withoutBrowsePermission, "password").issueClient().changes(issue.key())).isEmpty();
+
+      // Without user permission, a user cannot see issues on the project
+      assertThat(orchestrator.getServer().wsClient(withBrowsePermission, "password").issueClient().changes(issue.key())).isNotEmpty();
+
+    } finally {
+      client.userClient().deactivate(withBrowsePermission);
+      client.userClient().deactivate(withoutBrowsePermission);
+    }
   }
 }
