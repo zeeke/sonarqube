@@ -11,10 +11,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
@@ -66,4 +63,17 @@ public class IssuePermissionTest {
     ).build());
   }
 
+  // TODO
+  @Test
+  @Ignore
+  public void need_browse_permission_to_see_issue() {
+
+  }
+
+  // TODO
+  @Test
+  @Ignore
+  public void need_browse_permission_to_see_issue_changelog() {
+
+  }
 }

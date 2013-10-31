@@ -6,7 +6,6 @@
 
 package com.sonar.it.issue.suite;
 
-import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import org.junit.ClassRule;
 import org.sonar.wsclient.base.HttpException;
@@ -37,24 +36,24 @@ public abstract class AbstractIssueTestCase {
     return issues.get(0);
   }
 
-  protected static Issues search(IssueQuery issueQuery){
+  protected static Issues search(IssueQuery issueQuery) {
     return issueClient().find(issueQuery);
   }
 
   protected static IssueClient issueClient() {
-    return ItUtils.newWsClientForAnonymous(orchestrator).issueClient();
+    return orchestrator.getServer().wsClient().issueClient();
   }
 
   protected static IssueClient adminIssueClient() {
-    return ItUtils.newWsClientForAdmin(orchestrator).issueClient();
+    return orchestrator.getServer().adminWsClient().issueClient();
   }
 
   protected static ActionPlanClient actionPlanClient() {
-    return ItUtils.newWsClientForAnonymous(orchestrator).actionPlanClient();
+    return orchestrator.getServer().wsClient().actionPlanClient();
   }
 
   protected static ActionPlanClient adminActionPlanClient() {
-    return ItUtils.newWsClientForAdmin(orchestrator).actionPlanClient();
+    return orchestrator.getServer().adminWsClient().actionPlanClient();
   }
 
   protected static ActionPlan firstActionPlan(String projectKey) {
@@ -63,7 +62,7 @@ public abstract class AbstractIssueTestCase {
     return actionPlans.get(0);
   }
 
-  protected void verifyHttpException(Exception e, int expectedCode){
+  protected void verifyHttpException(Exception e, int expectedCode) {
     assertThat(e).isInstanceOf(HttpException.class);
     HttpException exception = (HttpException) e;
     assertThat(exception.status()).isEqualTo(expectedCode);
