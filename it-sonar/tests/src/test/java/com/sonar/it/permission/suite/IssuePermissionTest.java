@@ -13,15 +13,16 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
+import org.sonar.wsclient.base.HttpException;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
 
 public class IssuePermissionTest {
 
@@ -101,8 +102,10 @@ public class IssuePermissionTest {
     }
   }
 
+  /**
+   * SONAR-4839
+   */
   @Test
-  @Ignore("Permission is not still check when searching for changelog")
   public void need_user_permission_on_project_to_see_issue_changelog() {
     SonarClient client = orchestrator.getServer().adminWsClient();
     Issue issue = client.issueClient().find(IssueQuery.create()).list().get(0);
@@ -122,7 +125,12 @@ public class IssuePermissionTest {
       client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("user"));
 
       // Without user permission, a user cannot see issue changelog on the project
-      assertThat(orchestrator.getServer().wsClient(withoutBrowsePermission, "password").issueClient().changes(issue.key())).isEmpty();
+      try {
+        orchestrator.getServer().wsClient(withoutBrowsePermission, "password").issueClient().changes(issue.key());
+        fail();
+      } catch (Exception e){
+        assertThat(e).isInstanceOf(HttpException.class).describedAs("404");
+      }
 
       // Without user permission, a user cannot see issues on the project
       assertThat(orchestrator.getServer().wsClient(withBrowsePermission, "password").issueClient().changes(issue.key())).isNotEmpty();
