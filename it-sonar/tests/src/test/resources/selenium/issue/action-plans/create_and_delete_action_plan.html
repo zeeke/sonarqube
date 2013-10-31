@@ -44,6 +44,21 @@
 	<td>*No action plan*</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>create-link-action_plans</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>create-action-plan-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=#create-action-plan-form .modal-head</td>
+	<td>*Create Action Plan*</td>
+</tr>
+<tr>
 	<td>type</td>
 	<td>id=name</td>
 	<td>Sprint for 1.1</td>
@@ -69,19 +84,34 @@
 	<td>*Sprint for 1.1*Dec 31 2100*No issues linked to this action plan yet.*Sprint in the far future*</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>link=Delete</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertConfirmation</td>
-	<td>Delete this action plan? Associated issues will not be deleted.</td>
+	<td>waitForVisible</td>
+	<td>confirm-form</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>action-plans</td>
-	<td>*Sprint for 1.1*</td>
+	<td>assertText</td>
+	<td>css=#confirm-form .modal-head</td>
+	<td>*Delete action plan: Sprint for 1.1*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>info</td>
+	<td>*Successfully deleted.*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>open-action-plans</td>
+	<td>*No action plan*</td>
 </tr>
 </tbody>
 </table>
