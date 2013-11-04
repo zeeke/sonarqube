@@ -6,8 +6,6 @@
 
 package com.sonar.it.issue2.suite;
 
-import com.sonar.it.ItUtils;
-import com.sonar.it.issue.suite.IssueTestSuite;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
@@ -16,9 +14,6 @@ import org.sonar.wsclient.issue.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -53,15 +48,15 @@ public class AbstractIssueTestCase2 {
   }
 
   protected static IssueClient issueClient() {
-    return ItUtils.newWsClientForAnonymous(orchestrator).issueClient();
+    return orchestrator.getServer().wsClient().issueClient();
   }
 
   protected static IssueClient adminIssueClient() {
-    return ItUtils.newWsClientForAdmin(orchestrator).issueClient();
+    return orchestrator.getServer().adminWsClient().issueClient();
   }
 
   protected static ActionPlanClient adminActionPlanClient() {
-    return ItUtils.newWsClientForAdmin(orchestrator).actionPlanClient();
+    return orchestrator.getServer().adminWsClient().actionPlanClient();
   }
 
   protected static void createManualRule(){
