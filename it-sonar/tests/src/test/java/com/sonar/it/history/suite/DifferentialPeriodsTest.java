@@ -91,14 +91,13 @@ public class DifferentialPeriodsTest {
   }
 
   @Test
-  @Ignore("Bug still not fixed")
-  public void new_issues_measures_should_be_zero_on_project_when_no_new_issues_between_two_analysis() throws Exception {
+  public void new_issues_measures_should_be_zero_on_project_when_no_new_issues_since_previous_period() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over 30 days"
 
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line")
-      // Analyse a project in the past, with a date older than 3à last days (second period)
+      // Analyse a project in the past, with a date older than 30 last days (second period)
       .setProperty("sonar.projectDate", "2013-01-01"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line"));
@@ -167,9 +166,7 @@ public class DifferentialPeriodsTest {
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:multi-modules-sample", "new_violations", "violations").setIncludeTrends(true));
     List<Measure> measures = project.getMeasures();
     Measure newIssues = find(measures, "new_violations");
-    Measure violations = find(measures, "violations");
-
-    assertThat(newIssues.getVariation1().intValue()).isEqualTo(violations.getVariation1().intValue());
+    assertThat(newIssues.getVariation1().intValue()).isEqualTo(57);
   }
 
   private Measure find(List<Measure> measures, String metricKey) {
