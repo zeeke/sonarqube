@@ -129,7 +129,7 @@ public class DifferentialPeriodsTest {
 
   @Test
   @Ignore("Ignored because bug is not fixed")
-  public void new_issues_measures_should_be_egual_to_issues_variation_from_previous_analysis_on_multi_module() throws Exception {
+  public void new_issues_measures_should_be_correctly_calculated_when_adding_a_new_module() throws Exception {
     // This test assumes that period 1 is "since previous analysis"
 
     // First analysis without module b
@@ -138,7 +138,7 @@ public class DifferentialPeriodsTest {
       .setProfile("profile1")
       .setProperties("sonar.skippedModules", "multi-modules-sample:module_b"));
 
-    // Second analysis with module b and with a new rule activated to have new issues on module a
+    // Second analysis with module b and with a new rule activated to have new issues on module a since last analysis
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/DifferentialPeriodsTest/profile2.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
       .setProfile("profile2"));
