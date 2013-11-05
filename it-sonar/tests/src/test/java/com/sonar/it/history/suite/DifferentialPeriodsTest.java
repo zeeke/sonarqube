@@ -12,7 +12,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.services.Measure;
@@ -148,7 +147,6 @@ public class DifferentialPeriodsTest {
   }
 
   @Test
-  @Ignore("Ignored because bug is not fixed")
   public void new_issues_measures_should_be_correctly_calculated_when_adding_a_new_module() throws Exception {
     // This test assumes that period 1 is "since previous analysis"
 
