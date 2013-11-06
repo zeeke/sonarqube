@@ -29,7 +29,6 @@ public class ServerTest extends PerfTestCase {
     }
   }
 
-
   static long startupDuration(Orchestrator orchestrator) throws IOException {
     // compare dates of first and last log
     List<String> lines = FileUtils.readLines(orchestrator.getServer().getLogs());
