@@ -13,6 +13,8 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import static org.junit.Assert.fail;
+
 public class WebTest extends PerfTestCase {
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
@@ -32,31 +34,31 @@ public class WebTest extends PerfTestCase {
   @Test
   public void homepage() throws Exception {
     PageStats counters = request("/");
-    assertDuration(counters.durationMs, 1000);
+    assertDuration(counters.durationMs, 93);
   }
 
   @Test
   public void quality_profiles() throws Exception {
     PageStats counters = request("/profiles");
-    assertDuration(counters.durationMs, 1000);
+    assertDuration(counters.durationMs, 283);
   }
 
   @Test
   public void issues_search() throws Exception {
     PageStats counters = request("/issues/search");
-    assertDuration(counters.durationMs, 1000);
+    assertDuration(counters.durationMs, 40);
   }
 
   @Test
   public void measures_search() throws Exception {
     PageStats counters = request("/measures");
-    assertDuration(counters.durationMs, 1000);
+    assertDuration(counters.durationMs, 457);
   }
 
   @Test
   public void all_projects() throws Exception {
     PageStats counters = request("/all_projects?qualifier=TRK");
-    assertDuration(counters.durationMs, 1000);
+    assertDuration(counters.durationMs, 66);
   }
 
   PageStats request(String path) {
@@ -71,8 +73,9 @@ public class WebTest extends PerfTestCase {
       long duration = System.currentTimeMillis() - start;
       int size = request.body().length();
       PageStats counters = new PageStats(duration, size);
-      System.out.printf("Page %s loaded in %d ms - size is %d bytes", path, counters.durationMs, counters.sizeBytes);
+      System.out.printf("Page %s loaded in %d ms - size is %d bytes\n", path, counters.durationMs, counters.sizeBytes);
     }
+    fail(String.format("Failed to load page: %s (%d)", url, request.code()));
     return null;
   }
 
