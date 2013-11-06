@@ -10,28 +10,17 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.*;
-import org.junit.rules.TestName;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * AUTOMATED TEST
  * This test is executed by Jenkins in a dedicated stable environment
  */
-public class SonarRunnerPerformanceTest {
-
-  private static final Logger LOG = LoggerFactory.getLogger(SonarRunnerPerformanceTest.class);
-  private static final double ACCEPTED_DURATION_VARIATION_IN_PERCENTS = 8.0;
+public class ScanTest extends PerfTestCase {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
     .restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-3.6.xml"))
     .build();
-
-  @Rule
-  public TestName testName = new TestName();
 
   @BeforeClass
   public static void setUp() {
@@ -131,12 +120,6 @@ public class SonarRunnerPerformanceTest {
       .setEnvironmentVariable("SONAR_RUNNER_OPTS", sonarRunnerOpts)
       .setRunnerVersion("2.3")
       .setProjectDir(FileLocation.ofShared("it-sonar-performancing/tika-1.3").getFile());
-  }
-
-  private void assertDuration(long duration, long expectedDuration) {
-    double variation = 100.0 * (0.0 + duration - expectedDuration) / expectedDuration;
-    assertThat(Math.abs(variation)).as(String.format("Expected %d ms, got %d ms", expectedDuration, duration)).isLessThan(ACCEPTED_DURATION_VARIATION_IN_PERCENTS);
-    System.out.printf("Test %s executed in %d ms (%.2f'%' from target)", testName.getMethodName(), duration, variation);
   }
 
 }
