@@ -61,6 +61,66 @@ public class WebTest extends PerfTestCase {
     assertDuration(counters.durationMs, 66);
   }
 
+  @Test
+  public void project_measures_search() throws Exception {
+    PageStats counters = request("/measures/search?qualifiers[]=TRK");
+    assertDuration(counters.durationMs, 66);
+  }
+
+  @Test
+  public void file_measures_search() throws Exception {
+    PageStats counters = request("/measures/search?qualifiers[]=FIL");
+    assertDuration(counters.durationMs, 66);
+  }
+
+  @Test
+  public void struts_dashboard() throws Exception {
+    PageStats counters = request("/dashboard/index/org.apache.struts:struts-parent");
+    assertDuration(counters.durationMs, 66);
+  }
+
+  @Test
+  public void struts_issues() throws Exception {
+    PageStats counters = request("/issues/search?componentRoots=org.apache.struts:struts-parent");
+    assertDuration(counters.durationMs, 66);
+  }
+
+  @Test
+  public void struts_issues_drilldown() throws Exception {
+    PageStats counters = request("/drilldown/issues/org.apache.struts:struts-parent");
+    assertDuration(counters.durationMs, 66);
+  }
+
+  @Test
+  public void struts_measures_drilldown() throws Exception {
+    PageStats counters = request("/drilldown/measures/org.apache.struts:struts-parent?metric=ncloc");
+    assertDuration(counters.durationMs, 66);
+  }
+
+  @Test
+  public void struts_cloud() throws Exception {
+    PageStats counters = request("/cloud/index/org.apache.struts:struts-parent");
+    assertDuration(counters.durationMs, 66);
+  }
+
+  @Test
+  public void struts_hotspot() throws Exception {
+    PageStats counters = request("/dashboard/index/org.apache.struts:struts-parent?name=Hotspots");
+    assertDuration(counters.durationMs, 66);
+  }
+
+  @Test
+  public void stylesheet_file() throws Exception {
+    PageStats counters = request("/stylesheets/sonar.css");
+    assertDuration(counters.durationMs, 66);
+  }
+
+  @Test
+  public void javascript_file() throws Exception {
+    PageStats counters = request("/javascripts/sonar.js");
+    assertDuration(counters.durationMs, 66);
+  }
+
   PageStats request(String path) {
     String url = orchestrator.getServer().getUrl() + path;
 
@@ -76,7 +136,7 @@ public class WebTest extends PerfTestCase {
       System.out.printf("Page %s loaded in %d ms - size is %d bytes\n", path, counters.durationMs, counters.sizeBytes);
     }
     fail(String.format("Failed to load page: %s (%d)", url, request.code()));
-    return null;
+    return new PageStats(Long.MAX_VALUE, Long.MAX_VALUE);
   }
 
   private HttpRequest newRequest(String url) {
