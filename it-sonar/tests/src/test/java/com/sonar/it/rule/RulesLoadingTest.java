@@ -31,7 +31,6 @@ public class RulesLoadingTest {
   @Test
   public void should_stop_startup_if_rule_description_is_missing_from_xml_file() {
     thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("Can't start sonar");
 
     orchestrator = Orchestrator.builderEnv().addPlugin(ItUtils.locateTestPlugin("missing-rule-description-plugin")).build();
     orchestrator.start();
@@ -43,7 +42,6 @@ public class RulesLoadingTest {
   @Test
   public void should_stop_startup_if_rule_name_is_missing_from_annotation() {
     thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("Can't start sonar");
 
     orchestrator = Orchestrator.builderEnv().addPlugin(ItUtils.locateTestPlugin("missing-rule-name-plugin")).build();
     orchestrator.start();

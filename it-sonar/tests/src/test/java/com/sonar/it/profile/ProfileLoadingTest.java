@@ -78,7 +78,6 @@ public class ProfileLoadingTest {
   @Test
   public void shouldFailSonarStartupIfMoreThanOneProvidedProfileByLanguage() {
     thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("Can't start sonar");
 
     // Given that:
     // "Profile1" is a standard profile
