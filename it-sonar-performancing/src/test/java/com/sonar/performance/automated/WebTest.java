@@ -133,7 +133,8 @@ public class WebTest extends PerfTestCase {
       long duration = System.currentTimeMillis() - start;
       int size = request.body().length();
       PageStats counters = new PageStats(duration, size);
-      System.out.printf("Page %s loaded in %d ms - size is %d bytes\n", path, counters.durationMs, counters.sizeBytes);
+      System.out.printf("##### Page %50s %7d ms %7d bytes\n", path, counters.durationMs, counters.sizeBytes);
+      return counters;
     }
     fail(String.format("Failed to load page: %s (%d)", url, request.code()));
     return new PageStats(Long.MAX_VALUE, Long.MAX_VALUE);

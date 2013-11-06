@@ -14,27 +14,52 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ServerTest extends PerfTestCase {
 
   @Test
-  public void server_startup() throws Exception {
+  public void server_startup_and_shutdown() throws Exception {
     Orchestrator orchestrator = Orchestrator.builderEnv().build();
     try {
-      ServerLogs.clear(orchestrator);
-      orchestrator.start();
-      assertDuration(startupDuration(orchestrator), 23000);
+      long startupDuration = start(orchestrator);
+      assertDuration(startupDuration, 23000);
+
+      long shutdownDuration = start(orchestrator);
+      assertDuration(shutdownDuration, 2000);
+
     } finally {
       orchestrator.stop();
     }
   }
 
-  static long startupDuration(Orchestrator orchestrator) throws IOException {
+  long start(Orchestrator orchestrator) throws IOException {
+    ServerLogs.clear(orchestrator);
+    orchestrator.start();
     // compare dates of first and last log
     List<String> lines = FileUtils.readLines(orchestrator.getServer().getLogs());
     Date start = ServerLogs.extractFirstDate(lines);
     Collections.reverse(lines);
     Date end = ServerLogs.extractFirstDate(lines);
     return end.getTime() - start.getTime();
+  }
+
+  long stop(Orchestrator orchestrator) throws Exception {
+    ServerLogs.clear(orchestrator);
+    orchestrator.stop();
+
+    List<String> lines = FileUtils.readLines(orchestrator.getServer().getLogs());
+    Collections.reverse(lines);
+
+    Pattern pattern = Pattern.compile(".*Stop sonar done: (\\d++) ms.*");
+    for (String line : lines) {
+      Matcher matcher = pattern.matcher(line);
+      if (matcher.matches()) {
+        long duration = Long.parseLong(matcher.group(1));
+        return duration;
+      }
+    }
+    throw new IllegalStateException("Fail to estimate shutdown duration");
   }
 }
