@@ -136,7 +136,7 @@ public class SonarRunnerPerformanceTest {
   private void assertDuration(long duration, long expectedDuration) {
     double variation = 100.0 * (0.0 + duration - expectedDuration) / expectedDuration;
     assertThat(Math.abs(variation)).as(String.format("Expected %d ms, got %d ms", expectedDuration, duration)).isLessThan(ACCEPTED_DURATION_VARIATION_IN_PERCENTS);
-    LOG.info("Test '" + testName.getMethodName() + " ' executed in " + duration + " ms (" + variation + "% from target)");
+    System.out.printf("Test %s executed in %d ms (%.2f'%' from target)", testName.getMethodName(), duration, variation);
   }
 
 }
