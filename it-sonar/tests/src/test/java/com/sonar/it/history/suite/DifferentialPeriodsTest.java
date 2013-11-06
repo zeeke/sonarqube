@@ -10,6 +10,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -18,6 +19,8 @@ import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -36,7 +39,7 @@ public class DifferentialPeriodsTest {
    * SONAR-4700
    */
   @Test
-  public void not_display_periods_selection_dropdown_on_first_analysis(){
+  public void not_display_periods_selection_dropdown_on_first_analysis() {
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).withoutDynamicAnalysis());
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("not-display-periods-selection-dropdown-on-first-analysis",
@@ -49,7 +52,7 @@ public class DifferentialPeriodsTest {
    * SONAR-4700
    */
   @Test
-  public void display_periods_selection_dropdown_after_first_analysis(){
+  public void display_periods_selection_dropdown_after_first_analysis() {
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).withoutDynamicAnalysis();
     orchestrator.executeBuilds(scan, scan);
 
@@ -90,13 +93,13 @@ public class DifferentialPeriodsTest {
   }
 
   @Test
-  public void new_issues_measures_should_be_zero_on_project_when_no_new_issues_since_previous_period() throws Exception {
+  public void new_issues_measures_should_be_zero_on_project_when_no_new_issues_since_30_days() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over 30 days"
 
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line")
-      // Analyse a project in the past, with a date older than 30 last days (second period)
+        // Analyse a project in the past, with a date older than 30 last days (second period)
       .setProperty("sonar.projectDate", "2013-01-01"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line"));
@@ -107,6 +110,47 @@ public class DifferentialPeriodsTest {
     Measure newIssues = find(measures, "new_violations");
     assertThat(newIssues.getVariation1().intValue()).isEqualTo(0);
     assertThat(newIssues.getVariation2().intValue()).isEqualTo(0);
+  }
+
+  @Test
+  public void new_issues_measures_on_since_30_days_period() throws Exception {
+    // This test assumes that period 1 is "since previous analysis" and 2 is "over 30 days"
+
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
+
+    // Execute a analysis in the past, without some modules
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+      .setProfile("one-issue-per-line")
+        // date older than 30 last days (previous second period)
+      .setProperty("sonar.projectDate", "2013-01-01")
+      .setProperty("sonar.skippedModules", "multi-modules-sample:module_b,multi-modules-sample:module_a:module_a2")
+    );
+
+    // Execute a analysis in the past, with one more module than previous analysis
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+      .setProfile("one-issue-per-line")
+        // date older than 20 last days (just after second period)
+      .setProperty("sonar.projectDate", new SimpleDateFormat("yyyy-MM-dd").format(DateUtils.addDays(new Date(), -20)))
+      .setProperty("sonar.skippedModules", "multi-modules-sample:module_b")
+    );
+
+    // Execute a analysis in the present with all modules
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+      .setProfile("one-issue-per-line")
+    );
+
+    // new issues measures should be to 0 on project on 2 periods as new issues has been created
+    Resource file = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:multi-modules-sample", "violations", "new_violations").setIncludeTrends(true));
+    List<Measure> measures = file.getMeasures();
+
+    Measure issues = find(measures, "violations");
+    assertThat(issues.getValue().intValue()).isEqualTo(52);
+    assertThat(issues.getVariation1().intValue()).isEqualTo(24);
+    assertThat(issues.getVariation2().intValue()).isEqualTo(24);
+
+    Measure newIssues = find(measures, "new_violations");
+    assertThat(newIssues.getVariation1().intValue()).isEqualTo(24);
+    assertThat(newIssues.getVariation2().intValue()).isEqualTo(24);
   }
 
   /**
