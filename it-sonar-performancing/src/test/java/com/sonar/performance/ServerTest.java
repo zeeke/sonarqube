@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ServerTest extends PerfTestCase {
 
@@ -36,29 +34,25 @@ public class ServerTest extends PerfTestCase {
   long start(Orchestrator orchestrator) throws IOException {
     ServerLogs.clear(orchestrator);
     orchestrator.start();
-    // compare dates of first and last log
-    List<String> lines = FileUtils.readLines(orchestrator.getServer().getLogs());
-    Date start = ServerLogs.extractFirstDate(lines);
-    Collections.reverse(lines);
-    Date end = ServerLogs.extractFirstDate(lines);
-    return end.getTime() - start.getTime();
+    return logsPeriod(orchestrator);
+
   }
 
   long stop(Orchestrator orchestrator) throws Exception {
     ServerLogs.clear(orchestrator);
     orchestrator.stop();
+    return logsPeriod(orchestrator);
+  }
 
+  private long logsPeriod(Orchestrator orchestrator) throws IOException {
+    // compare dates of first and last log
     List<String> lines = FileUtils.readLines(orchestrator.getServer().getLogs());
-    Collections.reverse(lines);
-
-    Pattern pattern = Pattern.compile(".*Stop sonar done: (\\d++) ms.*");
-    for (String line : lines) {
-      Matcher matcher = pattern.matcher(line);
-      if (matcher.matches()) {
-        long duration = Long.parseLong(matcher.group(1));
-        return duration;
-      }
+    if (lines.size() < 2) {
+      throw new IllegalStateException("Fail to estimate server shutdown or startup duration. Not enough logs.");
     }
-    throw new IllegalStateException("Fail to estimate shutdown duration");
+    Date start = ServerLogs.extractFirstDate(lines);
+    Collections.reverse(lines);
+    Date end = ServerLogs.extractFirstDate(lines);
+    return end.getTime() - start.getTime();
   }
 }
