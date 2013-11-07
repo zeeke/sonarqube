@@ -13,7 +13,7 @@
   <groupId>com.sonarsource.it.sonar</groupId>
   <artifactId>it-sonar-performance</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Sonar :: Integration Tests :: Performancing</name>
+  <name>SonarQube :: Performance Tests</name>
   <inceptionYear>2013</inceptionYear>
 
   <properties>

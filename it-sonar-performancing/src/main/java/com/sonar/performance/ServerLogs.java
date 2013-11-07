@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class ServerLogs {
 
@@ -41,8 +39,9 @@ class ServerLogs {
   }
 
   static void clear(Orchestrator orch) throws IOException {
-    if (orch.getServer() != null && orch.getServer().getLogs() != null)
+    if (orch.getServer() != null && orch.getServer().getLogs() != null) {
       FileUtils.write(orch.getServer().getLogs(), "", false);
+    }
   }
 
 
