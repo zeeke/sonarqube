@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ServerLogs {
+class ServerLogs {
 
-  public static Date extractDate(String line) {
+  static Date extractDate(String line) {
     String pattern = "yyyy.MM.dd HH:mm:ss";
     SimpleDateFormat format = new SimpleDateFormat(pattern);
     if (line.length() > 19) {
@@ -30,7 +30,7 @@ public class ServerLogs {
     return null;
   }
 
-  public static Date extractFirstDate(List<String> lines) {
+  static Date extractFirstDate(List<String> lines) {
     for (String line : lines) {
       Date d = ServerLogs.extractDate(line);
       if (d != null) {
@@ -40,7 +40,7 @@ public class ServerLogs {
     return null;
   }
 
-  public static void clear(Orchestrator orch) throws IOException {
+  static void clear(Orchestrator orch) throws IOException {
     if (orch.getServer() != null && orch.getServer().getLogs() != null)
       FileUtils.write(orch.getServer().getLogs(), "", false);
   }

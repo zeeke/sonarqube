@@ -3,10 +3,9 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.performance.automated;
+package com.sonar.performance;
 
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.performance.ServerLogs;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
@@ -24,7 +23,7 @@ public class ServerTest extends PerfTestCase {
     Orchestrator orchestrator = Orchestrator.builderEnv().build();
     try {
       long startupDuration = start(orchestrator);
-      assertDurationAround(startupDuration, 47000);
+      assertDurationAround(startupDuration, 45000);
 
       long shutdownDuration = stop(orchestrator);
       assertDurationAround(shutdownDuration, 2000);

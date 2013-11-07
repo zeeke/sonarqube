@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.performance.automated;
+package com.sonar.performance;
 
 import org.junit.Rule;
 import org.junit.rules.TestName;
