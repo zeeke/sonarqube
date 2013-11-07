@@ -34,7 +34,7 @@ public class WebTest extends PerfTestCase {
   @Test
   public void homepage() throws Exception {
     PageStats counters = request("/");
-    assertDurationLessThan(counters.durationMs, 80);
+    assertDurationLessThan(counters.durationMs, 100);
   }
 
   @Test
@@ -46,7 +46,7 @@ public class WebTest extends PerfTestCase {
   @Test
   public void issues_search() throws Exception {
     PageStats counters = request("/issues/search");
-    assertDurationLessThan(counters.durationMs, 50);
+    assertDurationLessThan(counters.durationMs, 100);
   }
 
   @Test
