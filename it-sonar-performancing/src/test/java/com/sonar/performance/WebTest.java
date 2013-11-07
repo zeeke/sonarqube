@@ -125,7 +125,8 @@ public class WebTest extends PerfTestCase {
   PageStats request(String path) {
     String url = orchestrator.getServer().getUrl() + path;
 
-    // cold request
+    // warm server
+    newRequest(url).code();
     newRequest(url).code();
 
     HttpRequest request = newRequest(url);
