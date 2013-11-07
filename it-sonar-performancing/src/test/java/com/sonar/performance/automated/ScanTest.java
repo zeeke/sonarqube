@@ -15,6 +15,7 @@ import org.junit.*;
  * AUTOMATED TEST
  * This test is executed by Jenkins in a dedicated stable environment
  */
+@Ignore("TEMP")
 public class ScanTest extends PerfTestCase {
 
   @ClassRule
