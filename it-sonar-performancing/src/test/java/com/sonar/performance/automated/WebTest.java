@@ -40,7 +40,7 @@ public class WebTest extends PerfTestCase {
   @Test
   public void quality_profiles() throws Exception {
     PageStats counters = request("/profiles");
-    assertDurationLessThan(counters.durationMs, 300);
+    assertDurationLessThan(counters.durationMs, 350);
   }
 
   @Test

@@ -24,7 +24,7 @@ public class ServerTest extends PerfTestCase {
     Orchestrator orchestrator = Orchestrator.builderEnv().build();
     try {
       long startupDuration = start(orchestrator);
-      assertDurationAround(startupDuration, 43000);
+      assertDurationAround(startupDuration, 47000);
 
       long shutdownDuration = stop(orchestrator);
       assertDurationAround(shutdownDuration, 2000);
