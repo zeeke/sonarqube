@@ -24,10 +24,10 @@ public class ServerTest extends PerfTestCase {
     Orchestrator orchestrator = Orchestrator.builderEnv().build();
     try {
       long startupDuration = start(orchestrator);
-      assertDuration(startupDuration, 23000);
+      assertDurationAround(startupDuration, 23000);
 
-      long shutdownDuration = start(orchestrator);
-      assertDuration(shutdownDuration, 2000);
+      long shutdownDuration = stop(orchestrator);
+      assertDurationAround(shutdownDuration, 2000);
 
     } finally {
       orchestrator.stop();
