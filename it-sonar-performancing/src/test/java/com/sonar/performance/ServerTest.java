@@ -20,9 +20,8 @@ public class ServerTest extends PerfTestCase {
   public void server_startup_and_shutdown() throws Exception {
     Orchestrator orchestrator = Orchestrator.builderEnv().build();
     try {
-      long startupDuration = start(orchestrator);
-      // TODO re-nable assertion. Get inconsistent startup time in JRuby on Rail stack
-      // Takes 8 or 8+23 seconds.
+      // TODO re-nable assertion
+      //long startupDuration = start(orchestrator);
       //assertDurationAround(startupDuration, 45000);
       orchestrator.start();
 
