@@ -10,17 +10,15 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -78,8 +76,8 @@ public class DifferentialPeriodsTest {
     orchestrator.executeBuild(scan);
 
     assertThat(orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create()).list()).isNotEmpty();
-    Resource file = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_violations").setIncludeTrends(true));
-    List<Measure> measures = file.getMeasures();
+    Resource newIssues = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_violations").setIncludeTrends(true));
+    List<Measure> measures = newIssues.getMeasures();
     assertThat(measures.get(0).getVariation1().intValue()).isEqualTo(13);
     assertThat(measures.get(0).getVariation2().intValue()).isEqualTo(13);
 
@@ -87,13 +85,42 @@ public class DifferentialPeriodsTest {
     orchestrator.executeBuild(scan);
 
     assertThat(orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create()).list()).isNotEmpty();
-    file = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_violations").setIncludeTrends(true));
+    newIssues = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_violations").setIncludeTrends(true));
     // No variation => measure is purged
-    assertThat(file).isNull();
+    assertThat(newIssues).isNull();
+  }
+
+  /**
+   * SONAR-4776
+   */
+  @Test
+  @Ignore("Cannot be calculated because technical debt are not related to issues but to resource (Xoo SQALE model contain function with offset). Will be fixed with SONAR-4775")
+  public void new_technical_debt_measures() throws Exception {
+    // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
+
+    // Execute an analysis in the past to have a past snapshot without any issues
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperty("sonar.projectDate", "2013-01-01"));
+
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).setProfile("one-issue-per-line");
+    orchestrator.executeBuild(scan);
+
+    Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    List<Measure> measures = newTechnicalDebt.getMeasures();
+    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0.125);
+    assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.125);
+
+    // second analysis, with exactly the same profile -> no new issues so no new technical debt
+    orchestrator.executeBuild(scan);
+
+    newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    // No variation => measure is purged
+    assertThat(newTechnicalDebt).isNull();
   }
 
   @Test
-  public void new_issues_measures_should_be_zero_on_project_when_no_new_issues_since_30_days() throws Exception {
+  public void new_issues_measures_should_be_zero_on_project_when_no_new_issues_since_x_days() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over 30 days"
 
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
@@ -110,47 +137,6 @@ public class DifferentialPeriodsTest {
     Measure newIssues = find(measures, "new_violations");
     assertThat(newIssues.getVariation1().intValue()).isEqualTo(0);
     assertThat(newIssues.getVariation2().intValue()).isEqualTo(0);
-  }
-
-  @Test
-  public void new_issues_measures_on_since_30_days_period() throws Exception {
-    // This test assumes that period 1 is "since previous analysis" and 2 is "over 30 days"
-
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
-
-    // Execute a analysis in the past, without some modules
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
-      .setProfile("one-issue-per-line")
-        // date older than 30 last days (previous second period)
-      .setProperty("sonar.projectDate", "2013-01-01")
-      .setProperty("sonar.skippedModules", "multi-modules-sample:module_b,multi-modules-sample:module_a:module_a2")
-    );
-
-    // Execute a analysis in the past, with one more module than previous analysis
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
-      .setProfile("one-issue-per-line")
-        // date older than 20 last days (just after second period)
-      .setProperty("sonar.projectDate", new SimpleDateFormat("yyyy-MM-dd").format(DateUtils.addDays(new Date(), -20)))
-      .setProperty("sonar.skippedModules", "multi-modules-sample:module_b")
-    );
-
-    // Execute a analysis in the present with all modules
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
-      .setProfile("one-issue-per-line")
-    );
-
-    // new issues measures should be to 0 on project on 2 periods as new issues has been created
-    Resource file = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:multi-modules-sample", "violations", "new_violations").setIncludeTrends(true));
-    List<Measure> measures = file.getMeasures();
-
-    Measure issues = find(measures, "violations");
-    assertThat(issues.getValue().intValue()).isEqualTo(52);
-    assertThat(issues.getVariation1().intValue()).isEqualTo(24);
-    assertThat(issues.getVariation2().intValue()).isEqualTo(24);
-
-    Measure newIssues = find(measures, "new_violations");
-    assertThat(newIssues.getVariation1().intValue()).isEqualTo(24);
-    assertThat(newIssues.getVariation2().intValue()).isEqualTo(24);
   }
 
   /**

@@ -13,7 +13,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  HistoryTest.class, SinceLastVersionHistoryTest.class, TimeMachinePageTest.class, DifferentialPeriodsTest.class
+  HistoryTest.class, SinceLastVersionHistoryTest.class, SinceXDaysHistoryTest.class, TimeMachinePageTest.class, DifferentialPeriodsTest.class
 })
 public class HistoryTestSuite {
 

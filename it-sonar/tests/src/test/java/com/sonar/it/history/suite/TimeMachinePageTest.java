@@ -12,7 +12,9 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+
 public class TimeMachinePageTest {
+
   @ClassRule
   public static Orchestrator orchestrator = HistoryTestSuite.ORCHESTRATOR;
 
