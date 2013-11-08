@@ -81,19 +81,25 @@ public class PurgeTest {
     // must be a different date, else a single snapshot is kept per day
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
 
-    measures("TRK", measuresOnTrk + 144);
-    measures("BRC", measuresOnBrc + 359);
-    measures("PAC", measuresOnPac + 500);
-    measures("CLA", measuresOnCla + 873);
-    measures("UTS", measuresOnUts);
+    int newMeasuresOnTrk = 145;
+    int newMeasuresOnBrc = 362;
+    int newMeasuresOnPac = 531;
+    int newMeasuresOnCla = 873;
+    int newMeasuresOnUts = 0;
+
+    measures("TRK", measuresOnTrk + newMeasuresOnTrk);
+    measures("BRC", measuresOnBrc + newMeasuresOnBrc);
+    measures("PAC", measuresOnPac + newMeasuresOnPac);
+    measures("CLA", measuresOnCla + newMeasuresOnCla);
+    measures("UTS", measuresOnUts + newMeasuresOnUts);
 
     // Measures on new_* metrics should be recorded
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
       .as("Wrong number of measure of new_ metrics")
-      .isEqualTo(1573);
+      .isEqualTo(1608);
 
     // added measures relate to project and new_* metrics
-    expectedMeasures += 144 + 359 + 500 + 873;
+    expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnPac + newMeasuresOnCla + newMeasuresOnUts;
     assertThat(count("project_measures")).as("Wrong number of measures after second analysis").isEqualTo(expectedMeasures);
 
     assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
