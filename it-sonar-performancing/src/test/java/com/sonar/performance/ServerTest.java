@@ -18,7 +18,13 @@ public class ServerTest extends PerfTestCase {
 
   @Test
   public void server_startup_and_shutdown() throws Exception {
-    Orchestrator orchestrator = Orchestrator.builderEnv().build();
+    Orchestrator orchestrator = Orchestrator.builderEnv()
+      // See http://wiki.apache.org/tomcat/HowTo/FasterStartUp
+      // Sometimes source of entropy is too small and Tomcat spends ~20 seconds on the step :
+      // "Creation of SecureRandom instance for session ID generation using [SHA1PRNG]"
+      // Using /dev/urandom fixes the issue on linux
+      .addServerJvmArgument("-Djava.security.egd=file:/dev/./urandom")
+      .build();
     try {
       // TODO re-nable assertion
       //long startupDuration = start(orchestrator);
@@ -38,7 +44,6 @@ public class ServerTest extends PerfTestCase {
     ServerLogs.clear(orchestrator);
     orchestrator.start();
     return logsPeriod(orchestrator);
-
   }
 
   long stop(Orchestrator orchestrator) throws Exception {
