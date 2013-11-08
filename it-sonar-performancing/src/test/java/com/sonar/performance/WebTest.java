@@ -113,13 +113,13 @@ public class WebTest extends PerfTestCase {
   @Test
   public void stylesheet_file() throws Exception {
     PageStats counters = request("/stylesheets/sonar.css");
-    assertDurationLessThan(counters.durationMs, 2);
+    assertDurationLessThan(counters.durationMs, 5);
   }
 
   @Test
   public void javascript_file() throws Exception {
     PageStats counters = request("/javascripts/sonar.js");
-    assertDurationLessThan(counters.durationMs, 2);
+    assertDurationLessThan(counters.durationMs, 5);
   }
 
   PageStats request(String path) {
