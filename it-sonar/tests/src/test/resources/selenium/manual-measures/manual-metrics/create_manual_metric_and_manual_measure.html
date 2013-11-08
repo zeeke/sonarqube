@@ -89,12 +89,17 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>id=addMeasureLink</td>
 	<td></td>
 </tr>
 <tr>
-	<td>selectAndWait</td>
+	<td>waitForVisible</td>
+	<td>id=metricSelect</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
 	<td>id=metricSelect</td>
 	<td>label=test_manual_metric</td>
 </tr>
@@ -109,9 +114,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
-	<td>test_manual_metric</td>
-	<td></td>
+	<td>assertText</td>
+	<td>manualMeasures</td>
+	<td>*test_manual_metric*</td>
 </tr>
 </tbody>
 </table>
