@@ -48,7 +48,8 @@ public class ScanTest extends PerfTestCase {
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.dynamicAnalysis", "false",
       "sonar.profile", "empty",
-      "sonar.cpd.skip", "true"
+      "sonar.cpd.skip", "true",
+      "sonar.verbose", "true"
     );
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
