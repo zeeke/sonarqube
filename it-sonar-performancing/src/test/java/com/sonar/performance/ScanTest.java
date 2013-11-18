@@ -49,7 +49,7 @@ public class ScanTest extends PerfTestCase {
       "sonar.dynamicAnalysis", "false",
       "sonar.profile", "empty",
       "sonar.cpd.skip", "true",
-      "sonar.verbose", "true"
+      "sonar.showProfiling", "true"
     );
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
