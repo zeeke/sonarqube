@@ -40,22 +40,22 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>select-project</td>
+	<td>name=componentRoots</td>
 	<td>sample</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>select-severities</td>
+	<td>name=severities[]</td>
 	<td>Minor</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>select-status</td>
+	<td>name=statuses[]</td>
 	<td>Open</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=search-button</td>
+	<td>class=navigator-filter-submit</td>
 	<td></td>
 </tr>
 <tr>
@@ -85,22 +85,22 @@
 </tr>
 <tr>
 	<td>removeAllSelections</td>
-	<td>select-severities</td>
+	<td>name=severities[]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>select-severities</td>
+	<td>name=severities[]</td>
 	<td>Info</td>
 </tr>
 <tr>
 	<td>removeAllSelections</td>
-	<td>select-status</td>
+	<td>name=statuses[]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=search-button</td>
+	<td>class=navigator-filter-submit</td>
 	<td></td>
 </tr>
 <tr>
@@ -119,18 +119,23 @@
 	<td>*Save*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>criteria-project</td>
-	<td>*Sample*</td>
+  <td>waitForText</td>
+  <td>class=navigator-filters</td>
+  <td>*More Criteria*</td>
+</tr>
+<tr>
+  <td>assertValue</td>
+  <td>name=componentRoots</td>
+  <td>*sample*</td>
 </tr>
 <tr>
 	<td>assertSelectedLabels</td>
-	<td>select-severities</td>
+	<td>name=severities[]</td>
 	<td>Info</td>
 </tr>
 <tr>
 	<td>assertNotSomethingSelected</td>
-	<td>select-status</td>
+	<td>name=statuses[]</td>
 	<td></td>
 </tr>
 </tbody>

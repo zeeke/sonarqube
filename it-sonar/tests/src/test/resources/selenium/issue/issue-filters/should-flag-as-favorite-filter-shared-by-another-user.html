@@ -45,22 +45,22 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>select-project</td>
+	<td>name=componentRoots</td>
 	<td>sample</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>select-severities</td>
+	<td>name=severities[]</td>
 	<td>Minor</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>select-status</td>
+	<td>name=statuses[]</td>
 	<td>Open</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=search-button</td>
+	<td>class=navigator-filter-submit</td>
 	<td></td>
 </tr>
 <tr>
@@ -139,29 +139,29 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>sidebar-favourites</td>
-	<td>*user_${FILTER_NAME}*</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>link=user_${FILTER_NAME}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertSelectedLabel</td>
-	<td>select-severities</td>
+	<td>name=severities[]</td>
 	<td>Minor</td>
 </tr>
 <tr>
+  <td>waitForText</td>
+  <td>class=navigator-filters</td>
+  <td>*More Criteria*</td>
+</tr>
+<tr>
 	<td>assertSelectedLabel</td>
-	<td>select-status</td>
+	<td>name=statuses[]</td>
 	<td>Open</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>criteria-project</td>
-	<td>*Sample*</td>
+  <td>assertValue</td>
+  <td>name=componentRoots</td>
+  <td>*sample*</td>
 </tr>
 </tbody>
 </table>
