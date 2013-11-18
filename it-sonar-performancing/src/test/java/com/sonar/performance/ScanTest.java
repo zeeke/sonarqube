@@ -12,6 +12,8 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import org.junit.*;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 public class ScanTest extends PerfTestCase {
 
   @ClassRule
@@ -58,9 +60,16 @@ public class ScanTest extends PerfTestCase {
     );
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
-    long duration = System.currentTimeMillis() - start;
+    long firstDuration = System.currentTimeMillis() - start;
+    System.out.println("First preview analysis: " + firstDuration + "ms");
 
-    assertDurationAround(duration, 113000L);
+    start = System.currentTimeMillis();
+    orchestrator.executeBuild(runner);
+    long secondDuration = System.currentTimeMillis() - start;
+    System.out.println("Second preview analysis: " + secondDuration + "ms");
+
+    assertThat(secondDuration).isLessThan(firstDuration);
+    assertDurationAround(secondDuration, 9000L);
   }
 
   @Test
