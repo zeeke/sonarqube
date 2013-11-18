@@ -9,6 +9,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.locator.MavenLocation;
 import org.junit.*;
 
 public class ScanTest extends PerfTestCase {
@@ -16,26 +17,17 @@ public class ScanTest extends PerfTestCase {
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
     .setOrchestratorProperty("sonar.runtimeVersion", "4.0")
-    .restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-3.6.xml"))
+    .addPlugin(MavenLocation.create("com.sonarsource.xoo", "sonar-xoo-plugin", "1.0-SNAPSHOT"))
+    .restoreProfileAtStartup(FileLocation.ofClasspath("/one-xoo-issue-per-line.xml"))
     .build();
 
   @BeforeClass
   public static void setUp() {
-    // Execute sonar to generate jacoco reports
-    MavenBuild build = MavenBuild.create(FileLocation.ofShared("it-sonar-performancing/tika-1.3/pom.xml").getFile())
-      .setEnvironmentVariable("MAVEN_OPTS", "-Xmx512m -server")
-      .setGoals("clean test-compile");
-    orchestrator.executeBuild(build);
-
-    // Set coverage per test profile as goal, waiting for orchestrator API to set maven profile
-    build.setGoals("sonar:sonar -Pcoverage-per-test");
-    orchestrator.executeBuild(build);
-
     // Execute this query in order for next analysis to not freeze (FIXME why does it freeze?)
     orchestrator.getDatabase().truncateInspectionTables();
 
     // Execute a first analysis to prevent any side effects with cache of plugin JAR files
-    orchestrator.executeBuild(newSonarRunner("-Xmx512m -server", "sonar.dynamicAnalysis", "false", "sonar.profile", "empty"));
+    orchestrator.executeBuild(newSonarRunner("-Xmx512m -server", "sonar.profile", "one-xoo-issue-per-line"));
   }
 
   @Before
@@ -44,27 +36,25 @@ public class ScanTest extends PerfTestCase {
   }
 
   @Test
-  public void most_basic_scan() {
+  public void scan_xoo_project() {
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
-      "sonar.dynamicAnalysis", "false",
-      "sonar.profile", "empty",
-      "sonar.cpd.skip", "true",
+      "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true"
     );
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 34000L);
+    assertDurationAround(duration, 8000L);
   }
 
   @Test
-  public void scan_with_java_rules() {
-    // checkstyle, pmd and squid but not findbugs
+  public void preview_scan_xoo_project() {
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
-      "sonar.dynamicAnalysis", "false",
-      "sonar.profile", "sonar-way"
+      "sonar.profile", "one-xoo-issue-per-line",
+      "sonar.dryRun", "true",
+      "sonar.showProfiling", "true"
     );
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
@@ -74,41 +64,9 @@ public class ScanTest extends PerfTestCase {
   }
 
   @Test
-  public void dry_run_scan_with_java_rules() {
-    // checkstyle, pmd and squid but not findbugs
-    SonarRunner runner = newSonarRunner(
-      "-Xmx512m -server -XX:MaxPermSize=64m",
-      "sonar.dynamicAnalysis", "false",
-      "sonar.profile", "sonar-way",
-      "sonar.dryRun", "true"
-    );
-    long start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    long duration = System.currentTimeMillis() - start;
-
-    assertDurationAround(duration, 76714L);
-  }
-
-  @Test
-  @Ignore("To be enabled when most_basic_scan passes")
-  public void scan_with_no_rule_and_coverage_per_test() {
-    SonarRunner runner = newSonarRunner(
-      "-Xmx512m -server -XX:MaxPermSize=64m",
-      "sonar.dynamicAnalysis", "reuseReports",
-      "sonar.surefire.reportsPath", "target/surefire-reports",
-      "sonar.jacoco.reportPath", "target/jacoco.exec",
-      "sonar.profile", "empty"
-    );
-    long start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 155600L);
-  }
-
-  @Test
   public void should_not_fail_with_limited_xmx_memory_and_no_coverage_per_test() {
     orchestrator.executeBuild(
-      newSonarRunner("-Xmx80m -server -XX:-HeapDumpOnOutOfMemoryError", "sonar.dynamicAnalysis", "false")
+      newSonarRunner("-Xmx80m -server -XX:-HeapDumpOnOutOfMemoryError")
     );
   }
 
@@ -117,7 +75,7 @@ public class ScanTest extends PerfTestCase {
       .setProperties(props)
       .setEnvironmentVariable("SONAR_RUNNER_OPTS", sonarRunnerOpts)
       .setRunnerVersion("2.3")
-      .setProjectDir(FileLocation.ofShared("it-sonar-performancing/tika-1.3").getFile());
+      .setProjectDir(FileLocation.of("projects/xoo-sample").getFile());
   }
 
 }
