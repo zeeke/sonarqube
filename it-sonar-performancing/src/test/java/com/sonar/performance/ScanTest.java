@@ -15,6 +15,7 @@ public class ScanTest extends PerfTestCase {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
+    .setOrchestratorProperty("sonar.runtimeVersion", "4.0")
     .restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-3.6.xml"))
     .build();
 
