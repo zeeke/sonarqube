@@ -12,7 +12,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
@@ -77,13 +76,12 @@ public class SinceXDaysHistoryTest {
 
   @Test
   public void check_technical_debt_variation() throws Exception {
-    checkMeasure("sqale_index", 0.25, 0.375);
+    checkMeasure("sqale_index", 0.05, 0.075);
   }
 
   @Test
-  @Ignore("Cannot be calculated because technical debt are not related to issues but to resource (Xoo SQALE model contain function with offset). Will be fixed with SONAR-4775")
   public void check_new_technical_debt_measures() throws Exception {
-    checkMeasure("new_technical_debt", 0.25, 0.375);
+    checkMeasure("new_technical_debt", 0.05, 0.075);
   }
 
   private void checkMeasure(String measure, int variation1, int variation2){
@@ -126,7 +124,6 @@ public class SinceXDaysHistoryTest {
 
     orchestrator.executeBuild(scan);
   }
-
 
   private static String getPastDate(int nbPastDays){
     return new SimpleDateFormat("yyyy-MM-dd").format(DateUtils.addDays(new Date(), nbPastDays * -1));

@@ -10,9 +10,9 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.fest.assertions.Delta;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.services.Measure;
@@ -94,7 +94,6 @@ public class DifferentialPeriodsTest {
    * SONAR-4776
    */
   @Test
-  @Ignore("Cannot be calculated because technical debt are not related to issues but to resource (Xoo SQALE model contain function with offset). Will be fixed with SONAR-4775")
   public void new_technical_debt_measures() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
 
@@ -108,8 +107,8 @@ public class DifferentialPeriodsTest {
 
     Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     List<Measure> measures = newTechnicalDebt.getMeasures();
-    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0.125);
-    assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.125);
+    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0.027, Delta.delta(0.001));
+    assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.027, Delta.delta(0.001));
 
     // second analysis, with exactly the same profile -> no new issues so no new technical debt
     orchestrator.executeBuild(scan);

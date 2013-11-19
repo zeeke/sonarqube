@@ -43,12 +43,12 @@ public class TechnicalDebtTest {
         .setProfile("one-issue-per-line"));
 
     // All the issues should have a technical debt
-    List<Issue> issues = ItUtils.newWsClientForAnonymous(orchestrator).issueClient().find(IssueQuery.create()).list();
+    List<Issue> issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create()).list();
     for (Issue issue : issues) {
       assertThat(issue.technicalDebt()).isNotNull();
       assertThat(issue.technicalDebt().days()).isEqualTo(0);
-      assertThat(issue.technicalDebt().hours()).isEqualTo(1);
-      assertThat(issue.technicalDebt().minutes()).isEqualTo(0);
+      assertThat(issue.technicalDebt().hours()).isEqualTo(0);
+      assertThat(issue.technicalDebt().minutes()).isEqualTo(1);
     }
   }
 
