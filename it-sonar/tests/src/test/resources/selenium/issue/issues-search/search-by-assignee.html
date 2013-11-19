@@ -9,52 +9,52 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/issues</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>issue-filter-foot</td>
-        <td>*4,117 results*</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>select-assignee</td>
-        <td>&lt;unassigned&gt;</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>search-button</td>
-        <td></td>
-    </tr>
-    <!-- One issue is assigned -->
-    <tr>
-        <td>assertText</td>
-        <td>issue-filter-foot</td>
-        <td>*4,116 results*</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>select-assignee</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>search-button</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>issue-filter-foot</td>
-        <td>*1 results*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>content</td>
-        <td>*Administrator*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>issue-filter-foot</td>
+	<td>*4,117 results*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=assignees</td>
+	<td>&lt;unassigned&gt;</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>class=navigator-filter-submit</td>
+	<td></td>
+</tr>
+<!-- One issue is assigned -->
+<tr>
+	<td>assertText</td>
+	<td>issue-filter-foot</td>
+	<td>*4,116 results*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=assignees</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>class=navigator-filter-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>issue-filter-foot</td>
+	<td>*1 results*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>class=navigator-results</td>
+	<td>*Administrator*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
