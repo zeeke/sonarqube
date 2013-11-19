@@ -11,6 +11,7 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.After;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Rule;
 import org.sonar.wsclient.services.RuleQuery;
@@ -75,6 +76,7 @@ public class I18nTest {
   }
 
   @Test
+  @Ignore("Waiting for correct implementation of l10n in ElasticSearch")
   public void shouldSearchLocalizedNameOnlyWithinUserLocale() {
     RuleQuery ruleQuery = (RuleQuery) new RuleQuery("java")
         .setSearchText("Contrainte d'architecture")

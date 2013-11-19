@@ -13,12 +13,15 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Rule;
 import org.sonar.wsclient.services.RuleParam;
 import org.sonar.wsclient.services.RuleQuery;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertThat;
 
 public class RulesTest {
@@ -31,6 +34,7 @@ public class RulesTest {
     .build();
 
   @Test
+  @Ignore("Waiting for correct re-indexation of copied rules in ElasticSearch")
   public void test_rule_template() {
     Selenese selenese = Selenese.builder()
       .setHtmlTestsInClasspath("rule-template",
