@@ -13,8 +13,7 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.sonar.wsclient.issue.Issue;
-import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.*;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class TechnicalDebtTest {
    * SONAR-4716
    */
   @Test
-  public void set_technical_debt_on_issue() throws Exception {
+  public void technical_debt_on_issue() throws Exception {
     // Generate some issues
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
     orchestrator.executeBuild(
@@ -68,6 +67,62 @@ public class TechnicalDebtTest {
       .setHtmlTestsInClasspath("display-requirement-debt-details-on-issue",
         "/selenium/debt/requirement-details/display-requirement-detail.html"
       ).build());
+  }
+
+  /**
+   * SONAR-4834
+   */
+  @Test
+  public void add_technical_debt_in_issue_changelog() throws Exception {
+    // Execute an analysis in the past to have a past snapshot
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-line"));
+
+    // Second analysis, existing issues on OneIssuePerLine will have their technical debt updated with the effort to fix
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-line")
+      .setProperties("sonar.oneIssuePerLine.effortToFix", "100"));
+
+    IssueClient issueClient = orchestrator.getServer().wsClient().issueClient();
+    Issue issue = issueClient.find(IssueQuery.create()).list().get(0);
+    List<IssueChange> changes = issueClient.changes(issue.key());
+
+    assertThat(changes).hasSize(1);
+    IssueChange change = changes.get(0);
+
+    assertThat(change.diffs()).hasSize(1);
+    IssueChangeDiff changeDiff = change.diffs().get(0);
+    assertThat(changeDiff.key()).isEqualTo("technicalDebt");
+
+    WorkDayDuration oldValue = (WorkDayDuration) changeDiff.oldValue();
+    assertThat(oldValue.minutes()).isEqualTo(1);
+    assertThat(oldValue.hours()).isEqualTo(0);
+    assertThat(oldValue.days()).isEqualTo(0);
+
+    WorkDayDuration newValue = (WorkDayDuration) changeDiff.newValue();
+    assertThat(newValue.minutes()).isEqualTo(40);
+    assertThat(newValue.hours()).isEqualTo(1);
+    assertThat(newValue.days()).isEqualTo(0);
+  }
+
+  @Test
+  public void technical_debt_should_use_hours_in_day_to_convert_days() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-line")
+      // As OneIssuePerLine has a debt of 1 minute, we multiply it by 60 * 10 (1 day) + 60 * 2 (2 hours) to have 1 day and 2 hours of technical debt
+      .setProperties("sonar.oneIssuePerLine.effortToFix", "720")
+      // One day -> 10 hours
+      .setProperties("sonar.technicalDebt.hoursInDay", "10"));
+
+    IssueClient issueClient = orchestrator.getServer().wsClient().issueClient();
+    Issue issue = issueClient.find(IssueQuery.create()).list().get(0);
+
+    WorkDayDuration technicalDebt = issue.technicalDebt();
+    assertThat(technicalDebt.minutes()).isEqualTo(0);
+    assertThat(technicalDebt.hours()).isEqualTo(2);
+    assertThat(technicalDebt.days()).isEqualTo(1);
   }
 
 }

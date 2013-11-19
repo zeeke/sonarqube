@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.history.suite;
+package com.sonar.it.debt.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -27,7 +27,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class NewTechnicalDebtMeasureTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = HistoryTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = DebtTestSuite.ORCHESTRATOR;
 
   @Before
   public void cleanUpAnalysisData() {
@@ -43,7 +43,7 @@ public class NewTechnicalDebtMeasureTest {
       .setProperty("sonar.projectDate", "2013-01-01"));
 
     // Second analysis -> issues will be created
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line"));
 
@@ -72,11 +72,11 @@ public class NewTechnicalDebtMeasureTest {
       .setProperty("sonar.projectDate", "2013-01-01"));
 
     // Second analysis -> issues will be created
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line"));
 
-    // Third analysis, existing issues on OneIssuePerLine will have their technical debt multiply by 10
+    // Third analysis, existing issues on OneIssuePerLine will have their technical debt updated with the effort to fix
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line")
       .setProperties("sonar.oneIssuePerLine.effortToFix", "10"));

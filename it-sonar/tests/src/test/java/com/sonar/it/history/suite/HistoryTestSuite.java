@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
   HistoryTest.class, SinceLastVersionHistoryTest.class, SinceXDaysHistoryTest.class, TimeMachinePageTest.class,
-  DifferentialPeriodsTest.class, NewTechnicalDebtMeasureTest.class, NewIssuesMeasureTest.class
+  DifferentialPeriodsTest.class
 })
 public class HistoryTestSuite {
 

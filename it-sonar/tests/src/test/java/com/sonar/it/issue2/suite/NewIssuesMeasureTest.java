@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.history.suite;
+package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -27,7 +27,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class NewIssuesMeasureTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = HistoryTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = Issue2TestSuite.ORCHESTRATOR;
 
   @Before
   public void cleanUpAnalysisData() {
@@ -42,7 +42,7 @@ public class NewIssuesMeasureTest {
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperty("sonar.projectDate", "2013-01-01"));
 
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
@@ -65,7 +65,7 @@ public class NewIssuesMeasureTest {
   public void new_issues_measures_should_be_zero_on_project_when_no_new_issues_since_x_days() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over 30 days"
 
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line")
         // Analyse a project in the past, with a date older than 30 last days (second period)
@@ -87,7 +87,7 @@ public class NewIssuesMeasureTest {
   @Test
   public void new_issues_measures_consistent_with_variations() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/DifferentialPeriodsTest/issue-on-tag-foobar.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/NewIssuesMeasureTest/issue-on-tag-foobar.xml"));
 
     // Execute an analysis in the past to have a past snapshot
     // version 1
@@ -123,13 +123,13 @@ public class NewIssuesMeasureTest {
     // This test assumes that period 1 is "since previous analysis"
 
     // First analysis without module b
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/DifferentialPeriodsTest/profile1.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/NewIssuesMeasureTest/profile1.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
       .setProfile("profile1")
       .setProperties("sonar.skippedModules", "multi-modules-sample:module_b"));
 
     // Second analysis with module b and with a new rule activated to have new issues on module a since last analysis
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/DifferentialPeriodsTest/profile2.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/NewIssuesMeasureTest/profile2.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
       .setProfile("profile2"));
 
