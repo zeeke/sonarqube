@@ -212,12 +212,6 @@ public class PlatformTest {
   }
 
   @Test
-  public void viewsQualityIndex() {
-    assertThat(getMeasure(JAVA_VIEWS, "qi-quality-index").getValue(), is(8.2));
-    assertThat(getMeasure(JAVA_VIEWS, "qi-complexity-factor").getValue(), is(7.1));
-  }
-
-  @Test
   public void viewsSIGMM() {
     assertThat(getMeasure(JAVA_VIEWS, "sigmm-maintainability").getValue(), is(-1.0));
   }

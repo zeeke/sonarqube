@@ -22,7 +22,6 @@
     <greenpepperLatest>0.3-SNAPSHOT</greenpepperLatest>
     <groovyLatest>1.0-SNAPSHOT</groovyLatest>
     <naturalLatest>1.3-SNAPSHOT</naturalLatest>
-    <qualityIndexLatest>1.2-SNAPSHOT</qualityIndexLatest>
     <plsqlLatest>2.6-SNAPSHOT</plsqlLatest>
     <reportLatest>1.4-SNAPSHOT</reportLatest>
     <scmActivityLatest>1.7-SNAPSHOT</scmActivityLatest>
@@ -61,7 +60,6 @@
           org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
           com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
-          org.codehaus.sonar-plugins:sonar-quality-index-plugin:${qualityIndexLatest},
           com.sonarsource.report:sonar-report-plugin:${reportLatest},
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:1.5.1,
           org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
@@ -107,7 +105,6 @@
           org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
           com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
-          org.codehaus.sonar-plugins:sonar-quality-index-plugin:${qualityIndexLatest},
           com.sonarsource.report:sonar-report-plugin:${reportLatest},
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:${scmActivityLatest},
           org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
@@ -152,7 +149,6 @@
           org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
           com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
-          org.codehaus.sonar-plugins:sonar-quality-index-plugin:${qualityIndexLatest},
           com.sonarsource.report:sonar-report-plugin:${reportLatest},
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:${scmActivityLatest},
           org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
