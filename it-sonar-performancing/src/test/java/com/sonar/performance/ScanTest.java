@@ -6,19 +6,18 @@
 package com.sonar.performance;
 
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
-import org.junit.*;
-
-import static org.fest.assertions.Assertions.assertThat;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 
 public class ScanTest extends PerfTestCase {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .setOrchestratorProperty("sonar.runtimeVersion", "4.0")
     .addPlugin(MavenLocation.create("com.sonarsource.xoo", "sonar-xoo-plugin", "1.0-SNAPSHOT"))
     .restoreProfileAtStartup(FileLocation.ofClasspath("/one-xoo-issue-per-line.xml"))
     .build();
