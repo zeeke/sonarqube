@@ -112,10 +112,10 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
       "/selenium/issue/issue-filters/should-flag-as-favorite-filter-shared-by-another-user.html",
       "/selenium/issue/issue-filters/should-copy-filter-shared-by-another-user.html",
       // SONAR-2474
-      "/selenium/issue/issue-filters/admin-should-edit-filter-shared-by-others.html",
-      // SONAR-4469
-      "/selenium/issue/issue-filters/should-unshare-filter-remove-other-filters-favourite.html"
+      "/selenium/issue/issue-filters/admin-should-edit-filter-shared-by-others.html"
     ).build());
+
+    // Test of SONAR-4099 has been dropped : remove from favourites when unsharing a filter
   }
 
   /**
