@@ -11,6 +11,7 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.services.Measure;
@@ -137,6 +138,32 @@ public class NewIssuesMeasureTest {
     List<Measure> measures = project.getMeasures();
     Measure newIssues = find(measures, "new_violations");
     assertThat(newIssues.getVariation1().intValue()).isEqualTo(57);
+  }
+
+  @Test
+  @Ignore("TODO to fix SONAR-4882")
+  public void new_issues_measures_on_rules() throws Exception {
+    // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
+
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
+    orchestrator.executeBuilds(
+      //  issues
+      SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+        .setProfile("with-many-rules").setProperty("sonar.skippedModules", "multi-modules-sample:module_b,multi-modules-sample:module_a:module_a2"),
+      //  issues
+      SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+        .setProfile("with-many-rules").setProperty("sonar.skippedModules", "multi-modules-sample:module_b"),
+      //  issues
+      SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+        .setProfile("with-many-rules")
+    );
+
+    assertThat(orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create()).list()).isNotEmpty();
+    Resource newIssues = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:multi-modules-sample", "new_violations").setIncludeTrends(true));
+    List<Measure> measures = newIssues.getMeasures();
+    // TODO
+    assertThat(measures.get(0).getVariation1().intValue()).isEqualTo(13);
+    assertThat(measures.get(0).getVariation2().intValue()).isEqualTo(13);
   }
 
 
