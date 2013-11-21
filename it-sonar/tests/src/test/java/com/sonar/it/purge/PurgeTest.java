@@ -84,7 +84,7 @@ public class PurgeTest {
     int newMeasuresOnTrk = 145;
     int newMeasuresOnBrc = 362;
     int newMeasuresOnPac = 531;
-    int newMeasuresOnCla = 873;
+    int newMeasuresOnCla = 0;
     int newMeasuresOnUts = 0;
 
     measures("TRK", measuresOnTrk + newMeasuresOnTrk);
@@ -96,7 +96,7 @@ public class PurgeTest {
     // Measures on new_* metrics should be recorded
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
       .as("Wrong number of measure of new_ metrics")
-      .isEqualTo(1608);
+      .isEqualTo(735);
 
     // added measures relate to project and new_* metrics
     expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnPac + newMeasuresOnCla + newMeasuresOnUts;
