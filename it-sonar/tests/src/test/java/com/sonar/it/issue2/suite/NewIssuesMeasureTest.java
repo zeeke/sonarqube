@@ -11,7 +11,6 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.services.Measure;
@@ -140,30 +139,43 @@ public class NewIssuesMeasureTest {
     assertThat(newIssues.getVariation1().intValue()).isEqualTo(57);
   }
 
+  /**
+   * SONAR-4882
+   */
   @Test
-  @Ignore("TODO to fix SONAR-4882")
-  public void new_issues_measures_on_rules() throws Exception {
+  public void new_severity_issues_by_rules_measures() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
 
+    // Execute multiples build by excluding different modules each times to have measures variation
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
     orchestrator.executeBuilds(
-      //  issues
       SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
         .setProfile("with-many-rules").setProperty("sonar.skippedModules", "multi-modules-sample:module_b,multi-modules-sample:module_a:module_a2"),
-      //  issues
       SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
         .setProfile("with-many-rules").setProperty("sonar.skippedModules", "multi-modules-sample:module_b"),
-      //  issues
       SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
         .setProfile("with-many-rules")
     );
 
-    assertThat(orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create()).list()).isNotEmpty();
-    Resource newIssues = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:multi-modules-sample", "new_violations").setIncludeTrends(true));
-    List<Measure> measures = newIssues.getMeasures();
-    // TODO
-    assertThat(measures.get(0).getVariation1().intValue()).isEqualTo(13);
-    assertThat(measures.get(0).getVariation2().intValue()).isEqualTo(13);
+    String projectKey = "com.sonarsource.it.samples:multi-modules-sample";
+
+    Resource newIssuesPerSeverities = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey,
+      "new_blocker_violations", "new_critical_violations", "new_major_violations", "new_minor_violations", "new_info_violations"
+    ).setIncludeTrends(true).setExcludeRules(false));
+
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_blocker_violations")).isNull();
+
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_critical_violations").getVariation1().intValue()).isEqualTo(3);
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_critical_violations").getVariation2().intValue()).isEqualTo(4);
+
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_major_violations").getVariation1().intValue()).isEqualTo(2);
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_major_violations").getVariation2().intValue()).isEqualTo(3);
+
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_minor_violations").getVariation1().intValue()).isEqualTo(24);
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_minor_violations").getVariation2().intValue()).isEqualTo(36);
+
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_info_violations").getVariation1().intValue()).isEqualTo(0);
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_info_violations").getVariation2().intValue()).isEqualTo(1);
   }
 
 
