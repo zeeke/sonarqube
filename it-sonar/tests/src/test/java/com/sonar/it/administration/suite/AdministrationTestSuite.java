@@ -13,7 +13,6 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  BackupTest.class,
   BulkDeletionTest.class,
   ProjectAdministrationTest.class,
   PropertySetsTest.class,
