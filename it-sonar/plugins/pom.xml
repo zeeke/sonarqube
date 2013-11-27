@@ -49,6 +49,7 @@
     <module>deprecated-xoo-rule-plugin</module>
     <module>embedded-library-plugin</module>
     <module>extension-lifecycle-plugin</module>
+    <module>foo-language-plugin</module>
     <module>global-property-change-plugin</module>
     <module>issue-action-plugin</module>
     <module>issue-filter-plugin</module>
