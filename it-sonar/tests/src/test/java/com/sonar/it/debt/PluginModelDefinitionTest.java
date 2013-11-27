@@ -28,7 +28,7 @@ public class PluginModelDefinitionTest {
       orchestratorWithModelPlugin.start();
     } catch (Exception e) {
       File logs = orchestratorWithModelPlugin.getServer().getLogs();
-      assertThat(FileUtils.readFileToString(logs)).contains("The characteristic : SUB_MAINTAINABILITY cannot be used as it's not available in default ones.");
+      assertThat(FileUtils.readFileToString(logs)).contains("The characteristic : SUB_MAINTAINABILITY cannot be used as it's not available in default characteristics.");
     } finally {
       orchestratorWithModelPlugin.stop();
     }
