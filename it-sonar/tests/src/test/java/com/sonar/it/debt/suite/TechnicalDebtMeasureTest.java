@@ -152,7 +152,7 @@ public class TechnicalDebtMeasureTest {
 
   private Measure getCharacteristicMeasure(String resource, String metricKey, String characteristicKey) {
     Resource res = orchestrator.getServer().getWsClient().find(
-      ResourceQuery.createForMetrics(resource, metricKey).setCharacteristicKeys("SQALE", characteristicKey));
+      ResourceQuery.createForMetrics(resource, metricKey).setCharacteristics(characteristicKey));
     if (res == null) {
       return null;
     }
