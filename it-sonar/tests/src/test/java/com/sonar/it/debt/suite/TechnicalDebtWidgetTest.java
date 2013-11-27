@@ -52,8 +52,7 @@ public class TechnicalDebtWidgetTest {
     orchestrator.executeSelenese(Selenese.builder()
       .setHtmlTestsInClasspath("technical-debt-pyramid-widget",
         "/selenium/debt/widgets/technical-debt-pyramid/should-have-correct-values.html",
-        // TODO Will be fixed by SONAR-4893
-        // "/selenium/debt/widgets/technical-debt-pyramid/should-open-links-on-drilldown-service.html",
+        "/selenium/debt/widgets/technical-debt-pyramid/should-open-links-on-drilldown-service.html",
         "/selenium/debt/widgets/technical-debt-pyramid/display-differential-values.html"
       ).build());
   }
