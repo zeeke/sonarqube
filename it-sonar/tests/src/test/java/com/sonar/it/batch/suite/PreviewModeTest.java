@@ -16,11 +16,7 @@ import com.sonar.orchestrator.version.Version;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.services.Resource;
@@ -30,11 +26,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -69,6 +61,27 @@ public class PreviewModeTest {
     assertThat(result.getLogs()).contains("Preview");
     assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL");
   }
+
+  @Test
+  public void should_not_fail_on_resources_that_have_existed_before() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
+
+    // First real scan with source
+    scanWithProfile("shared/xoo-history-v2", "with-many-rules");
+    assertThat(getResource("sample:sample/ClassAdded.xoo")).isNotNull();
+    // Second scan should remove ClassAdded.xoo
+    scanWithProfile("shared/xoo-history-v1", "with-many-rules");
+    assertThat(getResource("sample:sample/ClassAdded.xoo")).isNull();
+
+    // Re-add ClassAdded.xoo in local workspace
+    BuildResult result = scanWithProfile("shared/xoo-history-v2", "with-many-rules",
+      "sonar.analysis.mode", "preview");
+
+    assertThat(getResource("sample:sample/ClassAdded.xoo")).isNull();
+    assertThat(result.getLogs()).contains("Preview");
+    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL");
+  }
+
 
   @Test
   public void should_fail_if_plugin_access_secured_properties() {
@@ -377,6 +390,11 @@ public class PreviewModeTest {
 
   private BuildResult scan(String projectPath, String... props) {
     SonarRunner runner = configureRunner(projectPath, props);
+    return orchestrator.executeBuild(runner);
+  }
+
+  private BuildResult scanWithProfile(String projectPath, String profile, String... props) {
+    SonarRunner runner = configureRunner(projectPath, props).setProfile(profile);
     return orchestrator.executeBuild(runner);
   }
 
