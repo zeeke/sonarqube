@@ -104,7 +104,7 @@ public class ProjectTemplatePermissionsTest {
    * SONAR-4819
    */
   @Test
-  @IgnoreTempo
+  @Ignore
   public void apply_template_to_single_project_from_project_configuration() throws Exception {
     String projectAdminUser = "with-admin-permission-on-project";
     SonarClient adminClient = orchestrator.getServer().adminWsClient();
