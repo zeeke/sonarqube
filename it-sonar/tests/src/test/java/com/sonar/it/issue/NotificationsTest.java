@@ -22,7 +22,9 @@ import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueClient;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.issue.Issues;
+import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.user.UserParameters;
 import org.subethamail.wiser.Wiser;
 import org.subethamail.wiser.WiserMessage;
 
@@ -57,13 +59,18 @@ public class NotificationsTest {
     wsClient.update(new PropertyUpdateQuery("email.smtp_host.secured", "localhost"));
     wsClient.update(new PropertyUpdateQuery("email.smtp_port.secured", Integer.toString(smtpServer.getServer().getPort())));
 
+    // Create test user
+    orchestrator.getServer().adminWsClient().userClient()
+      .create(UserParameters.create().login("tester").password("tester").passwordConfirmation("tester").email("tester@example.org")
+        .name("Tester"));
+
     // 1. Check that SMTP server was turned on and able to send test email
     // 2. Create user, which will receive notifications for new violations
     Selenese selenese = Selenese
       .builder()
       .setHtmlTestsInClasspath("notifications",
         "/selenium/issue/notification/email_configuration.html",
-        "/selenium/issue/notification/create_user_with_email.html").build();
+        "/selenium/issue/notification/user_notifications_settings.html").build();
     orchestrator.executeSelenese(selenese);
 
     // We need to wait until all notifications will be delivered
@@ -93,6 +100,10 @@ public class NotificationsTest {
       .setProperty("sonar.projectDate", "2011-12-15")
       .setProperty("sonar.profile", "one-issue-per-line");
     orchestrator.executeBuild(build);
+
+    // Give issue admin permission to test user so that he can set severity on issues
+    orchestrator.getServer().adminWsClient().permissionClient()
+      .addPermission(PermissionParameters.create().component("sample-notifications").permission("issueadmin").user("tester"));
 
     issueClient = orchestrator.getServer().adminWsClient().issueClient();
   }
