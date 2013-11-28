@@ -10,7 +10,10 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
@@ -74,7 +77,6 @@ public class ProjectTemplatePermissionsTest {
    * SONAR-4454
    */
   @Test
-  @Ignore
   public void apply_template_to_single_project_from_global_settings() throws Exception {
     String sysAdminUser = "with-system-admin-permission";
     SonarClient adminClient = orchestrator.getServer().adminWsClient();
@@ -104,7 +106,6 @@ public class ProjectTemplatePermissionsTest {
    * SONAR-4819
    */
   @Test
-  @Ignore
   public void apply_template_to_single_project_from_project_configuration() throws Exception {
     String projectAdminUser = "with-admin-permission-on-project";
     SonarClient adminClient = orchestrator.getServer().adminWsClient();
