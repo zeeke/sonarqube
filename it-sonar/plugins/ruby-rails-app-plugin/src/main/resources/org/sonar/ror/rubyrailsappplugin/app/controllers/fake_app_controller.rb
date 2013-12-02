@@ -5,6 +5,6 @@ class FakeAppController < ApplicationController
   end
 
   def advanced
-    render :partial => 'fake_app/advanced', :locals => {:properties => Property.all}
+    render :partial => 'fake_app/advanced', :locals => {:properties => Property.find(:all)}
   end
 end
