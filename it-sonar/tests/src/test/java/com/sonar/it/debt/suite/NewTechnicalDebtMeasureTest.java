@@ -72,29 +72,29 @@ public class NewTechnicalDebtMeasureTest {
       .setProperty("sonar.projectDate", "2013-01-01"));
 
     // Second analysis -> issues will be created
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-file.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProfile("one-issue-per-line"));
+      .setProfile("one-issue-per-file"));
 
-    // Third analysis, existing issues on OneIssuePerLine will have their technical debt updated with the effort to fix
+    // Third analysis, existing issues on OneIssuePerFile will have their technical debt updated with the effort to fix
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProfile("one-issue-per-line")
-      .setProperties("sonar.oneIssuePerLine.effortToFix", "10"));
+      .setProfile("one-issue-per-file")
+      .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
 
     Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     List<Measure> measures = newTechnicalDebt.getMeasures();
-    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0.243, Delta.delta(0.001));
-    assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.243, Delta.delta(0.001));
+    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
+    assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
 
     // Fourth analysis, with exactly the same profile -> no new issues so no new technical debt since previous analysis but still since 30 days
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProfile("one-issue-per-line")
-      .setProperties("sonar.oneIssuePerLine.effortToFix", "10"));
+      .setProfile("one-issue-per-file")
+      .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
 
     newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     measures = newTechnicalDebt.getMeasures();
     assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0d);
-    assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.243, Delta.delta(0.001));
+    assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
   }
 
 }

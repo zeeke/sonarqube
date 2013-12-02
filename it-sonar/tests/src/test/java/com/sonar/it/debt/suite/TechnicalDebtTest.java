@@ -7,6 +7,7 @@ package com.sonar.it.debt.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -75,14 +76,14 @@ public class TechnicalDebtTest {
   @Test
   public void add_technical_debt_in_issue_changelog() throws Exception {
     // Execute an analysis in the past to have a past snapshot
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-file.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProfile("one-issue-per-line"));
+      .setProfile("one-issue-per-file"));
 
-    // Second analysis, existing issues on OneIssuePerLine will have their technical debt updated with the effort to fix
+    // Second analysis, existing issues on OneIssuePerFile will have their technical debt updated with the effort to fix
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProfile("one-issue-per-line")
-      .setProperties("sonar.oneIssuePerLine.effortToFix", "100"));
+      .setProfile("one-issue-per-file")
+      .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
 
     IssueClient issueClient = orchestrator.getServer().wsClient().issueClient();
     Issue issue = issueClient.find(IssueQuery.create()).list().get(0);
@@ -96,7 +97,7 @@ public class TechnicalDebtTest {
     assertThat(changeDiff.key()).isEqualTo("technicalDebt");
 
     WorkDayDuration oldValue = (WorkDayDuration) changeDiff.oldValue();
-    assertThat(oldValue.minutes()).isEqualTo(1);
+    assertThat(oldValue.minutes()).isEqualTo(10);
     assertThat(oldValue.hours()).isEqualTo(0);
     assertThat(oldValue.days()).isEqualTo(0);
 
@@ -108,12 +109,12 @@ public class TechnicalDebtTest {
 
   @Test
   public void technical_debt_should_use_hours_in_day_to_convert_days() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-file.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProfile("one-issue-per-line")
-      // As OneIssuePerLine has a debt of 1 minute, we multiply it by 60 * 10 (1 day) + 60 * 2 (2 hours) to have 1 day and 2 hours of technical debt
-      .setProperties("sonar.oneIssuePerLine.effortToFix", "720")
-      // One day -> 10 hours
+      .setProfile("one-issue-per-file")
+        // As OneIssuePerFile has a debt of 10 minutes, we multiply it by 6 * 10 (1 day) + 60 * 2 (2 hours) to have 1 day and 2 hours of technical debt
+      .setProperties("sonar.oneIssuePerFile.effortToFix", "72")
+        // One day -> 10 hours
       .setProperties("sonar.technicalDebt.hoursInDay", "10"));
 
     IssueClient issueClient = orchestrator.getServer().wsClient().issueClient();
@@ -123,6 +124,19 @@ public class TechnicalDebtTest {
     assertThat(technicalDebt.minutes()).isEqualTo(0);
     assertThat(technicalDebt.hours()).isEqualTo(2);
     assertThat(technicalDebt.days()).isEqualTo(1);
+  }
+
+  @Test
+  public void fail_when_set_effort_to_fix_on_constant_issue_requirement() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
+    BuildResult result = orchestrator.executeBuildQuietly(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-line")
+      .setProperties("sonar.oneIssuePerLine.effortToFix", "720")
+    );
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    // with the following message
+    assertThat(result.getLogs())
+      .contains("The implementation of rule 'xoo:OneIssuePerLine' defines an effort to fix whereas its requirement is set to 'constant/issue' - which is not compatible.");
   }
 
 }
