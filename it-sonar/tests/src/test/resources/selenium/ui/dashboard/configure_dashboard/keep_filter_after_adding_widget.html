@@ -8,61 +8,66 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/login</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/dashboard/index/sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=Configure widgets</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>id=widget-filter-Hotspots</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementNotPresent</td>
-        <td>add-widget-lcom4</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertVisible</td>
-        <td>add-widget-hotspot_metric</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>add-widget-hotspot_metric</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>css=#widget-filters li.selected</td>
-        <td>glob:*Hotspots*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/dashboard/index/sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Configure widgets</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>id=add-widget-complexity</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=widget-filter-Hotspots</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>id=add-widget-complexity</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>add-widget-hotspot_metric</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=#widget-filters li.selected</td>
+	<td>glob:*Hotspots*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

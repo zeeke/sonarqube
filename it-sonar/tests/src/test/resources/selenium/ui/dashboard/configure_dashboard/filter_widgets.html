@@ -8,6 +8,11 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
+      <td>open</td>
+      <td>/sonar/sessions/logout</td>
+      <td></td>
+    </tr>
+    <tr>
         <td>open</td>
         <td>/sonar/sessions/login</td>
         <td></td>
@@ -44,12 +49,12 @@
     </tr>
     <tr>
         <td>assertVisible</td>
-        <td>def_lcom4</td>
+        <td>def_hotspotmetric</td>
         <td></td>
     </tr>
     <tr>
         <td>assertVisible</td>
-        <td>def_hotspotmetric</td>
+        <td>def_complexity</td>
         <td></td>
     </tr>
     <tr>
@@ -58,15 +63,16 @@
         <td></td>
     </tr>
     <tr>
-        <td>waitForElementNotPresent</td>
-        <td>def_lcom4</td>
-        <td></td>
-    </tr>
-    <tr>
         <td>assertVisible</td>
         <td>def_hotspotmetric</td>
         <td></td>
     </tr>
+    <tr>
+        <td>waitForElementNotPresent</td>
+        <td>def_complexity</td>
+        <td></td>
+    </tr>
+
     </tbody>
 </table>
 </body>

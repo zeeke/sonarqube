@@ -33,16 +33,7 @@ public class ChidamberKemererTest {
   @Test
   public void testCkjmWidgets() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("java-ckjm-widgets",
-      "/selenium/java/lcom4-widget.html",
       "/selenium/java/rfc-widget.html").build();
     orchestrator.executeSelenese(selenese);
   }
-
-  @Test
-  public void testViewer() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("java-lcom4-viewer",
-      "/selenium/java/lcom4-viewer.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
-
 }
