@@ -218,15 +218,15 @@ public class PurgeTest {
 
     scan("shared/sample", "2012-01-01");
 
-    // historical data of lcom4_blocks is supposed to be deleted (see CoreMetrics)
+    // historical data of complexity_in_classes is supposed to be deleted (see CoreMetrics)
     String selectNcloc = "project_measures where metric_id in (select id from metrics where name='ncloc')";
-    String selectLcom4Blocks = "project_measures where metric_id in (select id from metrics where name='lcom4_blocks')";
+    String selectComplexityInClasses = "project_measures where metric_id in (select id from metrics where name='complexity_in_classes')";
     int nclocCount = count(selectNcloc);
-    int lcom4BlocksCount = count(selectLcom4Blocks);
+    int complexitInClassesCount = count(selectComplexityInClasses);
 
     scan("shared/sample", "2012-02-02");
     assertThat(count(selectNcloc)).isGreaterThan(nclocCount);
-    assertThat(count(selectLcom4Blocks)).isEqualTo(lcom4BlocksCount);
+    assertThat(count(selectComplexityInClasses)).isEqualTo(complexitInClassesCount);
   }
 
   private void assertDeleted(String key) {
