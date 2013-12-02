@@ -136,7 +136,7 @@ public class TechnicalDebtTest {
     assertThat(result.getStatus()).isNotEqualTo(0);
     // with the following message
     assertThat(result.getLogs())
-      .contains("The implementation of rule 'xoo:OneIssuePerLine' defines an effort to fix whereas its requirement is set to 'constant/issue' - which is not compatible.");
+      .contains("Requirement for 'xoo:OneIssuePerLine' can not use 'Constant/issue' remediation function because this rule does not have a fixed remediation cost.");
   }
 
 }
