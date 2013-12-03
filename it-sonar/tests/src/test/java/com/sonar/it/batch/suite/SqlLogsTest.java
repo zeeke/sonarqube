@@ -36,33 +36,11 @@ public class SqlLogsTest {
   @Test
   public void enable_sql_logs() {
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperty("sonar.showSql", "true");
+        .setProperty("sonar.log.profilingLevel", "FULL");
     BuildResult result = orchestrator.executeBuild(build);
 
     assertThat(result.getLogs()).contains("==>  Preparing:"); // mybatis
     assertThat(result.getLogs()).contains("==> Parameters:"); // mybatis
-    assertThat(result.getLogs()).doesNotContain("<==    Columns:"); // mybatis results
+    assertThat(result.getLogs()).contains("<==    Columns:"); // mybatis results
   }
-
-  @Test
-  public void enable_sql_result_logs() {
-    SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperty("sonar.showSql", "true")
-        .setProperty("sonar.showSqlResults", "true");
-    BuildResult result = orchestrator.executeBuild(build);
-
-    assertThat(result.getLogs()).contains("<==    Columns:");// mybatis results
-  }
-
-  @Test
-  public void disable_result_logs_if_request_logs_are_disabled() {
-    SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperty("sonar.showSql", "false")
-        .setProperty("sonar.showSqlResults", "true");
-    BuildResult result = orchestrator.executeBuild(build);
-
-    assertThat(result.getLogs()).doesNotContain("==>  Preparing:"); // mybatis requests
-    assertThat(result.getLogs()).doesNotContain("<==    Columns:"); // mybatis results
-  }
-
 }
