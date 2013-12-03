@@ -14,12 +14,20 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import com.sonar.orchestrator.util.VersionUtils;
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.Source;
+import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -362,7 +370,7 @@ public class BatchTest {
       // message
       .contains("Error message from plugin")
 
-        // but not stacktrace
+      // but not stacktrace
       .doesNotContain("at com.sonarsource.RaiseMessageException");
   }
 
@@ -375,7 +383,17 @@ public class BatchTest {
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("case-sensitive-file-extensions", "files", "ncloc"));
     assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
-    assertThat(project.getMeasureIntValue("ncloc")).isEqualTo(5+2);
+    assertThat(project.getMeasureIntValue("ncloc")).isEqualTo(5 + 2);
+  }
+
+  /**
+   * SONAR-4876
+   */
+  @Test
+  public void custom_module_key() {
+    scan("batch/custom-module-key");
+    assertThat(getResource("com.sonarsource.it.samples:moduleA")).isNotNull();
+    assertThat(getResource("com.sonarsource.it.samples:moduleB")).isNotNull();
   }
 
   private Resource getResource(String key) {
