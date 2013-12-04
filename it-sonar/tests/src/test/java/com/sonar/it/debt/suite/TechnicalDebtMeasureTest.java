@@ -26,7 +26,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class TechnicalDebtMeasureTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = DebtTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = TechnicalDebtTestSuite.ORCHESTRATOR;
 
   private static final Delta DELTA = Delta.delta(0.001);
 

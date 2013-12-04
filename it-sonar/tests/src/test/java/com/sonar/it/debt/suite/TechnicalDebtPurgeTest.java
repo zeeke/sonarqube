@@ -17,10 +17,10 @@ import java.sql.SQLException;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class PurgeTest {
+public class TechnicalDebtPurgeTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = DebtTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = TechnicalDebtTestSuite.ORCHESTRATOR;
 
   private static final String SQL_COUNT_MEASURES_ON_CHARACTERISTICS = "select count(*) from project_measures where characteristic_id in (select id from characteristics where rule_id is null)";
   private static final String SQL_COUNT_MEASURES_ON_REQUIREMENTS = "select count(*) from project_measures where characteristic_id in (select id from characteristics where rule_id is not null)";

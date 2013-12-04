@@ -27,7 +27,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class NewTechnicalDebtMeasureTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = DebtTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = TechnicalDebtTestSuite.ORCHESTRATOR;
 
   @Before
   public void cleanUpAnalysisData() {

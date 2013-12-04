@@ -17,7 +17,7 @@ import org.junit.Test;
 public class TechnicalDebtWidgetTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = DebtTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = TechnicalDebtTestSuite.ORCHESTRATOR;
 
   @BeforeClass
   public static void init() {

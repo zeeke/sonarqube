@@ -13,9 +13,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  TechnicalDebtMeasureTest.class, TechnicalDebtWidgetTest.class, PurgeTest.class, TechnicalDebtTest.class, NewTechnicalDebtMeasureTest.class,
+  TechnicalDebtMeasureTest.class, TechnicalDebtWidgetTest.class, TechnicalDebtPurgeTest.class, TechnicalDebtTest.class, NewTechnicalDebtMeasureTest.class,
 })
-public class DebtTestSuite {
+public class TechnicalDebtTestSuite {
 
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
