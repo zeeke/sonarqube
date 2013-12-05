@@ -33,7 +33,12 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.SourceQuery;
+import org.sonar.wsclient.services.ViolationQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,9 +85,9 @@ public class PlatformTest {
       SonarRunner runner;
       try {
         runner = SonarRunner.create()
-            .setRunnerVersion("2.1")
-            .setProjectDir(temp.newFolder())
-            .setTask("views");
+          .setRunnerVersion("2.1")
+          .setProjectDir(temp.newFolder())
+          .setTask("views");
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -93,34 +98,34 @@ public class PlatformTest {
   private static void configureViews() {
     orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("views.status", "D,20100601T07:16:30+0000"));
     orchestrator
-        .getServer()
-        .getAdminWsClient()
-        .update(
-            new PropertyUpdateQuery(
-                "views.def",
-                "<views><vw key='views_java' def='false'><name>Java</name><p>org.apache.struts:struts-parent</p><p>commons-collections:commons-collections</p></vw><vw key='views_java_cobol' def='false'><name>Java+Cobol</name><p>sonar.cobol:custom-check</p><p>commons-collections:commons-collections</p></vw></views>")
-        );
+      .getServer()
+      .getAdminWsClient()
+      .update(
+        new PropertyUpdateQuery(
+          "views.def",
+          "<views><vw key='views_java' def='false'><name>Java</name><p>org.apache.struts:struts-parent</p><p>commons-collections:commons-collections</p></vw><vw key='views_java_cobol' def='false'><name>Java+Cobol</name><p>sonar.cobol:custom-check</p><p>commons-collections:commons-collections</p></vw></views>")
+      );
   }
 
   private static void configureLicenses(OrchestratorBuilder builder) {
     builder
-        .activateLicense("abap")
-        .activateLicense("cobol")
-        .activateLicense("devcockpit")
-        .activateLicense("natural")
-        .activateLicense("plsql")
-        .activateLicense("report")
-        .activateLicense("sqale")
-        .activateLicense("vb")
-        .activateLicense("vbnet")
-        .activateLicense("views");
+      .activateLicense("abap")
+      .activateLicense("cobol")
+      .activateLicense("devcockpit")
+      .activateLicense("natural")
+      .activateLicense("plsql")
+      .activateLicense("report")
+      .activateLicense("sqale")
+      .activateLicense("vb")
+      .activateLicense("vbnet")
+      .activateLicense("views");
   }
 
   private static void configureProfiles(OrchestratorBuilder builder) {
     builder
-        .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-cobol-IT.xml"))
-        .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-flex-IT.xml"))
-        .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-java-IT.xml"));
+      .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-cobol-IT.xml"))
+      .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-flex-IT.xml"))
+      .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-java-IT.xml"));
   }
 
   private static void configurePlugins(OrchestratorBuilder builder) {
@@ -141,11 +146,11 @@ public class PlatformTest {
 
   private static void inspect(File baseDir) {
     MavenBuild build = MavenBuild.create(new File(baseDir, "pom.xml"))
-        .setProperty("sonar.cpd.engine", "sonar")
-        .setProfile("IT")
-        // following property to not have differences between Sonar version
-        .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
-        .setCleanPackageSonarGoals();
+      .setProperty("sonar.cpd.engine", "sonar")
+      .setProfile("IT")
+      // following property to not have differences between Sonar version
+      .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
+      .setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
   }
 
@@ -310,7 +315,10 @@ public class PlatformTest {
 
     assertThat(getMeasure(JAVA_VIEWS, "package_tangle_index").getValue(), is(30.8));
     assertThat(getMeasure(JAVA_VIEWS, "package_feedback_edges").getIntValue(), is(23));
-    assertThat(getMeasure(JAVA_VIEWS, "lcom4").getValue(), is(1.0));
+    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.1")) {
+      // SONAR-4853 LCOM4 is no more computed on SQ 4.1
+      assertThat(getMeasure(JAVA_VIEWS, "lcom4").getValue(), is(1.0));
+    }
     assertThat(getMeasure(JAVA_VIEWS, "rfc").getValue(), is(18.7));
   }
 
