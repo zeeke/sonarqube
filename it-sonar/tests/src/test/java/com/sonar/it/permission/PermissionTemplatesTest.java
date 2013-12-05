@@ -12,6 +12,7 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -35,6 +36,7 @@ public class PermissionTemplatesTest {
    * SONAR-4464
    */
   @Test
+  @Ignore("To be fixed by SONAR-4827")
   public void manage_permission_templates() throws Exception {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-permission-templates",
       "/selenium/permission/permission-templates/display-default-template.html",
@@ -65,6 +67,7 @@ public class PermissionTemplatesTest {
    * SONAR-4466
    */
   @Test
+  @Ignore("To be fixed by SONAR-4827")
   public void grant_permissions() {
     SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .withoutDynamicAnalysis();
