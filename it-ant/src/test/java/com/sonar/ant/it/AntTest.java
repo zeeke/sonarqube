@@ -343,9 +343,15 @@ public class AntTest {
   public void testShowSqlLogs() {
     AntBuild build = AntBuild.create()
       .setBuildLocation(FileLocation.of("projects/shared/build.xml"))
-      .setTargets("all", "clean")
-      .setProperty("sonar.showSql", "true")
-      .setProperty("sonar.showSqlResults", "true");
+      .setTargets("all", "clean");
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.1")) {
+      // SONAR-4756
+      build.setProperty("sonar.log.profilingLevel", "FULL");
+    } else {
+      build
+        .setProperty("sonar.showSql", "true")
+        .setProperty("sonar.showSqlResults", "true");
+    }
     BuildResult analysisResults = orchestrator.executeBuild(build);
 
     String logs = analysisResults.getLogs();
