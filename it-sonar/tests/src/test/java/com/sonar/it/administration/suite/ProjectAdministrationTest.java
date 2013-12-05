@@ -255,7 +255,7 @@ public class ProjectAdministrationTest {
 
   /**
    * SONAR-3956
-   * SONAR-4931
+   * SONAR-4827
    */
   @Test
   @Ignore
