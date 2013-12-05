@@ -9,76 +9,81 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>store</td>
-        <td>sample</td>
-        <td>PROJECT_NAME</td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/roles/projects</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>u-admin-${PROJECT_NAME}</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>id=select-u-admin-${PROJECT_NAME}</td>
-        <td></td>
-    </tr>
-    <tr>
-      <td>waitForVisible</td>
-      <td>to</td>
-      <td></td>
-    </tr>
-    <tr>
-        <td>addSelection</td>
-        <td>id=from</td>
-        <td>label=Administrator</td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>id=select_right</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertSelectOptions</td>
-        <td>to</td>
-        <td>*Administrator*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=submit-permission-users-update</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>u-admin-${PROJECT_NAME}</td>
-        <td>Administrator</td>
-    </tr>
-    </tbody>
+	<td>store</td>
+	<td>sample</td>
+	<td>PROJECT_NAME</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/roles/projects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>u-admin-${PROJECT_NAME}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=select-u-admin-${PROJECT_NAME}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>id=modal</td>
+	<td>*Edit Permissions*</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>name=deselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=deselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>name=Administrator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=Administrator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=selected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>name=Administrator</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
