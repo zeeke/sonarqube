@@ -73,8 +73,8 @@ public class MultimoduleTest extends RunnerTestCase {
     assertThat(module1.getName()).isEqualTo("java-module");
     assertThat(module1.getVersion()).isEqualTo("1.2.3");
 
-    Resource module2 = findResource("multi-language:groovy-module");
-    assertThat(module2.getName()).isEqualTo("groovy-module");
+    Resource module2 = findResource("multi-language:js-module");
+    assertThat(module2.getName()).isEqualTo("js-module");
     assertThat(module2.getVersion()).isEqualTo("1.2.3");
   }
 

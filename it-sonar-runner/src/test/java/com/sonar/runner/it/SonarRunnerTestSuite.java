@@ -18,7 +18,7 @@ public class SonarRunnerTestSuite {
 
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
-      .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-groovy-plugin", "0.6"))
-      .build();
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.4"))
+    .build();
 
 }

@@ -67,10 +67,10 @@ public class JavaTest extends RunnerTestCase {
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
 
     SonarRunner build = newRunner(new File("projects/java-sample"))
-        .setProperty("sonarRunner.mode", "fork")
-        .setProperty("sonar.verbose", "true")
-        .addArguments("-e", "-X")
-        .setProfile("sonar-way");
+      .setProperty("sonarRunner.mode", "fork")
+      .setProperty("sonar.verbose", "true")
+      .addArguments("-e", "-X")
+      .setProfile("sonar-way");
     // SONARPLUGINS-3061
     if (Util.runnerVersion(orchestrator).isGreaterThanOrEquals("2.3")) {
       // Add a trailing slash
@@ -107,7 +107,10 @@ public class JavaTest extends RunnerTestCase {
 
     Resource project = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:bytecode").setMetrics("lcom4", "violations"));
     assertThat(project.getName()).isEqualTo("Java Bytecode Sample");
-    assertThat(project.getMeasureIntValue("lcom4")).isGreaterThanOrEqualTo(1);
+    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.1")) {
+      // SONAR-4853 LCOM4 is no more computed on SQ 4.1
+      assertThat(project.getMeasureIntValue("lcom4")).isGreaterThanOrEqualTo(1);
+    }
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
     Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:bytecode:[default].HasFindbugsViolation").setMetrics("lcom4", "violations"));
@@ -151,8 +154,8 @@ public class JavaTest extends RunnerTestCase {
     // The provided profile "Sonar way" can't be used because whitespaces are not supported by orchestrator on windows.
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
     SonarRunner build = newRunner(new File("projects/java-sample"))
-        .setProjectKey("SAMPLE")
-        .setProfile("sonar-way");
+      .setProjectKey("SAMPLE")
+      .setProfile("sonar-way");
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(new ResourceQuery("SAMPLE").setMetrics("files", "ncloc"));
@@ -166,7 +169,7 @@ public class JavaTest extends RunnerTestCase {
   @Test
   public void should_override_working_dir_with_relative_path() {
     SonarRunner build = newRunner(new File("projects/override-working-dir"))
-        .setProperty("sonar.working.directory", ".overridden-relative-sonar");
+      .setProperty("sonar.working.directory", ".overridden-relative-sonar");
     orchestrator.executeBuild(build);
 
     assertThat(new File("projects/override-working-dir/.sonar")).doesNotExist();
@@ -180,7 +183,7 @@ public class JavaTest extends RunnerTestCase {
   public void should_override_working_dir_with_absolute_path() {
     File projectHome = new File("projects/override-working-dir");
     SonarRunner build = newRunner(projectHome)
-        .setProperty("sonar.working.directory", new File(projectHome, ".overridden-absolute-sonar").getAbsolutePath());
+      .setProperty("sonar.working.directory", new File(projectHome, ".overridden-absolute-sonar").getAbsolutePath());
     orchestrator.executeBuild(build);
 
     assertThat(new File("projects/override-working-dir/.sonar")).doesNotExist();
@@ -235,7 +238,7 @@ public class JavaTest extends RunnerTestCase {
     assumeTrue(Util.runnerVersion(orchestrator).isGreaterThan("2.1"));
 
     SonarRunner build = newRunner(new File("projects/multi-module/failures/unexisting-config-file"))
-        .setProperty("sonar.host.url", "http://foo");
+      .setProperty("sonar.host.url", "http://foo");
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
     // expect build failure
