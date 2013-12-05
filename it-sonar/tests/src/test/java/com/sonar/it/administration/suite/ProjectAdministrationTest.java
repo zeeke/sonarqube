@@ -255,8 +255,10 @@ public class ProjectAdministrationTest {
 
   /**
    * SONAR-3956
+   * SONAR-4931
    */
   @Test
+  @Ignore
   public void manage_permissions() {
     scanSample();
 
