@@ -15,6 +15,9 @@ public class UserAdministrationTest {
   @ClassRule
   public static Orchestrator orchestrator = UserTestSuite.ORCHESTRATOR;
 
+  /**
+   * SONAR-4827
+   */
   @Test
   public void manage_users() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-users",
@@ -35,6 +38,9 @@ public class UserAdministrationTest {
     orchestrator.executeSelenese(selenese);
   }
 
+  /**
+   * SONAR-4827
+   */
   @Test
   public void manage_groups() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-groups",
