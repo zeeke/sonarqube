@@ -9,101 +9,101 @@
 <table cellpadding="1" cellspacing="1" border="1">
   <tbody>
   <tr>
-    <td>store</td>
-    <td>default-projects-template</td>
-    <td>TEMPLATE_NAME</td>
-  </tr>
-  <tr>
-    <td>open</td>
-    <td>/sonar/sessions/logout</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>open</td>
-    <td>/sonar/permission_templates</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>login</td>
-    <td>admin</td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>password</td>
-    <td>admin</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>commit</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>create-link-permission-template</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>name</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>name</td>
-    <td>${TEMPLATE_NAME}</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>submit-permission-template-create</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>permission-templates</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>permission-templates</td>
-    <td>glob:*${TEMPLATE_NAME}*</td>
-  </tr>
-  <tr>
-    <td>assertElementNotPresent</td>
-    <td>is-default-${TEMPLATE_NAME}</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>configure-defaults-permission-template</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>default_template_TRK</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>select</td>
-    <td>default_template_TRK</td>
-    <td>${TEMPLATE_NAME}</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>submit-default-templates</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>is-default-${TEMPLATE_NAME}</td>
-    <td>Default for Project</td>
-  </tr>
-  <tr>
-    <td>assertElementNotPresent</td>
-    <td>delete-template-${TEMPLATE_NAME}</td>
-    <td></td>
-  </tr>
-  </tbody>
+	<td>store</td>
+	<td>default-projects-template</td>
+	<td>TEMPLATE_NAME</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/permission_templates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-link-permission-template</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>${TEMPLATE_NAME}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>submit-permission-template-create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>permission-templates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>permission-templates</td>
+	<td>glob:*${TEMPLATE_NAME}*</td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>is-default-${TEMPLATE_NAME}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>configure-defaults-permission-template</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>default_template_TRK</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>default_template_TRK</td>
+	<td>${TEMPLATE_NAME}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>submit-default-templates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//span[starts-with(@id, 'is-default-${TEMPLATE_NAME}')]</td>
+	<td>Default for Project</td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>delete-template-${TEMPLATE_NAME}</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

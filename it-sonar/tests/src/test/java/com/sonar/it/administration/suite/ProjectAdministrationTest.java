@@ -13,7 +13,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.connectors.ConnectionException;
 import org.sonar.wsclient.services.ProjectDeleteQuery;
@@ -264,9 +263,8 @@ public class ProjectAdministrationTest {
     Selenese selenese = Selenese
         .builder()
         .setHtmlTestsInClasspath("manage-permissions",
-            "/selenium/administration/manage_project_roles/change_roles_of_users.html"
-
-            // "/selenium/administration/manage_project_roles/change_roles_of_groups.html"
+            "/selenium/administration/manage_project_roles/change_roles_of_users.html",
+            "/selenium/administration/manage_project_roles/change_roles_of_groups.html"
         ).build();
     orchestrator.executeSelenese(selenese);
   }
