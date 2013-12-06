@@ -47,10 +47,10 @@ public class ScanPermissionTest {
 
   @After
   public void restorePermissions() {
-    PermissionParameters permissionParameters = PermissionParameters.create().group("anyone").permission("scan");
+    PermissionParameters permissionParameters = PermissionParameters.create().group("Anyone").permission("scan");
     client.permissionClient().addPermission(permissionParameters);
 
-    permissionParameters = PermissionParameters.create().group("anyone").permission("dryRunScan");
+    permissionParameters = PermissionParameters.create().group("Anyone").permission("dryRunScan");
     client.permissionClient().addPermission(permissionParameters);
   }
 
@@ -69,7 +69,7 @@ public class ScanPermissionTest {
     // No error
 
     // Remove Anyone from scan permission
-    PermissionParameters permissionParameters = PermissionParameters.create().group("anyone").permission("scan");
+    PermissionParameters permissionParameters = PermissionParameters.create().group("Anyone").permission("scan");
     client.permissionClient().removePermission(permissionParameters);
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
@@ -78,7 +78,7 @@ public class ScanPermissionTest {
         "You're only authorized to execute a local (dry run) SonarQube analysis without pushing the results to the SonarQube server. Please contact your SonarQube administrator.");
 
     // Remove Anyone from dryrun permission
-    permissionParameters = PermissionParameters.create().group("anyone").permission("dryRunScan");
+    permissionParameters = PermissionParameters.create().group("Anyone").permission("dryRunScan");
     client.permissionClient().removePermission(permissionParameters);
 
     result = orchestrator.executeBuildQuietly(build);

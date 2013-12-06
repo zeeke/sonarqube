@@ -66,7 +66,7 @@ public class IssuePermissionTest {
       client.userClient().create(UserParameters.create().login(withoutCodeViewerPermission).name(withoutCodeViewerPermission)
         .password("password").passwordConfirmation("password"));
       // By default, it's the group anyone that have the permission codeviewer, it would be better to remove all groups on this permission
-      client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("codeviewer"));
+      client.permissionClient().removePermission(PermissionParameters.create().group("Anyone").component("sample").permission("codeviewer"));
 
       orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("need-code-viewer-permission-to-see-source-code-from-issue-detail",
         "/selenium/permission/issue-permissions/without-code-viewer-permission-source-code-from-issue-detail-is-hidden.html",
@@ -95,7 +95,7 @@ public class IssuePermissionTest {
       client.userClient().create(UserParameters.create().login(withoutBrowsePermission).name(withoutBrowsePermission)
         .password("password").passwordConfirmation("password"));
       // By default, it's the group anyone that have the permission user, it would be better to remove all groups on this permission
-      client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("user"));
+      client.permissionClient().removePermission(PermissionParameters.create().group("Anyone").component("sample").permission("user"));
 
       // Without user permission, a user cannot see issues on the project
       assertThat(orchestrator.getServer().wsClient(withoutBrowsePermission, "password").issueClient().find(
@@ -132,7 +132,7 @@ public class IssuePermissionTest {
       client.userClient().create(UserParameters.create().login(withoutBrowsePermission).name(withoutBrowsePermission)
         .password("password").passwordConfirmation("password"));
       // By default, it's the group anyone that have the permission user, it would be better to remove all groups on this permission
-      client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("user"));
+      client.permissionClient().removePermission(PermissionParameters.create().group("Anyone").component("sample").permission("user"));
 
       // Without user permission, a user cannot see issue changelog on the project
       try {
