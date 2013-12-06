@@ -8,16 +8,19 @@ package com.sonar.it.permission;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.sonar.wsclient.user.UserParameters;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Note: those tests should be integrated in the Administration test suite when the permission data integrity can be guaranteed
- * (i.e. with the use of a WS client to restore the default permissions)
+ * (i.e. with the use of a WS client to restore the default permissions). TODO Test execution order matter while it should not.
  */
 public class PermissionTemplatesTest {
 
@@ -56,7 +59,7 @@ public class PermissionTemplatesTest {
   public void define_default_templates() throws Exception {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-define-default-templates",
       "/selenium/permission/permission-templates/set-default-projects-template.html"
-    )
+      )
       .build();
     orchestrator.executeSelenese(selenese);
   }
@@ -74,7 +77,64 @@ public class PermissionTemplatesTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("grant-permissions",
       "/selenium/permission/permission-templates/grant-default-project-groups.html",
       "/selenium/permission/permission-templates/grant-default-project-users.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * SONAR-4535
+   */
+  @Test
+  public void grant_permissions_based_on_key_pattern() {
+    orchestrator.getServer().adminWsClient().userClient().create(UserParameters.create().login("userA").name("userA").password("password").passwordConfirmation("password"));
+    try {
+      Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("create-template-with-key-pattern",
+        "/selenium/permission/permission-templates/create-template-with-key-pattern.html"
+        ).build();
+      orchestrator.executeSelenese(selenese);
+
+      SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+        .setProperty("sonar.projectKey", "com.foo.MyProject")
+        .withoutDynamicAnalysis();
+      orchestrator.executeBuild(sonarRunnerBuild);
+
+      selenese = Selenese.builder().setHtmlTestsInClasspath("verify-permissions-with-key-pattern",
+        "/selenium/permission/permission-templates/verify-permissions-with-key-pattern.html"
+        ).build();
+      orchestrator.executeSelenese(selenese);
+
+      // Provisionning
+      selenese = Selenese.builder().setHtmlTestsInClasspath("provision-project-and-check-permissions",
+        "/selenium/permission/permission-templates/provision-project-and-check-permissions.html"
+        ).build();
+      orchestrator.executeSelenese(selenese);
+    } finally {
+      orchestrator.getServer().adminWsClient().userClient().deactivate("userA");
+    }
+  }
+
+  /**
+   * SONAR-4535
+   */
+  @Test
+  public void should_fail_when_project_key_match_several_patterns() {
+    orchestrator.getServer().adminWsClient().userClient().create(UserParameters.create().login("userA").name("userA").password("password").passwordConfirmation("password"));
+    try {
+      Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("create-2-templates-with-overlapping-key-pattern",
+        "/selenium/permission/permission-templates/create-2-templates-with-overlapping-key-pattern.html"
+        ).build();
+      orchestrator.executeSelenese(selenese);
+
+      SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+        .setProperty("sonar.projectKey", "com.match.MyProject")
+        .withoutDynamicAnalysis();
+      BuildResult result = orchestrator.executeBuildQuietly(sonarRunnerBuild);
+      assertThat(result.getStatus()).isNotEqualTo(0);
+      assertThat(result.getLogs()).contains(
+        "The following permission templates have a key pattern that matches the 'com.match.MyProject' key: 'my-template-with-pattern-1', 'my-template-with-pattern-2'. "
+          + "The administrator must update them to make sure that only one permission template can be selected for foo.project component.");
+    } finally {
+      orchestrator.getServer().adminWsClient().userClient().deactivate("userA");
+    }
   }
 }

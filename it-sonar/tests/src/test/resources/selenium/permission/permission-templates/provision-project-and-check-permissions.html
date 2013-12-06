@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:9000/" />
+<title>provision-project-and-check-permissions</title>
+</head>
+<body>
+  <table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+      <tr>
+        <td rowspan="1" colspan="3">provision-project-and-check-dashboard</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>open</td>
+        <td>/sonar/sessions/logout</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>open</td>
+        <td>/sonar/provisioning</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>login</td>
+        <td>admin</td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>password</td>
+        <td>admin</td>
+      </tr>
+      <tr>
+        <td>clickAndWait</td>
+        <td>commit</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>click</td>
+        <td>id=create-link-provisioning</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>waitForVisible</td>
+        <td>id=create-resource-form</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>id=key</td>
+        <td>com.foo.MyProvisionnedProject</td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>id=name</td>
+        <td>New Project</td>
+      </tr>
+      <tr>
+        <td>clickAndWait</td>
+        <td>id=save-submit</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>assertText</td>
+        <td>id=view-com-foo-myprovisionnedproject</td>
+        <td>com.foo.MyProvisionnedProject</td>
+      </tr>
+      <tr>
+        <td>open</td>
+        <td>/sonar/roles/projects</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>assertText</td>
+        <td>projects</td>
+        <td>glob:*New Project*</td>
+      </tr>
+      <tr>
+        <td>assertText</td>
+        <td>u-admin-com.foo.MyProvisionnedProject</td>
+        <td>userA</td>
+      </tr>
+      <tr>
+        <td>assertText</td>
+        <td>g-admin-com.foo.MyProvisionnedProject</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>assertText</td>
+        <td>u-user-com.foo.MyProvisionnedProject</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>assertText</td>
+        <td>g-user-com.foo.MyProvisionnedProject</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>assertText</td>
+        <td>u-codeviewer-com.foo.MyProvisionnedProject</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>assertText</td>
+        <td>g-codeviewer-com.foo.MyProvisionnedProject</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
