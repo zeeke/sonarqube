@@ -9,91 +9,91 @@
 <table cellpadding="1" cellspacing="1" border="1">
   <tbody>
   <tr>
-    <td>store</td>
-    <td>delete-template-name</td>
-    <td>TEMPLATE_NAME</td>
-  </tr>
-  <tr>
-    <td>open</td>
-    <td>/sonar/sessions/logout</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>open</td>
-    <td>/sonar/permission_templates</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>login</td>
-    <td>admin</td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>password</td>
-    <td>admin</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>commit</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>create-link-permission-template</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>name</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>name</td>
-    <td>${TEMPLATE_NAME}</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>submit-permission-template-create</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>permission-templates</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>permission-templates</td>
-    <td>glob:*${TEMPLATE_NAME}*</td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>delete-template-${TEMPLATE_NAME}</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>css=div.info</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>css=div.info</td>
-    <td>Are you sure that you want to delete permission template "${TEMPLATE_NAME}"?</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>confirm-submit</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertNotText</td>
-    <td>permission-templates</td>
-    <td>glob:*${TEMPLATE_NAME}*</td>
-  </tr>
-  </tbody>
+	<td>store</td>
+	<td>delete-template-name</td>
+	<td>TEMPLATE_NAME</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/permission_templates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-link-permission-template</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>${TEMPLATE_NAME}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>submit-permission-template-create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>permission-templates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>permission-templates</td>
+	<td>glob:*${TEMPLATE_NAME}*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[starts-with(@id, 'delete-template-${TEMPLATE_NAME}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=div.info</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=div.info</td>
+	<td>Are you sure that you want to delete permission template &quot;${TEMPLATE_NAME}&quot;?</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>permission-templates</td>
+	<td>glob:*${TEMPLATE_NAME}*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

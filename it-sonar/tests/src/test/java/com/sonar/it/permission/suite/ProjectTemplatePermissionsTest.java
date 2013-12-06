@@ -15,7 +15,6 @@ import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
 
-@Ignore("To be fixed by SONAR-4827")
 public class ProjectTemplatePermissionsTest {
 
   @ClassRule
