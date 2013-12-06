@@ -294,7 +294,6 @@ public class ProjectAdministrationTest {
   }
 
   @Test
-  @Ignore
   public void anonymous_should_have_user_role_to_access_project() {
     scanSample();
 
