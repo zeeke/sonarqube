@@ -275,7 +275,6 @@ public class ProjectAdministrationTest {
    * SONAR-4050
    */
   @Test
-  @Ignore
   public void do_not_reset_default_project_roles() {
     scanSample();
 
