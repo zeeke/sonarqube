@@ -40,7 +40,7 @@ public class SourceCodePermissionTest {
     client.userClient().create(UserParameters.create().login(WITHOUT_CODE_VIEWER_PERMISSION).name(WITHOUT_CODE_VIEWER_PERMISSION)
       .password("password").passwordConfirmation("password"));
     // Remove anyone from the code viewer permission
-    client.permissionClient().removePermission(PermissionParameters.create().group("Anyone").component("sample").permission("codeviewer"));
+    client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("codeviewer"));
   }
 
   @AfterClass

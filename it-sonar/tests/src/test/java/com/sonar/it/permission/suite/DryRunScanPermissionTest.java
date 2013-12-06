@@ -44,7 +44,7 @@ public class DryRunScanPermissionTest {
 
   @After
   public void restorePermissionAndCleanup() {
-    PermissionParameters permissionParameters = PermissionParameters.create().group("Anyone").permission("dryRunScan");
+    PermissionParameters permissionParameters = PermissionParameters.create().group("anyone").permission("dryRunScan");
     client.permissionClient().addPermission(permissionParameters);
   }
 
@@ -64,7 +64,7 @@ public class DryRunScanPermissionTest {
     // No error
 
     // Remove Anyone from dryrun permission
-    PermissionParameters permissionParameters = PermissionParameters.create().group("Anyone").permission("dryRunScan");
+    PermissionParameters permissionParameters = PermissionParameters.create().group("anyone").permission("dryRunScan");
     client.permissionClient().removePermission(permissionParameters);
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
