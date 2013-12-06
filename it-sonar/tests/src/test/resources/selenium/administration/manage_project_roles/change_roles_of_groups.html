@@ -49,34 +49,39 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForVisible</td>
-	<td>to</td>
-	<td></td>
+  <td>waitForText</td>
+  <td>id=modal</td>
+  <td>*Edit Permissions*</td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>id=to</td>
-	<td>label=sonar-administrators</td>
+  <td>waitForElementPresent</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=select_left</td>
-	<td></td>
+  <td>click</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>id=from</td>
-	<td>label=sonar-users</td>
+  <td>click</td>
+  <td>name=deselected</td>
+  <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=select_right</td>
-	<td></td>
+  <td>waitForElementPresent</td>
+  <td>name=sonar-users</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>submit-permission-groups-update</td>
-	<td></td>
+  <td>click</td>
+  <td>name=sonar-users</td>
+  <td></td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>link=Close</td>
+  <td></td>
 </tr>
 <tr>
 	<td>assertText</td>
@@ -94,29 +99,39 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForVisible</td>
-	<td>select_left_all</td>
-	<td></td>
+  <td>waitForText</td>
+  <td>id=modal</td>
+  <td>*Edit Permissions*</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=select_left_all</td>
-	<td></td>
+  <td>waitForElementPresent</td>
+  <td>name=Anyone</td>
+  <td></td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>id=from</td>
-	<td>label=sonar-administrators</td>
+  <td>click</td>
+  <td>name=Anyone</td>
+  <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=select_right</td>
-	<td></td>
+  <td>click</td>
+  <td>name=deselected</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>submit-permission-groups-update</td>
-	<td></td>
+  <td>waitForElementPresent</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>link=Close</td>
+  <td></td>
 </tr>
 <tr>
 	<td>assertText</td>
@@ -134,24 +149,49 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForVisible</td>
-	<td>select_right_all</td>
-	<td></td>
+  <td>waitForText</td>
+  <td>id=modal</td>
+  <td>*Edit Permissions*</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=select_right_all</td>
-	<td></td>
+  <td>waitForElementPresent</td>
+  <td>name=deselected</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>submit-permission-groups-update</td>
-	<td></td>
+  <td>click</td>
+  <td>name=deselected</td>
+  <td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>codeviewer-role-groups</td>
-	<td>*Anyone*sonar-administrators*sonar-users*</td>
+  <td>waitForElementPresent</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForElementPresent</td>
+  <td>name=sonar-users</td>
+  <td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>name=sonar-users</td>
+  <td></td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>link=Close</td>
+  <td></td>
+</tr>
+<tr>
+  <td>assertText</td>
+  <td>codeviewer-role-groups</td>
+  <td>*Anyone*sonar-administrators*sonar-users*</td>
 </tr>
 </tbody>
 </table>

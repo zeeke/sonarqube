@@ -258,7 +258,6 @@ public class ProjectAdministrationTest {
    * SONAR-4827
    */
   @Test
-  @Ignore
   public void manage_permissions() {
     scanSample();
 
@@ -267,7 +266,6 @@ public class ProjectAdministrationTest {
         .setHtmlTestsInClasspath("manage-permissions",
             "/selenium/administration/manage_project_roles/change_roles_of_users.html"
 
-            // Ignored while WS doesn't return 'Anyone' group
             // "/selenium/administration/manage_project_roles/change_roles_of_groups.html"
         ).build();
     orchestrator.executeSelenese(selenese);
