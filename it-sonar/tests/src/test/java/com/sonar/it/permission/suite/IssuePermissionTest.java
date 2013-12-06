@@ -241,4 +241,29 @@ public class IssuePermissionTest {
       client.userClient().deactivate(user);
     }
   }
+
+  /**
+   * SONAR-2447
+   */
+  @Test
+  public void need_administer_issue_permission_to_see_set_severity_and_false_positive_from_issue_detail() {
+    SonarClient client = orchestrator.getServer().adminWsClient();
+
+    String withoutIssueAdminPermission = "without-issue-admin-permission";
+
+    try {
+
+      client.userClient().create(UserParameters.create().login(withoutIssueAdminPermission).name(withoutIssueAdminPermission)
+        .password("password").passwordConfirmation("password"));
+      client.permissionClient().addPermission(PermissionParameters.create().user(withoutIssueAdminPermission).component("sample").permission("codeviewer"));
+      client.permissionClient().addPermission(PermissionParameters.create().user(withoutIssueAdminPermission).component("sample").permission("user"));
+
+      orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("need_administer_issue_permission_to_see_set_severity_and_false_positive_from_issue_detail",
+        "/selenium/permission/issue-permissions/without-issue-admin-permission-some-actions-from-issue-detail-are-hidden.html"
+        ).build());
+
+    } finally {
+      client.userClient().deactivate(withoutIssueAdminPermission);
+    }
+  }
 }
