@@ -24,6 +24,7 @@ public class ServerProfilingLogsTest {
     String serverLogs = startServerDoQueryThenStopAndGetLogs("NONE");
     assertThat(serverLogs).doesNotContain("[http]");
     assertThat(serverLogs).doesNotContain("[rails]");
+    assertThat(serverLogs).doesNotContain("[es]");
   }
 
   @Test
@@ -31,6 +32,7 @@ public class ServerProfilingLogsTest {
     String serverLogs = startServerDoQueryThenStopAndGetLogs("BASIC");
     assertThat(serverLogs).contains("[http]");
     assertThat(serverLogs).doesNotContain("[rails]");
+    assertThat(serverLogs).doesNotContain("[es]");
   }
 
   @Test
@@ -38,6 +40,7 @@ public class ServerProfilingLogsTest {
     String serverLogs = startServerDoQueryThenStopAndGetLogs("FULL");
     assertThat(serverLogs).contains("[http]");
     assertThat(serverLogs).contains("[rails]");
+    assertThat(serverLogs).contains("[es]");
   }
 
   private String startServerDoQueryThenStopAndGetLogs(String profilingLevel) throws IOException, FileNotFoundException {
