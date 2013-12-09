@@ -9,34 +9,34 @@
 <table cellpadding="1" cellspacing="1" border="1">
   <tbody>
   <tr>
-	<td>open</td>
-	<td>/sonar/sessions/logout</td>
-	<td></td>
+  <td>open</td>
+  <td>/sonar/sessions/logout</td>
+  <td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/sonar/roles/global</td>
-	<td></td>
+  <td>open</td>
+  <td>/sonar/roles/global</td>
+  <td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=login</td>
-	<td>admin</td>
+  <td>type</td>
+  <td>id=login</td>
+  <td>admin</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=password</td>
-	<td>admin</td>
+  <td>type</td>
+  <td>id=password</td>
+  <td>admin</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>name=commit</td>
-	<td></td>
+  <td>clickAndWait</td>
+  <td>name=commit</td>
+  <td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>global-permissions</td>
-	<td>glob:*Share Dashboards And Filters*</td>
+  <td>assertText</td>
+  <td>global-permissions</td>
+  <td>glob:*Share Dashboards And Filters*</td>
 </tr>
 <tr>
   <td>click</td>
@@ -69,14 +69,19 @@
   <td></td>
 </tr>
 <tr>
+  <td>waitForElementNotPresent</td>
+  <td>name=dashboard_user</td>
+  <td></td>
+</tr>
+<tr>
   <td>clickAndWait</td>
   <td>link=Close</td>
   <td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>users-sharedashboard</td>
-	<td>glob:*dashboard_user*</td>
+  <td>assertText</td>
+  <td>users-sharedashboard</td>
+  <td>glob:*dashboard_user*</td>
 </tr>
 </tbody>
 </table>

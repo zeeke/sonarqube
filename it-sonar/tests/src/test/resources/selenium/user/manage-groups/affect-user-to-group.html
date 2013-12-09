@@ -14,144 +14,149 @@
     </thead>
     <tbody>
     <tr>
-	<td>open</td>
-	<td>/sonar/sessions/new</td>
-	<td></td>
+  <td>open</td>
+  <td>/sonar/sessions/new</td>
+  <td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>login</td>
-	<td>admin</td>
+  <td>type</td>
+  <td>login</td>
+  <td>admin</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>password</td>
-	<td>admin</td>
+  <td>type</td>
+  <td>password</td>
+  <td>admin</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>commit</td>
-	<td></td>
+  <td>clickAndWait</td>
+  <td>commit</td>
+  <td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/sonar/users</td>
-	<td></td>
+  <td>open</td>
+  <td>/sonar/users</td>
+  <td></td>
 </tr>
 <tr>
-	<td>store</td>
-	<td>javascript{new Date().getTime()}</td>
-	<td>userId</td>
+  <td>store</td>
+  <td>javascript{new Date().getTime()}</td>
+  <td>userId</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>create-link-user</td>
-	<td></td>
+  <td>click</td>
+  <td>create-link-user</td>
+  <td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>user_create_form</td>
-	<td>*Add new user*</td>
+  <td>waitForText</td>
+  <td>user_create_form</td>
+  <td>*Add new user*</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>user_login</td>
-	<td>${userId}</td>
+  <td>type</td>
+  <td>user_login</td>
+  <td>${userId}</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>user_name</td>
-	<td>Name of ${userId}</td>
+  <td>type</td>
+  <td>user_name</td>
+  <td>Name of ${userId}</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>user_password</td>
-	<td>password</td>
+  <td>type</td>
+  <td>user_password</td>
+  <td>password</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>user_password_confirmation</td>
-	<td>password</td>
+  <td>type</td>
+  <td>user_password_confirmation</td>
+  <td>password</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>commit</td>
-	<td></td>
+  <td>click</td>
+  <td>commit</td>
+  <td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>info</td>
-	<td>*User is created.*</td>
+  <td>waitForText</td>
+  <td>info</td>
+  <td>*User is created.*</td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
-	<td>glob:User*created</td>
-	<td></td>
+  <td>assertTextPresent</td>
+  <td>glob:User*created</td>
+  <td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>user-${userId}</td>
-	<td>glob:*Name of ${userId}*</td>
+  <td>assertText</td>
+  <td>user-${userId}</td>
+  <td>glob:*Name of ${userId}*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>user-${userId}</td>
-	<td>glob:*sonar-users*</td>
+  <td>assertText</td>
+  <td>user-${userId}</td>
+  <td>glob:*sonar-users*</td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>user-${userId}</td>
-	<td>glob:*sonar-administrators*</td>
+  <td>assertNotText</td>
+  <td>user-${userId}</td>
+  <td>glob:*sonar-administrators*</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>select-${userId}</td>
-	<td></td>
+  <td>click</td>
+  <td>select-${userId}</td>
+  <td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>id=modal</td>
-	<td>*${userId}*</td>
+  <td>waitForText</td>
+  <td>id=modal</td>
+  <td>*${userId}*</td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>class=select-list-list</td>
-	<td>*sonar-users*</td>
+  <td>waitForText</td>
+  <td>class=select-list-list</td>
+  <td>*sonar-users*</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>name=sonar-users</td>
-	<td></td>
+  <td>click</td>
+  <td>name=sonar-users</td>
+  <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>name=deselected</td>
-	<td></td>
+  <td>click</td>
+  <td>name=deselected</td>
+  <td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>class=select-list-list</td>
-	<td>*sonar-administrators*</td>
+  <td>waitForText</td>
+  <td>class=select-list-list</td>
+  <td>*sonar-administrators*</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>name=sonar-administrators</td>
-	<td></td>
+  <td>click</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Close</td>
-	<td></td>
+  <td>waitForElementNotPresent</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>user-${userId}</td>
-	<td>glob:*sonar-administrators*</td>
+  <td>clickAndWait</td>
+  <td>link=Close</td>
+  <td></td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>user-${userId}</td>
-	<td>glob:*sonar-users*</td>
+  <td>assertText</td>
+  <td>user-${userId}</td>
+  <td>glob:*sonar-administrators*</td>
+</tr>
+<tr>
+  <td>assertNotText</td>
+  <td>user-${userId}</td>
+  <td>glob:*sonar-users*</td>
 </tr>
 </tbody>
 </table>
