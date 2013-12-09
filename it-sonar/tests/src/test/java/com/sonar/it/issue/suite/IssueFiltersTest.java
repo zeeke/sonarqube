@@ -45,8 +45,7 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
 
       "/selenium/issue/issue-filters/should-save-issue-filters.html",
 
-      // TODO temporarily disabled
-      //"/selenium/issue/issue-filters/should-not-save-filter-with-already-used-name.html"
+      "/selenium/issue/issue-filters/should-not-save-filter-with-already-used-name.html",
 
       "/selenium/issue/issue-filters/should-not-save-issue-filter-if-no-name.html",
       "/selenium/issue/issue-filters/should-save-issue-filters-with-description.html"
