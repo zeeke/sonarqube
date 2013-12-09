@@ -43,13 +43,13 @@ public class IssueFiltersTest extends AbstractIssueTestCase {
   public void should_save_filter() {
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_save_filter",
 
+      "/selenium/issue/issue-filters/should-save-issue-filters.html",
+
       // TODO temporarily disabled
-      //"/selenium/issue/issue-filters/should-save-issue-filters.html",
       //"/selenium/issue/issue-filters/should-not-save-filter-with-already-used-name.html"
 
       "/selenium/issue/issue-filters/should-not-save-issue-filter-if-no-name.html",
       "/selenium/issue/issue-filters/should-save-issue-filters-with-description.html"
-
     ).build());
   }
 
