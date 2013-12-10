@@ -49,9 +49,9 @@
   <td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>id=modal</td>
-  <td>*With*Without*All*</td>
+  <td>waitForElementPresent</td>
+  <td>name=deselected</td>
+  <td></td>
 </tr>
 <tr>
   <td>click</td>
@@ -59,9 +59,9 @@
   <td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>class=select-list-list</td>
-  <td>*sonar-users*</td>
+  <td>waitForElementPresent</td>
+  <td>name=sonar-users</td>
+  <td></td>
 </tr>
 <tr>
   <td>click</td>
@@ -94,17 +94,17 @@
   <td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>id=modal</td>
-  <td>*With*Without*All*</td>
-</tr>
-<tr>
-  <td>waitForText</td>
-  <td>class=select-list-list</td>
-  <td>*Anyone*</td>
+  <td>waitForElementPresent</td>
+  <td>name=Anyone</td>
+  <td></td>
 </tr>
 <tr>
   <td>click</td>
+  <td>name=Anyone</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForElementNotPresent</td>
   <td>name=Anyone</td>
   <td></td>
 </tr>
@@ -114,12 +114,17 @@
   <td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>class=select-list-list</td>
-  <td>*sonar-administrators*</td>
+  <td>waitForElementPresent</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
 </tr>
 <tr>
   <td>click</td>
+  <td>name=sonar-administrators</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForElementNotPresent</td>
   <td>name=sonar-administrators</td>
   <td></td>
 </tr>
@@ -144,9 +149,9 @@
   <td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>id=modal</td>
-  <td>*With*Without*All*</td>
+  <td>waitForElementPresent</td>
+  <td>name=deselected</td>
+  <td></td>
 </tr>
 <tr>
   <td>click</td>
@@ -154,12 +159,17 @@
   <td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>class=select-list-list</td>
-  <td>*sonar-users*</td>
+  <td>waitForElementPresent</td>
+  <td>name=sonar-users</td>
+  <td></td>
 </tr>
 <tr>
   <td>click</td>
+  <td>name=sonar-users</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForElementNotPresent</td>
   <td>name=sonar-users</td>
   <td></td>
 </tr>
