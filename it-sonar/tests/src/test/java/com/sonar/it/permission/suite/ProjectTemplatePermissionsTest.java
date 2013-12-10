@@ -23,7 +23,7 @@ public class ProjectTemplatePermissionsTest {
   @BeforeClass
   public static void setUpProjects() {
     // To be replaced by the corresponding ws call to create the test template
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("create-permission-template-to-apply",
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("create-permission-template",
       "/selenium/permission/project-permissions/create-permission-template.html")
       .build();
     orchestrator.executeSelenese(selenese);

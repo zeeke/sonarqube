@@ -9,189 +9,189 @@
 <table cellpadding="1" cellspacing="1" border="1">
   <tbody>
   <tr>
-  <td>store</td>
-  <td>template-to-apply</td>
-  <td>TEMPLATE_NAME</td>
+	<td>store</td>
+	<td>template-to-apply</td>
+	<td>TEMPLATE_NAME</td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>/sonar/sessions/logout</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>/sonar/permission_templates</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/permission_templates</td>
+	<td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>login</td>
-  <td>admin</td>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>password</td>
-  <td>admin</td>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>commit</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>create-link-permission-template</td>
-  <td></td>
+	<td>click</td>
+	<td>create-link-permission-template</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForVisible</td>
-  <td>name</td>
-  <td></td>
+	<td>waitForVisible</td>
+	<td>name</td>
+	<td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>name</td>
-  <td>${TEMPLATE_NAME}</td>
+	<td>type</td>
+	<td>name</td>
+	<td>${TEMPLATE_NAME}</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>submit-permission-template-create</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>submit-permission-template-create</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForVisible</td>
-  <td>permission-templates</td>
-  <td></td>
+	<td>waitForVisible</td>
+	<td>permission-templates</td>
+	<td></td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>permission-templates</td>
-  <td>glob:*${TEMPLATE_NAME}*</td>
+	<td>assertText</td>
+	<td>permission-templates</td>
+	<td>glob:*${TEMPLATE_NAME}*</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//a[starts-with(@id, 'select-u-admin-${TEMPLATE_NAME}')]</td>
-  <td></td>
+	<td>click</td>
+	<td>//a[starts-with(@id, 'select-u-admin-${TEMPLATE_NAME}')]</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>id=modal</td>
-  <td>*Edit Permission*</td>
+	<td>waitForText</td>
+	<td>id=modal</td>
+	<td>*Edit Permission*</td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>name=deselected</td>
-  <td></td>
+	<td>waitForElementPresent</td>
+	<td>name=deselected</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>name=deselected</td>
-  <td></td>
+	<td>click</td>
+	<td>name=deselected</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>name=Administrator</td>
-  <td></td>
+	<td>waitForElementPresent</td>
+	<td>name=Administrator</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>name=Administrator</td>
-  <td></td>
+	<td>click</td>
+	<td>name=Administrator</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForElementNotPresent</td>
-  <td>name=Administrator</td>
-  <td></td>
+	<td>waitForElementNotPresent</td>
+	<td>name=Administrator</td>
+	<td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Close</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>link=Close</td>
+	<td></td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>//span[starts-with(@id, 'u-admin-${TEMPLATE_NAME}')]</td>
-  <td>Administrator</td>
+	<td>waitForText</td>
+	<td>//span[starts-with(@id, 'u-admin-${TEMPLATE_NAME}')]</td>
+	<td>Administrator</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//a[starts-with(@id, 'select-g-user-${TEMPLATE_NAME}')]</td>
-  <td></td>
+	<td>click</td>
+	<td>//a[starts-with(@id, 'select-g-user-${TEMPLATE_NAME}')]</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>id=modal</td>
-  <td>*Edit Permission*</td>
+	<td>waitForText</td>
+	<td>id=modal</td>
+	<td>*Edit Permission*</td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>name=deselected</td>
-  <td></td>
+	<td>waitForElementPresent</td>
+	<td>name=deselected</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>name=deselected</td>
-  <td></td>
+	<td>click</td>
+	<td>name=deselected</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>name=sonar-users</td>
-  <td></td>
+	<td>waitForElementPresent</td>
+	<td>name=sonar-users</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>name=sonar-users</td>
-  <td></td>
+	<td>click</td>
+	<td>name=sonar-users</td>
+	<td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Close</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>link=Close</td>
+	<td></td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>//span[starts-with(@id, 'g-user-${TEMPLATE_NAME}')]</td>
-  <td>sonar-users</td>
+	<td>waitForText</td>
+	<td>//span[starts-with(@id, 'g-user-${TEMPLATE_NAME}')]</td>
+	<td>sonar-users</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//a[starts-with(@id, 'select-g-codeviewer-${TEMPLATE_NAME}')]</td>
-  <td></td>
+	<td>click</td>
+	<td>//a[starts-with(@id, 'select-g-codeviewer-${TEMPLATE_NAME}')]</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>id=modal</td>
-  <td>*Edit Permission*</td>
+	<td>waitForText</td>
+	<td>id=modal</td>
+	<td>*Edit Permission*</td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>name=deselected</td>
-  <td></td>
+	<td>waitForElementPresent</td>
+	<td>name=deselected</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>name=deselected</td>
-  <td></td>
+	<td>click</td>
+	<td>name=deselected</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>name=Anyone</td>
-  <td></td>
+	<td>waitForElementPresent</td>
+	<td>name=Anyone</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>name=Anyone</td>
-  <td></td>
+	<td>click</td>
+	<td>name=Anyone</td>
+	<td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Close</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>link=Close</td>
+	<td></td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>//span[starts-with(@id, 'g-codeviewer-${TEMPLATE_NAME}')]</td>
-  <td>Anyone</td>
+	<td>waitForText</td>
+	<td>//span[starts-with(@id, 'g-codeviewer-${TEMPLATE_NAME}')]</td>
+	<td>Anyone</td>
 </tr>
 </tbody>
 </table>
