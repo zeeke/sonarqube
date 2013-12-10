@@ -23,7 +23,6 @@ public class ServerProfilingLogsTest {
   public void should_disable_profiling_logs() throws FileNotFoundException, IOException {
     String serverLogs = startServerDoQueryThenStopAndGetLogs("NONE");
     assertThat(serverLogs).doesNotContain("[http]");
-    assertThat(serverLogs).doesNotContain("[rails]");
     assertThat(serverLogs).doesNotContain("[es]");
   }
 
@@ -31,7 +30,6 @@ public class ServerProfilingLogsTest {
   public void should_enable_basic_profiling_logs() throws FileNotFoundException, IOException {
     String serverLogs = startServerDoQueryThenStopAndGetLogs("BASIC");
     assertThat(serverLogs).contains("[http]");
-    assertThat(serverLogs).doesNotContain("[rails]");
     assertThat(serverLogs).doesNotContain("[es]");
   }
 
@@ -39,7 +37,6 @@ public class ServerProfilingLogsTest {
   public void should_enable_full_profiling_logs() throws FileNotFoundException, IOException {
     String serverLogs = startServerDoQueryThenStopAndGetLogs("FULL");
     assertThat(serverLogs).contains("[http]");
-    assertThat(serverLogs).contains("[rails]");
     assertThat(serverLogs).contains("[es]");
   }
 
