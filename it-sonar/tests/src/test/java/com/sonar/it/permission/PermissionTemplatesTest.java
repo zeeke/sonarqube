@@ -131,8 +131,8 @@ public class PermissionTemplatesTest {
       BuildResult result = orchestrator.executeBuildQuietly(sonarRunnerBuild);
       assertThat(result.getStatus()).isNotEqualTo(0);
       assertThat(result.getLogs()).contains(
-        "The following permission templates have a key pattern that matches the 'com.match.MyProject' key: 'my-template-with-pattern-1', 'my-template-with-pattern-2'. "
-          + "The administrator must update them to make sure that only one permission template can be selected for foo.project component.");
+        "The \"com.match.MyProject\" key matches multiple permission templates: \"my-template-with-pattern-1\", \"my-template-with-pattern-2\". "
+          + "A system administrator must update these templates so that only one of them matches the key.");
     } finally {
       orchestrator.getServer().adminWsClient().userClient().deactivate("userA");
     }
