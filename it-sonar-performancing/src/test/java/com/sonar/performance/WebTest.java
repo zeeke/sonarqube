@@ -16,6 +16,9 @@ import org.junit.Test;
 import static org.junit.Assert.fail;
 
 public class WebTest extends PerfTestCase {
+
+  static final int DEFAULT_PAGE_TIMEOUT_MS = 800;
+
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
     .restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-3.6.xml"))
@@ -34,19 +37,19 @@ public class WebTest extends PerfTestCase {
   @Test
   public void homepage() throws Exception {
     PageStats counters = request("/");
-    assertDurationLessThan(counters.durationMs, 100);
+    assertDurationLessThan(counters.durationMs, 200);
   }
 
   @Test
   public void quality_profiles() throws Exception {
     PageStats counters = request("/profiles");
-    assertDurationLessThan(counters.durationMs, 350);
+    assertDurationLessThan(counters.durationMs, DEFAULT_PAGE_TIMEOUT_MS);
   }
 
   @Test
   public void issues_search() throws Exception {
     PageStats counters = request("/issues/search");
-    assertDurationLessThan(counters.durationMs, 150);
+    assertDurationLessThan(counters.durationMs, 200);
   }
 
   @Test
@@ -58,13 +61,13 @@ public class WebTest extends PerfTestCase {
   @Test
   public void all_projects() throws Exception {
     PageStats counters = request("/all_projects?qualifier=TRK");
-    assertDurationLessThan(counters.durationMs, 150);
+    assertDurationLessThan(counters.durationMs, 200);
   }
 
   @Test
   public void project_measures_search() throws Exception {
     PageStats counters = request("/measures/search?qualifiers[]=TRK");
-    assertDurationLessThan(counters.durationMs, 150);
+    assertDurationLessThan(counters.durationMs, 200);
   }
 
   @Test
@@ -76,38 +79,38 @@ public class WebTest extends PerfTestCase {
   @Test
   public void struts_dashboard() throws Exception {
     PageStats counters = request("/dashboard/index/org.apache.struts:struts-parent");
-    assertDurationLessThan(counters.durationMs, 150);
+    assertDurationLessThan(counters.durationMs, 200);
   }
 
   @Test
   public void struts_issues() throws Exception {
     PageStats counters = request("/issues/search?componentRoots=org.apache.struts:struts-parent");
-    assertDurationLessThan(counters.durationMs, 150);
+    assertDurationLessThan(counters.durationMs, 200);
   }
 
   @Test
   public void struts_issues_drilldown() throws Exception {
     PageStats counters = request("/drilldown/issues/org.apache.struts:struts-parent");
-    assertDurationLessThan(counters.durationMs, 150);
+    assertDurationLessThan(counters.durationMs, 200);
   }
 
   @Test
   public void struts_measures_drilldown() throws Exception {
     PageStats counters = request("/drilldown/measures/org.apache.struts:struts-parent?metric=ncloc");
     // sounds too high !
-    assertDurationLessThan(counters.durationMs, 750);
+    assertDurationLessThan(counters.durationMs, DEFAULT_PAGE_TIMEOUT_MS);
   }
 
   @Test
   public void struts_cloud() throws Exception {
     PageStats counters = request("/cloud/index/org.apache.struts:struts-parent");
-    assertDurationLessThan(counters.durationMs, 500);
+    assertDurationLessThan(counters.durationMs, DEFAULT_PAGE_TIMEOUT_MS);
   }
 
   @Test
   public void struts_hotspot() throws Exception {
     PageStats counters = request("/dashboard/index/org.apache.struts:struts-parent?name=Hotspots");
-    assertDurationLessThan(counters.durationMs, 400);
+    assertDurationLessThan(counters.durationMs, DEFAULT_PAGE_TIMEOUT_MS);
   }
 
   @Test
