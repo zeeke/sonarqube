@@ -44,6 +44,7 @@ public class IssuePermissionTest {
     SonarRunner sampleProject2 = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .withoutDynamicAnalysis()
       .setProperty("sonar.projectKey", "sample2")
+      .setProperty("sonar.projectName", "Sample2")
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(sampleProject2);
   }
@@ -84,7 +85,6 @@ public class IssuePermissionTest {
     SonarClient client = orchestrator.getServer().adminWsClient();
 
     String withBrowsePermission = "with-browse-permission";
-    ;
     String withoutBrowsePermission = "without-browse-permission";
 
     try {
@@ -117,11 +117,10 @@ public class IssuePermissionTest {
   @Test
   public void need_user_permission_on_project_to_see_issue_changelog() {
     SonarClient client = orchestrator.getServer().adminWsClient();
-    Issue issue = client.issueClient().find(IssueQuery.create()).list().get(0);
+    Issue issue = client.issueClient().find(IssueQuery.create().componentRoots("sample")).list().get(0);
     client.issueClient().assign(issue.key(), "admin");
 
     String withBrowsePermission = "with-browse-permission";
-    ;
     String withoutBrowsePermission = "without-browse-permission";
 
     try {
