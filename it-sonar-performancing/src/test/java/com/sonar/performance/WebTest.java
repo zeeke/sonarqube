@@ -73,7 +73,7 @@ public class WebTest extends PerfTestCase {
   @Test
   public void file_measures_search() throws Exception {
     PageStats counters = request("/measures/search?qualifiers[]=FIL");
-    assertDurationLessThan(counters.durationMs, 350);
+    assertDurationLessThan(counters.durationMs, 500);
   }
 
   @Test
