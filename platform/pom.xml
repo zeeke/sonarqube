@@ -249,7 +249,8 @@
     <!-- must be declared first -->
     <dependency>
       <groupId>com.sonarsource.orchestrator</groupId>
-      2.11.3
+      <artifactId>sonar-orchestrator</artifactId>
+      <version>2.11.2</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
