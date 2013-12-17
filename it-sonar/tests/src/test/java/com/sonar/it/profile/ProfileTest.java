@@ -15,7 +15,6 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -90,7 +89,7 @@ public class ProfileTest {
   }
 
   @Test
-  public void should_project_association() {
+  public void associate_profile_to_project() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
