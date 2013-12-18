@@ -22,6 +22,7 @@ import org.sonar.wsclient.services.AuthenticationQuery;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.UserPropertyCreateQuery;
 import org.sonar.wsclient.services.UserPropertyQuery;
+import org.sonar.wsclient.user.UserParameters;
 
 import java.util.Map;
 
@@ -76,7 +77,7 @@ public class ExternalSecurityTest {
     updateUsers(users);
     // Then
     assertThat("User created in Sonar",
-        loginAttempt(username, password), is(AUTHORIZED));
+      loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details",
       "/selenium/user/external-security/external-user-details.html").build());
@@ -105,7 +106,7 @@ public class ExternalSecurityTest {
     updateUsers(users);
     // Then
     assertThat("User created in Sonar",
-        loginAttempt(username, password), is(AUTHORIZED));
+      loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details",
       "/selenium/user/external-security/external-user-details.html").build());
@@ -116,7 +117,7 @@ public class ExternalSecurityTest {
     updateUsers(users);
     // Then
     assertThat("User created in Sonar",
-        loginAttempt(username, password), is(AUTHORIZED));
+      loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups updated
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details2",
       "/selenium/user/external-security/external-user-details2.html").build());
@@ -141,7 +142,7 @@ public class ExternalSecurityTest {
     updateUsers(users);
     // Then
     assertThat("User created in Sonar",
-        loginAttempt(username, password), is(AUTHORIZED));
+      loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details",
       "/selenium/user/external-security/external-user-details.html").build());
@@ -152,7 +153,7 @@ public class ExternalSecurityTest {
     updateUsers(users);
     // Then
     assertThat("User created in Sonar",
-        loginAttempt(username, password), is(AUTHORIZED));
+      loginAttempt(username, password), is(AUTHORIZED));
     // with external details and groups not updated
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("external-user-details",
       "/selenium/user/external-security/external-user-details.html").build());
@@ -174,7 +175,7 @@ public class ExternalSecurityTest {
     updateUsers(users);
     // Then
     assertThat("User created in Sonar",
-        loginAttempt(login, oldPassword), is(AUTHORIZED));
+      loginAttempt(login, oldPassword), is(AUTHORIZED));
 
     // When new external password was set
     String newPassword = "7654321";
@@ -182,22 +183,22 @@ public class ExternalSecurityTest {
     updateUsers(users);
     // Then
     assertThat("New password works",
-        loginAttempt(login, newPassword), is(AUTHORIZED));
+      loginAttempt(login, newPassword), is(AUTHORIZED));
     assertThat("Old password does not work",
-        loginAttempt(login, oldPassword), is(NOT_AUTHORIZED));
+      loginAttempt(login, oldPassword), is(NOT_AUTHORIZED));
     assertThat("Wrong password does not work",
-        loginAttempt(login, "wrong"), is(NOT_AUTHORIZED));
+      loginAttempt(login, "wrong"), is(NOT_AUTHORIZED));
 
     // When external system does not work
     users.remove(login + ".password");
     updateUsers(users);
     // Then
     assertThat("New password works (fallback)",
-        loginAttempt(login, newPassword), is(AUTHORIZED));
+      loginAttempt(login, newPassword), is(AUTHORIZED));
     assertThat("Old password does not work",
-        loginAttempt(login, oldPassword), is(NOT_AUTHORIZED));
+      loginAttempt(login, oldPassword), is(NOT_AUTHORIZED));
     assertThat("Wrong password does not work",
-        loginAttempt(login, "wrong"), is(NOT_AUTHORIZED));
+      loginAttempt(login, "wrong"), is(NOT_AUTHORIZED));
   }
 
   /**
@@ -216,14 +217,71 @@ public class ExternalSecurityTest {
     updateUsers(users);
     // Then
     assertThat("User created in Sonar",
-        loginAttempt(login, password), is(AUTHORIZED));
+      loginAttempt(login, password), is(AUTHORIZED));
 
     // When external system does not work
     users.remove(login + ".password");
     updateUsers(users);
     // Then
     assertThat("User can't login",
-        loginAttempt(login, password), is(NOT_AUTHORIZED));
+      loginAttempt(login, password), is(NOT_AUTHORIZED));
+  }
+
+  /**
+   * SONAR-4543
+   */
+  @Test
+  public void shouldNotAccessExternalSystemForLocalAccounts() {
+    // Given clean Sonar installation and no users in external system
+    start(ImmutableMap.of("sonar.security.realm", "FakeRealm", "sonar.security.savePassword", "false"));
+    String login = "localuser";
+    String localPassword = "1234567";
+    String remotePassword = "7654321";
+    Map<String, String> users = Maps.newHashMap();
+
+    // When user created in external system
+    users.put(login + ".password", remotePassword);
+    updateUsers(users);
+    // And user exists in local database
+    orchestrator.getServer().adminWsClient().userClient().create(UserParameters.create().login(login).name(login).password(localPassword).passwordConfirmation(localPassword));
+
+    // Then this is external system that should be used
+    assertThat("User authenticated by external system",
+      loginAttempt(login, remotePassword), is(AUTHORIZED));
+    assertThat("User not authenticated by local DB",
+      loginAttempt(login, localPassword), is(NOT_AUTHORIZED));
+
+    // Now set this user as technical account
+    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.security.localUsers", "admin," + login));
+
+    // Then this is local DB that should be used
+    assertThat("User not authenticated by external system",
+      loginAttempt(login, remotePassword), is(NOT_AUTHORIZED));
+    assertThat("User authenticated by local DB",
+      loginAttempt(login, localPassword), is(AUTHORIZED));
+  }
+
+  /**
+   * SONAR-4543
+   */
+  @Test
+  public void adminIsLocalAccountByDefault() {
+    // Given clean Sonar installation and no users in external system
+    start(ImmutableMap.of("sonar.security.realm", "FakeRealm", "sonar.security.savePassword", "false"));
+    String login = "admin";
+    String localPassword = "admin";
+    String remotePassword = "nimda";
+    Map<String, String> users = Maps.newHashMap();
+
+    // When admin created in external system with a different password
+    users.put(login + ".password", remotePassword);
+    updateUsers(users);
+
+    // Then this is local DB that should be used
+    assertThat("Admin not authenticated by external system",
+      loginAttempt(login, remotePassword), is(NOT_AUTHORIZED));
+    assertThat("Admin authenticated by local DB",
+      loginAttempt(login, localPassword), is(AUTHORIZED));
   }
 
   /**
@@ -240,16 +298,16 @@ public class ExternalSecurityTest {
     // When user not exists in external system
     // Then
     assertThat("User not created in Sonar",
-        loginAttempt(username, password), is(NOT_AUTHORIZED));
+      loginAttempt(username, password), is(NOT_AUTHORIZED));
 
     // When user created in external system
     users.put(username + ".password", password);
     updateUsers(users);
     // Then
     assertThat("User created in Sonar",
-        loginAttempt(username, password), is(AUTHORIZED));
+      loginAttempt(username, password), is(AUTHORIZED));
     assertThat("Wrong password does not work",
-        loginAttempt(username, "wrong"), is(NOT_AUTHORIZED));
+      loginAttempt(username, "wrong"), is(NOT_AUTHORIZED));
   }
 
   /**
@@ -266,14 +324,14 @@ public class ExternalSecurityTest {
     // When user not exists in external system
     // Then
     assertThat("User not created in Sonar",
-        loginAttempt(username, password), is(NOT_AUTHORIZED));
+      loginAttempt(username, password), is(NOT_AUTHORIZED));
 
     // When user created in external system
     users.put(username + ".password", password);
     updateUsers(users);
     // Then
     assertThat("User not created in Sonar",
-        loginAttempt(username, password), is(NOT_AUTHORIZED));
+      loginAttempt(username, password), is(NOT_AUTHORIZED));
   }
 
   // SONAR-3258
@@ -294,7 +352,7 @@ public class ExternalSecurityTest {
     updateUsers(users);
     // check that the deleted/deactivated user "tester" has been reactivated and can now log in
     assertThat("User created in Sonar",
-        loginAttempt(login, password), is(AUTHORIZED));
+      loginAttempt(login, password), is(AUTHORIZED));
   }
 
   @Test
