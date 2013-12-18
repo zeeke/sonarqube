@@ -217,7 +217,7 @@ public class ProfileTest {
    */
   @Test
   public void should_not_delete_all_associations_when_deleting_a_profile() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java.xml"));
+    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/backup.xml")));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
