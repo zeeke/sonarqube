@@ -64,7 +64,35 @@ public class NewTechnicalDebtMeasureTest {
   }
 
   @Test
-  public void new_technical_debt_measures_from_technical_debt_update() throws Exception {
+  public void new_technical_debt_measures_from_technical_debt_update_since_previous_analysis() throws Exception {
+    // This test assumes that period 1 is "since previous analysis" and 2 is "over 30 days"
+
+    // Execute twice analysis
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-file.xml"));
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).setProfile("one-issue-per-file"));
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).setProfile("one-issue-per-file"));
+
+    // Third analysis, existing issues on OneIssuePerFile will have their technical debt updated with the effort to fix
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-file")
+      .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
+
+    Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    List<Measure> measures = newTechnicalDebt.getMeasures();
+    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
+
+    // Fourth analysis, with exactly the same profile -> no new issues so no new technical debt since previous analysis
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-file")
+      .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
+
+    newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    measures = newTechnicalDebt.getMeasures();
+    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0d);
+  }
+
+  @Test
+  public void new_technical_debt_measures_from_technical_debt_update_since_30_days() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
 
     // Execute an analysis in the past to have a past snapshot without any issues
@@ -83,7 +111,6 @@ public class NewTechnicalDebtMeasureTest {
 
     Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     List<Measure> measures = newTechnicalDebt.getMeasures();
-    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
     assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
 
     // Fourth analysis, with exactly the same profile -> no new issues so no new technical debt since previous analysis but still since 30 days
@@ -93,7 +120,6 @@ public class NewTechnicalDebtMeasureTest {
 
     newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     measures = newTechnicalDebt.getMeasures();
-    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0d);
     assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
   }
 

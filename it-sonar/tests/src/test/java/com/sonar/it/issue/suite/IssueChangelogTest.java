@@ -42,8 +42,7 @@ public class IssueChangelogTest extends AbstractIssueTestCase {
     assertThat(changes).hasSize(1);
     IssueChange change = changes.get(0);
     assertThat(change.user()).isEqualTo("admin");
-    assertThat(change.createdAt()).isNotNull();
-    assertThat(change.updatedAt()).isNotNull();
+//    assertThat(change.creationDate()).isNotNull();
     assertThat(change.diffs()).hasSize(1);
     IssueChangeDiff changeDiff = change.diffs().get(0);
     assertThat(changeDiff.key()).isEqualTo("assignee");
@@ -65,8 +64,7 @@ public class IssueChangelogTest extends AbstractIssueTestCase {
     // Change done by the user (first change is be the oldest one)
     IssueChange change1 = changes.get(0);
     assertThat(change1.user()).isEqualTo("admin");
-    assertThat(change1.createdAt()).isNotNull();
-    assertThat(change1.updatedAt()).isNotNull();
+//    assertThat(change1.creationDate()).isNotNull();
     assertThat(change1.diffs()).hasSize(2);
 
     IssueChangeDiff change1Diff1 = change1.diffs().get(0);
@@ -82,8 +80,7 @@ public class IssueChangelogTest extends AbstractIssueTestCase {
     // Change done by scan
     IssueChange change2 = changes.get(1);
     assertThat(change2.user()).isNull();
-    assertThat(change2.createdAt()).isNotNull();
-    assertThat(change2.updatedAt()).isNotNull();
+//    assertThat(change2.creationDate()).isNotNull();
     assertThat(change2.diffs()).hasSize(2);
 
     IssueChangeDiff changeDiff1 = change2.diffs().get(0);
