@@ -189,7 +189,7 @@ public class NotificationsTest {
    */
   @Test
   public void notifications_for_bulk_change_from_console() throws Exception {
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_change_from_console",
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("notifications_for_bulk_change_from_console",
       "/selenium/issue/notification/bulk-change.html"
       ).build());
 
