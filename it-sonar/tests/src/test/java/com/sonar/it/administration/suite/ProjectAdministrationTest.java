@@ -13,6 +13,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.connectors.ConnectionException;
 import org.sonar.wsclient.services.ProjectDeleteQuery;
@@ -255,8 +256,10 @@ public class ProjectAdministrationTest {
   /**
    * SONAR-3956
    * SONAR-4827
+   * Disabled because of false-positives -> require permissions WS (or loading spinner ?)
    */
   @Test
+  @Ignore
   public void manage_permissions() {
     scanSample();
 
@@ -271,8 +274,10 @@ public class ProjectAdministrationTest {
 
   /**
    * SONAR-4050
+   * Disabled because of false-positives -> require permissions WS (or loading spinner ?)
    */
   @Test
+  @Ignore
   public void do_not_reset_default_project_roles() {
     scanSample();
 

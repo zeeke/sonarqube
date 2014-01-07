@@ -13,6 +13,7 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.user.UserParameters;
 
@@ -67,8 +68,10 @@ public class PermissionTemplatesTest {
   /**
    * SONAR-4465
    * SONAR-4466
+   * Disabled because of false-positives -> require permissions WS (or loading spinner ?)
    */
   @Test
+  @Ignore
   public void grant_permissions() {
     SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .withoutDynamicAnalysis();
