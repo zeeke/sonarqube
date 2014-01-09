@@ -187,16 +187,17 @@ public class BatchTest {
   }
 
   /**
-   * SONAR-3315
+   * SONAR-3024
    */
   @Test
-  public void should_display_explicit_message_when_duplicate_source_files() {
-    BuildResult buildResult = scanQuietly("batch/duplicate-source");
+  public void should_support_source_files_with_same_deprecated_key() {
+    scan("batch/duplicate-source");
 
-    assertThat(buildResult.getStatus()).isEqualTo(1);
-    assertThat(buildResult.getLogs()).contains("Duplicate source for resource");
-    // and check that the reference to the "real" file is present
-    assertThat(buildResult.getLogs()).contains("org/sonar/tests/ClassOne.xoo");
+    Sonar sonar = orchestrator.getServer().getAdminWsClient();
+    Resource project = sonar.find(new ResourceQuery("com.sonarsource.it.projects.batch:duplicate-source").setMetrics("files", "directories"));
+    // 2 main files and 1 test file all with same deprecated key
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
+    assertThat(project.getMeasureIntValue("directories")).isEqualTo(3);
   }
 
   /**
