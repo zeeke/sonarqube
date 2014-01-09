@@ -42,7 +42,7 @@ public class FileExclusionsTest {
 
     assertThat(project.getMeasureIntValue("ncloc")).isEqualTo(60);
     assertThat(project.getMeasureIntValue("files")).isEqualTo(4);
-    assertThat(project.getMeasureIntValue("directories")).isEqualTo(2);
+    assertThat(project.getMeasureIntValue("directories")).isEqualTo(3);
   }
 
   /**

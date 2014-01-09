@@ -43,13 +43,13 @@ public class PurgeTest {
 
     // count components
     assertThat(count("projects where qualifier in ('TRK','BRC')")).as("Wrong number of projects").isEqualTo(4);
-    assertThat(count("projects where qualifier in ('PAC')")).as("Wrong number of packages").isEqualTo(31);
+    assertThat(count("projects where qualifier in ('PAC')")).as("Wrong number of packages").isEqualTo(40);
     assertThat(count("projects where qualifier in ('CLA')")).as("Wrong number of files").isEqualTo(320);
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
 
     int measuresOnTrk = 199;
     int measuresOnBrc = 456;
-    int measuresOnPac = 2619;
+    int measuresOnPac = 2754;
     int measuresOnCla = 14683;
     int measuresOnUts = 28;
 
@@ -83,7 +83,7 @@ public class PurgeTest {
 
     int newMeasuresOnTrk = 143;
     int newMeasuresOnBrc = 356;
-    int newMeasuresOnPac = 531;
+    int newMeasuresOnPac = 594;
     int newMeasuresOnCla = 0;
     int newMeasuresOnUts = 0;
 
@@ -96,7 +96,7 @@ public class PurgeTest {
     // Measures on new_* metrics should be recorded
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
       .as("Wrong number of measure of new_ metrics")
-      .isEqualTo(735);
+      .isEqualTo(798);
 
     // added measures relate to project and new_* metrics
     expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnPac + newMeasuresOnCla + newMeasuresOnUts;
