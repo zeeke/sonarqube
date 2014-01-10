@@ -74,6 +74,39 @@ public class IncrementalModeTest {
     assertThat(ItUtils.countIssuesInJsonReport(result, true)).isEqualTo(2 + 5);
   }
 
+  // SONAR-4985
+  @Test
+  public void test_incremental_mode_on_branch() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+    // First regular analysis
+    String profileName = "one-issue-per-line";
+    SonarRunner runner = configureRunner("batch/incremental/xoo-sample-v1")
+      .setProperty("sonar.branch", "my-branch")
+      .setProfile(profileName);
+    orchestrator.executeBuild(runner);
+
+    Issues issues = orchestrator.getServer().adminWsClient().issueClient().find(IssueQuery.create().componentRoots("incremental:my-branch"));
+    assertThat(issues.size()).isEqualTo(13 + 20);
+
+    runner = configureRunner("batch/incremental/xoo-sample-v1",
+      "sonar.analysis.mode", "incremental")
+      .setProperty("sonar.branch", "my-branch")
+      .setProfile(profileName);
+    BuildResult result = orchestrator.executeBuild(runner);
+    assertThat(ItUtils.countIssuesInJsonReport(result, false)).isEqualTo(0);
+
+    runner = configureRunner("batch/incremental/xoo-sample-v2",
+      "sonar.analysis.mode", "incremental")
+      .setProperty("sonar.branch", "my-branch")
+      .setProfile(profileName);
+    result = orchestrator.executeBuild(runner);
+    // 2 new lines in Sample2 -> 20 old issues + 2 new issues
+    // New Sample3 -> 5 new issues
+    // Sample1 unmodified
+    assertThat(ItUtils.countIssuesInJsonReport(result, false)).isEqualTo(20 + 2 + 5);
+    assertThat(ItUtils.countIssuesInJsonReport(result, true)).isEqualTo(2 + 5);
+  }
+
   private SonarRunner configureRunner(String projectPath, String... props) {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
       .setProperties(props);
