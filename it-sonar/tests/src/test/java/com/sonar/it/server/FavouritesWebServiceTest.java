@@ -19,7 +19,9 @@ import org.sonar.wsclient.services.FavouriteQuery;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class FavouritesWebServiceTest {
@@ -52,13 +54,13 @@ public class FavouritesWebServiceTest {
     favourites = adminWsClient.findAll(new FavouriteQuery());
     assertThat(favourites.size(), is(2));
     assertThat(favourites.get(0).getKey(), is("com.sonarsource.it.samples:simple-sample"));
-    assertThat(favourites.get(1).getKey(), is("com.sonarsource.it.samples:simple-sample:sample.Sample"));
+    assertThat(favourites.get(1).getKey(), is("com.sonarsource.it.samples:simple-sample:/src/main/java/sample/Sample.java"));
 
     // DELETE (a favourite)
     adminWsClient.delete(new FavouriteDeleteQuery("com.sonarsource.it.samples:simple-sample"));
     favourites = adminWsClient.findAll(new FavouriteQuery());
     assertThat(favourites.size(), is(1));
-    assertThat(favourites.get(0).getKey(), is("com.sonarsource.it.samples:simple-sample:sample.Sample"));
+    assertThat(favourites.get(0).getKey(), is("com.sonarsource.it.samples:simple-sample:/src/main/java/sample/Sample.java"));
   }
 
 }
