@@ -17,7 +17,6 @@ import org.sonar.wsclient.services.ResourceQuery;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Delta.delta;
 
-
 public class CoverageExclusionsTest {
 
   @ClassRule
@@ -45,7 +44,7 @@ public class CoverageExclusionsTest {
   @Test
   public void should_ignore_coverage_on_full_path() {
     scan("exclusions/java-half-covered",
-      "sonar.coverage.exclusions", "org/sonar/tests/halfcovered/UnCovered.java");
+      "sonar.coverage.exclusions", "src/main/java/org/sonar/tests/halfcovered/UnCovered.java");
 
     Resource project = getResourceForCoverage("com.sonarsource.it.exclusions:java-half-covered");
     assertThat(project.getMeasureValue("coverage")).isEqualTo(100.0);
@@ -87,6 +86,6 @@ public class CoverageExclusionsTest {
   }
 
   private Resource getResourceForCoverage(String componentKey) {
-   return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(componentKey, "coverage"));
+    return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(componentKey, "coverage"));
   }
 }
