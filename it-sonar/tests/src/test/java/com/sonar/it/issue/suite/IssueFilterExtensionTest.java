@@ -35,10 +35,9 @@ public class IssueFilterExtensionTest extends AbstractIssueTestCase {
 
     MavenBuild scan = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
       .setCleanSonarGoals()
-      .setProperties("sonar.exclusions", "**/HelloA1")
+      .setProperties("sonar.exclusions", "**/HelloA1.java")
       .setProfile("issues");
     orchestrator.executeBuild(scan);
-
 
     Issues issues = search(IssueQuery.create());
     assertThat(issues.list()).isNotEmpty();
