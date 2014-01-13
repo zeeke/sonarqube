@@ -46,7 +46,7 @@ public class ScanTest extends PerfTestCase {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 9300L);
+    assertDurationLessThan(duration, 12000L);
   }
 
   @Test
@@ -68,7 +68,7 @@ public class ScanTest extends PerfTestCase {
     long secondDuration = System.currentTimeMillis() - start;
     System.out.println("Second preview analysis: " + secondDuration + "ms");
 
-    assertDurationAround(secondDuration, 9800L);
+    assertDurationLessThan(secondDuration, 12000L);
   }
 
   @Test

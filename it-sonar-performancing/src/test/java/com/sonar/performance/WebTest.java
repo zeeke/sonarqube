@@ -129,8 +129,9 @@ public class WebTest extends PerfTestCase {
     String url = orchestrator.getServer().getUrl() + path;
 
     // warm server
-    newRequest(url).code();
-    newRequest(url).code();
+    for (int i = 0; i < 5; i++) {
+      newRequest(url).code();
+    }
 
     HttpRequest request = newRequest(url);
     long start = System.currentTimeMillis();
