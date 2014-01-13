@@ -10,24 +10,26 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+@Ignore("Need a milestone of SQ API because custom-metric-plugin rely on new API")
 public class CustomMetricTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.locateTestPlugin("custom-metric-plugin"))
-      .build();
+    .addPlugin(ItUtils.locateTestPlugin("custom-metric-plugin"))
+    .build();
 
   @Test
   public void custom_formula_should_be_executed() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/custom-metric"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false");
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false");
 
     orchestrator.executeBuild(build);
 
@@ -39,13 +41,13 @@ public class CustomMetricTest {
   @Test
   public void useful_error_when_unable_to_save_measure() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/custom-metric"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false")
-        .setProperty("sonar.it.failingMeasure", "true");
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setProperty("sonar.it.failingMeasure", "true");
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
 
-    assertThat(result.getLogs()).contains("Unable to save measure for metric [custom] on resource [[default].Break]");
+    assertThat(result.getLogs()).contains("Unable to save measure for metric [custom] on resource [/src/main/java/Break.java]");
   }
 
   private void checkFiles() {
