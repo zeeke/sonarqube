@@ -18,9 +18,7 @@ import org.sonar.wsclient.services.Rule;
 import org.sonar.wsclient.services.RuleParam;
 import org.sonar.wsclient.services.RuleQuery;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class RulesTest {
@@ -44,7 +42,8 @@ public class RulesTest {
 
   @Test
   public void test_search_rules() {
-    orchestrator.restoreDefaultSettings();
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/rule/RulesTest/Sonar_way_java-profile.xml"));
+
     Selenese selenese = Selenese
       .builder()
       .setHtmlTestsInClasspath("search-rules",
@@ -53,7 +52,6 @@ public class RulesTest {
         "/selenium/rule/search-rules/rule_search_verify_form_values_on_first_call.html",
         // SONAR-3936
         "/selenium/rule/search-rules/search_and_display_inactive_rules.html",
-        "/selenium/rule/search-rules/search_any_rules.html",
         // SONAR-3966
         "/selenium/rule/search-rules/search_by_plugin.html",
         "/selenium/rule/search-rules/search_by_rule_priority.html",

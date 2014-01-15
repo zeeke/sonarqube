@@ -14,86 +14,86 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/profiles</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>rules-java-Sonar%20way</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>removeAllSelections</td>
-        <td>search_repository</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>addSelection</td>
-        <td>search_repository</td>
-        <td>label=Checkstyle</td>
-    </tr>
-    <tr>
-        <td>select</td>
-        <td>search_priority</td>
-        <td>label=Critical</td>
-    </tr>
-    <tr>
-        <td>addSelection</td>
-        <td>search_priority</td>
-        <td>label=Major</td>
-    </tr>
-    <tr>
-        <td>select</td>
-        <td>search_activation</td>
-        <td>label=Any</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>submit_search</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>result_table</td>
-        <td>*results*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>result_table</td>
-        <td>glob:*Abstract Class Name*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>result_table</td>
-        <td>glob:*Anon Inner Length*</td>
-    </tr>
-    <tr>
-        <td>select</td>
-        <td>search_activation</td>
-        <td>label=Inactive</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>submit_search</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>result_table</td>
-        <td>*results*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>result_table</td>
-        <td>glob:*Abstract Class Name*</td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>result_table</td>
-        <td>glob:*Anon Inner Length*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/profiles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>rules-java-Sonar%20way</td>
+	<td></td>
+</tr>
+<tr>
+	<td>removeAllSelections</td>
+	<td>search_repository</td>
+	<td></td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>search_repository</td>
+	<td>label=Checkstyle</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>search_priority</td>
+	<td>label=Critical</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>search_priority</td>
+	<td>label=Major</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>search_activation</td>
+	<td>label=Active</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>submit_search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>result_table</td>
+	<td>*results*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>result_table</td>
+	<td>glob:*Abstract Class Name*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>result_table</td>
+	<td>glob:*Anon Inner Length*</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>search_activation</td>
+	<td>label=Inactive</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>submit_search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>result_table</td>
+	<td>*results*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>result_table</td>
+	<td>glob:*Abstract Class Name*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>result_table</td>
+	<td>glob:*Anon Inner Length*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
