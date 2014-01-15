@@ -1,7 +1,7 @@
 {"version": "3.6-SNAPSHOT", "issues": [
   {
     "key": "abcde",
-    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut",
+    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:/src/SystemOut.java",
     "line": 18,
     "message": "System.out.print is used",
     "severity": "MAJOR",
@@ -13,7 +13,7 @@
   },
   {
     "key": "abcde",
-    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut",
+    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:/src/SystemOut.java",
     "line": 10,
     "message": "System.out.print is used",
     "severity": "MAJOR",
@@ -25,7 +25,7 @@
   },
   {
     "key": "abcde",
-    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut",
+    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:/src/SystemOut.java",
     "line": 14,
     "message": "System.out.print is used",
     "severity": "MAJOR",
@@ -37,7 +37,7 @@
   },
   {
     "key": "abcde",
-    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut",
+    "component": "com.sonarsource.it.samples:issue-tracking:mybranch:/src/SystemOut.java",
     "line": 22,
     "message": "System.out.print is used",
     "severity": "MAJOR",
@@ -49,7 +49,7 @@
   }
 ], "components": [
   {
-    "key": "com.sonarsource.it.samples:issue-tracking:mybranch:[default].SystemOut"
+    "key": "com.sonarsource.it.samples:issue-tracking:mybranch:/src/SystemOut.java"
   }
 ], "rules": [
   {
