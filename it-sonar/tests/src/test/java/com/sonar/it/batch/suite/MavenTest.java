@@ -34,11 +34,11 @@ public class MavenTest {
   @Test
   public void shouldSupportJarWithoutSources() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/project-with-module-without-sources"))
-        .setCleanSonarGoals();
+      .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient()
-        .find(ResourceQuery.create("com.sonarsource.it.samples.project-with-module-without-sources:project-with-module-without-sources"));
+      .find(ResourceQuery.create("com.sonarsource.it.samples.project-with-module-without-sources:project-with-module-without-sources"));
     assertThat(project.getName()).isEqualTo("Project with 1 module without sources");
   }
 
@@ -48,7 +48,7 @@ public class MavenTest {
   @Test
   public void shouldSupportJeeProjects() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/jee"))
-        .setGoals("clean install", "sonar:sonar");
+      .setGoals("clean install", "sonar:sonar");
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.jee:parent", "files"));
@@ -64,7 +64,7 @@ public class MavenTest {
   @Test
   public void shouldSupportMavenExtensions() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-extensions"))
-        .setCleanSonarGoals();
+      .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-extensions", "files"));
@@ -78,7 +78,7 @@ public class MavenTest {
   public void testBadMavenParameters() {
     // should not fail
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-parameters"))
-        .setCleanSonarGoals();
+      .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.maven-bad-parameters:parent", "files"));
@@ -88,8 +88,8 @@ public class MavenTest {
   @Test
   public void shouldAnalyzeMultiModules() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/modules-order"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false");
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     Sonar sonar = orchestrator.getServer().getWsClient();
@@ -98,10 +98,10 @@ public class MavenTest {
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:parent")).getName()).isEqualTo("Parent");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_a")).getName()).isEqualTo("Module A");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_a:[default].HelloA")).getName()).isEqualTo("HelloA");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_a:[default].HelloA")).getName()).isEqualTo("HelloA.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_b")).getName()).isEqualTo("Module B");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_b:[default].HelloB")).getName()).isEqualTo("HelloB");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_b:[default].HelloB")).getName()).isEqualTo("HelloB.java");
   }
 
   /**
@@ -110,27 +110,27 @@ public class MavenTest {
   @Test
   public void shouldSupportDifferentDeclarationsForModules() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/modules-declaration"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false");
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
     Sonar sonar = orchestrator.getServer().getWsClient();
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:root")).getName()).isEqualTo("Root");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_a")).getName()).isEqualTo("Module A");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_a:[default].HelloA")).getName()).isEqualTo("HelloA");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_a:[default].HelloA")).getName()).isEqualTo("HelloA.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_b")).getName()).isEqualTo("Module B");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_b:[default].HelloB")).getName()).isEqualTo("HelloB");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_b:[default].HelloB")).getName()).isEqualTo("HelloB.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_c")).getName()).isEqualTo("Module C");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_c:[default].HelloC")).getName()).isEqualTo("HelloC");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_c:[default].HelloC")).getName()).isEqualTo("HelloC.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d")).getName()).isEqualTo("Module D");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d:[default].HelloD")).getName()).isEqualTo("HelloD");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d:[default].HelloD")).getName()).isEqualTo("HelloD.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e")).getName()).isEqualTo("Module E");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e:[default].HelloE")).getName()).isEqualTo("HelloE");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e:[default].HelloE")).getName()).isEqualTo("HelloE.java");
   }
 
   /**
@@ -141,8 +141,8 @@ public class MavenTest {
   @Ignore("TODO should be migrated as it uses Cobertura")
   public void testMavenPluginConfiguration() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-plugin-configuration"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.java.coveragePlugin", "cobertura");
+      .setCleanSonarGoals()
+      .setProperty("sonar.java.coveragePlugin", "cobertura");
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-plugin-configuration", "coverage"));
@@ -152,8 +152,8 @@ public class MavenTest {
   @Test
   public void build_helper_plugin_should_add_dirs_when_dynamic_analysis() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
-        .setCleanPackageSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "true");
+      .setCleanPackageSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "true");
     orchestrator.executeBuild(build);
 
     checkBuildHelperFiles();
@@ -166,8 +166,8 @@ public class MavenTest {
   @Test
   public void build_helper_plugin_should_add_dirs_when_static_analysis() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false");
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     checkBuildHelperFiles();
@@ -179,22 +179,22 @@ public class MavenTest {
   @Test
   public void should_support_shade_with_dependency_reduced_pom_with_clean_install_sonar_goals() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/shade-with-dependency-reduced-pom"))
-        .setProperty("sonar.dynamicAnalysis", "false")
-        .setGoals("clean", "install", "sonar:sonar");
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setGoals("clean", "install", "sonar:sonar");
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isEqualTo(0);
     assertThat(result.getLogs()).doesNotContain(
-        "Unable to determine structure of project. Probably you use Maven Advanced Reactor Options, which is not supported by Sonar and should not be used.");
+      "Unable to determine structure of project. Probably you use Maven Advanced Reactor Options, which is not supported by Sonar and should not be used.");
   }
 
   @Test
   public void should_execute_maven_from_scan() throws Exception {
     MavenBuild scan = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-        .setProperty("sonar.dynamicAnalysis", "false")
-        .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setCleanSonarGoals()
 
-        // See the faux plugin "maven-execution-plugin"
-        .setProperty("showMavenCompilerHelp", "true");
+      // See the faux plugin "maven-execution-plugin"
+      .setProperty("showMavenCompilerHelp", "true");
     BuildResult result = orchestrator.executeBuild(scan);
     assertThat(result.getLogs()).contains("The Compiler Plugin is used to compile the sources");
   }
@@ -205,13 +205,13 @@ public class MavenTest {
   @Test
   public void should_prevent_analysis_of_module_then_project() {
     MavenBuild scan = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample/module_a"))
-        .setProperty("sonar.dynamicAnalysis", "false")
-        .setCleanSonarGoals();
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setCleanSonarGoals();
     orchestrator.executeBuild(scan);
 
     scan = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
-        .setProperty("sonar.dynamicAnalysis", "false")
-        .setCleanSonarGoals();
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setCleanSonarGoals();
     BuildResult result = orchestrator.executeBuildQuietly(scan);
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("The project 'com.sonarsource.it.samples:module_a' is already defined in SonarQube "

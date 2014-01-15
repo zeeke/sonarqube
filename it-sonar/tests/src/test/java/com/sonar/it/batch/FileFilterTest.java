@@ -9,7 +9,6 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.MavenLocation;
-import org.apache.commons.io.FileSystemUtils;
 import org.apache.commons.io.FileUtils;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -19,13 +18,10 @@ import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
-
 
 /**
  * The Cut-Off plugin is the first plugin which implements the extension point FileFilter.
@@ -58,6 +54,6 @@ public class FileFilterTest {
         .setAllDepths()
         .setScopes("FIL"));
     assertThat(files).hasSize(1);
-    assertThat(files.get(0).getName()).isEqualTo("Young");
+    assertThat(files.get(0).getName()).isEqualTo("Young.java");
   }
 }
