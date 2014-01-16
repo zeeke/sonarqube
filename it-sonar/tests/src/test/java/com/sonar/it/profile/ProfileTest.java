@@ -12,11 +12,11 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.sonar.wsclient.services.MetricCreateQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -33,9 +33,8 @@ public class ProfileTest {
   }
 
   @Test
-  @Ignore("Replace restoreSettings by getServer().restoreProfile() and wait for restore profile to reindex profile rules in E/S")
   public void test_backup() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/backup.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java-profile.xml"));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-backup",
       "/selenium/profile/backup-profile.html").build();
@@ -44,7 +43,7 @@ public class ProfileTest {
 
   @Test
   public void test_export() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/backup.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Sonar_way_java-profile.xml"));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-export",
       "/selenium/profile/profile-export/permalink-to-sonar-configuration.html",
@@ -58,17 +57,16 @@ public class ProfileTest {
 
   @Test
   public void test_management_of_profiles() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/backup.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Sonar_way_java-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Sun_checks_java-profile.xml"));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-administration",
       "/selenium/profile/activate-profile.html",
-
-    // TODO Wait for bulk change to reindex profile rules in E/S
-//      "/selenium/profile/bulk-change.html",
-
+      "/selenium/profile/bulk-change.html",
       "/selenium/profile/cancel-profile-creation.html",
 
-    // TODO Wait for copy profile to reindex profile rules in E/S
+      // TODO Wait for copy profile to reindex profile rules in E/S
 //      "/selenium/profile/copy-profile.html",
 
       "/selenium/profile/rename-profile.html",
@@ -81,16 +79,21 @@ public class ProfileTest {
       "/selenium/profile/should_import_checkstyle_findbugs_pmd.html",
       "/selenium/profile/SONAR-560_remove_a_rule_from_sonar_way.html",
       "/selenium/profile/user-profiles-are-editable.html",
-      "/selenium/profile/copy_a_provided_profile_and_modify_a_rule_param.html",
+
+      // TODO Wait for copy profile to reindex profile rules in E/S
+//      "/selenium/profile/copy_a_provided_profile_and_modify_a_rule_param.html",
+
       "/selenium/profile/SONAR-1000_quality_profile_with_space_or_dot.html"
 
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
   @Test
   public void should_not_delete_default_profile() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/backup.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/one-rule-profile.xml"));
+    setProperty("sonar.profile.xoo", "One Rule Profile");
+
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("default-profile",
       "/selenium/profile/should-not-delete-default-profile.html").build();
     orchestrator.executeSelenese(selenese);
@@ -109,7 +112,7 @@ public class ProfileTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-relationship-with-projects",
       "/selenium/profile/dashboard_links_to_used_profile.html",
       "/selenium/profile/link-profile-to-project.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -126,7 +129,7 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-override-with-property",
       "/selenium/profile/override-property-with-property.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -144,7 +147,7 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("change-project-profile-from-xoo1-to-xoo2",
       "/selenium/profile/change-project-profile-from-xoo1-to-xoo2.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
 
     build = configureRunner("shared/xoo-sample")
@@ -163,19 +166,26 @@ public class ProfileTest {
 
   @Test
   public void test_comparison() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/compare-profiles.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Comparison/Sonar_way_java.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Comparison/To_compare_-_one_java.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Comparison/To_compare_-_two_java.xml"));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-comparison",
       "/selenium/profile/comparison/compare-profiles.html",
       "/selenium/profile/comparison/compare-same-profile.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
   // SONAR-2124
   @Test
   public void test_inheritance() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/parent-and-child-profiles.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Inheritance/Child_Profile_java.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Inheritance/Parent_Profile_java.xml"));
+
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("set-parent-profile-to-child-profile",
+      "/selenium/profile/inheritance/set-parent-profile-to-child-profile.html"
+    ).build());
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-inheritance",
       "/selenium/profile/inheritance/check-inherited-rule.html",
@@ -183,7 +193,7 @@ public class ProfileTest {
       "/selenium/profile/inheritance/revert-to-parent-definition.html",
       "/selenium/profile/inheritance/modify-parameter-from-inherited-profile.html",
       "/selenium/profile/inheritance/go-to-parent-definition.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -198,13 +208,15 @@ public class ProfileTest {
       "/selenium/profile/rule-notes/extend-description-and-remove-it.html",
       "/selenium/profile/rule-notes/add-delete-note-on-active-rule.html",
       "/selenium/profile/rule-notes/cant-add-note-on-inactive-rule.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
   @Test
   public void test_alerts() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/backup.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Sonar_way_java-profile.xml"));
+    orchestrator.getServer().getAdminWsClient().create(MetricCreateQuery.create("boolean_metric").setName("boolean_metric").setType("BOOL").setDomain("General"));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-alerts",
       "/selenium/profile/alerts/create_and_delete_alert_on_lines_of_code.html",
@@ -216,7 +228,7 @@ public class ProfileTest {
 
       // SONAR-2983
       "/selenium/profile/alerts/boolean_criteria.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -225,7 +237,10 @@ public class ProfileTest {
    */
   @Test
   public void should_not_delete_all_associations_when_deleting_a_profile() {
-    orchestrator.restoreSettings(FileUtils.toFile(getClass().getResource("/com/sonar/it/profile/ProfileTest/backup.xml")));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Sonar_way_java-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Sun_checks_java-profile.xml"));
+    setProperty("sonar.profile.java", "IT");
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
@@ -235,7 +250,7 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-deletion-associations",
       "/selenium/profile/SONAR-4107_delete_quality_profile_removes_all_associations.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -245,7 +260,7 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-activate-a-rule",
       "/selenium/profile/activate-a-rule.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -255,7 +270,7 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-deactivate-a-rule",
       "/selenium/profile/deactivate-a-rule.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -263,5 +278,9 @@ public class ProfileTest {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
       .setProperties(props);
     return runner;
+  }
+
+  static void setProperty(String key, String value) {
+    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery(key, value));
   }
 }
