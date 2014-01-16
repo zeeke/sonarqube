@@ -104,7 +104,7 @@ public class ProfileTest {
 
   @Test
   public void associate_profile_to_project() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java-profile.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
@@ -121,7 +121,7 @@ public class ProfileTest {
 
   @Test
   public void should_override_profile_with_property() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java-profile.xml"));
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Overridden_java.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
