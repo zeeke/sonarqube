@@ -82,7 +82,7 @@ public class PurgeTest {
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
 
     int newMeasuresOnTrk = 144;
-    int newMeasuresOnBrc = 356;
+    int newMeasuresOnBrc = 359;
     int newMeasuresOnDir = 594;
     int newMeasuresOnCla = 0;
     int newMeasuresOnUts = 0;

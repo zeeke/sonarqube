@@ -15,7 +15,14 @@ import org.hamcrest.Description;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.Dependency;
+import org.sonar.wsclient.services.DependencyQuery;
+import org.sonar.wsclient.services.DependencyTree;
+import org.sonar.wsclient.services.DependencyTreeQuery;
+import org.sonar.wsclient.services.Event;
+import org.sonar.wsclient.services.EventQuery;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.ResourceQuery;
 
 import java.util.List;
 
@@ -32,7 +39,7 @@ public class Struts139Test {
 
   private static final String PROJECT_STRUTS = "org.apache.struts:struts-parent";
   private static final String MODULE_CORE = "org.apache.struts:struts-core";
-  private static final String PACKAGE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action";
+  private static final String PACKAGE_ACTION = "org.apache.struts:struts-core:/src/main/java/org/apache/struts/action";
   private static final String FILE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action.Action";
 
   @BeforeClass
@@ -85,7 +92,7 @@ public class Struts139Test {
   @Test
   public void versionEvent() {
     EventQuery query = new EventQuery(PROJECT_STRUTS);
-    query.setCategories(new String[]{"Version"});
+    query.setCategories(new String[] {"Version"});
     List<Event> events = orchestrator.getServer().getWsClient().findAll(query);
     assertThat(events.size(), is(1));
 
@@ -104,7 +111,6 @@ public class Struts139Test {
     assertThat(getPackageMeasure("notfound"), nullValue());
     assertThat(getFileMeasure("notfound"), nullValue());
   }
-
 
   private Measure getFileMeasure(String metricKey) {
     return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(FILE_ACTION, metricKey)).getMeasure(metricKey);
