@@ -43,20 +43,20 @@ public class PurgeTest {
 
     // count components
     assertThat(count("projects where qualifier in ('TRK','BRC')")).as("Wrong number of projects").isEqualTo(4);
-    assertThat(count("projects where qualifier in ('PAC')")).as("Wrong number of packages").isEqualTo(40);
+    assertThat(count("projects where qualifier in ('DIR')")).as("Wrong number of directories").isEqualTo(40);
     assertThat(count("projects where qualifier in ('CLA')")).as("Wrong number of files").isEqualTo(320);
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
 
-    int measuresOnTrk = 199;
-    int measuresOnBrc = 456;
-    int measuresOnPac = 2754;
+    int measuresOnTrk = 200;
+    int measuresOnBrc = 459;
+    int measuresOnDir = 2794;
     int measuresOnCla = 14683;
     int measuresOnUts = 28;
 
     // count measures 
     measures("TRK", measuresOnTrk);
     measures("BRC", measuresOnBrc);
-    measures("PAC", measuresOnPac);
+    measures("DIR", measuresOnDir);
     measures("CLA", measuresOnCla);
     measures("UTS", measuresOnUts);
 
@@ -65,7 +65,7 @@ public class PurgeTest {
       .as("Wrong number of measure of new_ metrics")
       .isEqualTo(0);
 
-    int expectedMeasures = measuresOnTrk + measuresOnBrc + measuresOnPac + measuresOnCla + measuresOnUts;
+    int expectedMeasures = measuresOnTrk + measuresOnBrc + measuresOnDir + measuresOnCla + measuresOnUts;
     assertThat(count("project_measures")).as("Wrong number of measures").isEqualTo(expectedMeasures);
     assertThat(count("measure_data")).as("Wrong number of measure_data").isEqualTo(1157);
 
@@ -81,15 +81,15 @@ public class PurgeTest {
     // must be a different date, else a single snapshot is kept per day
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
 
-    int newMeasuresOnTrk = 143;
+    int newMeasuresOnTrk = 144;
     int newMeasuresOnBrc = 356;
-    int newMeasuresOnPac = 594;
+    int newMeasuresOnDir = 594;
     int newMeasuresOnCla = 0;
     int newMeasuresOnUts = 0;
 
     measures("TRK", measuresOnTrk + newMeasuresOnTrk);
     measures("BRC", measuresOnBrc + newMeasuresOnBrc);
-    measures("PAC", measuresOnPac + newMeasuresOnPac);
+    measures("DIR", measuresOnDir + newMeasuresOnDir);
     measures("CLA", measuresOnCla + newMeasuresOnCla);
     measures("UTS", measuresOnUts + newMeasuresOnUts);
 
@@ -99,7 +99,7 @@ public class PurgeTest {
       .isEqualTo(798);
 
     // added measures relate to project and new_* metrics
-    expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnPac + newMeasuresOnCla + newMeasuresOnUts;
+    expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnDir + newMeasuresOnCla + newMeasuresOnUts;
     assertThat(count("project_measures")).as("Wrong number of measures after second analysis").isEqualTo(expectedMeasures);
 
     assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
