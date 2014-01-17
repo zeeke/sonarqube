@@ -63,15 +63,9 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-administration",
       "/selenium/profile/activate-profile.html",
-
-      // TODO Wait for copy profile to reindex profile rules in E/S
-//      "/selenium/profile/bulk-change.html",
-
+      "/selenium/profile/bulk-change.html",
       "/selenium/profile/cancel-profile-creation.html",
-
-      // TODO Wait for copy profile to reindex profile rules in E/S
-//      "/selenium/profile/copy-profile.html",
-
+      "/selenium/profile/copy-profile.html",
       "/selenium/profile/rename-profile.html",
       "/selenium/profile/create-and-delete-profile.html",
       "/selenium/profile/display-permalinks-to-tools.html",
@@ -82,10 +76,7 @@ public class ProfileTest {
       "/selenium/profile/should_import_checkstyle_findbugs_pmd.html",
       "/selenium/profile/SONAR-560_remove_a_rule_from_sonar_way.html",
       "/selenium/profile/user-profiles-are-editable.html",
-
-      // TODO Wait for copy profile to reindex profile rules in E/S
-//      "/selenium/profile/copy_a_provided_profile_and_modify_a_rule_param.html",
-
+      "/selenium/profile/copy_a_provided_profile_and_modify_a_rule_param.html",
       "/selenium/profile/SONAR-1000_quality_profile_with_space_or_dot.html"
 
     ).build();
