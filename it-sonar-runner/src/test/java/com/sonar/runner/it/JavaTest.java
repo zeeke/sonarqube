@@ -93,7 +93,11 @@ public class JavaTest extends RunnerTestCase {
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
     Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:sample:basic.Hello").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
-    assertThat(file.getName()).isEqualTo("Hello");
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      assertThat(file.getName()).isEqualTo("Hello.java");
+    } else {
+      assertThat(file.getName()).isEqualTo("Hello");
+    }
     assertThat(file.getMeasureIntValue("ncloc")).isEqualTo(7);
     assertThat(file.getMeasureIntValue("lcom4")).isNull(); // no bytecode
     assertThat(file.getMeasureIntValue("violations")).isGreaterThan(0);
