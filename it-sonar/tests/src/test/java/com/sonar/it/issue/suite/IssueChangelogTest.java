@@ -14,6 +14,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.ActionPlan;
 import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueChange;
+import org.sonar.wsclient.issue.IssueChangeDiff;
 import org.sonar.wsclient.issue.NewActionPlan;
 
 import java.util.List;
