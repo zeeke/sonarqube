@@ -21,7 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class SonarCommonRulesTest {
 
-  private static final String HELLO_CLASS = "com.sonarsource.it.samples:sonar-common-rules-project:[default].Hello";
+  private static final String HELLO_CLASS = "com.sonarsource.it.samples:sonar-common-rules-project:src/main/java/Hello.java";
 
   @ClassRule
   public static Orchestrator orchestrator = RuleTestSuite.ORCHESTRATOR;
@@ -73,7 +73,7 @@ public class SonarCommonRulesTest {
    */
   @Test
   public void shouldFindSkippedUnitTest() {
-    List<Violation> violations = findViolations("com.sonarsource.it.samples:sonar-common-rules-project:[default].IgnoredTest", "common-java:SkippedUnitTests");
+    List<Violation> violations = findViolations("com.sonarsource.it.samples:sonar-common-rules-project:src/test/java/IgnoredTest.java", "common-java:SkippedUnitTests");
     assertThat(violations.size()).isEqualTo(1);
   }
 
@@ -82,10 +82,10 @@ public class SonarCommonRulesTest {
    */
   @Test
   public void shouldFindFailedAndErrorUnitTests() {
-    List<Violation> violations = findViolations("com.sonarsource.it.samples:sonar-common-rules-project:[default].FailingTest", "common-java:FailedUnitTests");
+    List<Violation> violations = findViolations("com.sonarsource.it.samples:sonar-common-rules-project:src/test/java/FailingTest.java", "common-java:FailedUnitTests");
     assertThat(violations.size()).isEqualTo(1);
 
-    violations = findViolations("com.sonarsource.it.samples:sonar-common-rules-project:[default].ErrorTest", "common-java:FailedUnitTests");
+    violations = findViolations("com.sonarsource.it.samples:sonar-common-rules-project:src/test/java/ErrorTest.java", "common-java:FailedUnitTests");
     assertThat(violations.size()).isEqualTo(1);
   }
 
