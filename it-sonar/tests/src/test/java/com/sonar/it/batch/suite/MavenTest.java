@@ -98,10 +98,10 @@ public class MavenTest {
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:parent")).getName()).isEqualTo("Parent");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_a")).getName()).isEqualTo("Module A");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_a:[default].HelloA")).getName()).isEqualTo("HelloA.java");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_a:src/main/java/HelloA.java")).getName()).isEqualTo("HelloA.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_b")).getName()).isEqualTo("Module B");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_b:[default].HelloB")).getName()).isEqualTo("HelloB.java");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_b:src/main/java/HelloB.java")).getName()).isEqualTo("HelloB.java");
   }
 
   /**
@@ -118,19 +118,19 @@ public class MavenTest {
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:root")).getName()).isEqualTo("Root");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_a")).getName()).isEqualTo("Module A");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_a:[default].HelloA")).getName()).isEqualTo("HelloA.java");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_a:src/main/java/HelloA.java")).getName()).isEqualTo("HelloA.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_b")).getName()).isEqualTo("Module B");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_b:[default].HelloB")).getName()).isEqualTo("HelloB.java");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_b:src/main/java/HelloB.java")).getName()).isEqualTo("HelloB.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_c")).getName()).isEqualTo("Module C");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_c:[default].HelloC")).getName()).isEqualTo("HelloC.java");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_c:src/main/java/HelloC.java")).getName()).isEqualTo("HelloC.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d")).getName()).isEqualTo("Module D");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d:[default].HelloD")).getName()).isEqualTo("HelloD.java");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d:src/main/java/HelloD.java")).getName()).isEqualTo("HelloD.java");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e")).getName()).isEqualTo("Module E");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e:[default].HelloE")).getName()).isEqualTo("HelloE.java");
+    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e:src/main/java/HelloE.java")).getName()).isEqualTo("HelloE.java");
   }
 
   /**
@@ -224,8 +224,8 @@ public class MavenTest {
     Resource project = getResource("com.sonarsource.it.samples:many-source-dirs");
     assertThat(project).isNotNull();
     assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
-    assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:[default].FirstClass")).isNotNull();
-    assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:[default].SecondClass")).isNotNull();
+    assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:src/main/java/FirstClass.java")).isNotNull();
+    assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:src/main/java2/SecondClass.java")).isNotNull();
   }
 
   private void checkBuildHelperTestFiles() {

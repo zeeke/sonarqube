@@ -27,22 +27,22 @@ public class ProjectBuilderTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.locateTestPlugin("project-builder-plugin"))
-      .build();
+    .addPlugin(ItUtils.locateTestPlugin("project-builder-plugin"))
+    .build();
 
   @Test
   public void shouldDefineProjectFromPlugin() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/project-builder"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false");
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     checkProject();
     checkSubProject("project-builder-module-a");
     checkSubProject("project-builder-module-b");
-    checkFile("project-builder-module-a", "HelloA");
-    checkFile("project-builder-module-b", "HelloB");
-    assertThat(getResource("com.sonarsource.it.projects.batch:project-builder-module-b:[default].IgnoredFile")).isNull();
+    checkFile("project-builder-module-a", "src/HelloA.java");
+    checkFile("project-builder-module-b", "src/HelloB.java");
+    assertThat(getResource("com.sonarsource.it.projects.batch:project-builder-module-b:src/IgnoredFile.java")).isNull();
   }
 
   private void checkProject() {
@@ -64,7 +64,7 @@ public class ProjectBuilderTest {
   }
 
   private void checkFile(String subProjectKey, String fileKey) {
-    Resource file = getResource("com.sonarsource.it.projects.batch:" + subProjectKey + ":[default]." + fileKey);
+    Resource file = getResource("com.sonarsource.it.projects.batch:" + subProjectKey + ":" + fileKey);
     assertThat(file).isNotNull();
     assertThat(file.getMeasureIntValue("lines")).isGreaterThan(5);
   }

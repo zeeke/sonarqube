@@ -128,7 +128,7 @@ public class BatchTest {
   public void should_import_sources_by_default() {
     scan("shared/xoo-sample");
 
-    SourceQuery query = new SourceQuery("sample:sample/Sample.xoo");
+    SourceQuery query = new SourceQuery("sample:src/main/xoo/sample/Sample.xoo");
     Source source = orchestrator.getServer().getWsClient().find(query);
     assertThat(source.getLines()).hasSize(13); // SONAR-3896
     assertThat(source.getLine(3)).isEqualTo("public class Sample {");
@@ -139,17 +139,17 @@ public class BatchTest {
     scan("batch/do-not-import-sources",
       "sonar.importSources", "true");
 
-    Source source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/Hello.xoo"));
+    Source source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:src/main/xoo/org/sonar/tests/Hello.xoo"));
     assertThat(source).isNotNull();
-    Source testSource = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/HelloTest.xoo"));
+    Source testSource = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:src/test/xoo/org/sonar/tests/HelloTest.xoo"));
     assertThat(testSource).isNotNull();
 
     scan("batch/do-not-import-sources",
       "sonar.importSources", "false");
 
-    source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/Hello.xoo"));
+    source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:src/main/xoo/org/sonar/tests/Hello.xoo"));
     assertThat(source).isNull();
-    testSource = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:org/sonar/tests/HelloTest.xoo"));
+    testSource = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:src/test/xoo/org/sonar/tests/HelloTest.xoo"));
     assertThat(testSource).isNull();
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("do-not-import-sources",

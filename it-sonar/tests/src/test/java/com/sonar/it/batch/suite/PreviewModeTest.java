@@ -16,7 +16,11 @@ import com.sonar.orchestrator.version.Version;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.services.Resource;
@@ -26,7 +30,11 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -68,20 +76,19 @@ public class PreviewModeTest {
 
     // First real scan with source
     scanWithProfile("shared/xoo-history-v2", "with-many-rules");
-    assertThat(getResource("sample:sample/ClassAdded.xoo")).isNotNull();
+    assertThat(getResource("sample:src/main/xoo/sample/ClassAdded.xoo")).isNotNull();
     // Second scan should remove ClassAdded.xoo
     scanWithProfile("shared/xoo-history-v1", "with-many-rules");
-    assertThat(getResource("sample:sample/ClassAdded.xoo")).isNull();
+    assertThat(getResource("sample:src/main/xoo/sample/ClassAdded.xoo")).isNull();
 
     // Re-add ClassAdded.xoo in local workspace
     BuildResult result = scanWithProfile("shared/xoo-history-v2", "with-many-rules",
       "sonar.analysis.mode", "preview");
 
-    assertThat(getResource("sample:sample/ClassAdded.xoo")).isNull();
+    assertThat(getResource("sample:src/main/xoo/sample/ClassAdded.xoo")).isNull();
     assertThat(result.getLogs()).contains("Preview");
     assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL");
   }
-
 
   @Test
   public void should_fail_if_plugin_access_secured_properties() {

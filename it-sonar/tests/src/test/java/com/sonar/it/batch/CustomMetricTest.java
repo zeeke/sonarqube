@@ -47,7 +47,7 @@ public class CustomMetricTest {
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
 
-    assertThat(result.getLogs()).contains("Unable to save measure for metric [custom] on resource [/src/main/java/Break.java]");
+    assertThat(result.getLogs()).contains("Unable to save measure for metric [custom] on resource [src/main/java/Break.java]");
   }
 
   private void checkFiles() {
