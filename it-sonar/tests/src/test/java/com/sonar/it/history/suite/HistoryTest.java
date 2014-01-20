@@ -13,8 +13,13 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.TimeMachine;
+import org.sonar.wsclient.services.TimeMachineCell;
+import org.sonar.wsclient.services.TimeMachineQuery;
 
 import java.util.Date;
 
@@ -41,7 +46,7 @@ public class HistoryTest {
       .setProperties("sonar.dynamicAnalysis", "false")
       .setProperties("sonar.profile", "history")
       .setProperties("sonar.projectDate", date)
-    );
+      );
   }
 
   @Test
@@ -61,10 +66,10 @@ public class HistoryTest {
     TimeMachineCell cell2 = timemachine.getCells()[1];
 
     assertThat(cell1.getDate().getMonth()).isEqualTo(9);
-    assertThat(cell1.getValues()).isEqualTo(new Object[]{0L, 0L, 3L, 4L, 0L});
+    assertThat(cell1.getValues()).isEqualTo(new Object[] {0L, 0L, 3L, 4L, 0L});
 
     assertThat(cell2.getDate().getMonth()).isEqualTo(10);
-    assertThat(cell2.getValues()).isEqualTo(new Object[]{0L, 0L, 5L, 4L, 0L});
+    assertThat(cell2.getValues()).isEqualTo(new Object[] {0L, 0L, 5L, 4L, 0L});
   }
 
   @Test
@@ -79,10 +84,10 @@ public class HistoryTest {
     TimeMachineCell cell2 = timemachine.getCells()[1];
 
     assertThat(cell1.getDate().getMonth()).isEqualTo(9);
-    assertThat(cell1.getValues()).isEqualTo(new Object[]{32L, 38.1});
+    assertThat(cell1.getValues()).isEqualTo(new Object[] {32L, 38.1});
 
     assertThat(cell2.getDate().getMonth()).isEqualTo(10);
-    assertThat(cell2.getValues()).isEqualTo(new Object[]{44L, 34.5});
+    assertThat(cell2.getValues()).isEqualTo(new Object[] {44L, 34.5});
   }
 
   // Specific cases for timemachine web service
@@ -133,7 +138,7 @@ public class HistoryTest {
       "/selenium/history/history-timemachine-widget/should-display-empty-table-if-no-measure.html",
       // SONAR-3650
       "/selenium/history/history-timemachine-widget/should-exclude-new-metrics.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -153,14 +158,16 @@ public class HistoryTest {
 
   /**
    * SONAR-3046
+   * FIXME
    */
   @Test
+  @Ignore("Should be updated to support issue refactoring")
   public void testPeriodInWidgetMostViolatedRules() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("history-widget-most-violated-rules",
       "/selenium/history/history-widget-most-violated-rules/display-variation.html",
       "/selenium/history/history-widget-most-violated-rules/select-rule-with-period.html",
       "/selenium/history/history-widget-most-violated-rules/open-drilldown-with-period.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -171,7 +178,7 @@ public class HistoryTest {
   public void testComparisonPageBetweenProjectVersions() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("comparison-page",
       "/selenium/history/comparison/should-compare-project-versions.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
