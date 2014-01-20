@@ -166,13 +166,13 @@ public class PurgeTest {
   public void should_delete_removed_files() {
 
     scan("purge/files/before");
-    assertSingleSnapshot("com.sonarsource.it.samples.purge:files:/src/main/java/sample/Sample.java");
-    assertSingleSnapshot("com.sonarsource.it.samples.purge:files:/src/main/java/sample/Sample.java");
+    assertSingleSnapshot("com.sonarsource.it.samples.purge:files:src/main/java/sample/Sample.java");
+    assertSingleSnapshot("com.sonarsource.it.samples.purge:files:src/main/java/sample/Sample.java");
 
     scan("purge/files/after");
-    assertDeleted("com.sonarsource.it.samples.purge:files:/src/main/java/sample/Sample.java");
-    assertDeleted("com.sonarsource.it.samples.purge:files:/src/main/java/sample/Sample.java");
-    assertSingleSnapshot("com.sonarsource.it.samples.purge:files:/src/main/java/sample/NewSample.java");
+    assertDeleted("com.sonarsource.it.samples.purge:files:src/main/java/sample/Sample.java");
+    assertDeleted("com.sonarsource.it.samples.purge:files:src/main/java/sample/Sample.java");
+    assertSingleSnapshot("com.sonarsource.it.samples.purge:files:src/main/java/sample/NewSample.java");
   }
 
   /**
