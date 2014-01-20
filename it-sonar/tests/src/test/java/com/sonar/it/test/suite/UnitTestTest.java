@@ -104,7 +104,7 @@ public class UnitTestTest {
 
     // check package measures
     // TODO Godin: are we really sure about this behavior? maybe we should save zero tests on packages too?
-    Resource packagee = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:no-tests:/src/main/java/org/sonar/tests",
+    Resource packagee = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:no-tests:src/main/java/org/sonar/tests",
       "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
     assertThat(packagee.getMeasureIntValue("tests")).isNull();
     assertThat(packagee.getMeasureIntValue("coverage")).isEqualTo(0);
