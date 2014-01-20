@@ -6,12 +6,19 @@
 package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.*;
-import org.sonar.wsclient.issue.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueComment;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
+import org.sonar.wsclient.issue.NewIssue;
 
 import java.util.List;
 
@@ -23,15 +30,15 @@ import static org.fest.assertions.Fail.fail;
  */
 public class ManualIssueTest extends AbstractIssueTestCase2 {
 
-  private final static String COMPONENT_KEY = "sample:sample/Sample.xoo";
+  private final static String COMPONENT_KEY = "sample:src/main/xoo/sample/Sample.xoo";
 
   @BeforeClass
-  public static void initManualRule(){
+  public static void initManualRule() {
     createManualRule();
   }
 
   @AfterClass
-  public static void purgeManualRules(){
+  public static void purgeManualRules() {
     deleteManualRules();
   }
 
@@ -46,7 +53,7 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
     // Create the manual issue
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("manual-issues-on-line",
       "/selenium/issue/manual-issue/create-manual-issue-on-line.html"
-    ).build());
+      ).build());
 
     List<Issue> issues = searchIssuesByComponent(COMPONENT_KEY);
     assertThat(issues).hasSize(1);
@@ -123,7 +130,7 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
     // Create another manual rule
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule-to-be-removed",
       "/selenium/issue/manual-issue/create-manual-rule-to-be-removed.html"
-    ).build());
+      ).build());
 
     // Create the manual issue
     Issue newIssue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
@@ -136,7 +143,7 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
     // Delete the manual rule (will be in fact disabled in the db, not removed)
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("delete-manual-rule",
       "/selenium/issue/manual-issue/delete-manual-rule.html"
-    ).build());
+      ).build());
 
     analyzeProject();
     Issue closedIssue = searchIssueByKey(newIssue.key());
@@ -298,7 +305,7 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
     // Create and delete a manual rule
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-and-delete-manual-rule",
       "/selenium/issue/manual-issue/create-and-delete-manual-rule.html"
-    ).build());
+      ).build());
 
     try {
       adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)

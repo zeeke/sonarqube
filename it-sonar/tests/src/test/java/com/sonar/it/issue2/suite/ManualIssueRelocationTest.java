@@ -22,19 +22,19 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
 
-  private final static String COMPONENT_KEY = "sample:sample/Sample.xoo";
+  private final static String COMPONENT_KEY = "sample:src/main/xoo/sample/Sample.xoo";
   private static final String OLD_DATE = "2010-01-01";
   private static final String NEW_DATE = "2013-05-18";
 
   private Date issueCreationDate;
 
   @BeforeClass
-  public static void initManualRule(){
+  public static void initManualRule() {
     createManualRule();
   }
 
   @AfterClass
-  public static void purgeManualRules(){
+  public static void purgeManualRules() {
     deleteManualRules();
   }
 
@@ -95,7 +95,8 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
     Issue issue = issues.get(0);
     assertThat(issue.ruleKey()).isEqualTo("manual:invalidclassname");
     if (line == null) {
-      assertThat(issue.line()).isNull();;
+      assertThat(issue.line()).isNull();
+      ;
     } else {
       assertThat(issue.line()).isEqualTo(line);
     }
@@ -134,7 +135,7 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
   private void createManualIssue() {
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("manual-issues-on-line",
       "/selenium/issue/manual-issue/create-manual-issue-on-line.html"
-    ).build());
+      ).build());
     this.issueCreationDate = searchIssuesByComponent(COMPONENT_KEY).get(0).creationDate();
   }
 }

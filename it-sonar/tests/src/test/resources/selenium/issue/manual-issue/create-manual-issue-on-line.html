@@ -8,74 +8,74 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-	<td>open</td>
-	<td>/sonar/sessions/new</td>
-	<td></td>
+  <td>open</td>
+  <td>/sonar/sessions/new</td>
+  <td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>login</td>
-	<td>admin</td>
+  <td>type</td>
+  <td>login</td>
+  <td>admin</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>password</td>
-	<td>admin</td>
+  <td>type</td>
+  <td>password</td>
+  <td>admin</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>commit</td>
-	<td></td>
+  <td>clickAndWait</td>
+  <td>commit</td>
+  <td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/sonar/resource/index/sample:sample%2FSample.xoo</td>
-	<td></td>
+  <td>open</td>
+  <td>/sonar/resource/index/sample:src/main/xoo/sample/Sample.xoo</td>
+  <td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>class=source_title</td>
-	<td>*Sample*</td>
+  <td>waitForText</td>
+  <td>class=source_title</td>
+  <td>*Sample*</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>css=.pos3 &gt; td.plus &gt; a</td>
-	<td></td>
+  <td>click</td>
+  <td>css=.pos3 &gt; td.plus &gt; a</td>
+  <td></td>
 </tr>
 <tr>
-	<td>waitForVisible</td>
-	<td>class=code-issue</td>
-	<td></td>
+  <td>waitForVisible</td>
+  <td>class=code-issue</td>
+  <td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>name=rule</td>
-	<td>InvalidClassName</td>
+  <td>select</td>
+  <td>name=rule</td>
+  <td>InvalidClassName</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>name=message</td>
-	<td>The name 'Sample' is too generic</td>
+  <td>type</td>
+  <td>name=message</td>
+  <td>The name 'Sample' is too generic</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>css=input[type=&quot;submit&quot;]</td>
-	<td></td>
+  <td>click</td>
+  <td>css=input[type=&quot;submit&quot;]</td>
+  <td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>css=.sources2.code</td>
-	<td>glob:*InvalidClassName*</td>
+  <td>waitForText</td>
+  <td>css=.sources2.code</td>
+  <td>glob:*InvalidClassName*</td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>css=.sources2.code</td>
-	<td>glob:*The name 'Sample' is too generic*</td>
+  <td>waitForText</td>
+  <td>css=.sources2.code</td>
+  <td>glob:*The name 'Sample' is too generic*</td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>css=.sources2.code</td>
-	<td>glob:*less than a minute*</td>
+  <td>waitForText</td>
+  <td>css=.sources2.code</td>
+  <td>glob:*less than a minute*</td>
 </tr>
 </tbody>
 </table>

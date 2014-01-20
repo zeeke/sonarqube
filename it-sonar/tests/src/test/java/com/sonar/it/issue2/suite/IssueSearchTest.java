@@ -52,7 +52,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
 
     // Create a manual issue to test search by reporter
     createManualRule();
-    adminIssueClient().create(NewIssue.create().component("org.apache.struts:struts-tiles:org.apache.struts.tiles.xmlDefinition.XmlParser")
+    adminIssueClient().create(NewIssue.create().component("org.apache.struts:struts-tiles:src/main/java/org/apache/struts/tiles/xmlDefinition/XmlParser.java")
       .rule("manual:invalidclassname")
       .line(3)
       .severity("CRITICAL")
@@ -78,7 +78,8 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
 
   @Test
   public void search_issues_by_components() {
-    assertThat(search(IssueQuery.create().components("org.apache.struts:struts-tiles:org.apache.struts.tiles.xmlDefinition.XmlDefinitionsSet")).list()).hasSize(10);
+    assertThat(search(IssueQuery.create().components("org.apache.struts:struts-tiles:src/main/java/org/apache/struts/tiles/xmlDefinition/XmlDefinitionsSet.java")).list()).hasSize(
+      10);
     assertThat(search(IssueQuery.create().components("unknown")).list()).isEmpty();
   }
 

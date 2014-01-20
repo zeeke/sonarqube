@@ -6,7 +6,6 @@
 package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -34,7 +33,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
   }
 
   @AfterClass
-  public static void purgeManualRules(){
+  public static void purgeManualRules() {
     deleteManualRules();
   }
 
@@ -49,8 +48,9 @@ public class IssueTest extends AbstractIssueTestCase2 {
     String projectKey = "com.sonarsource.it.samples:multi-modules-sample";
     assertThat(searchIssuesByComponent(projectKey)).hasSize(65);
 
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey, "violations", "info_violations", "minor_violations", "major_violations",
-      "blocker_violations", "critical_violations", "violations_density"));
+    Resource project = orchestrator.getServer().getWsClient()
+      .find(ResourceQuery.createForMetrics(projectKey, "violations", "info_violations", "minor_violations", "major_violations",
+        "blocker_violations", "critical_violations", "violations_density"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(65);
     assertThat(project.getMeasureIntValue("info_violations")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("minor_violations")).isEqualTo(52);
@@ -67,8 +67,8 @@ public class IssueTest extends AbstractIssueTestCase2 {
   public void test_resolution_and_status_measures() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperties("sonar.cpd.skip", "true")
-        .setProfile("one-issue-per-line");
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
     String componentKey = "sample";
@@ -96,8 +96,8 @@ public class IssueTest extends AbstractIssueTestCase2 {
   public void should_get_no_issue_on_empty_profile() {
     // no active rules
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperties("sonar.cpd.skip", "true")
-        .setProfile("empty");
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("empty");
     orchestrator.executeBuild(scan);
 
     assertThat(searchIssuesByComponent("sample")).isEmpty();
@@ -112,8 +112,8 @@ public class IssueTest extends AbstractIssueTestCase2 {
   public void should_close_no_more_existing_issue() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperties("sonar.cpd.skip", "true")
-        .setProfile("one-issue-per-line");
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
     String projectKey = "sample";
@@ -145,7 +145,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
   @Test
   public void should_compute_issues_metrics_on_test_files() {
     String projectKey = "sample-with-tests";
-    String testKey = "sample-with-tests:sample/SampleTest.xoo";
+    String testKey = "sample-with-tests:src/test/xoo/sample/SampleTest.xoo";
 
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample-with-tests"))
@@ -162,7 +162,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     // Create the manual rule
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule",
       "/selenium/issue/manual-issue/create-manual-rule.html"
-    ).build());
+      ).build());
 
     // Create a issue on the test source file
     adminIssueClient().create(NewIssue.create().component(testKey)
@@ -190,7 +190,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
       .setProfile("one-issue-per-file");
     orchestrator.executeBuild(scan);
 
-    List<Issue> issues = searchIssuesByComponent("sample:sample/Sample.xoo");
+    List<Issue> issues = searchIssuesByComponent("sample:src/main/xoo/sample/Sample.xoo");
     assertThat(issues.size()).isGreaterThan(0);
     for (Issue issue : issues) {
       assertThat(issue.line()).describedAs("issue with line: " + issue.ruleKey()).isNull();
@@ -261,7 +261,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issues-code-viewer",
       "/selenium/issue/issues-code-viewer/display-only-unresolved-issues.html",
       "/selenium/issue/issues-code-viewer/display-only-false-positives.html"
-    ).build());
+      ).build());
   }
 
   /**
@@ -276,14 +276,14 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeBuild(scan);
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issue-detail",
-        "/selenium/issue/issue-detail/test-issue-detail.html",
-        "/selenium/issue/issue-detail/should-open-link-on-component.html",
-        "/selenium/issue/issue-detail/should-open-rule-detail.html",
-        "/selenium/issue/issue-detail/should-open-link-on-permalink-issue.html",
-        // SONAR-4284
-        "/selenium/issue/issue-detail/should-open-changelog.html",
-        "/selenium/issue/issue-detail/should-display-actions-when-logged.html"
-    ).build());
+      "/selenium/issue/issue-detail/test-issue-detail.html",
+      "/selenium/issue/issue-detail/should-open-link-on-component.html",
+      "/selenium/issue/issue-detail/should-open-rule-detail.html",
+      "/selenium/issue/issue-detail/should-open-link-on-permalink-issue.html",
+      // SONAR-4284
+      "/selenium/issue/issue-detail/should-open-changelog.html",
+      "/selenium/issue/issue-detail/should-display-actions-when-logged.html"
+      ).build());
   }
 
   @Test
@@ -310,7 +310,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(runner);
 
-    IssueQuery query = IssueQuery.create().components("file-with-thousands-issues:long_file.xoo");
+    IssueQuery query = IssueQuery.create().components("file-with-thousands-issues:src/long_file.xoo");
     assertThat(search(query).list().size()).isGreaterThan(3000);
   }
 

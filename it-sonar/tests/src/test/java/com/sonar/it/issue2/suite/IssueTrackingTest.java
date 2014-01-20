@@ -54,7 +54,7 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
 
     orchestrator.executeBuilds(firstScan, secondScan);
 
-    List<Issue> issues = searchUnresolvedIssuesByComponent("com.sonarsource.it.samples:issue-tracking:[default].SystemOut");
+    List<Issue> issues = searchUnresolvedIssuesByComponent("com.sonarsource.it.samples:issue-tracking:src/SystemOut.java");
     assertThat(issues).hasSize(4);
 
     // issues created during the first scan but not tracked -> NEW_DATE
@@ -89,7 +89,7 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
     orchestrator.executeBuilds(firstScan);
     orchestrator.executeBuilds(secondScan);
 
-    List<Issue> issues = searchUnresolvedIssuesByComponent("com.sonarsource.it.samples:issue-tracking:[default].SystemOut");
+    List<Issue> issues = searchUnresolvedIssuesByComponent("com.sonarsource.it.samples:issue-tracking:src/SystemOut.java");
     assertThat(issues).hasSize(4);
 
     // issues created during the first scan and moved during the second scan
