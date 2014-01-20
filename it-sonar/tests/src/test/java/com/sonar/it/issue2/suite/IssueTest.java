@@ -12,6 +12,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.issue.Issue;
@@ -220,6 +221,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
    * SONAR-4210
    */
   @Test
+  @Ignore("Disabled as long as list of issues is not displayed when selecting a non-file component")
   public void test_issue_drilldown() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
