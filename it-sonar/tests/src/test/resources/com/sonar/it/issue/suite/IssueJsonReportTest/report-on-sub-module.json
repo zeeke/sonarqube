@@ -3,7 +3,7 @@
   "issues": [
     {
       "key": "abcde",
-      "component": "com.sonarsource.it.samples:module_a1:/src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
+      "component": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
       "line": 10,
       "message": "System.out.print is used",
       "severity": "INFO",
@@ -15,7 +15,7 @@
     },
     {
       "key": "abcde",
-      "component": "com.sonarsource.it.samples:module_a1:/src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
+      "component": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
       "line": 3,
       "message": "Class cannot be instantiated and does not provide any static methods or fields",
       "severity": "MAJOR",
@@ -27,7 +27,7 @@
     },
     {
       "key": "abcde",
-      "component": "com.sonarsource.it.samples:module_a1:/src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
+      "component": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
       "line": 3,
       "message": "Class HelloA1 should be declared as final.",
       "severity": "MAJOR",
@@ -39,7 +39,7 @@
     },
     {
       "key": "abcde",
-      "component": "com.sonarsource.it.samples:module_a1:/src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
+      "component": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
       "line": 4,
       "message": "Avoid unused private fields such as 'i'.",
       "severity": "MAJOR",
@@ -51,7 +51,7 @@
     },
     {
       "key": "abcde",
-      "component": "com.sonarsource.it.samples:module_a1:/src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
+      "component": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
       "line": 4,
       "message": "File contains tab characters (this is the first instance).",
       "severity": "INFO",
@@ -64,7 +64,7 @@
   ],
   "components": [
     {
-      "key": "com.sonarsource.it.samples:module_a1:/src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java"
+      "key": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java"
     }
   ],
   "rules": [
