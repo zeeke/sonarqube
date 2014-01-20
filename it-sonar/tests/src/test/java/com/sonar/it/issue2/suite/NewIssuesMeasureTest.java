@@ -47,7 +47,8 @@ public class NewIssuesMeasureTest {
     orchestrator.executeBuild(scan);
 
     assertThat(orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create()).list()).isNotEmpty();
-    Resource newIssues = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_violations").setIncludeTrends(true));
+    Resource newIssues = orchestrator.getServer().getWsClient()
+      .find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_violations").setIncludeTrends(true));
     List<Measure> measures = newIssues.getMeasures();
     assertThat(measures.get(0).getVariation1().intValue()).isEqualTo(13);
     assertThat(measures.get(0).getVariation2().intValue()).isEqualTo(13);
@@ -56,7 +57,7 @@ public class NewIssuesMeasureTest {
     orchestrator.executeBuild(scan);
 
     assertThat(orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create()).list()).isNotEmpty();
-    newIssues = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_violations").setIncludeTrends(true));
+    newIssues = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_violations").setIncludeTrends(true));
     // No variation => measure is purged
     assertThat(newIssues).isNull();
   }
@@ -68,7 +69,7 @@ public class NewIssuesMeasureTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line")
-        // Analyse a project in the past, with a date older than 30 last days (second period)
+      // Analyse a project in the past, with a date older than 30 last days (second period)
       .setProperty("sonar.projectDate", "2013-01-01"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line"));
@@ -133,7 +134,8 @@ public class NewIssuesMeasureTest {
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
       .setProfile("profile2"));
 
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:multi-modules-sample", "new_violations", "violations").setIncludeTrends(true));
+    Resource project = orchestrator.getServer().getWsClient()
+      .find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:multi-modules-sample", "new_violations", "violations").setIncludeTrends(true));
     List<Measure> measures = project.getMeasures();
     Measure newIssues = find(measures, "new_violations");
     assertThat(newIssues.getVariation1().intValue()).isEqualTo(57);
@@ -155,13 +157,13 @@ public class NewIssuesMeasureTest {
         .setProfile("with-many-rules").setProperty("sonar.skippedModules", "multi-modules-sample:module_b"),
       SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
         .setProfile("with-many-rules")
-    );
+      );
 
     String projectKey = "com.sonarsource.it.samples:multi-modules-sample";
 
     Resource newIssuesPerSeverities = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey,
       "new_blocker_violations", "new_critical_violations", "new_major_violations", "new_minor_violations", "new_info_violations"
-    ).setIncludeTrends(true).setExcludeRules(false));
+      ).setIncludeTrends(true).setExcludeRules(false));
 
     assertThat(find(newIssuesPerSeverities.getMeasures(), "new_blocker_violations")).isNull();
 
@@ -177,7 +179,6 @@ public class NewIssuesMeasureTest {
     assertThat(find(newIssuesPerSeverities.getMeasures(), "new_info_violations").getVariation1().intValue()).isEqualTo(0);
     assertThat(find(newIssuesPerSeverities.getMeasures(), "new_info_violations").getVariation2().intValue()).isEqualTo(1);
   }
-
 
   private Measure find(List<Measure> measures, String metricKey) {
     for (Measure measure : measures) {
