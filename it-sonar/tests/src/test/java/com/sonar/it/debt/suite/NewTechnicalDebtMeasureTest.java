@@ -48,7 +48,7 @@ public class NewTechnicalDebtMeasureTest {
       .setProfile("one-issue-per-line"));
 
     // New technical debt only comes from new issues
-    Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     List<Measure> measures = newTechnicalDebt.getMeasures();
     assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0.027, Delta.delta(0.001));
     assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.027, Delta.delta(0.001));
@@ -57,7 +57,7 @@ public class NewTechnicalDebtMeasureTest {
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line"));
 
-    newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
 
     // No variation => measure is purged
     assertThat(newTechnicalDebt).isNull();
@@ -77,7 +77,7 @@ public class NewTechnicalDebtMeasureTest {
       .setProfile("one-issue-per-file")
       .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
 
-    Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     List<Measure> measures = newTechnicalDebt.getMeasures();
     assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
 
@@ -86,7 +86,7 @@ public class NewTechnicalDebtMeasureTest {
       .setProfile("one-issue-per-file")
       .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
 
-    newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     measures = newTechnicalDebt.getMeasures();
     assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0d);
   }
@@ -109,7 +109,7 @@ public class NewTechnicalDebtMeasureTest {
       .setProfile("one-issue-per-file")
       .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
 
-    Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     List<Measure> measures = newTechnicalDebt.getMeasures();
     assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
 
@@ -118,7 +118,7 @@ public class NewTechnicalDebtMeasureTest {
       .setProfile("one-issue-per-file")
       .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
 
-    newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     measures = newTechnicalDebt.getMeasures();
     assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
   }

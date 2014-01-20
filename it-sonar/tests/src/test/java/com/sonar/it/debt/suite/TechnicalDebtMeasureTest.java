@@ -33,8 +33,8 @@ public class TechnicalDebtMeasureTest {
   private static final String PROJECT = "com.sonarsource.it.samples:multi-modules-sample";
   private static final String MODULE = "com.sonarsource.it.samples:multi-modules-sample:module_a";
   private static final String SUB_MODULE = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1";
-  private static final String DIRECTORY = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:com/sonar/it/samples/modules/a1";
-  private static final String FILE = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:com/sonar/it/samples/modules/a1/HelloA1.xoo";
+  private static final String DIRECTORY = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1";
+  private static final String FILE = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo";
 
   private static final String TECHNICAL_DEBT_MEASURE = "sqale_index";
 
