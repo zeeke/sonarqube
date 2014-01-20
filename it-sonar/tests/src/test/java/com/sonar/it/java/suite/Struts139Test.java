@@ -39,8 +39,8 @@ public class Struts139Test {
 
   private static final String PROJECT_STRUTS = "org.apache.struts:struts-parent";
   private static final String MODULE_CORE = "org.apache.struts:struts-core";
-  private static final String PACKAGE_ACTION = "org.apache.struts:struts-core:/src/main/java/org/apache/struts/action";
-  private static final String FILE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action.Action";
+  private static final String PACKAGE_ACTION = "org.apache.struts:struts-core:src/main/java/org/apache/struts/action";
+  private static final String FILE_ACTION = "org.apache.struts:struts-core:src/main/java/org/apache/struts/action/Action.java";
 
   @BeforeClass
   public static void analyzeProject() {
