@@ -8,141 +8,136 @@
 <table cellpadding="1" cellspacing="1" border="1">
   <tbody>
 <tr>
-  <td>open</td>
-  <td>/sonar/sessions/logout</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>/sonar/sessions/new</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>login</td>
-  <td>tester</td>
+	<td>type</td>
+	<td>login</td>
+	<td>tester</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>password</td>
-  <td>tester</td>
+	<td>type</td>
+	<td>password</td>
+	<td>tester</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>commit</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>/sonar/issues</td>
-  <td></td>
-</tr>
-<tr>
-  <td>clickAndWait</td>
-  <td>class=navigator-filter-submit</td>
-  <td></td>
-</tr>
-<tr>
-  <td>assertText</td>
-  <td>issue-filters-operations</td>
-  <td>*Bulk Change*</td>
+	<td>open</td>
+	<td>/sonar/issues</td>
+	<td></td>
 </tr>
 <!-- Bulk change without notifications -->
 <tr>
-  <td>click</td>
-  <td>id=bulk-change</td>
-  <td></td>
+	<td>click</td>
+	<td>class=navigator-actions-bulk open-modal</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>bulk-change-form</td>
-  <td>*Change 13 issues*</td>
+	<td>waitForText</td>
+	<td>bulk-change-form</td>
+	<td>*Change 13 issues*</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=assign-action</td>
-  <td></td>
+	<td>click</td>
+	<td>id=assign-action</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=set-severity-action</td>
-  <td></td>
+	<td>click</td>
+	<td>id=set-severity-action</td>
+	<td></td>
 </tr>
 <tr>
-  <td>select</td>
-  <td>severity</td>
-  <td>Minor</td>
+	<td>select</td>
+	<td>severity</td>
+	<td>Minor</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>id=bulk-change-submit</td>
-  <td></td>
+	<td>click</td>
+	<td>id=bulk-change-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.navigator-results-list</td>
+	<td>*Minor*</td>
 </tr>
 <!-- Bulk change with notifications -->
 <tr>
-  <td>open</td>
-  <td>/sonar/sessions/logout</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>/sonar/sessions/new</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>login</td>
-  <td>admin</td>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>password</td>
-  <td>admin</td>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>commit</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>/sonar/issues</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/issues</td>
+	<td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>class=navigator-filter-submit</td>
-  <td></td>
+	<td>click</td>
+	<td>class=navigator-actions-bulk open-modal</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=bulk-change</td>
-  <td></td>
+	<td>waitForText</td>
+	<td>bulk-change-form</td>
+	<td>*Change 13 issues*</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>bulk-change-form</td>
-  <td>*Change 13 issues*</td>
+	<td>click</td>
+	<td>id=set-severity-action</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=set-severity-action</td>
-  <td></td>
+	<td>select</td>
+	<td>severity</td>
+	<td>Blocker</td>
 </tr>
 <tr>
-  <td>select</td>
-  <td>severity</td>
-  <td>Blocker</td>
+	<td>click</td>
+	<td>id=send-notifications</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=send-notifications</td>
-  <td></td>
+	<td>click</td>
+	<td>id=bulk-change-submit</td>
+	<td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>id=bulk-change-submit</td>
-  <td></td>
+	<td>waitForText</td>
+	<td>css=.navigator-results-list</td>
+	<td>*Blocker*</td>
 </tr>
 </tbody>
 </table>

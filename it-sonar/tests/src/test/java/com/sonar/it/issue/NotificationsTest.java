@@ -11,17 +11,9 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import com.sonar.orchestrator.util.NetworkUtils;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.issue.BulkChangeQuery;
-import org.sonar.wsclient.issue.Issue;
-import org.sonar.wsclient.issue.IssueClient;
-import org.sonar.wsclient.issue.IssueQuery;
-import org.sonar.wsclient.issue.Issues;
+import org.sonar.wsclient.issue.*;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.user.UserParameters;
@@ -127,7 +119,7 @@ public class NotificationsTest {
     assertThat((String) message.getContent()).contains("13 new issues");
     assertThat((String) message.getContent()).contains("Blocker: 0   Critical: 0   Major: 13   Minor: 0   Info: 0");
     assertThat((String) message.getContent()).contains(
-      "See it in SonarQube: http://localhost:9000/issues/search?componentRoots=sample-notifications&createdAt=2011-12-15T00%3A00%3A00%2B0100");
+      "See it in SonarQube: http://localhost:9000/issues/search#componentRoots=sample-notifications|createdAt=2011-12-15T00%3A00%3A00%2B0100");
 
     assertThat(emails.hasNext()).isTrue();
     message = emails.next().getMimeMessage();
@@ -172,7 +164,7 @@ public class NotificationsTest {
     assertThat((String) message.getContent()).contains("13 new issues");
     assertThat((String) message.getContent()).contains("Blocker: 0   Critical: 0   Major: 13   Minor: 0   Info: 0");
     assertThat((String) message.getContent()).contains(
-      "See it in SonarQube: http://localhost:9000/issues/search?componentRoots=sample-notifications&createdAt=2011-12-15T00%3A00%3A00%2B0100");
+      "See it in SonarQube: http://localhost:9000/issues/search#componentRoots=sample-notifications|createdAt=2011-12-15T00%3A00%3A00%2B0100");
 
     assertThat(emails.hasNext()).isTrue();
     message = emails.next().getMimeMessage();
@@ -205,7 +197,7 @@ public class NotificationsTest {
     assertThat((String) message.getContent()).contains("13 new issues");
     assertThat((String) message.getContent()).contains("Blocker: 0   Critical: 0   Major: 13   Minor: 0   Info: 0");
     assertThat((String) message.getContent()).contains(
-      "See it in SonarQube: http://localhost:9000/issues/search?componentRoots=sample-notifications&createdAt=2011-12-15T00%3A00%3A00%2B0100");
+      "See it in SonarQube: http://localhost:9000/issues/search#componentRoots=sample-notifications|createdAt=2011-12-15T00%3A00%3A00%2B0100");
 
     // One email per changed issue
     for (int i = 0; i < 13; i++) {

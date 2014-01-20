@@ -44,22 +44,22 @@
 </tr>
 <tr>
 	<td>select</td>
-	<td>name=severities[]</td>
+	<td>name=severities</td>
 	<td>Minor</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>name=statuses[]</td>
+	<td>name=statuses</td>
 	<td>Open</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>class=navigator-filter-submit</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=save-as</td>
+	<td>id=issues-filter-save-as</td>
 	<td></td>
 </tr>
 <tr>
@@ -79,12 +79,12 @@
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>filter-title</td>
+	<td>css=.navigator-header-title</td>
 	<td>*${FILTER_NAME}*</td>
 </tr>
 <tr>
 	<td>storeValue</td>
-	<td>id</td>
+	<td>#id</td>
 	<td>FILTER_ID</td>
 </tr>
 <tr>
@@ -103,9 +103,14 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForVisible</td>
+	<td>css=.navigator-actions-order</td>
+	<td></td>
+</tr>
+<tr>
 	<td>assertText</td>
-	<td>class=navigator-results</td>
-	<td>*Open*13 results*</td>
+	<td>css=.navigator-actions-total</td>
+	<td>Found: 13</td>
 </tr>
 </tbody>
 </table>
