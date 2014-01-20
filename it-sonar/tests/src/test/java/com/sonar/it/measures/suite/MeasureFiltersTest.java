@@ -71,18 +71,6 @@ public class MeasureFiltersTest {
   }
 
   @Test
-  public void display_measure_filter_as_treemap() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("display_measure_filter_as_treemap",
-      "/selenium/measures/measure_filters/treemap_display.html",
-      "/selenium/measures/measure_filters/treemap_change_metrics.html",
-      "/selenium/measures/measure_filters/treemap_of_components_widget.html",
-      "/selenium/measures/measure_filters/treemap_of_components_widget_edit_metrics.html",
-      "/selenium/measures/measure_filters/treemap_of_filter_widget.html"
-    ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  @Test
   public void share_measure_filters() {
     // SONAR-4099
     String user = "user-measures-filter-with-sharing-perm";
@@ -149,6 +137,16 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/list_widget.html",
       "/selenium/measures/measure_filters/list_widget_sort.html",
       "/selenium/measures/measure_filters/list_widget_warning_if_missing_filter.html"
+    ).build();
+    orchestrator.executeSelenese(selenese);
+  }
+
+  @Test
+  public void measure_filter_treemap_widget() {
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("measure_filter_treemap_widget",
+      "/selenium/measures/measure_filters/treemap_of_components_widget.html",
+      "/selenium/measures/measure_filters/treemap_of_components_widget_edit_metrics.html",
+      "/selenium/measures/measure_filters/treemap_of_filter_widget.html"
     ).build();
     orchestrator.executeSelenese(selenese);
   }
