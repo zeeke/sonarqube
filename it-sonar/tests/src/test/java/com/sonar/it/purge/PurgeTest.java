@@ -44,7 +44,7 @@ public class PurgeTest {
     // count components
     assertThat(count("projects where qualifier in ('TRK','BRC')")).as("Wrong number of projects").isEqualTo(4);
     assertThat(count("projects where qualifier in ('DIR')")).as("Wrong number of directories").isEqualTo(40);
-    assertThat(count("projects where qualifier in ('CLA')")).as("Wrong number of files").isEqualTo(320);
+    assertThat(count("projects where qualifier in ('FIL')")).as("Wrong number of files").isEqualTo(320);
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
 
     int measuresOnTrk = 200;
@@ -57,7 +57,7 @@ public class PurgeTest {
     measures("TRK", measuresOnTrk);
     measures("BRC", measuresOnBrc);
     measures("DIR", measuresOnDir);
-    measures("CLA", measuresOnCla);
+    measures("FIL", measuresOnCla);
     measures("UTS", measuresOnUts);
 
     // No new_* metrics measure should be recorded the first time
@@ -90,7 +90,7 @@ public class PurgeTest {
     measures("TRK", measuresOnTrk + newMeasuresOnTrk);
     measures("BRC", measuresOnBrc + newMeasuresOnBrc);
     measures("DIR", measuresOnDir + newMeasuresOnDir);
-    measures("CLA", measuresOnCla + newMeasuresOnCla);
+    measures("FIL", measuresOnCla + newMeasuresOnCla);
     measures("UTS", measuresOnUts + newMeasuresOnUts);
 
     // Measures on new_* metrics should be recorded

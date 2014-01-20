@@ -50,7 +50,7 @@ public class SearchEngineTest {
       "/selenium/ui/search-engine/open-file-viewers.html",
       // SONAR-3909
       "/selenium/ui/search-engine/search-with-pourcent-and-underscore-characters.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -61,7 +61,7 @@ public class SearchEngineTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("search-engine-project-renaming",
       "/selenium/ui/search-engine-project-renaming/rename-project.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -73,21 +73,21 @@ public class SearchEngineTest {
     inspect("shared/struts-1.3.9-diet");
 
     Sonar client = orchestrator.getServer().getWsClient();
-    ResourceSearchResult result = client.find(ResourceSearchQuery.create("pro").setQualifiers(Resource.QUALIFIER_CLASS, Resource.QUALIFIER_PROJECT));
+    ResourceSearchResult result = client.find(ResourceSearchQuery.create("pro").setQualifiers(Resource.QUALIFIER_FILE, Resource.QUALIFIER_PROJECT));
 
     assertThat(result.getPage()).isEqualTo(1);
     assertThat(result.getPageSize()).isEqualTo(10);
     assertThat(result.getTotal()).isEqualTo(11);
     assertThat(result.getResources()).hasSize(10);
     for (ResourceSearchResult.Resource resource : result.getResources()) {
-      assertThat(resource.qualifier()).isEqualTo(Resource.QUALIFIER_CLASS);
+      assertThat(resource.qualifier()).isEqualTo(Resource.QUALIFIER_FILE);
       assertThat(resource.name()).containsIgnoringCase("pro");
       assertThat(resource.key()).startsWith("org.apache.struts:");
     }
 
     // SONAR-3909
-    assertThat(client.find(ResourceSearchQuery.create("pro%").setQualifiers(Resource.QUALIFIER_CLASS, Resource.QUALIFIER_PROJECT)).getTotal()).isZero();
-    assertThat(client.find(ResourceSearchQuery.create("pro_").setQualifiers(Resource.QUALIFIER_CLASS, Resource.QUALIFIER_PROJECT)).getTotal()).isZero();
+    assertThat(client.find(ResourceSearchQuery.create("pro%").setQualifiers(Resource.QUALIFIER_FILE, Resource.QUALIFIER_PROJECT)).getTotal()).isZero();
+    assertThat(client.find(ResourceSearchQuery.create("pro_").setQualifiers(Resource.QUALIFIER_FILE, Resource.QUALIFIER_PROJECT)).getTotal()).isZero();
   }
 
   /**
