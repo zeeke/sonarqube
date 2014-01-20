@@ -48,19 +48,19 @@ public class FavouritesWebServiceTest {
     Favourite favourite = adminWsClient.create(new FavouriteCreateQuery("com.sonarsource.it.samples:simple-sample"));
     assertThat(favourite, not(nullValue()));
     assertThat(favourite.getKey(), is("com.sonarsource.it.samples:simple-sample"));
-    adminWsClient.create(new FavouriteCreateQuery("com.sonarsource.it.samples:simple-sample:sample.Sample"));
+    adminWsClient.create(new FavouriteCreateQuery("com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java"));
 
     // GET (created favourites)
     favourites = adminWsClient.findAll(new FavouriteQuery());
     assertThat(favourites.size(), is(2));
     assertThat(favourites.get(0).getKey(), is("com.sonarsource.it.samples:simple-sample"));
-    assertThat(favourites.get(1).getKey(), is("com.sonarsource.it.samples:simple-sample:/src/main/java/sample/Sample.java"));
+    assertThat(favourites.get(1).getKey(), is("com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java"));
 
     // DELETE (a favourite)
     adminWsClient.delete(new FavouriteDeleteQuery("com.sonarsource.it.samples:simple-sample"));
     favourites = adminWsClient.findAll(new FavouriteQuery());
     assertThat(favourites.size(), is(1));
-    assertThat(favourites.get(0).getKey(), is("com.sonarsource.it.samples:simple-sample:/src/main/java/sample/Sample.java"));
+    assertThat(favourites.get(0).getKey(), is("com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java"));
   }
 
 }

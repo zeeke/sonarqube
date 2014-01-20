@@ -30,7 +30,7 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-ws-client</artifactId>
-      <version>4.2-M4</version>
+      <version>4.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.sonarsource.orchestrator</groupId>
