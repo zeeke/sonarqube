@@ -13,14 +13,10 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
-import org.sonar.wsclient.issue.ActionPlan;
-import org.sonar.wsclient.issue.Issue;
-import org.sonar.wsclient.issue.IssueQuery;
-import org.sonar.wsclient.issue.Issues;
-import org.sonar.wsclient.issue.NewActionPlan;
-import org.sonar.wsclient.issue.NewIssue;
+import org.sonar.wsclient.issue.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -223,6 +219,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
    * SONAR-4486
    */
   @Test
+  @Ignore
   public void search_issues_from_ui() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("execute-issue-filters",
       "/selenium/issue/issues-search/link-from-main-header.html",
@@ -235,7 +232,6 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
       "/selenium/issue/issues-search/search-by-reporter.html",
       "/selenium/issue/issues-search/search-by-creation-date.html",
       "/selenium/issue/issues-search/should-description-link-on-issue-detail.html",
-      "/selenium/issue/issues-search/result-should-be-paginated.html",
       "/selenium/issue/issues-search/should-sort-by-severity.html",
       "/selenium/issue/issues-search/should-sort-by-status.html",
       "/selenium/issue/issues-search/should-sort-by-assignee.html"
