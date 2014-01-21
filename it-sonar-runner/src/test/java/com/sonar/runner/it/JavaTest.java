@@ -52,7 +52,7 @@ public class JavaTest extends RunnerTestCase {
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
     Resource file = orchestrator.getServer().getWsClient()
-      .find(new ResourceQuery("java:sample:src/basic/Hello.java").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
+      .find(new ResourceQuery(helloFileKey()).setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
     if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
       assertThat(file.getName()).isEqualTo("Hello.java");
     } else {
@@ -98,7 +98,7 @@ public class JavaTest extends RunnerTestCase {
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
     Resource file = orchestrator.getServer().getWsClient()
-      .find(new ResourceQuery("java:sample:src/basic/Hello.java").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
+      .find(new ResourceQuery(helloFileKey()).setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
     if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
       assertThat(file.getName()).isEqualTo("Hello.java");
     } else {
@@ -123,7 +123,7 @@ public class JavaTest extends RunnerTestCase {
     }
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
-    Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:bytecode:src/HasFindbugsViolation.java").setMetrics("lcom4", "violations"));
+    Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery(findbugsFileKey()).setMetrics("lcom4", "violations"));
     assertThat(file.getMeasureIntValue("lcom4")).isGreaterThanOrEqualTo(1);
     assertThat(file.getMeasureIntValue("violations")).isGreaterThan(0);
 
@@ -255,5 +255,21 @@ public class JavaTest extends RunnerTestCase {
     assertThat(result.getStatus()).isNotEqualTo(0);
     // with the following message
     assertThat(result.getLogs()).contains("ERROR: Sonar server 'http://foo' can not be reached");
+  }
+
+  private String findbugsFileKey() {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      return "java:bytecode:src/HasFindbugsViolation.java";
+    } else {
+      return "java:bytecode:[default].HasFindbugsViolation";
+    }
+  }
+
+  private String helloFileKey() {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      return "java:sample:src/basic/Hello.java";
+    } else {
+      return "java:sample:basic.Hello";
+    }
   }
 }
