@@ -10,10 +10,8 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
-import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.base.HttpException;
@@ -48,38 +46,6 @@ public class IssuePermissionTest {
       .setProperty("sonar.projectName", "Sample2")
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(sampleProject2);
-  }
-
-  /**
-   * SONAR-4686
-   */
-  @Test
-  @Ignore("Ignored 20140120 to goldenize")
-  public void need_code_viewer_permission_to_see_source_code_from_issue_detail() {
-    SonarClient client = orchestrator.getServer().adminWsClient();
-
-    String withCodeViewerPermission = "with-code-viewer-permission";
-    String withoutCodeViewerPermission = "without-code-viewer-permission";
-
-    try {
-      client.userClient().create(UserParameters.create().login(withCodeViewerPermission).name(withCodeViewerPermission)
-        .password("password").passwordConfirmation("password"));
-      client.permissionClient().addPermission(PermissionParameters.create().user(withCodeViewerPermission).component("sample").permission("codeviewer"));
-
-      client.userClient().create(UserParameters.create().login(withoutCodeViewerPermission).name(withoutCodeViewerPermission)
-        .password("password").passwordConfirmation("password"));
-      // By default, it's the group anyone that have the permission codeviewer, it would be better to remove all groups on this permission
-      client.permissionClient().removePermission(PermissionParameters.create().group("anyone").component("sample").permission("codeviewer"));
-
-      orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("need-code-viewer-permission-to-see-source-code-from-issue-detail",
-        "/selenium/permission/issue-permissions/without-code-viewer-permission-source-code-from-issue-detail-is-hidden.html",
-        "/selenium/permission/issue-permissions/with-code-viewer-permission-source-code-from-issue-detail-is-visible.html"
-        ).build());
-
-    } finally {
-      client.userClient().deactivate(withCodeViewerPermission);
-      client.userClient().deactivate(withoutCodeViewerPermission);
-    }
   }
 
   @Test
@@ -240,32 +206,6 @@ public class IssuePermissionTest {
 
     } finally {
       client.userClient().deactivate(user);
-    }
-  }
-
-  /**
-   * SONAR-2447
-   */
-  @Test
-  @Ignore("Ignored 20140120 to goldenize")
-  public void need_administer_issue_permission_to_see_set_severity_and_false_positive_from_issue_detail() {
-    SonarClient client = orchestrator.getServer().adminWsClient();
-
-    String withoutIssueAdminPermission = "without-issue-admin-permission";
-
-    try {
-
-      client.userClient().create(UserParameters.create().login(withoutIssueAdminPermission).name(withoutIssueAdminPermission)
-        .password("password").passwordConfirmation("password"));
-      client.permissionClient().addPermission(PermissionParameters.create().user(withoutIssueAdminPermission).component("sample").permission("codeviewer"));
-      client.permissionClient().addPermission(PermissionParameters.create().user(withoutIssueAdminPermission).component("sample").permission("user"));
-
-      orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("need_administer_issue_permission_to_see_set_severity_and_false_positive_from_issue_detail",
-        "/selenium/permission/issue-permissions/without-issue-admin-permission-some-actions-from-issue-detail-are-hidden.html"
-        ).build());
-
-    } finally {
-      client.userClient().deactivate(withoutIssueAdminPermission);
     }
   }
 }

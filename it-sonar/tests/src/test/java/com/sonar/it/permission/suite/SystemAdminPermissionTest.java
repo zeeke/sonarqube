@@ -10,7 +10,10 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
@@ -49,17 +52,6 @@ public class SystemAdminPermissionTest {
       "/selenium/permission/system-admin-permission/change-own-measure-filter-owner.html",
       "/selenium/permission/system-admin-permission/change-other-measure-filter-owner.html",
       "/selenium/permission/system-admin-permission/change-system-measure-filter-owner.html");
-  }
-
-  /**
-   * SONAR-4399
-   */
-  @Test
-  @Ignore("Ignored 20140120 to goldenize")
-  public void should_change_ownership_of_shared_issue_filter() throws Exception {
-    seleniumSuite("change-issue-filter-ownership",
-      "/selenium/permission/system-admin-permission/change-own-issue-filter-owner.html",
-      "/selenium/permission/system-admin-permission/change-other-issue-filter-owner.html");
   }
 
   /**
