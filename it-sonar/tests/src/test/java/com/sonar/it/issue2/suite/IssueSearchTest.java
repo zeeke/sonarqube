@@ -9,11 +9,9 @@ package com.sonar.it.issue2.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
-import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
 import org.sonar.wsclient.issue.*;
@@ -212,31 +210,6 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     // search with future and past dates that do not match any issues
     assertThat(search(IssueQuery.create().createdAt(ItUtils.toDate("2020-01-01"))).size()).isEqualTo(0);
     assertThat(search(IssueQuery.create().createdAt(ItUtils.toDate("2010-01-01"))).size()).isEqualTo(0);
-  }
-
-  /**
-   * SONAR-4301
-   * SONAR-4486
-   */
-  @Test
-  @Ignore
-  public void search_issues_from_ui() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("execute-issue-filters",
-      "/selenium/issue/issues-search/link-from-main-header.html",
-      "/selenium/issue/issues-search/initial-search-form.html",
-      "/selenium/issue/issues-search/search-by-project.html",
-      "/selenium/issue/issues-search/search-by-severities.html",
-      "/selenium/issue/issues-search/search-by-statuses.html",
-      "/selenium/issue/issues-search/search-by-resolutions.html",
-      "/selenium/issue/issues-search/search-by-assignee.html",
-      "/selenium/issue/issues-search/search-by-reporter.html",
-      "/selenium/issue/issues-search/search-by-creation-date.html",
-      "/selenium/issue/issues-search/should-description-link-on-issue-detail.html",
-      "/selenium/issue/issues-search/should-sort-by-severity.html",
-      "/selenium/issue/issues-search/should-sort-by-status.html",
-      "/selenium/issue/issues-search/should-sort-by-assignee.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
   }
 
 }
