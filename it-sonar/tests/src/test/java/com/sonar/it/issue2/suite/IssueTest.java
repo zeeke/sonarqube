@@ -264,30 +264,6 @@ public class IssueTest extends AbstractIssueTestCase2 {
       ).build());
   }
 
-  /**
-   * SONAR-4303
-   * FIXME
-   */
-  @Test
-  @Ignore("TODO Should be updated to deal with new issue page")
-  public void test_issue_detail() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("issues");
-    orchestrator.executeBuild(scan);
-
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issue-detail",
-      "/selenium/issue/issue-detail/test-issue-detail.html",
-      "/selenium/issue/issue-detail/should-open-link-on-component.html",
-      "/selenium/issue/issue-detail/should-open-rule-detail.html",
-      "/selenium/issue/issue-detail/should-open-link-on-permalink-issue.html",
-      // SONAR-4284
-      "/selenium/issue/issue-detail/should-open-changelog.html",
-      "/selenium/issue/issue-detail/should-display-actions-when-logged.html"
-      ).build());
-  }
-
   @Test
   public void plugin_can_override_profile_severity() throws Exception {
     // The rule "OneBlockerIssuePerFile" is enabled with severity "INFO"

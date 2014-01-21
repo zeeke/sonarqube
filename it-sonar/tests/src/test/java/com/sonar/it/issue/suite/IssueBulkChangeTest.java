@@ -13,7 +13,6 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.ActionPlan;
 import org.sonar.wsclient.issue.BulkChange;
@@ -29,9 +28,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * SONAR-4421
- * FIXME
  */
-@Ignore("Should be updated to support new issue page")
 public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Before
@@ -250,92 +247,6 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     assertThat(nbIssuesWithComment).isEqualTo(1);
   }
 
-  @Test
-  public void should_apply_bulk_change_with_limited_number_of_issues() {
-    analyzeProjectWithALotOfIssues();
-
-    // Check that number of issues is limited from the ws
-    String newSeverity = "BLOCKER";
-    int nbIssues = 510;
-    String[] issueKeys = getIssueKeys(search(IssueQuery.create().pageSize(-1)).list(), nbIssues);
-
-    BulkChange bulkChange = adminIssueClient().bulkChange(
-      BulkChangeQuery.create()
-        .issues(issueKeys)
-        .actions("set_severity")
-        .actionParameter("set_severity", "severity", newSeverity)
-      );
-    assertThat(bulkChange.totalIssuesChanged()).isEqualTo(500);
-    assertThat(search(IssueQuery.create().severities(newSeverity)).paging().total()).isEqualTo(500);
-
-    // Check that number of issues is limited from the console bulk change
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should-bulk-change-be-limited-in-number-of-issues",
-      "/selenium/issue/bulk-change/should-bulk-change-be-limited-in-number-of-issues.html",
-      // SONAR-4654
-      // SONAR-4723
-      "/selenium/issue/bulk-change/should-bulk-change-be-limited-in-number-of-issues-with-pagination.html"
-      ).build());
-  }
-
-  /**
-   * SONAR-4421
-   */
-  @Test
-  public void should_apply_bulk_change_from_console() {
-    analyzeSampleProjectWillSmallNumberOfIssues();
-
-    // Create action plan
-    ActionPlan actionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
-
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_change_from_console",
-      "/selenium/issue/bulk-change/should-apply-bulk-change.html"
-      ).build());
-
-    for (Issue issue : search(IssueQuery.create()).list()) {
-      assertThat(issue.status()).isEqualTo("CONFIRMED");
-      assertThat(issue.assignee()).isEqualTo("admin");
-      assertThat(issue.severity()).isEqualTo("BLOCKER");
-      assertThat(issue.actionPlan()).isEqualTo(actionPlan.key());
-      assertThat(issue.comments()).hasSize(1);
-      assertThat(issue.comments().get(0).htmlText()).isEqualTo("this is my <em>comment</em>");
-    }
-  }
-
-  @Test
-  public void should_apply_bulk_plan_on_issues_from_same_project_from_issues_console() {
-    analyzeSampleProjectWillSmallNumberOfIssues();
-
-    // Create action plan
-    ActionPlan actionPlan = adminActionPlanClient().create(
-      NewActionPlan.create().name("Short term").project("sample").description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
-
-    List<Issue> issues = search(IssueQuery.create()).list();
-    assertThat(issues.size()).isGreaterThanOrEqualTo(2);
-
-    // Assign issues to admin in order to link them to a action plan from console without having to select a project
-    Issue issue1 = issues.get(0);
-    Issue issue2 = issues.get(1);
-    adminIssueClient().assign(issue1.key(), "admin");
-    adminIssueClient().assign(issue2.key(), "admin");
-
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_plan_on_issues_from_same_project_from_console",
-      "/selenium/issue/bulk-change/should-apply-bulk-plan-on-issues-from-same-project.html"
-      ).build());
-
-    assertThat(searchIssueByKey(issue1.key()).actionPlan()).isEqualTo(actionPlan.key());
-    assertThat(searchIssueByKey(issue2.key()).actionPlan()).isEqualTo(actionPlan.key());
-  }
-
-  @Test
-  public void test_console() {
-    analyzeProjectWithALotOfIssues();
-
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("test_console",
-      "/selenium/issue/bulk-change/should-be-admin-to-apply-bulk-change.html"
-      ).build());
-  }
-
   /**
    * SONAR-4418
    */
@@ -351,12 +262,6 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
   private void analyzeSampleProjectWillSmallNumberOfIssues() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProfile("one-issue-per-line"));
-  }
-
-  private void analyzeProjectWithALotOfIssues() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("issue/file-with-thousands-issues"))
       .setProfile("one-issue-per-line"));
   }
 

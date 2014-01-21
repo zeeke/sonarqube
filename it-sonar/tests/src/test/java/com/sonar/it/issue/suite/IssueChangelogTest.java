@@ -8,15 +8,11 @@ package com.sonar.it.issue.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
-import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.sonar.wsclient.issue.ActionPlan;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueChange;
 import org.sonar.wsclient.issue.IssueChangeDiff;
-import org.sonar.wsclient.issue.NewActionPlan;
 
 import java.util.List;
 
@@ -97,26 +93,5 @@ public class IssueChangelogTest extends AbstractIssueTestCase {
     assertThat(changeDiff2.key()).isEqualTo("status");
     assertThat(changeDiff2.oldValue()).isEqualTo("RESOLVED");
     assertThat(changeDiff2.newValue()).isEqualTo("REOPENED");
-  }
-
-  /**
-   * SONAR-4375
-   * FIXME
-   */
-  @Test
-  @Ignore("Should be updated for new issue page")
-  public void display_issue_changelog_entries() throws Exception {
-    ActionPlan newActionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("sample")
-      .description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
-    assertThat(newActionPlan.key()).isNotNull();
-
-    adminIssueClient().doTransition(issue.key(), "confirm");
-    adminIssueClient().assign(issue.key(), "admin");
-    adminIssueClient().setSeverity(issue.key(), "BLOCKER");
-    adminIssueClient().plan(issue.key(), newActionPlan.key());
-
-    Selenese selenese = Selenese.builder()
-      .setHtmlTestsInClasspath("display-issue-changelog", "/selenium/issue/should-display-issue-changelog.html").build();
-    orchestrator.executeSelenese(selenese);
   }
 }

@@ -13,7 +13,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -158,10 +157,8 @@ public class HistoryTest {
 
   /**
    * SONAR-3046
-   * FIXME
    */
   @Test
-  @Ignore("Should be updated to support issue refactoring")
   public void testPeriodInWidgetMostViolatedRules() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("history-widget-most-violated-rules",
       "/selenium/history/history-widget-most-violated-rules/display-variation.html",
