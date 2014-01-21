@@ -14,7 +14,6 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Event;
 import org.sonar.wsclient.services.EventQuery;
@@ -59,8 +58,8 @@ public class ProfileChangelogTest {
    * SONAR-2621
    */
   @Test
-  @Ignore
   public void should_be_available_to_anonymous() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileChangelogTest/should_be_available_to_anonymous.xml"));
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-be-available-to-anonymous", "/selenium/profile-changelog/anonymous-access.html").build();
     orchestrator.executeSelenese(selenese);
   }
