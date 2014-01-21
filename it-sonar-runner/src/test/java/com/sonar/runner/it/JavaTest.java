@@ -51,7 +51,8 @@ public class JavaTest extends RunnerTestCase {
     assertThat(project.getMeasureIntValue("lcom4")).isNull(); // no bytecode
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
-    Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:sample:basic.Hello").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
+    Resource file = orchestrator.getServer().getWsClient()
+      .find(new ResourceQuery("java:sample:src/basic/Hello.java").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
     if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
       assertThat(file.getName()).isEqualTo("Hello.java");
     } else {
@@ -96,7 +97,8 @@ public class JavaTest extends RunnerTestCase {
     assertThat(project.getMeasureIntValue("lcom4")).isNull(); // no bytecode
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
-    Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:sample:basic.Hello").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
+    Resource file = orchestrator.getServer().getWsClient()
+      .find(new ResourceQuery("java:sample:src/basic/Hello.java").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
     if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
       assertThat(file.getName()).isEqualTo("Hello.java");
     } else {
@@ -121,7 +123,7 @@ public class JavaTest extends RunnerTestCase {
     }
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
-    Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:bytecode:[default].HasFindbugsViolation").setMetrics("lcom4", "violations"));
+    Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:bytecode:src/HasFindbugsViolation.java").setMetrics("lcom4", "violations"));
     assertThat(file.getMeasureIntValue("lcom4")).isGreaterThanOrEqualTo(1);
     assertThat(file.getMeasureIntValue("violations")).isGreaterThan(0);
 
