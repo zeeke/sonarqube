@@ -176,39 +176,4 @@ public class NotificationsTest {
     assertThat(emails.hasNext()).isFalse();
   }
 
-  /**
-   * SONAR-4606
-   */
-  @Test
-  public void notifications_for_bulk_change_from_console() throws Exception {
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("notifications_for_bulk_change_from_console",
-      "/selenium/issue/notification/bulk-change.html"
-      ).build());
-
-    // We need to wait until all notifications will be delivered
-    Thread.sleep(5000);
-
-    Iterator<WiserMessage> emails = smtpServer.getMessages().iterator();
-
-    assertThat(emails.hasNext()).isTrue();
-    MimeMessage message = emails.next().getMimeMessage();
-    assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
-    assertThat((String) message.getContent()).contains("Sample project for notifications");
-    assertThat((String) message.getContent()).contains("13 new issues");
-    assertThat((String) message.getContent()).contains("Blocker: 0   Critical: 0   Major: 13   Minor: 0   Info: 0");
-    assertThat((String) message.getContent()).contains(
-      "See it in SonarQube: http://localhost:9000/issues/search#componentRoots=sample-notifications|createdAt=2011-12-15T00%3A00%3A00%2B0100");
-
-    // One email per changed issue
-    for (int i = 0; i < 13; i++) {
-      assertThat(emails.hasNext()).isTrue();
-      message = emails.next().getMimeMessage();
-      assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
-      assertThat((String) message.getContent()).contains("sample/Sample.xoo");
-      assertThat((String) message.getContent()).contains("Severity: BLOCKER (was MINOR)");
-    }
-
-    assertThat(emails.hasNext()).isFalse();
-  }
-
 }
