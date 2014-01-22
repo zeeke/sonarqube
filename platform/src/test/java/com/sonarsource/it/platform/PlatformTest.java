@@ -69,6 +69,7 @@ public class PlatformTest {
     configureViews();
     inspectProjects();
     wsClient = orchestrator.getServer().getWsClient();
+    is_sonar_4_2_or_more = orchestrator.getServer().version().isGreaterThanOrEquals("4.2");
   }
 
   private static void inspectProjects() {
@@ -162,13 +163,16 @@ public class PlatformTest {
   }
 
   private static final String COBOL_PROJECT = "sonar.cobol:custom-check";
-  private static final String COBOL_FILE = "sonar.cobol:custom-check:TC4E3H0.CBL";
+  private static final String COBOL_FILE = "sonar.cobol:custom-check:src/TC4E3H0.CBL";
+  private static final String COBOL_FILE_DEPRECATED_KEY = "sonar.cobol:custom-check:TC4E3H0.CBL";
   private static final String JAVA_STRUTS = "org.apache.struts:struts-parent";
   private static final String JAVA_COLLECTIONS = "commons-collections:commons-collections";
   private static final String JAVA_VIEWS = "views_java";
   private static final String JAVA_COBOL_VIEWS = "views_java_cobol";
   private static final String FLEX_PROJECT = "com.adobe:as3corelib";
-  private static final String FLEX_FILE = "com.adobe:as3corelib:com/adobe/utils/StringUtil.as";
+  private static final String FLEX_FILE = "com.adobe:as3corelib:src/com/adobe/utils/StringUtil.as";
+  private static final String FLEX_FILE_DEPRECATED_KEY = "com.adobe:as3corelib:com/adobe/utils/StringUtil.as";
+  private static boolean is_sonar_4_2_or_more;
 
   // -------------------------------------------------------------------------------------
   // COBOL
@@ -186,15 +190,19 @@ public class PlatformTest {
 
   @Test
   public void cobolFileMeasures() {
-    assertThat(getMeasure(COBOL_FILE, "violations").getIntValue(), is(1));
+    assertThat(getMeasure(cobolFileKey(), "violations").getIntValue(), is(1));
   }
 
   @Test
   public void cobolFileViolations() {
-    assertThat(wsClient.find(ViolationQuery.createForResource(COBOL_FILE)).getRuleKey(), is("cobol:com.mycompany.cobol.sample.checks.SampleCheck"));
-    assertThat(wsClient.find(ViolationQuery.createForResource(COBOL_FILE)).getLine(), is(3));
-    assertThat(wsClient.find(ViolationQuery.createForResource(COBOL_FILE)).getSeverity(), is("INFO"));
-    assertThat(wsClient.find(ViolationQuery.createForResource(COBOL_FILE)).getRuleName(), is("Sample check"));
+    assertThat(wsClient.find(ViolationQuery.createForResource(cobolFileKey())).getRuleKey(), is("cobol:com.mycompany.cobol.sample.checks.SampleCheck"));
+    assertThat(wsClient.find(ViolationQuery.createForResource(cobolFileKey())).getLine(), is(3));
+    assertThat(wsClient.find(ViolationQuery.createForResource(cobolFileKey())).getSeverity(), is("INFO"));
+    assertThat(wsClient.find(ViolationQuery.createForResource(cobolFileKey())).getRuleName(), is("Sample check"));
+  }
+
+  private String cobolFileKey() {
+    return is_sonar_4_2_or_more ? COBOL_FILE : COBOL_FILE_DEPRECATED_KEY;
   }
 
   // -------------------------------------------------------------------------------------
@@ -342,7 +350,7 @@ public class PlatformTest {
 
   @Test
   public void flexFileSource() {
-    assertThat(wsClient.find(new SourceQuery(FLEX_FILE)).size(), is(239));
+    assertThat(wsClient.find(new SourceQuery(is_sonar_4_2_or_more ? FLEX_FILE : FLEX_FILE_DEPRECATED_KEY)).size(), is(239));
   }
 
   private Measure getMeasure(String resourceKey, String metricKey) {
