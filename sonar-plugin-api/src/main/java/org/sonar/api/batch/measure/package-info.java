@@ -17,23 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.api.batch.sensor.example;
+@ParametersAreNonnullByDefault
+package org.sonar.api.batch.measure;
 
-import org.sonar.api.batch.sensor.Sensor;
-import org.sonar.api.batch.sensor.WithinLifecycle;
-
-public class SquidSensor implements Sensor, WithinLifecycle {
-
-  @Override
-  public void define(Lifecycle lifecycle) {
-    // Must be executed before all other plugins so the dictionary Java classes <-> InputFile is
-    // available.
-    // Some standard barriers must be defined in core: init, scan (default), consolidation
-    lifecycle.setOn("init");
-  }
-
-  @Override
-  public void execute(Context context) {
-
-  }
-}
+import javax.annotation.ParametersAreNonnullByDefault;

@@ -17,25 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.api.batch.sensor.consolidation.internal;
-
-import org.sonar.api.batch.sensor.Component;
+package org.sonar.api.batch;
 
 /**
- * Prevents {@link org.sonar.api.batch.sensor.consolidation.ConsolidationHandler} from
- * using InputFile.
+ * @since 4.2
  */
-public class ConsolidationComponent implements Component {
-
-  @Override
-  public String key() {
-    return null;
-  }
-
-  @Override
-  public String qualifier() {
-    return null;
-  }
-
-
+public interface Component {
+  String key();
+  String qualifier();
 }

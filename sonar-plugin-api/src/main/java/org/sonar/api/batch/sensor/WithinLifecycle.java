@@ -20,20 +20,22 @@
 package org.sonar.api.batch.sensor;
 
 /**
- * Customize when a sensor executes.
+ * Customizes when a sensor executes. Can be implemented by {@link org.sonar.api.batch.sensor.Sensor}.
+ * @since 4.2
  */
 public interface WithinLifecycle {
 
   class Lifecycle {
-    public Lifecycle setBefore(String... barriers) {
+
+    public Lifecycle executesBefore(String... phases) {
       return this;
     }
 
-    public Lifecycle setAfter(String... barriers) {
+    public Lifecycle executesAfter(String... phases) {
       return this;
     }
 
-    public Lifecycle setOn(String... barriers) {
+    public Lifecycle executesOn(String... phases) {
       return this;
     }
   }

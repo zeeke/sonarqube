@@ -22,23 +22,19 @@ package org.sonar.api.batch.sensor.consolidation;
 import org.sonar.api.BatchExtension;
 
 /**
- * Equivalent of Consolidation dedicated to measures.
+ * Equivalent of {@link org.sonar.api.batch.sensor.consolidation.Consolidation} dedicated to measures.
+ * @since 4.2
  */
 public interface MeasureConsolidation extends BatchExtension {
 
-  class Definition {
-    public Definition setUses(String... metrics) {
-      return this;
-    }
+  interface Definition {
+    Definition usesMetrics(String... metrics);
+
     // TODO setRequires(String... metrics) ? If metrics are not available then handler is not executed
 
-    public Definition setComputes(String... metrics) {
-      return this;
-    }
+    Definition computesMetrics(String... metrics);
 
-    public Definition setHandler(MeasureConsolidationHandler handler) {
-      return this;
-    }
+    Definition setHandler(MeasureConsolidationHandler handler);
   }
 
   void define(Definition def);

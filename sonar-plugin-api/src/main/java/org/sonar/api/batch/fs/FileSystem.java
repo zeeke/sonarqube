@@ -17,11 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.api.batch.sensor;
+package org.sonar.api.batch.fs;
 
 import org.sonar.api.BatchComponent;
 
-// replace perspective Issuable
-public class Issues implements BatchComponent {
-
+/**
+ * @since 4.2
+ */
+public interface FileSystem extends BatchComponent {
 }

@@ -17,23 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.api.batch.sensor.example;
+@ParametersAreNonnullByDefault
+package org.sonar.api.batch.sensor.consolidation;
 
-import org.sonar.api.batch.sensor.consolidation.Consolidation;
-import org.sonar.api.batch.sensor.consolidation.ConsolidationHandler;
-
-public class CountIssues implements Consolidation, ConsolidationHandler {
-
-  @Override
-  public void define(Consolidation.Definition def) {
-    def
-      .setAfter("issue-generation")
-      .setOn("issue-tracking")
-      .setHandler(this);
-  }
-
-  @Override
-  public void handle(ConsolidationHandler.Context ctx) {
-    // count the number of issues
-  }
-}
+import javax.annotation.ParametersAreNonnullByDefault;

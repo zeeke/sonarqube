@@ -24,27 +24,26 @@ import org.sonar.api.measures.Measure;
 import javax.annotation.CheckForNull;
 import java.util.Collection;
 
+/**
+ * @since 4.2
+ */
 public interface MeasureConsolidationHandler {
-  class Context {
+  interface Context {
+
     /**
-     * @param metric must be declared in {@link org.sonar.api.batch.sensor.consolidation.MeasureConsolidation.Definition#setUses(String...)}
+     * @param metric must be declared in {@link org.sonar.api.batch.sensor.consolidation.MeasureConsolidation.Definition#usesMetrics(String...)}
      */
     @CheckForNull
-    Measure measure(String metric) {
-      return null;
-    }
+    Measure measure(String metric);
 
-    Collection<Measure> childMeasures(String metric) {
-      return null;
-    }
+    Collection<Measure> childMeasures(String metric);
 
     /**
-     * @param metric must be declared in {@link org.sonar.api.batch.sensor.consolidation.MeasureConsolidation.Definition#setComputes(String...)}
+     * @param metric must be declared in {@link org.sonar.api.batch.sensor.consolidation.MeasureConsolidation.Definition#computesMetrics(String...)}
      */
-    Context setMeasure(Measure measure) {
-      return this;
-    }
+    Context setMeasure(Measure measure);
   }
 
   void handle(Context context);
+
 }

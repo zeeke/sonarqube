@@ -20,41 +20,35 @@
 package org.sonar.api.batch.sensor;
 
 import org.sonar.api.BatchExtension;
-import org.sonar.api.component.Perspective;
+import org.sonar.api.batch.Module;
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.issue.IssueService;
+import org.sonar.api.batch.measure.MeasureService;
 import org.sonar.api.config.Settings;
-import org.sonar.api.scan.filesystem.ModuleFileSystem;
 
+/**
+ * Replaces the deprecated org.sonar.api.batch.Sensor.
+ * @since 4.2
+ */
 public interface Sensor extends BatchExtension {
 
-  class Context {
+  /**
+   * Contains shortcuts to popular services in order to avoid injection by constructor.
+   */
+  interface Context {
+    Module module();
 
-    // shortcuts to popular services in order to avoid pico injection
+    Settings settings();
 
-    public Module module() {
-      return null;
-    }
+    FileSystem fs();
 
-    public Settings settings() {
-      return null;
-    }
+    // TODO missing information about analysis ? dry run ? incremental ? date ?
 
-    public ModuleFileSystem fs() {
-      return null;
-    }
+    MeasureService measures();
 
-    // missing information about analysis ? dry run ? incremental ? date ?
-
-    public Measures measures() {
-      return null;
-    }
-
-    public Issues issues() {
-      return null;
-    }
+    IssueService issues();
   }
 
-  // the method shouldExecuteOnProject(Project) has been dropped. Sensors must add conditions in
-  // the method execute(Context)
   void execute(Context context);
 
 }

@@ -17,14 +17,14 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.api.batch.sensor.example;
+package org.sonar.api.batch.measure;
 
-import org.sonar.api.batch.sensor.Sensor;
+import org.sonar.api.BatchComponent;
 
-public class CheckstyleSensor implements Sensor {
+/**
+ * @since 4.2
+ */
+public interface MeasureService extends BatchComponent {
 
-  @Override
-  public void execute(Context context) {
 
-  }
 }

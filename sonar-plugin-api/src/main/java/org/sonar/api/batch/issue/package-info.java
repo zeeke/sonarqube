@@ -17,33 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.api.batch.sensor.consolidation;
+@ParametersAreNonnullByDefault
+package org.sonar.api.batch.issue;
 
-import org.sonar.api.BatchExtension;
-import org.sonar.api.batch.Module;
-import org.sonar.api.config.Settings;
-
-/**
- * Replaces Decorator
- * @since 4.2
- */
-public interface Consolidation extends BatchExtension {
-
-  interface Definition {
-
-    Module module();
-
-    Settings settings();
-
-    Definition setHandler(ConsolidationHandler handler);
-
-    Definition executesOn(String... phases);
-
-    Definition executesBefore(String... phases);
-
-    Definition executesAfter(String... phases);
-
-  }
-
-  void define(Definition def);
-}
+import javax.annotation.ParametersAreNonnullByDefault;

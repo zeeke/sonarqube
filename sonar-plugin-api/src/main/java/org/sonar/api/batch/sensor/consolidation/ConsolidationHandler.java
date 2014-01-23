@@ -20,22 +20,21 @@
 package org.sonar.api.batch.sensor.consolidation;
 
 import org.sonar.api.BatchExtension;
-import org.sonar.api.batch.sensor.Component;
+import org.sonar.api.batch.Component;
 
 import java.util.Collection;
-import java.util.Collections;
 
+/**
+ * @since 4.2
+ */
 public interface ConsolidationHandler extends BatchExtension {
 
-  class Context {
-    public Component component() {
-      return null;
-    }
+  interface Context {
+    Component component();
 
-    public Collection<Component> children() {
-      return Collections.emptyList();
-    }
+    Collection<Component> children();
   }
 
   void handle(Context context);
+
 }

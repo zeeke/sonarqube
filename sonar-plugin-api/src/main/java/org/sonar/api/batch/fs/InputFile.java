@@ -17,11 +17,14 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.api.batch.sensor;
+package org.sonar.api.batch.fs;
 
-public interface Module extends Component {
-  String name();
-  String description();
-  String version();
-  boolean isRoot();
+import org.sonar.api.batch.Component;
+
+import java.io.File;
+
+public interface InputFile extends Component {
+
+  File io();
+
 }

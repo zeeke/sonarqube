@@ -17,33 +17,13 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.api.batch.sensor.consolidation;
+package org.sonar.api.batch.issue;
 
-import org.sonar.api.BatchExtension;
-import org.sonar.api.batch.Module;
-import org.sonar.api.config.Settings;
+import org.sonar.api.BatchComponent;
 
 /**
- * Replaces Decorator
  * @since 4.2
  */
-public interface Consolidation extends BatchExtension {
+public interface IssueService extends BatchComponent {
 
-  interface Definition {
-
-    Module module();
-
-    Settings settings();
-
-    Definition setHandler(ConsolidationHandler handler);
-
-    Definition executesOn(String... phases);
-
-    Definition executesBefore(String... phases);
-
-    Definition executesAfter(String... phases);
-
-  }
-
-  void define(Definition def);
 }

@@ -17,25 +17,25 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.api.batch.sensor;
-
-import org.sonar.api.BatchComponent;
-import org.sonar.api.measures.Measure;
+package org.sonar.api.batch;
 
 import javax.annotation.CheckForNull;
 
 /**
- * Service to be moved in another package. Component oriented.
+ * @since 4.2
  */
-public class Measures implements BatchComponent {
+public interface Module extends Component {
+
+  /**
+   * @return the module name. Returns the key if name is blank.
+   */
+  String name();
 
   @CheckForNull
-  public Measure find(Component component, String metric) {
-    return null;
-  }
+  String description();
 
-  @CheckForNull
-  public void set(Component component, Measure measure) {
+  // TODO could it be null ?
+  String version();
 
-  }
+  boolean isRoot();
 }
