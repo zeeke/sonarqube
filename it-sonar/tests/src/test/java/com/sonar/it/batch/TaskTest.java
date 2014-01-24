@@ -88,7 +88,7 @@ public class TaskTest {
   }
 
   private void verifyProject(Resource project) {
-    verifyModule(project, "java", 4);
+    verifyModule(project, "none", 4);
   }
 
   private Resource getResource(String resourceKey, String metricKey) {

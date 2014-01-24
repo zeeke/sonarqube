@@ -23,9 +23,9 @@ public class MultiLanguageTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.0"))
-      .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.0"))
-      .build();
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.0"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.0"))
+    .build();
 
   @After
   public void cleanDatabase() {
@@ -35,9 +35,9 @@ public class MultiLanguageTest {
   @Test
   public void test_maven_inspection() {
     MavenBuild build = MavenBuild
-        .create(ItUtils.locateProjectPom("batch/multi-languages"))
-        .setCleanSonarGoals()
-        .setDebugLogs(true);
+      .create(ItUtils.locateProjectPom("batch/multi-languages"))
+      .setCleanSonarGoals()
+      .setDebugLogs(true);
     BuildResult result = orchestrator.executeBuild(build);
 
     // SONAR-4515
@@ -84,7 +84,7 @@ public class MultiLanguageTest {
   }
 
   private void verifyProject(Resource project) {
-    verifyModule(project, "java", 4);
+    verifyModule(project, "none", 4);
   }
 
   private Resource getResource(String resourceKey, String metricKey) {

@@ -8,4 +8,8 @@
   </parent>
   <artifactId>java-module</artifactId>
   <name>Java Module</name>
+
+  <properties>
+    <sonar.language>java</sonar.language>
+  </properties>
 </project>
