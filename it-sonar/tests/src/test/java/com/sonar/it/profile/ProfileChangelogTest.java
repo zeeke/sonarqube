@@ -134,13 +134,12 @@ public class ProfileChangelogTest {
   }
 
   private void build(String profile, String projectDate) {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("profile/profile-changelog"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .withProperty("sonar.profile", profile)
-      .withProperty("sonar.projectDate", projectDate)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("profile/profile-changelog"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", profile)
+      .setProperty("sonar.projectDate", projectDate);
     orchestrator.executeBuild(build);
   }
 
@@ -149,7 +148,7 @@ public class ProfileChangelogTest {
   }
 
   private List<Event> getProfileEvents() {
-    return orchestrator.getServer().getWsClient().findAll(new EventQuery().setResourceKey(PROJECT_KEY).setCategories(new String[]{"Profile"}));
+    return orchestrator.getServer().getWsClient().findAll(new EventQuery().setResourceKey(PROJECT_KEY).setCategories(new String[] {"Profile"}));
   }
 
   private static final String PROJECT_KEY = "com.sonarsource.it.projects.profile:profile-changelog";

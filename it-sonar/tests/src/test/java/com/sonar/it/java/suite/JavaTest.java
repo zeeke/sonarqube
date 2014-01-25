@@ -27,10 +27,9 @@ public class JavaTest {
 
   @Test
   public void shouldSupportJapaneseCharset() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("java/japanese-charset"))
-      .addSonarGoal()
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("java/japanese-charset"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java");
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("java-japanese-charset",
@@ -64,7 +63,6 @@ public class JavaTest {
       "/selenium/java/syntax-highlighting.html").build();
     orchestrator.executeSelenese(selenese);
   }
-
 
   // SONAR-4249 & SONAR-4250
   @Test

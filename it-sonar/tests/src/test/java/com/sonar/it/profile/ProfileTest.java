@@ -79,7 +79,7 @@ public class ProfileTest {
       "/selenium/profile/copy_a_provided_profile_and_modify_a_rule_param.html",
       "/selenium/profile/SONAR-1000_quality_profile_with_space_or_dot.html"
 
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -100,13 +100,13 @@ public class ProfileTest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false")
-      .setProfile("IT");
+      .setProperty("sonar.profile.java", "IT");
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-relationship-with-projects",
       "/selenium/profile/dashboard_links_to_used_profile.html",
       "/selenium/profile/link-profile-to-project.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -118,12 +118,12 @@ public class ProfileTest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false")
-      .setProfile("Overridden");
+      .setProperty("sonar.profile.java", "Overridden");
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-override-with-property",
       "/selenium/profile/override-property-with-property.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -134,28 +134,21 @@ public class ProfileTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/xoo2.xml"));
 
     SonarRunner build = configureRunner("shared/xoo-sample")
-      .setProfile("xoo1");
+      .setProperty("sonar.profile.xoo", "xoo1");
     BuildResult result = orchestrator.executeBuild(build);
 
-    assertThat(result.getLogs()).contains("Quality profile : [name=xoo1,language=xoo]");
+    assertThat(result.getLogs()).contains("Quality profile for xoo: [name=xoo1,language=xoo]");
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("change-project-profile-from-xoo1-to-xoo2",
       "/selenium/profile/change-project-profile-from-xoo1-to-xoo2.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
 
     build = configureRunner("shared/xoo-sample")
       // Use profile defined in UI
       .setProfile("");
     result = orchestrator.executeBuild(build);
-    assertThat(result.getLogs()).contains("Quality profile : [name=xoo2,language=xoo]");
-
-    // Just to be sure it also works with sonar-runner 2.2 (before moving reactor builder into sonar)
-    build = configureRunner("shared/xoo-sample")
-      // Use profile defined in UI
-      .setProfile("");
-    result = orchestrator.executeBuild(build);
-    assertThat(result.getLogs()).contains("Quality profile : [name=xoo2,language=xoo]");
+    assertThat(result.getLogs()).contains("Quality profile for xoo: [name=xoo2,language=xoo]");
   }
 
   @Test
@@ -167,7 +160,7 @@ public class ProfileTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-comparison",
       "/selenium/profile/comparison/compare-profiles.html",
       "/selenium/profile/comparison/compare-same-profile.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -179,7 +172,7 @@ public class ProfileTest {
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("set-parent-profile-to-child-profile",
       "/selenium/profile/inheritance/set-parent-profile-to-child-profile.html"
-    ).build());
+      ).build());
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-inheritance",
       "/selenium/profile/inheritance/check-inherited-rule.html",
@@ -187,7 +180,7 @@ public class ProfileTest {
       "/selenium/profile/inheritance/revert-to-parent-definition.html",
       "/selenium/profile/inheritance/modify-parameter-from-inherited-profile.html",
       "/selenium/profile/inheritance/go-to-parent-definition.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -202,7 +195,7 @@ public class ProfileTest {
       "/selenium/profile/rule-notes/extend-description-and-remove-it.html",
       "/selenium/profile/rule-notes/add-delete-note-on-active-rule.html",
       "/selenium/profile/rule-notes/cant-add-note-on-inactive-rule.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -222,7 +215,7 @@ public class ProfileTest {
 
       // SONAR-2983
       "/selenium/profile/alerts/boolean_criteria.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -244,7 +237,7 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-deletion-associations",
       "/selenium/profile/SONAR-4107_delete_quality_profile_removes_all_associations.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -254,7 +247,7 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-activate-a-rule",
       "/selenium/profile/activate-a-rule.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -264,7 +257,7 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-deactivate-a-rule",
       "/selenium/profile/deactivate-a-rule.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 

@@ -82,6 +82,7 @@ public class CoverageExclusionsTest {
     return MavenBuild.create()
       .setPom(ItUtils.locateProjectPom(projectPath))
       .setProperties(properties)
+      .setProperty("sonar.language", "java")
       .setCleanPackageSonarGoals();
   }
 

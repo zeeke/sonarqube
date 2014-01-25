@@ -31,7 +31,7 @@ public class AlertNotificationsTest {
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
     .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/it/profile/AlertNotificationsTest/SimpleAlertProfile.xml"))
-      // 1 second
+    // 1 second
     .setServerProperty("sonar.notifications.delay", "1")
     .build();
 
@@ -71,13 +71,17 @@ public class AlertNotificationsTest {
   @Test
   public void notificationsForReviews() throws Exception {
     // Run a first analysis
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample")).setCleanPackageSonarGoals();
+    MavenBuild build = MavenBuild
+      .create(ItUtils.locateProjectPom("shared/sample"))
+      .setProperty("sonar.language", "java")
+      .setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
 
     // Run a new analysis so that we get the alert
     build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
-      .setProfile("SimpleAlertProfile");
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "SimpleAlertProfile");
     orchestrator.executeBuild(build);
 
     // We need to wait until all notifications will be delivered

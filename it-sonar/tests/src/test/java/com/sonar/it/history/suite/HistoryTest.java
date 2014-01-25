@@ -43,7 +43,7 @@ public class HistoryTest {
     orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom(path))
       .setCleanSonarGoals()
       .setProperties("sonar.dynamicAnalysis", "false")
-      .setProperties("sonar.profile", "history")
+      .setProperties("sonar.profile.java", "history")
       .setProperties("sonar.projectDate", date)
       );
   }

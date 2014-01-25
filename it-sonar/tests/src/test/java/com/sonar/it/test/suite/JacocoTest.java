@@ -138,7 +138,7 @@ public class JacocoTest {
       "/selenium/test/display-covered-lines-per-test-in-tests-viewer.html",
       "/selenium/test/display-line-coverage-in-coverage-viewer.html",
       "/selenium/test/display-covered-lines-on-selected-test-in-coverage-viewer.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -151,12 +151,11 @@ public class JacocoTest {
   }
 
   private MavenBuild newAnalysis(String projectPath) {
-    return MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom(projectPath))
-      .withDynamicAnalysis(true)
-      .withProperty("sonar.java.coveragePlugin", "jacoco")
-      .addSonarGoal()
-      .build();
+    return MavenBuild.create(ItUtils.locateProjectPom(projectPath))
+      .setProperty("sonar.dynamicAnalysis", "true")
+      .setProperty("sonar.java.coveragePlugin", "jacoco")
+      .setProperty("sonar.language", "java")
+      .setGoals("sonar:sonar");
   }
 
 }

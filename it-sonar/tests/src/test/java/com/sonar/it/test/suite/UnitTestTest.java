@@ -32,6 +32,8 @@ public class UnitTestTest {
   public void testDynamicAnalysis() {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/with-tests"))
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/with-tests"), analysis);
 
@@ -64,6 +66,8 @@ public class UnitTestTest {
   public void should_not_display_branch_coverage_when_no_branch() {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("exclusions/java-half-covered"))
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .setCleanPackageSonarGoals();
     orchestrator.executeBuilds(analysis);
 
@@ -88,6 +92,8 @@ public class UnitTestTest {
   public void testDynamicAnalysisWithNoTests() {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/no-tests"))
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/no-tests"), analysis);
 
@@ -120,6 +126,8 @@ public class UnitTestTest {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/with-tests"))
       .withoutDynamicAnalysis()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/with-tests"), analysis);
 
@@ -141,6 +149,8 @@ public class UnitTestTest {
   public void surefireShouldBeDisabled() {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/disable-surefire"))
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/disable-surefire"), analysis);
 
@@ -162,6 +172,8 @@ public class UnitTestTest {
   public void shouldHaveTestFailures() {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/test-failures"))
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/test-failures"), analysis);
 
@@ -192,6 +204,8 @@ public class UnitTestTest {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
       .addGoal("sonar:sonar")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .setProperty("sonar.dynamicAnalysis", "reuseReports");
     orchestrator.executeBuilds(build, analysis);
 
@@ -213,6 +227,8 @@ public class UnitTestTest {
     MavenBuild build = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
       .addGoal("sonar:sonar")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .setProperty("sonar.dynamicAnalysis", "reuseReports")
       .setProperty("sonar.surefire.reportsPath", "existing-test-and-testsuite-reports");
     orchestrator.executeBuild(build);
@@ -235,6 +251,8 @@ public class UnitTestTest {
     MavenBuild build = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
       .addGoal("sonar:sonar")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .setProperty("sonar.dynamicAnalysis", "reuseReports")
       .setProperty("sonar.surefire.reportsPath", "existing-testsuite-report");
     orchestrator.executeBuild(build);

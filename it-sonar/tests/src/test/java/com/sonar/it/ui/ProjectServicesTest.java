@@ -35,13 +35,15 @@ public class ProjectServicesTest {
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setGoals("clean", "verify", "sonar:sonar")
-      .setProfile("sonar-way-2.7");
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "sonar-way-2.7");
     orchestrator.executeBuild(build);
 
     // this project is used by do-not-offer-coverage-choice-if-no-coverage.html
     build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
-      .setProfile("empty")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile.java", "empty")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }
@@ -89,7 +91,7 @@ public class ProjectServicesTest {
 
       // SONAR-3384
       "/selenium/ui/hotspots/hide-if-no-measures.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -179,14 +181,14 @@ public class ProjectServicesTest {
    * SONAR-4580
    */
   @Test
-  public void should_display_recent_activity_with_project_name_containing_a_quote(){
+  public void should_display_recent_activity_with_project_name_containing_a_quote() {
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.cpd.skip", "true", "sonar.projectName", "Sample's");
     orchestrator.executeBuild(scan);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-recent-activity-with-quote-in-project-name",
       "/selenium/ui/recent-activity/should-display-project-with-quote-in-name.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 

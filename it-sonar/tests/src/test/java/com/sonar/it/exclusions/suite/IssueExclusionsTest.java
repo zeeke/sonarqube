@@ -43,8 +43,7 @@ public class IssueExclusionsTest {
     scan(
       "sonar.issue.ignore.multicriteria", "1",
       "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*.xoo",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "*"
-      );
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "*");
 
     checkIssueCountBySeverity(7, 0, 0, 0, 0, 7);
   }
@@ -54,11 +53,10 @@ public class IssueExclusionsTest {
     scan(
       "sonar.issue.enforce.multicriteria", "1",
       "sonar.issue.enforce.multicriteria.1.resourceKey", "**/HelloA1.xoo",
-      "sonar.issue.enforce.multicriteria.1.ruleKey", "*"
-      );
+      "sonar.issue.enforce.multicriteria.1.ruleKey", "*");
 
     checkIssueCountBySeverity(
-      1 /* tag */ + 18 /* lines in HelloA1.xoo */ + 1 /* file */,
+      1 /* tag */+ 18 /* lines in HelloA1.xoo */+ 1 /* file */,
       0 + 1,
       0 + 18,
       0 + 1,
@@ -73,11 +71,10 @@ public class IssueExclusionsTest {
       "sonar.issue.enforce.multicriteria.1.resourceKey", "**/HelloA1.xoo",
       "sonar.issue.enforce.multicriteria.1.ruleKey", "*",
       "sonar.issue.enforce.multicriteria.2.resourceKey", "**/HelloA2.xoo",
-      "sonar.issue.enforce.multicriteria.2.ruleKey", "*"
-      );
+      "sonar.issue.enforce.multicriteria.2.ruleKey", "*");
 
     checkIssueCountBySeverity(
-      2 /* tags */ + 18 /* lines in HelloA1.xoo */ + 15 /* lines in HelloA2.xoo */ + 2 /* files */,
+      2 /* tags */+ 18 /* lines in HelloA1.xoo */+ 15 /* lines in HelloA2.xoo */+ 2 /* files */,
       0 + 2,
       0 + 18 + 15,
       0 + 2,
@@ -92,11 +89,10 @@ public class IssueExclusionsTest {
       "sonar.issue.enforce.multicriteria.1.resourceKey", "**/HelloA1.xoo",
       "sonar.issue.enforce.multicriteria.1.ruleKey", "xoo:OneIssuePerLine",
       "sonar.issue.enforce.multicriteria.2.resourceKey", "**/HelloA2.xoo",
-      "sonar.issue.enforce.multicriteria.2.ruleKey", "xoo:HasTag"
-      );
+      "sonar.issue.enforce.multicriteria.2.ruleKey", "xoo:HasTag");
 
     checkIssueCountBySeverity(
-      1 /* tag in HelloA2 */ + 18 /* lines in HelloA1.xoo */ + 4 /* files */ + 7 /* modules */,
+      1 /* tag in HelloA2 */+ 18 /* lines in HelloA1.xoo */+ 4 /* files */+ 7 /* modules */,
       0 + 1,
       0 + 18,
       4,
@@ -108,11 +104,10 @@ public class IssueExclusionsTest {
   public void should_ignore_files_with_regexp() {
     scan(
       "sonar.issue.ignore.allfile", "1",
-      "sonar.issue.ignore.allfile.1.fileRegexp", "EXTERMINATE-ALL-ISSUES"
-      );
+      "sonar.issue.ignore.allfile.1.fileRegexp", "EXTERMINATE-ALL-ISSUES");
 
     checkIssueCountBySeverity(
-      70 - 1 /* tag */ - 18 /* lines in HelloA1.xoo */ - 1 /* file */,
+      70 - 1 /* tag */- 18 /* lines in HelloA1.xoo */- 1 /* file */,
       2 - 1,
       57 - 18,
       4 - 1,
@@ -125,11 +120,10 @@ public class IssueExclusionsTest {
     scan(
       "sonar.issue.ignore.block", "1",
       "sonar.issue.ignore.block.1.beginBlockRegexp", "MUTE-SONAR",
-      "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR"
-      );
+      "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR");
 
     checkIssueCountBySeverity(
-      70 - 1 /* tag */ - 5 /* lines in HelloA2.xoo */,
+      70 - 1 /* tag */- 5 /* lines in HelloA2.xoo */,
       2 - 1,
       57 - 5,
       4,
@@ -142,11 +136,10 @@ public class IssueExclusionsTest {
     scan(
       "sonar.issue.ignore.block", "1",
       "sonar.issue.ignore.block.1.beginBlockRegexp", "MUTE-SONAR",
-      "sonar.issue.ignore.block.1.endBlockRegexp", ""
-      );
+      "sonar.issue.ignore.block.1.endBlockRegexp", "");
 
     checkIssueCountBySeverity(
-      70 - 1 /* tag */ - 7 /* remaining lines in HelloA2.xoo */,
+      70 - 1 /* tag */- 7 /* remaining lines in HelloA2.xoo */,
       2 - 1,
       57 - 7,
       4,
@@ -158,9 +151,8 @@ public class IssueExclusionsTest {
   public void should_ignore_one_per_line_on_single_package() {
     scan(
       "sonar.issue.ignore.multicriteria", "1",
-      "sonar.issue.ignore.multicriteria.1.resourceKey", "com/sonar/it/samples/modules/a1/*",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine"
-      );
+      "sonar.issue.ignore.multicriteria.1.resourceKey", "**/com/sonar/it/samples/modules/a1/*",
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine");
 
     checkIssueCountBySeverity(
       70 - 18 /* lines in HelloA1.xoo */,
@@ -180,13 +172,12 @@ public class IssueExclusionsTest {
       "sonar.issue.ignore.block.1.beginBlockRegexp", "MUTE-SONAR",
       "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR",
       "sonar.issue.ignore.multicriteria", "1",
-      "sonar.issue.ignore.multicriteria.1.resourceKey", "com/sonar/it/samples/modules/b1/*",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine"
-    );
+      "sonar.issue.ignore.multicriteria.1.resourceKey", "**/com/sonar/it/samples/modules/b1/*",
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine");
 
     checkIssueCountBySeverity(
-      70 - 1 /* tag in HelloA1.xoo */ - 1 /* tag in HelloA2.xoo */
-        - 18 /* lines in HelloA1.xoo */ - 5 /* lines in HelloA2.xoo */ - 12 /* lines in HelloB1.xoo */
+      70 - 1 /* tag in HelloA1.xoo */- 1 /* tag in HelloA2.xoo */
+        - 18 /* lines in HelloA1.xoo */- 5 /* lines in HelloA2.xoo */- 12 /* lines in HelloB1.xoo */
         - 1 /* HelloA1.xoo file */,
       0,
       57 - 18 - 5 - 12,
@@ -200,8 +191,7 @@ public class IssueExclusionsTest {
     checkAnalysisFails(
       "sonar.issue.ignore.multicriteria", "1",
       "sonar.issue.ignore.multicriteria.1.resourceKey", "",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", "*"
-      );
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "*");
   }
 
   @Test
@@ -209,8 +199,7 @@ public class IssueExclusionsTest {
     checkAnalysisFails(
       "sonar.issue.ignore.multicriteria", "1",
       "sonar.issue.ignore.multicriteria.1.resourceKey", "*",
-      "sonar.issue.ignore.multicriteria.1.ruleKey", ""
-      );
+      "sonar.issue.ignore.multicriteria.1.ruleKey", "");
   }
 
   @Test
@@ -218,16 +207,14 @@ public class IssueExclusionsTest {
     checkAnalysisFails(
       "sonar.issue.ignore.block", "1",
       "sonar.issue.ignore.block.1.beginBlockRegexp", "",
-      "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR"
-    );
+      "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR");
   }
 
   @Test
   public void should_log_missing_whole_file_regexp() {
     checkAnalysisFails(
       "sonar.issue.ignore.allfile", "1",
-      "sonar.issue.ignore.allfile.1.fileRegexp", ""
-    );
+      "sonar.issue.ignore.allfile.1.fileRegexp", "");
   }
 
   protected BuildResult scan(String... properties) {
@@ -241,12 +228,13 @@ public class IssueExclusionsTest {
   }
 
   private void checkIssueCountBySeverity(int total, int taggedXoo, int perLine, int perFile, int blocker, int perModule) {
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(PROJECT_KEY, "violations", "info_violations", "minor_violations", "major_violations",
-      "blocker_violations", "critical_violations"));
+    Resource project = orchestrator.getServer().getWsClient()
+      .find(ResourceQuery.createForMetrics(PROJECT_KEY, "violations", "info_violations", "minor_violations", "major_violations",
+        "blocker_violations", "critical_violations"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(total);
-    assertThat(project.getMeasureIntValue("info_violations")).isEqualTo(taggedXoo);     // Has tag 'xoo'
-    assertThat(project.getMeasureIntValue("minor_violations")).isEqualTo(perLine);      // One per line
-    assertThat(project.getMeasureIntValue("major_violations")).isEqualTo(perFile);      // One per file
+    assertThat(project.getMeasureIntValue("info_violations")).isEqualTo(taggedXoo); // Has tag 'xoo'
+    assertThat(project.getMeasureIntValue("minor_violations")).isEqualTo(perLine); // One per line
+    assertThat(project.getMeasureIntValue("major_violations")).isEqualTo(perFile); // One per file
     assertThat(project.getMeasureIntValue("blocker_violations")).isEqualTo(blocker);
     assertThat(project.getMeasureIntValue("critical_violations")).isEqualTo(perModule); // One per module
   }

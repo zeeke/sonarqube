@@ -14,7 +14,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
-import org.sonar.wsclient.issue.*;
+import org.sonar.wsclient.issue.ActionPlan;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
+import org.sonar.wsclient.issue.NewActionPlan;
+import org.sonar.wsclient.issue.NewIssue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,7 +41,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setCleanSonarGoals()
       .setProperties("sonar.dynamicAnalysis", "true")
-      .setProfile("issues"));
+      .setProperty("sonar.profile.java", "issues"));
 
     // Assign a issue to test search by assignee
     adminIssueClient().assign(searchRandomIssue().key(), "admin");

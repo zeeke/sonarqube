@@ -35,13 +35,13 @@ public class FileExclusionsTest {
   public void exclude_source_files() {
     scan(
       "sonar.global.exclusions", "**/*Ignore*.xoo",
-      "sonar.exclusions", "**/*Exclude*.xoo,org/sonar/tests/packageToExclude/**",
+      "sonar.exclusions", "**/*Exclude*.xoo,src/main/xoo/org/sonar/tests/packageToExclude/**",
       "sonar.test.exclusions", "**/ClassTwoTest.xoo");
 
     Resource project = projectWithMetrics("ncloc", "files", "directories");
 
-    assertThat(project.getMeasureIntValue("ncloc")).isEqualTo(60);
     assertThat(project.getMeasureIntValue("files")).isEqualTo(4);
+    assertThat(project.getMeasureIntValue("ncloc")).isEqualTo(60);
     assertThat(project.getMeasureIntValue("directories")).isEqualTo(3);
   }
 
