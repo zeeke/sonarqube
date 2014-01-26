@@ -20,13 +20,11 @@ public class DesignUITest {
 
   @BeforeClass
   public static void analyseProject() throws Exception {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
-      .addGoal("clean install")
-      .withProperty("skipTests", "true")
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
+      .setGoals("clean install", "sonar:sonar")
+      .setProperty("skipTests", "true")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }
 
@@ -53,10 +51,10 @@ public class DesignUITest {
   @Test
   public void test_design() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("design-on-project",
-        "/selenium/design/design_from_tools_menu.html",
-        "/selenium/design/design_from_drilldown.html",
-        "/selenium/design/design_in_popup.html"
-    ).build();
+      "/selenium/design/design_from_tools_menu.html",
+      "/selenium/design/design_from_drilldown.html",
+      "/selenium/design/design_in_popup.html"
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 

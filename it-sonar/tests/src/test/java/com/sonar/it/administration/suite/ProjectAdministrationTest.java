@@ -216,11 +216,10 @@ public class ProjectAdministrationTest {
    */
   @Test
   public void should_bulk_update_project_keys() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/multi-modules-sample"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese
