@@ -158,6 +158,7 @@ public class DuplicationsTest {
   public void hugeFile() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("huge-file"))
       .setCleanPackageSonarGoals()
+      .setProperty("sonar.language", "java")
       .setProperties("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
     Resource file = getResource("com.sonarsource.it.samples:huge-file:src/main/java/huge/HugeFile.java");
@@ -183,6 +184,7 @@ public class DuplicationsTest {
   public void use_duplication_exclusions() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/file-duplications"))
       .setCleanPackageSonarGoals()
+      .setProperty("sonar.language", "java")
       .setProperties("sonar.dynamicAnalysis", "false")
       .setProperties("sonar.cpd.exclusions", "**/Class*");
     orchestrator.executeBuild(build);

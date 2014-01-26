@@ -29,7 +29,7 @@ public class SourceFiltersTest {
   public static void scanProject() {
     orchestrator.getDatabase().truncateInspectionTables();
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/source-filters"))
-      .setProperty("sonar.exclusions", "sourceFilters/**/*ByProperty.java")
+      .setProperty("sonar.exclusions", "src/main/java/sourceFilters/**/*ByProperty.java")
       .setCleanSonarGoals()
       .setProperties("sonar.dynamicAnalysis", "false")
       .setProperties("sonar.language", "java");
