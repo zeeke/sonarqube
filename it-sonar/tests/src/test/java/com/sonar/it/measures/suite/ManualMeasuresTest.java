@@ -13,7 +13,16 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.connectors.ConnectionException;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.ManualMeasureCreateQuery;
+import org.sonar.wsclient.services.ManualMeasureDeleteQuery;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.Metric;
+import org.sonar.wsclient.services.MetricCreateQuery;
+import org.sonar.wsclient.services.MetricDeleteQuery;
+import org.sonar.wsclient.services.MetricQuery;
+import org.sonar.wsclient.services.MetricUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
 
 import java.util.List;
 
@@ -74,12 +83,12 @@ public class ManualMeasuresTest {
   @Test
   public void test_manual_metrics() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manual-metrics",
-        "/selenium/manual-measures/manual-metrics/predefined_metrics.html",
-        // SONAR-3792
-        "/selenium/manual-measures/manual-metrics/edit_manual_metric_name.html",
-        // SONAR-4212
-        "/selenium/manual-measures/manual-metrics/edit_provided_manual_metric.html"
-    ).build();
+      "/selenium/manual-measures/manual-metrics/predefined_metrics.html",
+      // SONAR-3792
+      "/selenium/manual-measures/manual-metrics/edit_manual_metric_name.html",
+      // SONAR-4212
+      "/selenium/manual-measures/manual-metrics/edit_provided_manual_metric.html"
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -165,23 +174,23 @@ public class ManualMeasuresTest {
     analyzeProject();
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("create-manual-metric",
-        "/selenium/manual-measures/manual-metrics/create_manual_metric_and_manual_measure.html").build();
+      "/selenium/manual-measures/manual-metrics/create_manual_metric_and_manual_measure.html").build();
     orchestrator.executeSelenese(selenese);
 
     analyzeProject();
 
     selenese = Selenese.builder().setHtmlTestsInClasspath("delete-manual-metric",
-        "/selenium/manual-measures/manual-metrics/delete_manual_metric.html").build();
+      "/selenium/manual-measures/manual-metrics/delete_manual_metric.html").build();
     orchestrator.executeSelenese(selenese);
 
     analyzeProject();
   }
 
   private void analyzeProject() {
-    MavenBuild build = MavenBuild.builder()
-        .setPom(ItUtils.locateProjectPom("shared/sample")).addSonarGoal()
-        .withDynamicAnalysis(false)
-        .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }
 

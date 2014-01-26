@@ -43,7 +43,7 @@ public class BulkDeletionTest {
       "/selenium/administration/project-bulk-deletion/bulk-delete-filter-projects.html"
       // TODO Rewrite this test through the (future) web service, as there are too many false-positives with the Web part
       // "/selenium/administration/project-bulk-deletion/bulk-delete-selected-projects.html",
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -65,7 +65,7 @@ public class BulkDeletionTest {
     // And clean the corresponding ghost through the bulk deletion service
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("ghost-bulk-deletion",
       "/selenium/administration/project-bulk-deletion/bulk-delete-ghosts.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -86,13 +86,12 @@ public class BulkDeletionTest {
   }
 
   private void scanCameleonProject(String overridenProjectKey, String overridenProjectName) {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("administration/cameleon-project"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .withProperty("artifactSuffix", overridenProjectKey)
-      .withProperty("projectName", overridenProjectName)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("administration/cameleon-project"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setProperty("artifactSuffix", overridenProjectKey)
+      .setProperty("projectName", overridenProjectName);
     orchestrator.executeBuild(build);
   }
 

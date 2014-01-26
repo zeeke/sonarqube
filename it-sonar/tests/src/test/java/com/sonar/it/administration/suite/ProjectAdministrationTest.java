@@ -83,6 +83,7 @@ public class ProjectAdministrationTest {
     // For an unknown reason, this test fails if the analysis id one with SonarRunner...
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build.setProperty("sonar.projectDate", "2012-01-01"));
 
@@ -96,6 +97,7 @@ public class ProjectAdministrationTest {
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build.setProperty("sonar.projectDate", (today.get(Calendar.YEAR) - 1) + "-01-01"));
     // The analysis must be run once again to have an history so that it is possible to delete a snapshot
@@ -237,11 +239,10 @@ public class ProjectAdministrationTest {
    */
   @Test
   public void should_fine_grain_update_project_keys() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/multi-modules-sample"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese
@@ -314,6 +315,7 @@ public class ProjectAdministrationTest {
   public void should_display_module_settings() {
     orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("maven/modules-declaration"))
       .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false"));
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("module-settings",

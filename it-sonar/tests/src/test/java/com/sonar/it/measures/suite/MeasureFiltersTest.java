@@ -25,10 +25,10 @@ public class MeasureFiltersTest {
   @BeforeClass
   public static void scanStruts() {
     orchestrator.getDatabase().truncateInspectionTables();
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/struts-1.3.9-diet")).addSonarGoal()
-      .withDynamicAnalysis(true)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "true");
     orchestrator.executeBuild(build);
 
     createUser("user-measure-filters", "User Measure Filters");
@@ -38,7 +38,6 @@ public class MeasureFiltersTest {
   public static void deleteTestUser() {
     ItUtils.newWsClientForAdmin(orchestrator).userClient().deactivate("user-measure-filters");
   }
-
 
   @Test
   public void execute_measure_filters() {
@@ -54,7 +53,7 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/search-by-key.html",
       "/selenium/measures/measure_filters/search-by-name.html",
       "/selenium/measures/measure_filters/empty_filter.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -66,7 +65,7 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/list_move_columns.html",
       "/selenium/measures/measure_filters/list_sort_by_descending_name.html",
       "/selenium/measures/measure_filters/list_sort_by_ncloc.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -76,13 +75,13 @@ public class MeasureFiltersTest {
     String user = "user-measures-filter-with-sharing-perm";
     createUser(user, "User Measure Filters with sharing permission", "shareDashboard");
 
-    //TODO
+    // TODO
 
     try {
       Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("share_measure_filters",
         // SONAR-4469
         "/selenium/measures/measure_filters/should-unshare-filter-remove-other-filters-favourite.html"
-      ).build();
+        ).build();
       orchestrator.executeSelenese(selenese);
 
     } finally {
@@ -101,7 +100,7 @@ public class MeasureFiltersTest {
     try {
       orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_not_share_filter_when_user_have_no_sharing_permissions",
         "/selenium/measures/measure_filters/should-not-share-filter-when-user-have-no-sharing-permissions.html"
-      ).build());
+        ).build());
     } finally {
       ItUtils.newWsClientForAdmin(orchestrator).userClient().deactivate(user);
     }
@@ -110,7 +109,7 @@ public class MeasureFiltersTest {
   @Test
   public void favourite_measure_filters() {
     // save, delete, edit, store
-    //TODO
+    // TODO
   }
 
   @Test
@@ -118,7 +117,7 @@ public class MeasureFiltersTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("copy_measure_filters",
       "/selenium/measures/measure_filters/copy_measure_filter.html",
       "/selenium/measures/measure_filters/copy_uniqueness_of_name.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -127,7 +126,7 @@ public class MeasureFiltersTest {
     // TODO save with description
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage_measure_filters",
       "/selenium/measures/measure_filters/save_with_special_characters.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -137,7 +136,7 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/list_widget.html",
       "/selenium/measures/measure_filters/list_widget_sort.html",
       "/selenium/measures/measure_filters/list_widget_warning_if_missing_filter.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -147,7 +146,7 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/treemap_of_components_widget.html",
       "/selenium/measures/measure_filters/treemap_of_components_widget_edit_metrics.html",
       "/selenium/measures/measure_filters/treemap_of_filter_widget.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
