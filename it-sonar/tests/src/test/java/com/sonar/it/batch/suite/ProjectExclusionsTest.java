@@ -32,14 +32,12 @@ public class ProjectExclusionsTest {
    */
   @Test
   public void shouldSupportMixOfBranchAndSkippedModules() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/multi-modules-sample"))
-      .addGoal("clean verify")
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .withProperty("sonar.branch", "mybranch")
-      .withProperty("sonar.skippedModules", "module_b")
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
+      .setGoals("clean verify", "sonar:sonar")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setProperty("sonar.branch", "mybranch")
+      .setProperty("sonar.skippedModules", "module_b");
 
     orchestrator.executeBuild(build);
 
@@ -58,13 +56,11 @@ public class ProjectExclusionsTest {
    */
   @Test
   public void shouldExcludeModuleAndItsChildren() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/multi-modules-sample"))
-      .addGoal("clean verify")
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .withProperty("sonar.skippedModules", "module_b")
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
+      .setGoals("clean verify", "sonar:sonar")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setProperty("sonar.skippedModules", "module_b");
 
     orchestrator.executeBuild(build);
 
@@ -84,13 +80,11 @@ public class ProjectExclusionsTest {
    */
   @Test
   public void shouldIncludeModules() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/multi-modules-sample"))
-      .addGoal("clean verify")
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .withProperty("sonar.includedModules", "multi-modules-sample,module_a,module_a1")
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
+      .setGoals("clean verify", "sonar:sonar")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setProperty("sonar.includedModules", "multi-modules-sample,module_a,module_a1");
 
     orchestrator.executeBuild(build);
 
@@ -106,12 +100,12 @@ public class ProjectExclusionsTest {
 
   @Test
   public void rootModuleShouldBeOptionalInListOfIncludedModules() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/multi-modules-sample"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .withProperty("sonar.includedModules", "module_a,module_a1") // the root module 'multi-modules-sample' is not declared
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false")
+      // the root module 'multi-modules-sample' is not declared
+      .setProperty("sonar.includedModules", "module_a,module_a1");
 
     orchestrator.executeBuild(build);
 

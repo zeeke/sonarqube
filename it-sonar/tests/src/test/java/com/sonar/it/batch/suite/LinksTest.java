@@ -27,7 +27,7 @@ public class LinksTest {
   @ClassRule
   public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
 
-  private static Object[] expectedLinks = new String[]{
+  private static Object[] expectedLinks = new String[] {
     "homepage=http://www.simplesample.org_OVERRIDDEN",
     "ci=http://bamboo.ci.codehaus.org/browse/SIMPLESAMPLE",
     "issue=http://jira.codehaus.org/browse/SIMPLESAMPLE",
@@ -47,6 +47,7 @@ public class LinksTest {
   @Test
   public void shouldUseLinkProperties() {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("batch/links-project"))
+      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(runner);
 
@@ -60,6 +61,7 @@ public class LinksTest {
   public void shouldUseLinkPropertiesOverPomLinksInMaven() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/links-project"))
       .setCleanPackageSonarGoals()
+      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 

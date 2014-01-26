@@ -6,6 +6,10 @@
   <version>1.0-SNAPSHOT</version>
   <name>Sonar :: Integration Tests :: Sample with tests</name>
 
+  <properties>
+    <sonar.language>java</sonar.language>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

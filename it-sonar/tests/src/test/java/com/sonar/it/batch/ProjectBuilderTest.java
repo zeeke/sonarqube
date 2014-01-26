@@ -34,6 +34,7 @@ public class ProjectBuilderTest {
   public void shouldDefineProjectFromPlugin() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/project-builder"))
       .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 

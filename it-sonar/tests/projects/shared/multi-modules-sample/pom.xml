@@ -6,7 +6,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Sonar :: Integration Tests :: Multi-modules Sample</name>
-  
+
   <modules>
     <module>module_a</module>
     <module>module_b</module>
@@ -20,4 +20,9 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+
+  <properties>
+    <sonar.language>java</sonar.language>
+  </properties>
 </project>

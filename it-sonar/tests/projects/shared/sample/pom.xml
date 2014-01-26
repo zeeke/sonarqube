@@ -5,9 +5,9 @@
   <artifactId>simple-sample</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>Sonar :: Integration Tests :: Simple Sample</name>
-  
+
   <url>http://www.simplesample.org</url>
-  
+
   <issueManagement>
     <system>jira</system>
     <url>http://jira.codehaus.org/browse/SIMPLESAMPLE</url>
@@ -23,5 +23,9 @@
     <system>bamboo</system>
     <url>http://bamboo.ci.codehaus.org/browse/SIMPLESAMPLE</url>
   </ciManagement>
- 
+
+  <properties>
+    <sonar.language>java</sonar.language>
+  </properties>
+
 </project>

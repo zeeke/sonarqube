@@ -8,7 +8,6 @@ package com.sonar.it.batch;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
-import com.sonar.orchestrator.locator.MavenLocation;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -21,11 +20,10 @@ public class ExtensionLifecycleTest {
 
   @Test
   public void testInstantiationStrategyAndLifecycleOfBatchExtensions() {
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("batch/extension-lifecycle"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/extension-lifecycle"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
 
     // Build fails if the extensions provided in the extension-lifecycle-plugin are not correctly
     // managed.

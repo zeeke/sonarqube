@@ -23,7 +23,7 @@ public class MultiLanguageTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.0"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.5"))
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.0"))
     .build();
 
@@ -36,6 +36,9 @@ public class MultiLanguageTest {
   public void test_maven_inspection() {
     MavenBuild build = MavenBuild
       .create(ItUtils.locateProjectPom("batch/multi-languages"))
+      .setProperty("sonar.profile.java", "empty")
+      .setProperty("sonar.profile.js", "empty")
+      .setProperty("sonar.profile.py", "empty")
       .setCleanSonarGoals()
       .setDebugLogs(true);
     BuildResult result = orchestrator.executeBuild(build);
@@ -61,7 +64,10 @@ public class MultiLanguageTest {
 
   @Test
   public void test_sonar_runner_inspection() {
-    SonarRunner build = SonarRunner.create().setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"));
+    SonarRunner build = SonarRunner.create().setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"))
+      .setProperty("sonar.profile.java", "empty")
+      .setProperty("sonar.profile.js", "empty")
+      .setProperty("sonar.profile.py", "empty");
     orchestrator.executeBuild(build);
 
     // modules

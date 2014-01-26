@@ -39,6 +39,7 @@ public class TaskTest {
   public void test_sonar_runner_scan() {
     SonarRunner build = SonarRunner.create()
       .setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"))
+      .setProperty("sonar.language", "java")
       .setProperty("sonar.task", "scan");
     orchestrator.executeBuild(build);
 

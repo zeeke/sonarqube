@@ -46,6 +46,7 @@ public class FileFilterTest {
 
     MavenBuild build = MavenBuild.create(new File(projectDir, "pom.xml"))
       .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
       .setProperty("sonar.cutoff.date", "2008-12-25");
     orchestrator.executeBuild(build);
 
