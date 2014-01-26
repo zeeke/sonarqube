@@ -6,6 +6,10 @@
   <packaging>jar</packaging>
   <name>No tests</name>
 
+  <properties>
+    <sonar.language>java</sonar.language>
+  </properties>
+
   <build>
     <plugins>
       <plugin>

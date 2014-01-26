@@ -27,6 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,16 +109,15 @@ public final class ItUtils {
   }
 
   public static MavenBuild inspectWithoutTests(Orchestrator orchestrator, String path, Properties extraProperties) {
-    MavenBuild.Builder builder = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom(path))
-      .addGoal("clean verify")
-      .withProperty("skipTests", "true")
-      .addSonarGoal()
-      .withDynamicAnalysis(false);
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom(path))
+      .setGoals("clean verify", "sonar:sonar")
+      .setProperty("skipTests", "true")
+      .setProperties("sonar.dynamicAnalysis", "false");
     if (extraProperties != null) {
-      builder.withProperties(extraProperties);
+      for (Map.Entry<Object, Object> entry : extraProperties.entrySet()) {
+        build.setProperty(entry.getKey().toString(), entry.getValue().toString());
+      }
     }
-    MavenBuild build = builder.build();
     orchestrator.executeBuild(build);
     return build;
   }

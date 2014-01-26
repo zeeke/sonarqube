@@ -11,6 +11,10 @@
     <module>moduleB</module>
   </modules>
 
+  <properties>
+    <sonar.language>java</sonar.language>
+  </properties>
+
   <build>
     <plugins>
       <plugin>

@@ -8,7 +8,6 @@ package com.sonar.it.exclusions.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
-import com.sonar.orchestrator.locator.MavenLocation;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -29,15 +28,13 @@ public class SourceFiltersTest {
   @BeforeClass
   public static void scanProject() {
     orchestrator.getDatabase().truncateInspectionTables();
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("batch/source-filters"))
-      .withProperty("sonar.exclusions", "sourceFilters/**/*ByProperty.java")
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/source-filters"))
+      .setProperty("sonar.exclusions", "sourceFilters/**/*ByProperty.java")
+      .setCleanSonarGoals()
+      .setProperties("sonar.dynamicAnalysis", "false")
+      .setProperties("sonar.language", "java");
     orchestrator.executeBuild(build);
   }
-
 
   @Test
   public void testResourceFilterExtension() {

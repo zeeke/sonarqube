@@ -31,29 +31,26 @@ public class CrossProjectDuplicationsTest {
   public void analyzeProjects() {
     orchestrator.getDatabase().truncateInspectionTables();
 
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("duplications/cross-project/a"))
-      .addSonarGoal()
-      .withProperty("sonar.cpd.cross_project", "true")
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/cross-project/a"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.cpd.cross_project", "true")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
-    build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("duplications/cross-project/b"))
-      .addSonarGoal()
-      .withProperty("sonar.cpd.cross_project", "true")
-      .withDynamicAnalysis(false)
-      .build();
+    build = MavenBuild.create(ItUtils.locateProjectPom("duplications/cross-project/b"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.cpd.cross_project", "true")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
-    build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("duplications/cross-project/b"))
-      .addSonarGoal()
-      .withProperty("sonar.cpd.cross_project", "true")
-      .withProperty("sonar.branch", "branch")
-      .withDynamicAnalysis(false)
-      .build();
+    build = MavenBuild.create(ItUtils.locateProjectPom("duplications/cross-project/b"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.cpd.cross_project", "true")
+      .setProperty("sonar.branch", "branch")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }
 

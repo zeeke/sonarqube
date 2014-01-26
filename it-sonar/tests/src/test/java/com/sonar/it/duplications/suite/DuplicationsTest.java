@@ -32,6 +32,7 @@ public class DuplicationsTest {
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/file-duplications"))
       .setCleanPackageSonarGoals()
+      .setProperty("sonar.language", "java")
       .setProperties("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }

@@ -106,11 +106,10 @@ public class SearchEngineTest {
   }
 
   private void inspect(String projectPath) {
-    MavenBuild inspection = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom(projectPath))
-      .withDynamicAnalysis(false)
-      .addSonarGoal()
-      .build();
+    MavenBuild inspection = MavenBuild.create(ItUtils.locateProjectPom(projectPath))
+      .setProperties("sonar.dynamicAnalysis", "false")
+      .setProperty("sonar.language", "java")
+      .setCleanSonarGoals();
     orchestrator.executeBuild(inspection);
   }
 }

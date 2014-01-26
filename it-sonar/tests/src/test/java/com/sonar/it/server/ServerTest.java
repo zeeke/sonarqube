@@ -168,11 +168,9 @@ public class ServerTest {
     orchestrator = Orchestrator.createEnv();
     orchestrator.start();
 
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/sample"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
+      .setCleanSonarGoals()
+      .setProperties("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     String url = orchestrator.getServer().getUrl() + "/api/projects?key=com.sonarsource.it.samples:simple-sample&versions=true";

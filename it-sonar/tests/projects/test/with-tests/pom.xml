@@ -6,6 +6,10 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
+  <properties>
+    <sonar.language>java</sonar.language>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
