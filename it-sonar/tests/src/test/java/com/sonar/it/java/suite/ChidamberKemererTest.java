@@ -21,12 +21,10 @@ public class ChidamberKemererTest {
   @BeforeClass
   public static void analyzeProject() {
     orchestrator.getDatabase().truncateInspectionTables();
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("java/chidamber-kemerer"))
-      .addGoal("clean verify")
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("java/chidamber-kemerer"))
+      .setGoals("clean verify", "sonar:sonar")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }
 

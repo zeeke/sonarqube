@@ -52,11 +52,10 @@ public class JavaTest {
   @Test
   public void shouldHighlightJavaSourceCode() throws Exception {
 
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/sample-with-tests"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("java-syntax-highlighting",
@@ -68,11 +67,10 @@ public class JavaTest {
   @Test
   public void shouldHighlightJavaSymbolsUsage() throws Exception {
 
-    MavenBuild build = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("shared/sample-with-tests"))
-      .addSonarGoal()
-      .withDynamicAnalysis(false)
-      .build();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
+      .setCleanSonarGoals()
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("highlight-symbol-usages",
