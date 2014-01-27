@@ -108,12 +108,12 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
     // version 1
     SonarRunner firstScan = SonarRunner.create(ItUtils.locateProjectDir("issue/xoo-tracking-v1"))
       .setProperties("sonar.projectDate", OLD_DATE)
-      .setProperty("sonar.profile.java", "issue-on-tag-foobar");
+      .setProperty("sonar.profile.xoo", "issue-on-tag-foobar");
 
     // version 2, dry run
     SonarRunner secondScan = SonarRunner.create(ItUtils.locateProjectDir("issue/xoo-tracking-v2"))
       .setProperties("sonar.dryRun", "true", "sonar.projectDate", NEW_DATE)
-      .setProperty("sonar.profile.java", "issue-on-tag-foobar");
+      .setProperty("sonar.profile.xoo", "issue-on-tag-foobar");
 
     orchestrator.executeBuilds(firstScan, secondScan);
 
