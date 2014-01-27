@@ -85,6 +85,7 @@ public class RulesTest {
 
   /**
    * http://jira.codehaus.org/browse/SONAR-2958
+   * SONAR-5023
    */
   @Test
   public void ws_description_field_should_not_be_null() {
@@ -92,17 +93,38 @@ public class RulesTest {
     Rule rule = orchestrator.getServer().getWsClient().find(query);
     assertThat(rule.getDescription().length(), greaterThan(10));
 
-    // the parameter "format" has no description
     assertThat(rule.getParams().size(), greaterThanOrEqualTo(1));
-    assertThat(rule.getParams(), hasItem(new BaseMatcher<RuleParam>() {
-      public boolean matches(Object o) {
-        RuleParam rp = (RuleParam) o;
-        return "format".equals(rp.getName()) && rp.getDescription() == null;
-      }
+    // the parameter "format" has no description
+    assertThat(rule.getParams(), hasItem(new RuleParamMatcher("format", null)));
 
-      public void describeTo(Description description) {
-      }
-    }));
+    // SONAR-5023
+    assertThat(rule.getParams(), hasItem(new RuleParamMatcher("ignoreModifier",
+      "Controls whether to ignore checking for the abstract modifier on classes that match the name. Default is false.")));
+  }
+
+  private static class RuleParamMatcher extends BaseMatcher {
+
+    private String ruleName;
+    private String ruleDescription;
+
+    private RuleParamMatcher(String ruleName, String ruleDescription) {
+      this.ruleName = ruleName;
+      this.ruleDescription = ruleDescription;
+    }
+
+    @Override
+    public boolean matches(Object o) {
+      RuleParam rp = (RuleParam) o;
+      return ruleName.equals(rp.getName()) &&
+        ((ruleDescription != null && ruleDescription.equals(rp.getDescription()))
+        || (ruleDescription == null && rp.getDescription() == null));
+    }
+
+    @Override
+    public void describeTo(Description description) {
+
+    }
+
   }
 
 }
