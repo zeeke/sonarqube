@@ -130,7 +130,7 @@
       <activation>
         <property>
           <name>sonarVersion</name>
-          <value>4.1</value>
+          <value>4.1.1</value>
         </property>
       </activation>
       <properties>
