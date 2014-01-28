@@ -43,6 +43,7 @@ public abstract class RunnerTestCase {
   SonarRunner newRunner(File baseDir, String... keyValueProperties) {
     SonarRunner runner = SonarRunner.create(baseDir, keyValueProperties);
     runner.setRunnerVersion(Util.runnerVersion(orchestrator).toString());
+    runner.setProperty("sonar.language", "java");
     if (fork) {
       runner.setProperty("sonarRunner.mode", "fork");
     }
