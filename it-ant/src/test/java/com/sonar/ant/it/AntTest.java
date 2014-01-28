@@ -77,7 +77,16 @@ public class AntTest {
     orchestrator.getDatabase().truncateInspectionTables();
   }
 
-  private void build(String project, String target, String profile) {
+  private void buildJava(String project, String target, String profile) {
+    AntBuild build = AntBuild.create()
+      .setBuildLocation(FileLocation.of("projects/" + project + "/build.xml"))
+      .setTargets(target, "clean")
+      .setProperty("sonar.language", "java")
+      .setProperty("sonar.profile", profile);
+    orchestrator.executeBuild(build);
+  }
+
+  private void buildGroovy(String project, String target, String profile) {
     AntBuild build = AntBuild.create()
       .setBuildLocation(FileLocation.of("projects/" + project + "/build.xml"))
       .setTargets(target, "clean")
@@ -93,7 +102,7 @@ public class AntTest {
 
   @Test
   public void testProjectMetadata() {
-    build("project-metadata", "all", "project-metadata");
+    buildJava("project-metadata", "all", "project-metadata");
     checkProjectAnalysed("org.sonar.ant.tests:project-metadata:1.1.x", "project-metadata");
     Resource project = orchestrator.getServer().getWsClient().find(new ResourceQuery("org.sonar.ant.tests:project-metadata:1.1.x"));
     assertThat(project.getName()).isEqualTo("Ant Project Metadata 1.1.x");
@@ -105,13 +114,13 @@ public class AntTest {
 
   @Test
   public void testProjectKeyWithoutGroupId() {
-    build("project-key-without-groupId", "all", "empty");
+    buildJava("project-key-without-groupId", "all", "empty");
     checkProjectAnalysed("project-key-without-groupId", "empty");
   }
 
   @Test
   public void testClasspath() {
-    build("classpath", "all", "classpath");
+    buildJava("classpath", "all", "classpath");
     checkProjectAnalysed("org.sonar.ant.tests:classpath", "classpath");
     ViolationQuery query = ViolationQuery.createForResource("org.sonar.ant.tests:classpath").setDepth(-1);
     List<Violation> violations = orchestrator.getServer().getWsClient().findAll(query);
@@ -125,7 +134,7 @@ public class AntTest {
    */
   @Test
   public void testSquid() {
-    build("squid", "all", "classpath");
+    buildJava("squid", "all", "classpath");
     checkProjectAnalysed("org.sonar.ant.tests:squid", "classpath");
 
     ViolationQuery query = ViolationQuery.createForResource("org.sonar.ant.tests:squid").setDepth(-1);
@@ -136,7 +145,7 @@ public class AntTest {
 
   @Test
   public void testCustomLayout() {
-    build("custom-layout", "all", "empty");
+    buildJava("custom-layout", "all", "empty");
     checkProjectAnalysed("org.sonar.ant.tests:custom-layout", "empty");
     Resource project = orchestrator.getServer().getWsClient()
       .find(ResourceQuery.createForMetrics("org.sonar.ant.tests:custom-layout", "packages", "files", "classes", "functions"));
@@ -148,7 +157,7 @@ public class AntTest {
 
   @Test
   public void testJavaVersion() {
-    build("java-version", "all", "java-version");
+    buildJava("java-version", "all", "java-version");
     checkProjectAnalysed("org.sonar.ant.tests:java-version", "java-version");
     ViolationQuery query = ViolationQuery.createForResource("org.sonar.ant.tests:java-version").setDepth(-1);
     List<Violation> violations = orchestrator.getServer().getWsClient().findAll(query);
@@ -158,7 +167,7 @@ public class AntTest {
 
   @Test
   public void testJavaWithoutBytecode() {
-    build("java-without-bytecode", "all", "empty");
+    buildJava("java-without-bytecode", "all", "empty");
     checkProjectAnalysed("org.sonar.ant.tests:java-without-bytecode", "empty");
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests:java-without-bytecode",
@@ -184,7 +193,7 @@ public class AntTest {
    */
   @Test
   public void testModules() {
-    build("modules", "all", "empty");
+    buildJava("modules", "all", "empty");
     checkProjectAnalysed("org.sonar.ant.tests.modules:root", "empty");
 
     // Module name
@@ -211,7 +220,7 @@ public class AntTest {
    */
   @Test
   public void testModulesWithSpaces() {
-    build("modules-with-spaces", "all", "empty");
+    buildJava("modules-with-spaces", "all", "empty");
 
     checkProjectAnalysed("org.sonar.ant.tests.modules:root", "empty");
 
@@ -222,7 +231,7 @@ public class AntTest {
 
   @Test
   public void testSkippedModules() {
-    build("skipped-modules", "all", "empty");
+    buildJava("skipped-modules", "all", "empty");
 
     assertThat(orchestrator.getServer().getWsClient().find(new ResourceQuery("root")).getName()).isEqualTo("Root Module");
     assertThat(orchestrator.getServer().getWsClient().find(new ResourceQuery("root:one"))).isNull();
@@ -231,7 +240,7 @@ public class AntTest {
 
   @Test
   public void testCobertura() {
-    build("cobertura", "all", "empty");
+    buildJava("cobertura", "all", "empty");
     checkProjectAnalysed("org.sonar.ant.tests:cobertura", "empty");
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests:cobertura",
@@ -256,7 +265,7 @@ public class AntTest {
 
   @Test
   public void testJacoco() {
-    build("jacoco", "all", "empty");
+    buildJava("jacoco", "all", "empty");
     checkProjectAnalysed("org.sonar.ant.tests:jacoco", "empty");
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests:jacoco",
@@ -281,7 +290,7 @@ public class AntTest {
 
   @Test
   public void testJacocoModules() {
-    build("jacoco-modules", "all", "empty");
+    buildJava("jacoco-modules", "all", "empty");
     checkProjectAnalysed("org.sonar.ant.tests.jacoco-modules:root", "empty");
 
     // Metrics on project
@@ -307,7 +316,7 @@ public class AntTest {
 
   @Test
   public void testJacocoTestng() {
-    build("testng", "all", "empty");
+    buildJava("testng", "all", "empty");
     checkProjectAnalysed("org.sonar.ant.tests:testng", "empty");
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests:testng",
@@ -332,7 +341,7 @@ public class AntTest {
 
   @Test
   public void testGroovy() {
-    build("groovy", "sonar", "groovy");
+    buildGroovy("groovy", "sonar", "groovy");
     checkProjectAnalysed("org.sonar.ant.tests:groovy", "groovy");
 
     assertThat(orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.sonar.ant.tests:groovy", "ncloc")).getMeasureValue("ncloc")).isGreaterThan(5.0);
