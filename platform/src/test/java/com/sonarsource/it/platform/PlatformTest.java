@@ -67,13 +67,13 @@ public class PlatformTest {
     orchestrator = builder.build();
     orchestrator.start();
     configureViews();
-    inspectProjects();
-    wsClient = orchestrator.getServer().getWsClient();
     is_sonar_4_2_or_more = orchestrator.getServer().version().isGreaterThanOrEquals("4.2");
     if (is_sonar_4_2_or_more) {
       // In SonarQube 4.2 default language is empty to enbale multi-language mode. But all plugins are not yet ready for that.
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.language", "java"));
     }
+    inspectProjects();
+    wsClient = orchestrator.getServer().getWsClient();
   }
 
   private static void inspectProjects() {

@@ -130,11 +130,11 @@
       <activation>
         <property>
           <name>sonarVersion</name>
-          <value>4.1.1</value>
+          <value>4.1</value>
         </property>
       </activation>
       <properties>
-        <sonar.runtimeVersion>4.1</sonar.runtimeVersion>
+        <sonar.runtimeVersion>4.1.1</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
           org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
@@ -212,7 +212,7 @@
           com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest}
         </plugins>
       </properties>
-    </profile>    
+    </profile>
   </profiles>
   <build>
     <plugins>
