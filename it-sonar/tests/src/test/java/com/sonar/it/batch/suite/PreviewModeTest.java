@@ -131,6 +131,7 @@ public class PreviewModeTest {
   public void test_build_breaker_with_dry_run() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"));
     SonarRunner runner = configureRunner("shared/xoo-sample",
+      "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
       "sonar.dryRun", "true")
       .setProfile("SimpleAlertProfile");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
@@ -151,6 +152,7 @@ public class PreviewModeTest {
 
     // Second analysis
     runner = configureRunner("batch/dry-run-build-breaker",
+      "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
       "sonar.dryRun", "true")
       .setProfile("VariationAlertProfile");
     result = orchestrator.executeBuildQuietly(runner);
@@ -171,6 +173,7 @@ public class PreviewModeTest {
 
     // Second analysis 2.0-SNAPSHOT
     runner = configureRunner("batch/dry-run-build-breaker",
+      "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
       "sonar.dryRun", "true",
       "sonar.projectVersion", "2.0-SNAPSHOT")
       .setProfile("VariationSinceLastVersionAlertProfile");
