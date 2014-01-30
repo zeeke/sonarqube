@@ -61,7 +61,7 @@ public class PreviewModeTest {
   @Test
   public void test_dry_run() {
     BuildResult result = scan("shared/xoo-sample",
-      "sonar.dryRun", "true");
+      "sonar.analysis.mode", "preview");
 
     // Analysis is not persisted in database
     Resource project = getResource("com.sonarsource.it.samples:simple-sample");
@@ -94,7 +94,7 @@ public class PreviewModeTest {
   public void should_fail_if_plugin_access_secured_properties() {
     // Test access from task (ie BatchSettings)
     SonarRunner runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true",
+      "sonar.analysis.mode", "preview",
       "accessSecuredFromTask", "true");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
@@ -103,7 +103,7 @@ public class PreviewModeTest {
 
     // Test access from sensor (ie ModuleSettings)
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true",
+      "sonar.analysis.mode", "preview",
       "accessSecuredFromSensor", "true");
     result = orchestrator.executeBuildQuietly(runner);
 
@@ -117,8 +117,8 @@ public class PreviewModeTest {
   public void should_fail_if_dryrun_timeout_is_too_short() {
     // Test access from task (ie BatchSettings)
     SonarRunner runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true",
-      "sonar.dryRun.readTimeout", "1");
+      "sonar.analysis.mode", "preview",
+      "sonar.preview.readTimeout", "1");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getStatus()).isNotEqualTo(0);
@@ -132,7 +132,7 @@ public class PreviewModeTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"));
     SonarRunner runner = configureRunner("shared/xoo-sample",
       "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile("SimpleAlertProfile");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
@@ -153,7 +153,7 @@ public class PreviewModeTest {
     // Second analysis
     runner = configureRunner("batch/dry-run-build-breaker",
       "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile("VariationAlertProfile");
     result = orchestrator.executeBuildQuietly(runner);
 
@@ -174,7 +174,7 @@ public class PreviewModeTest {
     // Second analysis 2.0-SNAPSHOT
     runner = configureRunner("batch/dry-run-build-breaker",
       "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
-      "sonar.dryRun", "true",
+      "sonar.analysis.mode", "preview",
       "sonar.projectVersion", "2.0-SNAPSHOT")
       .setProfile("VariationSinceLastVersionAlertProfile");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
@@ -191,7 +191,7 @@ public class PreviewModeTest {
     // First dry run
     String profileName = "one-issue-per-line";
     SonarRunner runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile(profileName);
     orchestrator.executeBuild(runner);
 
@@ -208,7 +208,7 @@ public class PreviewModeTest {
 
     // Second dry run should not fail event if profile was removed from DB
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile(profileName);
     orchestrator.executeBuild(runner);
 
@@ -227,7 +227,7 @@ public class PreviewModeTest {
 
     // First dry run
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile(profileName);
     orchestrator.executeBuild(runner);
 
@@ -246,7 +246,7 @@ public class PreviewModeTest {
 
     // Second dry run should not fail event if profile was removed from DB
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile(profileName);
     orchestrator.executeBuild(runner);
 
@@ -264,7 +264,7 @@ public class PreviewModeTest {
 
     // First dry run
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile("one-issue-per-line");
     BuildResult result = orchestrator.executeBuild(runner);
 
@@ -278,7 +278,7 @@ public class PreviewModeTest {
 
     // Second dry run
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile("one-issue-per-line");
     result = orchestrator.executeBuild(runner);
 
@@ -297,7 +297,7 @@ public class PreviewModeTest {
 
     // First dry run
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile("one-issue-per-line");
     BuildResult result = orchestrator.executeBuild(runner);
 
@@ -309,7 +309,7 @@ public class PreviewModeTest {
 
     // Second dry run
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile("one-issue-per-line");
     result = orchestrator.executeBuild(runner);
 
@@ -328,7 +328,7 @@ public class PreviewModeTest {
 
     // First dry run
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile("one-issue-per-line");
     BuildResult result = orchestrator.executeBuild(runner);
 
@@ -342,7 +342,7 @@ public class PreviewModeTest {
 
     // Second dry run
     runner = configureRunner("shared/xoo-sample",
-      "sonar.dryRun", "true")
+      "sonar.analysis.mode", "preview")
       .setProfile("one-issue-per-line");
     result = orchestrator.executeBuild(runner);
 
@@ -382,7 +382,7 @@ public class PreviewModeTest {
         public BuildResult call() throws Exception {
           SonarRunner runner = configureRunner("shared/xoo-sample",
             "sonar.working.directory", temp.newFolder().getAbsolutePath(),
-            "sonar.dryRun", "true")
+            "sonar.analysis.mode", "preview")
             .setProfile(profileName);
           return orchestrator.executeBuild(runner);
         }
