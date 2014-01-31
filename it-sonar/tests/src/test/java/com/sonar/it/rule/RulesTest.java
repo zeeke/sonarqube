@@ -10,16 +10,16 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
+import org.fest.assertions.Condition;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Rule;
 import org.sonar.wsclient.services.RuleParam;
 import org.sonar.wsclient.services.RuleQuery;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import java.util.List;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class RulesTest {
 
@@ -91,40 +91,37 @@ public class RulesTest {
   public void ws_description_field_should_not_be_null() {
     RuleQuery query = new RuleQuery("java").setRepositories("checkstyle").setSearchText("com.puppycrawl.tools.checkstyle.checks.naming.AbstractClassNameCheck");
     Rule rule = orchestrator.getServer().getWsClient().find(query);
-    assertThat(rule.getDescription().length(), greaterThan(10));
+    assertThat(rule.getDescription().length()).isGreaterThan(10);
 
-    assertThat(rule.getParams().size(), greaterThanOrEqualTo(1));
+    assertThat(rule.getParams().size()).isGreaterThanOrEqualTo(1);
     // the parameter "format" has no description
-    assertThat(rule.getParams(), hasItem(new RuleParamMatcher("format", null)));
+    assertThat(rule.getParams()).satisfies(new ContainsParamCondition("format", null));
 
     // SONAR-5023
-    assertThat(rule.getParams(), hasItem(new RuleParamMatcher("ignoreModifier",
-      "Controls whether to ignore checking for the abstract modifier on classes that match the name. Default is false.")));
+    assertThat(rule.getParams()).satisfies(new ContainsParamCondition("ignoreModifier",
+      "Controls whether to ignore checking for the abstract modifier on classes that match the name. Default is false."));
   }
 
-  private static class RuleParamMatcher extends BaseMatcher {
+  private static class ContainsParamCondition extends Condition<List<?>> {
 
     private String ruleName;
     private String ruleDescription;
 
-    private RuleParamMatcher(String ruleName, String ruleDescription) {
+    private ContainsParamCondition(String ruleName, String ruleDescription) {
       this.ruleName = ruleName;
       this.ruleDescription = ruleDescription;
     }
 
     @Override
-    public boolean matches(Object o) {
-      RuleParam rp = (RuleParam) o;
-      return ruleName.equals(rp.getName()) &&
-        ((ruleDescription != null && ruleDescription.equals(rp.getDescription()))
-        || (ruleDescription == null && rp.getDescription() == null));
+    public boolean matches(List<?> list) {
+      for (RuleParam rp: (List<RuleParam>) list) {
+        if (ruleName.equals(rp.getName()) &&
+          ((ruleDescription != null && ruleDescription.equals(rp.getDescription()))
+          || (ruleDescription == null && rp.getDescription() == null))) {
+          return true;
+        }
+      }
+      return false;
     }
-
-    @Override
-    public void describeTo(Description description) {
-
-    }
-
   }
-
 }
