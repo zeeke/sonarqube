@@ -9,51 +9,51 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/settings</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/updatecenter/updates</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>content</td>
-        <td>*C Sharp 1.0*DotNet 1.0*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>select-csharp</td>
-        <td>*C Sharp 1.0*1.1*Incompatible, some dependencies requires SonarQube upgrade*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>select-dotnet</td>
-        <td>*DotNet*1.1*Incompatible, requires to upgrade system*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/settings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/updatecenter/updates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>content</td>
+	<td>*C Sharp 1.0*DotNet 1.0*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>select-csharp</td>
+	<td>*C Sharp 1.0*1.1*Incompatible, some dependencies requires SonarQube upgrade*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>select-dotnet</td>
+	<td>*DotNet 1.1 is not compatible with SonarQube 4.2-SNAPSHOT. You need to upgrade to SonarQube 10.0 to perform the plugin upgrade.*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

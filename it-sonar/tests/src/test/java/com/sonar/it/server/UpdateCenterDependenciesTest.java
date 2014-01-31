@@ -206,6 +206,9 @@ public class UpdateCenterDependenciesTest {
     orchestrator.executeSelenese(selenese);
   }
 
+  /**
+   * SONAR-4476
+   */
   @Test
   public void should_not_update_plugin_having_dependencies_needed_sonar_upgrade() throws Exception {
     setUpdateCenterProperties();
