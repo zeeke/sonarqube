@@ -13,6 +13,7 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.fest.assertions.Condition;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.services.Rule;
 import org.sonar.wsclient.services.RuleParam;
 import org.sonar.wsclient.services.RuleQuery;
@@ -100,6 +101,29 @@ public class RulesTest {
     // SONAR-5023
     assertThat(rule.getParams()).satisfies(new ContainsParamCondition("ignoreModifier",
       "Controls whether to ignore checking for the abstract modifier on classes that match the name. Default is false."));
+  }
+
+  @Test
+  public void should_manage_tags_on_rules() {
+    final SonarClient wsClient = orchestrator.getServer().adminWsClient();
+
+    assertThat(wsClient.ruleTagClient().list()).isEmpty();
+    wsClient.ruleTagClient().create("mytag1");
+    wsClient.ruleTagClient().create("mytag2");
+    wsClient.ruleTagClient().create("mytag3");
+    assertThat(wsClient.ruleTagClient().list()).containsOnly("mytag1", "mytag2", "mytag3");
+
+    // select tags 1 and 3
+    wsClient.ruleClient().addTags("xoo:OneIssuePerLine", "mytag1", "mytag3");
+    // tag 2 should disappear (not associated to any rule)
+    assertThat(wsClient.ruleTagClient().list()).containsOnly("mytag1", "mytag3");
+
+    // TODO 4.3 Check that rule appears in search filtered by tags, and that tags are set on rule
+
+    // remove tags 1 and 3
+    wsClient.ruleClient().removeTags("xoo:OneIssuePerLine", "mytag1", "mytag3");
+    // no more tags
+    assertThat(wsClient.ruleTagClient().list()).isEmpty();
   }
 
   private static class ContainsParamCondition extends Condition<List<?>> {
