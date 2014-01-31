@@ -86,7 +86,7 @@ public class FileExclusionsTest {
    */
   @Test
   public void include_test_files() {
-    scan("sonar.test.inclusions", "**/*One*.xoo,**/*Two*.xoo");
+    scan("sonar.test.inclusions", "src/test/xoo/**/*One*.xoo,src/test/xoo/**/*Two*.xoo");
 
     Resource project = projectWithMetrics("tests");
     assertThat(project.getMeasureIntValue("tests")).isEqualTo(2);
