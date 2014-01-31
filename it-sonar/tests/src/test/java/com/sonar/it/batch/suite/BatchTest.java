@@ -14,20 +14,12 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import com.sonar.orchestrator.util.VersionUtils;
 import org.apache.commons.io.FileUtils;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.*;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.PropertyDeleteQuery;
-import org.sonar.wsclient.services.PropertyUpdateQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.Source;
-import org.sonar.wsclient.services.SourceQuery;
+import org.sonar.wsclient.services.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -331,13 +323,17 @@ public class BatchTest {
     BuildResult buildResult = scanQuietly("shared/xoo-sample",
       "sonar.projectKey", "arg$l:");
     assertThat(buildResult.getStatus()).isEqualTo(1);
-    assertThat(buildResult.getLogs()).contains("arg$l: is not a valid project or module key");
+    assertThat(buildResult.getLogs()).contains("Invalid project key")
+      .contains("arg$l:")
+      .contains("Allowed characters");
 
     // SONAR-4629
     buildResult = scanQuietly("shared/xoo-sample",
       "sonar.projectKey", "12345");
     assertThat(buildResult.getStatus()).isEqualTo(1);
-    assertThat(buildResult.getLogs()).contains("12345 is not a valid project or module key");
+    assertThat(buildResult.getLogs()).contains("Invalid project key")
+      .contains("12345")
+      .contains("Allowed characters");
 
     buildResult = scanQuietly("shared/xoo-sample",
       "sonar.branch", "arg$l:");
