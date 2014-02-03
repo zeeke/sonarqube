@@ -50,7 +50,7 @@ public class PurgeTest {
     int measuresOnTrk = 200;
     int measuresOnBrc = 459;
     int measuresOnDir = 2794;
-    int measuresOnCla = 14683;
+    int measuresOnCla = 14659;
     int measuresOnUts = 28;
 
     // count measures 
