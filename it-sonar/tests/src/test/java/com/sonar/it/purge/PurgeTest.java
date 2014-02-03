@@ -50,22 +50,20 @@ public class PurgeTest {
     int measuresOnTrk = 200;
     int measuresOnBrc = 459;
     int measuresOnDir = 2794;
-    int measuresOnCla = 14659;
-    int measuresOnUts = 28;
+    int measuresOnFil = 14659;
 
     // count measures 
     measures("TRK", measuresOnTrk);
     measures("BRC", measuresOnBrc);
     measures("DIR", measuresOnDir);
-    measures("FIL", measuresOnCla);
-    measures("UTS", measuresOnUts);
+    measures("FIL", measuresOnFil);
 
     // No new_* metrics measure should be recorded the first time
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
       .as("Wrong number of measure of new_ metrics")
       .isEqualTo(0);
 
-    int expectedMeasures = measuresOnTrk + measuresOnBrc + measuresOnDir + measuresOnCla + measuresOnUts;
+    int expectedMeasures = measuresOnTrk + measuresOnBrc + measuresOnDir + measuresOnFil;
     assertThat(count("project_measures")).as("Wrong number of measures").isEqualTo(expectedMeasures);
     assertThat(count("measure_data")).as("Wrong number of measure_data").isEqualTo(1157);
 
@@ -84,14 +82,12 @@ public class PurgeTest {
     int newMeasuresOnTrk = 144;
     int newMeasuresOnBrc = 359;
     int newMeasuresOnDir = 594;
-    int newMeasuresOnCla = 0;
-    int newMeasuresOnUts = 0;
+    int newMeasuresOnFil = 0;
 
     measures("TRK", measuresOnTrk + newMeasuresOnTrk);
     measures("BRC", measuresOnBrc + newMeasuresOnBrc);
     measures("DIR", measuresOnDir + newMeasuresOnDir);
-    measures("FIL", measuresOnCla + newMeasuresOnCla);
-    measures("UTS", measuresOnUts + newMeasuresOnUts);
+    measures("FIL", measuresOnFil + newMeasuresOnFil);
 
     // Measures on new_* metrics should be recorded
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
@@ -99,7 +95,7 @@ public class PurgeTest {
       .isEqualTo(798);
 
     // added measures relate to project and new_* metrics
-    expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnDir + newMeasuresOnCla + newMeasuresOnUts;
+    expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnDir + newMeasuresOnFil;
     assertThat(count("project_measures")).as("Wrong number of measures after second analysis").isEqualTo(expectedMeasures);
 
     assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
