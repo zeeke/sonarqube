@@ -3,34 +3,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>remove-rule-plugin</title>
+    <title>verify-changelog</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
     <thead>
     <tr>
-        <td rowspan="1" colspan="3">remove-rule-plugin</td>
+        <td rowspan="1" colspan="3">verify-changelog</td>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
 	<td></td>
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/updatecenter</td>
+	<td>/sonar/sessions/new</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>password</td>
+	<td>login</td>
 	<td>admin</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>login</td>
+	<td>password</td>
 	<td>admin</td>
 </tr>
 <tr>
@@ -39,24 +39,24 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>link=Plugins :: Xoo rule with status deprecated</td>
+	<td>open</td>
+	<td>/sonar/profiles</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=uninstall-deprecatedxooruleplugin</td>
+	<td>id=rules-xoo-profile_with_rule_to_be_removed_at_startup</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>link=Plugins :: Xoo rule with status deprecated</td>
+	<td>clickAndWait</td>
+	<td>link=Changelog</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>css=form.warning</td>
-	<td>*SonarQube needs to be restarted in order to uninstall the following plugins*</td>
+	<td>assertText</td>
+	<td>profile-changelog</td>
+	<td>*1 -&gt; 2*System*off*Rule 1*</td>
 </tr>
 </tbody>
 </table>

@@ -4,8 +4,13 @@
   <language>xoo</language>
   <rules>
     <rule>
-      <repositoryKey>deprecated-repo</repositoryKey>
-      <key>deprecated-rule</key>
+      <repositoryKey>some-rules</repositoryKey>
+      <key>Rule1</key>
+      <priority>MAJOR</priority>
+    </rule>
+    <rule>
+      <repositoryKey>some-rules</repositoryKey>
+      <key>Rule2</key>
       <priority>MAJOR</priority>
     </rule>
   </rules>

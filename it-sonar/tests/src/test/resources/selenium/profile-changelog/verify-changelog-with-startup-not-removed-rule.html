@@ -45,8 +45,13 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>id=rules-xoo-profile_with_rule_to_be_removed_at_startup</td>
+	<td>id=rules-xoo-profile_with_rule_not_to_be_removed_at_startup</td>
 	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>content</td>
+	<td>*No results*</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -54,9 +59,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>profile-changelog</td>
-	<td>*1 -&gt; 2*System*off*Deprecated rule*</td>
+	<td>assertNotText</td>
+	<td>content</td>
+	<td>*1 -&gt; 2*</td>
 </tr>
 </tbody>
 </table>

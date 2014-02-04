@@ -84,6 +84,8 @@
     <module>ui-plugin</module>
     <module>update-center</module>
     <module>user-handler-plugin</module>
+    <module>some-xoo-rules-plugin-v1</module>
+    <module>some-xoo-rules-plugin-v2</module>
   </modules>
 
 </project>
