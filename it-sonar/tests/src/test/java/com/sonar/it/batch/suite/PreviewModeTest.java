@@ -16,11 +16,7 @@ import com.sonar.orchestrator.version.Version;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.services.Resource;
@@ -30,11 +26,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -180,7 +172,8 @@ public class PreviewModeTest {
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getStatus()).isNotEqualTo(0);
-    assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code variation > 2 since previous version (1.0-SNAPSHOT)");
+    // SONAR-4767 alert now contains date of matching snapshot, for instance : 1.0-SNAPSHOT - 2014 Feb 04.
+    assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code variation > 2 since previous version (1.0-SNAPSHOT - ");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
   }
 
