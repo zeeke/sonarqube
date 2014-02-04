@@ -93,7 +93,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
   }
 
   @Test
-  public void should_get_no_issue_on_empty_profile() {
+  public void get_no_issue_on_empty_profile() {
     // no active rules
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.cpd.skip", "true")
@@ -109,7 +109,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
   }
 
   @Test
-  public void should_close_no_more_existing_issue() {
+  public void close_no_more_existing_issue() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.cpd.skip", "true")
@@ -143,7 +143,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
    * SONAR-3746
    */
   @Test
-  public void should_compute_issues_metrics_on_test_files() {
+  public void compute_issues_metrics_on_test_files() {
     String projectKey = "sample-with-tests";
     String testKey = "sample-with-tests:src/test/xoo/sample/SampleTest.xoo";
 
@@ -162,7 +162,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     // Create the manual rule
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule",
       "/selenium/issue/manual-issue/create-manual-rule.html"
-      ).build());
+    ).build());
 
     // Create a issue on the test source file
     adminIssueClient().create(NewIssue.create().component(testKey)
@@ -182,7 +182,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
    * See SONAR-582 - issues not attached to a line of code
    */
   @Test
-  public void should_get_issues_even_if_no_issue_on_line_of_code() {
+  public void get_issues_even_if_no_issue_on_line_of_code() {
     // all the detected issues are not attached to a line
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-file-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
@@ -205,7 +205,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
    * See SONAR-684
    */
   @Test
-  public void should_encode_issue_messages() {
+  public void encode_issue_messages() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("issue/encoded-issue-message"))
       .setProperties("sonar.cpd.skip", "true")
@@ -215,6 +215,25 @@ public class IssueTest extends AbstractIssueTestCase2 {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("encoded-issue-message",
       "/selenium/issue/encoded-issue-message.html").build();
     orchestrator.executeSelenese(selenese);
+  }
+
+  /**
+   * See SONAR-4785
+   */
+  @Test
+  public void get_rule_name_if_issue_has_no_message() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-custom-message.xml"));
+
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.cpd.skip", "true")
+      .setProfile("with-custom-message");
+    orchestrator.executeBuild(scan.setProperties("sonar.customMessage.message", ""));
+    Issue issue = issueClient().find(IssueQuery.create()).list().get(0);
+    assertThat(issue.message()).isEqualTo("Issue With Custom Message");
+
+    orchestrator.executeBuild(scan.setProperties("sonar.customMessage.message", null));
+    issue = issueClient().find(IssueQuery.create()).list().get(0);
+    assertThat(issue.message()).isEqualTo("Issue With Custom Message");
   }
 
   /**
@@ -261,7 +280,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issues-code-viewer",
       "/selenium/issue/issues-code-viewer/display-only-unresolved-issues.html",
       "/selenium/issue/issues-code-viewer/display-only-false-positives.html"
-      ).build());
+    ).build());
   }
 
   @Test
