@@ -36,7 +36,7 @@ public class MeasureFiltersTest {
 
   @AfterClass
   public static void deleteTestUser() {
-    ItUtils.newWsClientForAdmin(orchestrator).userClient().deactivate("user-measure-filters");
+    deactivateUser("user-measure-filters");
   }
 
   @Test
@@ -53,7 +53,7 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/search-by-key.html",
       "/selenium/measures/measure_filters/search-by-name.html",
       "/selenium/measures/measure_filters/empty_filter.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -65,7 +65,7 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/list_move_columns.html",
       "/selenium/measures/measure_filters/list_sort_by_descending_name.html",
       "/selenium/measures/measure_filters/list_sort_by_ncloc.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -75,17 +75,15 @@ public class MeasureFiltersTest {
     String user = "user-measures-filter-with-sharing-perm";
     createUser(user, "User Measure Filters with sharing permission", "shareDashboard");
 
-    // TODO
-
     try {
       Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("share_measure_filters",
         // SONAR-4469
         "/selenium/measures/measure_filters/should-unshare-filter-remove-other-filters-favourite.html"
-        ).build();
+      ).build();
       orchestrator.executeSelenese(selenese);
 
     } finally {
-      ItUtils.newWsClientForAdmin(orchestrator).userClient().deactivate(user);
+      deactivateUser(user);
     }
   }
 
@@ -100,9 +98,9 @@ public class MeasureFiltersTest {
     try {
       orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_not_share_filter_when_user_have_no_sharing_permissions",
         "/selenium/measures/measure_filters/should-not-share-filter-when-user-have-no-sharing-permissions.html"
-        ).build());
+      ).build());
     } finally {
-      ItUtils.newWsClientForAdmin(orchestrator).userClient().deactivate(user);
+      deactivateUser(user);
     }
   }
 
@@ -117,7 +115,7 @@ public class MeasureFiltersTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("copy_measure_filters",
       "/selenium/measures/measure_filters/copy_measure_filter.html",
       "/selenium/measures/measure_filters/copy_uniqueness_of_name.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -126,7 +124,7 @@ public class MeasureFiltersTest {
     // TODO save with description
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage_measure_filters",
       "/selenium/measures/measure_filters/save_with_special_characters.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -136,7 +134,7 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/list_widget.html",
       "/selenium/measures/measure_filters/list_widget_sort.html",
       "/selenium/measures/measure_filters/list_widget_warning_if_missing_filter.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -146,7 +144,7 @@ public class MeasureFiltersTest {
       "/selenium/measures/measure_filters/treemap_of_components_widget.html",
       "/selenium/measures/measure_filters/treemap_of_components_widget_edit_metrics.html",
       "/selenium/measures/measure_filters/treemap_of_filter_widget.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -155,13 +153,17 @@ public class MeasureFiltersTest {
   }
 
   private static void createUser(String login, String name, String permission) {
-    SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
+    SonarClient client = orchestrator.getServer().adminWsClient();
     UserParameters userCreationParameters = UserParameters.create().login(login).name(name).password("password").passwordConfirmation("password");
     client.userClient().create(userCreationParameters);
 
     if (permission != null) {
       client.permissionClient().addPermission(PermissionParameters.create().user(login).permission(permission));
     }
+  }
+
+  private static void deactivateUser(String user) {
+    orchestrator.getServer().adminWsClient().userClient().deactivate(user);
   }
 
 }
