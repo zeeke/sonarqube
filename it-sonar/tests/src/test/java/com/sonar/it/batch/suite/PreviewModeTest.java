@@ -19,6 +19,7 @@ import org.json.simple.JSONObject;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
@@ -116,6 +117,41 @@ public class PreviewModeTest {
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains(
       "Preview database read timed out after 1000 ms. You can try to increase read timeout with property -Dsonar.preview.readTimeout (in seconds)");
+  }
+
+  @Test
+  public void test_exclude_plugins_property_with_build_breaker() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"));
+    SonarRunner runner = configureRunner("shared/xoo-sample",
+      "sonar.preview.excludePlugins", "buildbreaker",
+      "sonar.analysis.mode", "preview")
+      .setProfile("SimpleAlertProfile");
+    BuildResult result = orchestrator.executeBuildQuietly(runner);
+
+    // Build breaker is exclude so it will not be executed
+    assertThat(result.getStatus()).isEqualTo(0);
+  }
+
+  /**
+   * SONAR-5022
+   */
+  @Test
+  public void test_include_plugins_property_with_build_breaker() {
+    // Buildbreaker plugin is exclude on global settings...
+    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.preview.excludePlugins", "buildbreaker"));
+
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"));
+    SonarRunner runner = configureRunner("shared/xoo-sample",
+      // ... but it's include on the build...
+      "sonar.preview.includePlugins", "buildbreaker",
+      "sonar.analysis.mode", "preview")
+      .setProfile("SimpleAlertProfile");
+    BuildResult result = orchestrator.executeBuildQuietly(runner);
+
+    // ... so build should failed
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code > 5");
+    assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
   }
 
   // SONAR-4468
