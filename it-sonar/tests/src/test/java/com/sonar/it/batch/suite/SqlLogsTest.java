@@ -27,10 +27,7 @@ public class SqlLogsTest {
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"));
     BuildResult result = orchestrator.executeBuild(build);
 
-    assertThat(result.getLogs()).doesNotContain(("==>  Preparing:")); // mybatis results
-    assertThat(result.getLogs()).doesNotContain(("==>  Preparing:")); // mybatis results
-    assertThat(result.getLogs()).doesNotContain(("==> Parameters:")); // mybatis results
-    assertThat(result.getLogs()).doesNotContain("<==    Columns:"); // mybatis results
+    assertThat(result.getLogs()).doesNotContain(("Executed SQL:"));
   }
 
   @Test
@@ -39,8 +36,6 @@ public class SqlLogsTest {
         .setProperty("sonar.log.profilingLevel", "FULL");
     BuildResult result = orchestrator.executeBuild(build);
 
-    assertThat(result.getLogs()).contains("==>  Preparing:"); // mybatis
-    assertThat(result.getLogs()).contains("==> Parameters:"); // mybatis
-    assertThat(result.getLogs()).contains("<==    Columns:"); // mybatis results
+    assertThat(result.getLogs()).contains("Executed SQL:");
   }
 }
