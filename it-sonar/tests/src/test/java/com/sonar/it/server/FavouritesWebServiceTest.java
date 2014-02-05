@@ -5,6 +5,8 @@
  */
 package com.sonar.it.server;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
@@ -19,10 +21,8 @@ import org.sonar.wsclient.services.FavouriteQuery;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static com.google.common.collect.Lists.newArrayList;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class FavouritesWebServiceTest {
   @Rule
@@ -42,25 +42,30 @@ public class FavouritesWebServiceTest {
 
     // GET (nothing)
     List<Favourite> favourites = adminWsClient.findAll(new FavouriteQuery());
-    assertThat(favourites.size(), is(0));
+    assertThat(favourites).isEmpty();
 
     // POST (create favourites)
     Favourite favourite = adminWsClient.create(new FavouriteCreateQuery("com.sonarsource.it.samples:simple-sample"));
-    assertThat(favourite, not(nullValue()));
-    assertThat(favourite.getKey(), is("com.sonarsource.it.samples:simple-sample"));
+    assertThat(favourite).isNotNull();
+    assertThat(favourite.getKey()).isEqualTo("com.sonarsource.it.samples:simple-sample");
     adminWsClient.create(new FavouriteCreateQuery("com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java"));
 
     // GET (created favourites)
     favourites = adminWsClient.findAll(new FavouriteQuery());
-    assertThat(favourites.size(), is(2));
-    assertThat(favourites.get(0).getKey(), is("com.sonarsource.it.samples:simple-sample"));
-    assertThat(favourites.get(1).getKey(), is("com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java"));
+    assertThat(favourites).hasSize(2);
+    List<String> keys = newArrayList(Iterables.transform(favourites, new Function<Favourite, String>() {
+      @Override
+      public String apply(Favourite input) {
+        return input.getKey();
+      }
+    }));
+    assertThat(keys).containsOnly("com.sonarsource.it.samples:simple-sample", "com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java");
 
     // DELETE (a favourite)
     adminWsClient.delete(new FavouriteDeleteQuery("com.sonarsource.it.samples:simple-sample"));
     favourites = adminWsClient.findAll(new FavouriteQuery());
-    assertThat(favourites.size(), is(1));
-    assertThat(favourites.get(0).getKey(), is("com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java"));
+    assertThat(favourites).hasSize(1);
+    assertThat(favourites.get(0).getKey()).isEqualTo("com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java");
   }
 
 }
