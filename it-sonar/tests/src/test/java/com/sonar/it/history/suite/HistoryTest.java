@@ -156,6 +156,23 @@ public class HistoryTest {
   }
 
   /**
+   * SONAR-4962
+   */
+  @Test
+  public void measure_variations_are_only_meaningful_when_includetrends() {
+    String[] metricKeys = {"violations", "new_violations"};
+
+    Resource projectWithTrends = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(PROJECT, metricKeys).setIncludeTrends(true));
+    assertThat(projectWithTrends.getMeasure("violations")).isNotNull();
+    assertThat(projectWithTrends.getMeasure("new_violations")).isNotNull();
+
+    Resource projectWithoutTrends = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(PROJECT, metricKeys).setIncludeTrends(false));
+    assertThat(projectWithoutTrends.getMeasure("violations")).isNotNull();
+    assertThat(projectWithoutTrends.getMeasure("new_violations")).isNull();
+  }
+
+
+  /**
    * SONAR-3046
    */
   @Test
