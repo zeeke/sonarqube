@@ -367,16 +367,21 @@ public class AntTest {
 
     String logs = analysisResults.getLogs();
     // showSql
-    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.2")) {
-      // >= sonar 3.2 and mybatis 3.1
-      assertThat(logs).contains("==>  Preparing");
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      // >= sonarqube 4.2 with own SQL profiling
+      assertThat(logs).contains("Executed SQL:");
+    } else {
+      if (orchestrator.getServer().version().isGreaterThanOrEquals("3.2")) {
+        // < sonarqube 4.2 and >= sonar 3.2 and mybatis 3.1
+        assertThat(logs).contains("==>  Preparing");
+      }
+      else {
+        // < sonar 3.2 and mybatis 3.0
+        assertThat(logs).contains("==>  Executing");
+      }
+      // showSqlResults
+      assertThat(logs).contains("<==    Columns");
     }
-    else {
-      // < sonar 3.2 and mybatis 3.0
-      assertThat(logs).contains("==>  Executing");
-    }
-    // showSqlResults
-    assertThat(logs).contains("<==    Columns");
   }
 
   /**
