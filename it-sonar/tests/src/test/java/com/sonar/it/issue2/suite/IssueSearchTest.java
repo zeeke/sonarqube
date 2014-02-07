@@ -12,14 +12,10 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
-import org.sonar.wsclient.issue.ActionPlan;
-import org.sonar.wsclient.issue.Issue;
-import org.sonar.wsclient.issue.IssueQuery;
-import org.sonar.wsclient.issue.Issues;
-import org.sonar.wsclient.issue.NewActionPlan;
-import org.sonar.wsclient.issue.NewIssue;
+import org.sonar.wsclient.issue.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -131,6 +127,13 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     }
   }
 
+  @Test
+  @Ignore("Waiting for next goldenisation in order to use the new hideRules property")
+  public void not_return_rules_when_using_hide_rules_parameter() {
+    assertThat(search(IssueQuery.create().hideRules(false)).rules()).isNotEmpty();
+    assertThat(search(IssueQuery.create().hideRules(true)).rules()).isEmpty();
+  }
+
   /**
    * SONAR-2981
    */
@@ -169,7 +172,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   }
 
   @Test
-  public void should_paginate_results() {
+  public void paginate_results() {
     Issues issues = search(IssueQuery.create().pageSize(20).pageIndex(2));
 
     assertThat(issues.list()).hasSize(20);
@@ -187,7 +190,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   }
 
   @Test
-  public void should_sort_results() {
+  public void sort_results() {
     // Only 1 issue in CRITICAL (the manual one), following ones are in MAJOR
     List<Issue> issues = search(IssueQuery.create().sort("SEVERITY").asc(false)).list();
     assertThat(issues.get(0).severity()).isEqualTo("CRITICAL");
@@ -201,7 +204,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
    * SONAR-4563
    */
   @Test
-  public void should_search_by_exact_creation_date() {
+  public void search_by_exact_creation_date() {
     final Issue issue = search(IssueQuery.create()).list().get(0);
     assertThat(issue.creationDate()).isNotNull();
 
