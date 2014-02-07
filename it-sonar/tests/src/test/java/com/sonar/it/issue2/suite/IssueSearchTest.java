@@ -7,7 +7,7 @@
 package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.AfterClass;
@@ -29,15 +29,18 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   private static int DEFAULT_PAGINATED_RESULTS = 100;
 
   @BeforeClass
-  public static void scanStruts() {
+  public static void prepareData() {
     orchestrator.getDatabase().truncateInspectionTables();
     deleteManualRules();
 
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-    orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "true")
-      .setProperty("sonar.profile.java", "issues"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
+    // Launch 2 analysis to have more than 100 issues in total
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false")
+      .setProfile("with-many-rules"));
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.branch", "multi-modules-sample2")
+      .setProfile("with-many-rules"));
 
     // Assign a issue to test search by assignee
     adminIssueClient().assign(searchRandomIssue().key(), "admin");
@@ -47,11 +50,11 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
 
     // Create a manual issue to test search by reporter
     createManualRule();
-    adminIssueClient().create(NewIssue.create().component("org.apache.struts:struts-tiles:src/main/java/org/apache/struts/tiles/xmlDefinition/XmlParser.java")
+    adminIssueClient().create(NewIssue.create().component("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo")
       .rule("manual:invalidclassname")
       .line(3)
       .severity("CRITICAL")
-      .message("The name 'Sample' is too generic"));
+      .message("The name of the class is invalid"));
   }
 
   @AfterClass
@@ -65,24 +68,31 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   }
 
   @Test
+  public void search_all_issues() {
+    assertThat(search(IssueQuery.create()).list()).hasSize(DEFAULT_PAGINATED_RESULTS);
+  }
+
+  @Test
   public void search_issues_by_component_roots() {
-    Issues issues = search(IssueQuery.create().componentRoots("org.apache.struts:struts-parent"));
-    assertThat(issues.list()).hasSize(DEFAULT_PAGINATED_RESULTS);
+    Issues issues = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample"));
+    assertThat(issues.list()).hasSize(66);
     assertThat(search(IssueQuery.create().componentRoots("unknown")).list()).isEmpty();
   }
 
   @Test
   public void search_issues_by_components() {
-    assertThat(search(IssueQuery.create().components("org.apache.struts:struts-tiles:src/main/java/org/apache/struts/tiles/xmlDefinition/XmlDefinitionsSet.java")).list()).hasSize(
-      10);
+    assertThat(search(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo")).list()).hasSize(
+      19);
     assertThat(search(IssueQuery.create().components("unknown")).list()).isEmpty();
   }
 
   @Test
   public void search_issues_by_severities() {
-    assertThat(search(IssueQuery.create().severities("MAJOR")).list()).hasSize(DEFAULT_PAGINATED_RESULTS);
-    assertThat(search(IssueQuery.create().severities("CRITICAL")).list()).hasSize(1);
     assertThat(search(IssueQuery.create().severities("BLOCKER")).list()).isEmpty();
+    assertThat(search(IssueQuery.create().severities("CRITICAL")).list()).hasSize(15);
+    assertThat(search(IssueQuery.create().severities("MAJOR")).list()).hasSize(8);
+    assertThat(search(IssueQuery.create().severities("MINOR")).list()).hasSize(DEFAULT_PAGINATED_RESULTS);
+    assertThat(search(IssueQuery.create().severities("INFO")).list()).hasSize(4);
   }
 
   @Test
@@ -116,7 +126,8 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
 
   @Test
   public void search_issues_by_rules() {
-    assertThat(search(IssueQuery.create().rules("checkstyle:com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck")).list()).hasSize(DEFAULT_PAGINATED_RESULTS);
+    assertThat(search(IssueQuery.create().rules("xoo:OneIssuePerLine")).list()).hasSize(DEFAULT_PAGINATED_RESULTS);
+    assertThat(search(IssueQuery.create().rules("xoo:OneIssuePerFile")).list()).hasSize(8);
     assertThat(search(IssueQuery.create().rules("manual:invalidclassname")).list()).hasSize(1);
 
     try {
@@ -161,7 +172,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   @Test
   public void search_issues_by_action_plans() {
     // Create an action plan
-    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("org.apache.struts:struts-parent").description("Short term issues")
+    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("com.sonarsource.it.samples:multi-modules-sample").description("Short term issues")
       .deadLine(ItUtils.toDate("2113-01-31")));
 
     // Associate this action plan to an issue
@@ -179,25 +190,23 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     Paging paging = issues.paging();
     assertThat(paging.pageIndex()).isEqualTo(2);
     assertThat(paging.pageSize()).isEqualTo(20);
-    assertThat(paging.pages()).isEqualTo(206);
-    assertThat(paging.total()).isEqualTo(4117);
+    assertThat(paging.pages()).isEqualTo(7);
+    assertThat(paging.total()).isEqualTo(131);
     assertThat(issues.maxResultsReached()).isFalse();
 
     // SONAR-3257
     // return max page size results when using negative page size value
-    assertThat(search(IssueQuery.create().pageSize(0)).list()).hasSize(500);
-    assertThat(search(IssueQuery.create().pageSize(-1)).list()).hasSize(500);
+    assertThat(search(IssueQuery.create().pageSize(0)).list()).hasSize(131);
+    assertThat(search(IssueQuery.create().pageSize(-1)).list()).hasSize(131);
   }
 
   @Test
   public void sort_results() {
-    // Only 1 issue in CRITICAL (the manual one), following ones are in MAJOR
+    // 15 issue in CRITICAL (including the manual one), following ones are in MAJOR
     List<Issue> issues = search(IssueQuery.create().sort("SEVERITY").asc(false)).list();
     assertThat(issues.get(0).severity()).isEqualTo("CRITICAL");
-    issues.remove(0);
-    for (Issue issue : issues) {
-      assertThat(issue.severity()).isEqualTo("MAJOR");
-    }
+    assertThat(issues.get(14).severity()).isEqualTo("CRITICAL");
+    assertThat(issues.get(15).severity()).isEqualTo("MAJOR");
   }
 
   /**
