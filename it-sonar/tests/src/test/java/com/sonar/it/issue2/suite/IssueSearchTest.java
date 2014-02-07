@@ -130,8 +130,8 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   @Test
   @Ignore("Waiting for next goldenisation in order to use the new hideRules property")
   public void not_return_rules_when_using_hide_rules_parameter() {
-    assertThat(search(IssueQuery.create().hideRules(false)).rules()).isNotEmpty();
-    assertThat(search(IssueQuery.create().hideRules(true)).rules()).isEmpty();
+//    assertThat(search(IssueQuery.create().hideRules(false)).rules()).isNotEmpty();
+//    assertThat(search(IssueQuery.create().hideRules(true)).rules()).isEmpty();
   }
 
   /**
