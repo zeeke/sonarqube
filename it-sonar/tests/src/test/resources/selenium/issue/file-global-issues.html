@@ -14,24 +14,24 @@
     </thead>
     <tbody>
     <tr>
-  <td>open</td>
-  <td>/sonar/resource/index/sample:src/main/xoo/sample/Sample.xoo?tab=issues</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/resource/index/sample:src/main/xoo/sample/Sample.xoo?tab=issues</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>body</td>
-  <td>*Sample*</td>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Sample*</td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>class=code-global-issues</td>
-  <td>glob:*One Issue Per File*</td>
+	<td>assertText</td>
+	<td>class=code-global-issues</td>
+	<td>glob:*This issue is generated on each file*</td>
 </tr>
 <tr>
-  <td>assertNotText</td>
-  <td>css=table.code</td>
-  <td>glob:*One Issue Per File*package*</td>
+	<td>assertNotText</td>
+	<td>css=table.code</td>
+	<td>glob:*This issue is generated on each file*package*</td>
 </tr>
 </tbody>
 </table>
