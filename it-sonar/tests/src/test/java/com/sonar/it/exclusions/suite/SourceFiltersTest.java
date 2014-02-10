@@ -29,7 +29,7 @@ public class SourceFiltersTest {
   public static void scanProject() {
     orchestrator.getDatabase().truncateInspectionTables();
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/source-filters"))
-      .setProperty("sonar.exclusions", "src/main/java/sourceFilters/**/*ByProperty.java")
+      .setProperty("sonar.exclusions", "src/main/java/sourceFilters/**/*BeExcluded.java")
       .setCleanSonarGoals()
       .setProperties("sonar.dynamicAnalysis", "false")
       .setProperties("sonar.language", "java");
@@ -37,14 +37,8 @@ public class SourceFiltersTest {
   }
 
   @Test
-  public void testResourceFilterExtension() {
-    assertThat(getResource(PROJECT + ":sourceFilters.ExcludedByFilter"), nullValue());
-    assertThat(getMeasure(PROJECT, "files").getIntValue(), is(1));
-  }
-
-  @Test
   public void testExclusionProperty() {
-    assertThat(getResource(PROJECT + ":sourceFilters.ExcludedByProperty"), nullValue());
+    assertThat(getResource(PROJECT + ":sourceFilters.ToBeExcluded"), nullValue());
     assertThat(getMeasure(PROJECT, "files").getIntValue(), is(1));
   }
 

@@ -33,7 +33,6 @@ public class UiTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.locateTestPlugin("resource-filter-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("static-files-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("ruby-api-tester-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("ruby-tab-plugin"))

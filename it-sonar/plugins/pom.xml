@@ -64,7 +64,6 @@
     <module>property-sets-plugin</module>
     <module>required-measures-widgets-plugin</module>
     <module>resource-configuration-extension-plugin</module>
-    <module>resource-filter-plugin</module>
     <module>ruby-api-tester-plugin</module>
     <module>ruby-rails-app-plugin</module>
     <module>ruby-tab-plugin</module>
