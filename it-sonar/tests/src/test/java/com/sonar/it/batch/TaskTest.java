@@ -49,9 +49,9 @@ public class TaskTest {
     Resource javaModule = getResource("multi-languages:java-module", "files");
     Resource jsModule = getResource("multi-languages:javascript-module", "files");
     Resource pyModule = getResource("multi-languages:python-module", "files");
-    verifyModule(javaModule, "java", 1);
-    verifyModule(jsModule, "js", 1);
-    verifyModule(pyModule, "py", 2);
+    verifyModule(javaModule, 1);
+    verifyModule(jsModule, 1);
+    verifyModule(pyModule, 2);
 
     // project
     Resource project = getResource("multi-languages", "files");
@@ -85,13 +85,13 @@ public class TaskTest {
     assertThat(buildResult.getLogs()).contains("Executing my-task");
   }
 
-  private void verifyModule(Resource module, String language, int files) {
+  private void verifyModule(Resource module, int files) {
     assertThat(module.getMeasureIntValue("files")).isEqualTo(files);
-    assertThat(module.getLanguage()).isEqualTo(language);
+    assertThat(module.getLanguage()).isNull();
   }
 
   private void verifyProject(Resource project) {
-    verifyModule(project, "none", 4);
+    verifyModule(project, 4);
   }
 
   private Resource getResource(String resourceKey, String metricKey) {
