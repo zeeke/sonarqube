@@ -13,7 +13,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  ChidamberKemererTest.class, JavaTest.class, Struts139Test.class
+  JavaTest.class, Struts139Test.class
 })
 public class JavaTestSuite {
 
