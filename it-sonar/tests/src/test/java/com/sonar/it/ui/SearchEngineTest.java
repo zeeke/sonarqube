@@ -49,7 +49,7 @@ public class SearchEngineTest {
       "/selenium/ui/search-engine/open-project-dashboard.html",
       "/selenium/ui/search-engine/open-file-viewers.html",
       // SONAR-3909
-      "/selenium/ui/search-engine/search-with-pourcent-and-underscore-characters.html"
+      "/selenium/ui/search-engine/search-with-percent-and-underscore-characters.html"
       ).build();
     orchestrator.executeSelenese(selenese);
   }
