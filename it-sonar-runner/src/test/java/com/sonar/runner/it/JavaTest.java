@@ -44,7 +44,9 @@ public class JavaTest extends RunnerTestCase {
     }
     assertThat(project.getDescription()).isEqualTo("This is a Java sample");
     assertThat(project.getVersion()).isEqualTo("1.2.3");
-    assertThat(project.getLanguage()).isEqualTo("java");
+    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      assertThat(project.getLanguage()).isEqualTo("java");
+    }
     assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("classes")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("ncloc")).isGreaterThan(10);
@@ -90,7 +92,9 @@ public class JavaTest extends RunnerTestCase {
     }
     assertThat(project.getDescription()).isEqualTo("This is a Java sample");
     assertThat(project.getVersion()).isEqualTo("1.2.3");
-    assertThat(project.getLanguage()).isEqualTo("java");
+    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      assertThat(project.getLanguage()).isEqualTo("java");
+    }
     assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("classes")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("ncloc")).isGreaterThan(10);
