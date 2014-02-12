@@ -108,7 +108,9 @@ public class AntTest {
     assertThat(project.getName()).isEqualTo("Ant Project Metadata 1.1.x");
     assertThat(project.getDescription()).isEqualTo("Ant Project with complete metadata");
     assertThat(project.getVersion()).isEqualTo("0.1-SNAPSHOT");
-    assertThat(project.getLanguage()).isEqualTo("java");
+    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      assertThat(project.getLanguage()).isEqualTo("java");
+    }
     assertThat(project.getLongName()).isEqualTo("Ant Project Metadata 1.1.x");
   }
 
