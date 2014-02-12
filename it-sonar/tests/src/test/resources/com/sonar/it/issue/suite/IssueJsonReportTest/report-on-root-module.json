@@ -240,19 +240,58 @@
     "updateDate": "2013-05-01T00:00:00+0000"
   }
 ], "components": [
-  {
-    "key": "com.sonarsource.it.samples:module_b2:src/main/java/com/sonar/it/samples/modules/b2/HelloB2.java"
-  },
-  {
-    "key": "com.sonarsource.it.samples:module_b1:src/main/java/com/sonar/it/samples/modules/b1/HelloB1.java"
-  },
-  {
-    "key": "com.sonarsource.it.samples:module_a2:src/main/java/com/sonar/it/samples/modules/a2/HelloA2.java"
-  },
-  {
-    "key": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java"
-  }
-], "rules": [
+    {
+      "key": "com.sonarsource.it.samples:multi-modules-sample"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_a",
+      "path": "module_a"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_b",
+      "path": "module_b"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_a1",
+      "path": "module_a1"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_a2",
+      "path": "module_a2"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_b1",
+      "path": "module_b1"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_b2",
+      "path": "module_b2"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
+      "path": "src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
+      "moduleKey": "com.sonarsource.it.samples:module_a1",
+      "status": "SAME"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_a2:src/main/java/com/sonar/it/samples/modules/a2/HelloA2.java",
+      "path": "src/main/java/com/sonar/it/samples/modules/a2/HelloA2.java",
+      "moduleKey": "com.sonarsource.it.samples:module_a2",
+      "status": "SAME"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_b1:src/main/java/com/sonar/it/samples/modules/b1/HelloB1.java",
+      "path": "src/main/java/com/sonar/it/samples/modules/b1/HelloB1.java",
+      "moduleKey": "com.sonarsource.it.samples:module_b1",
+      "status": "SAME"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_b2:src/main/java/com/sonar/it/samples/modules/b2/HelloB2.java",
+      "path": "src/main/java/com/sonar/it/samples/modules/b2/HelloB2.java",
+      "moduleKey": "com.sonarsource.it.samples:module_b2",
+      "status": "SAME"
+    }
+  ], "rules": [
   {
     "key": "checkstyle:com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck",
     "rule": "com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck",
