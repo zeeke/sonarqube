@@ -47,10 +47,10 @@ public class PurgeTest {
     assertThat(count("projects where qualifier in ('FIL')")).as("Wrong number of files").isEqualTo(320);
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
 
-    int measuresOnTrk = 200;
-    int measuresOnBrc = 459;
-    int measuresOnDir = 2794;
-    int measuresOnFil = 14659;
+    int measuresOnTrk = 197;
+    int measuresOnBrc = 450;
+    int measuresOnDir = 2664;
+    int measuresOnFil = 12533;
 
     // count measures 
     measures("TRK", measuresOnTrk);
@@ -65,7 +65,7 @@ public class PurgeTest {
 
     int expectedMeasures = measuresOnTrk + measuresOnBrc + measuresOnDir + measuresOnFil;
     assertThat(count("project_measures")).as("Wrong number of measures").isEqualTo(expectedMeasures);
-    assertThat(count("measure_data")).as("Wrong number of measure_data").isEqualTo(1157);
+    assertThat(count("measure_data")).as("Wrong number of measure_data").isEqualTo(962);
 
     // count other tables that are constant between 2 scans
     int expectedIssues = 4000;
@@ -79,8 +79,8 @@ public class PurgeTest {
     // must be a different date, else a single snapshot is kept per day
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
 
-    int newMeasuresOnTrk = 144;
-    int newMeasuresOnBrc = 359;
+    int newMeasuresOnTrk = 141;
+    int newMeasuresOnBrc = 350;
     int newMeasuresOnDir = 594;
     int newMeasuresOnFil = 0;
 
@@ -99,7 +99,7 @@ public class PurgeTest {
     assertThat(count("project_measures")).as("Wrong number of measures after second analysis").isEqualTo(expectedMeasures);
 
     assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
-    assertThat(count("measure_data")).as("Wrong number of measure_data").isEqualTo(1161);
+    assertThat(count("measure_data")).as("Wrong number of measure_data").isEqualTo(966);
     assertThat(count("issues")).as("Wrong number of issues").isEqualTo(expectedIssues);
     assertThat(count("dependencies")).as("Wrong number of dependencies").isEqualTo(expectedDependencies);
   }

@@ -45,7 +45,7 @@ public class JavaTest {
     String logs = orchestrator.executeBuild(build).getLogs();
 
     assertThat(logs).doesNotContain("Cobertura");
-    assertThat(logs).doesNotContain("Findbugs");
+    assertThat(logs).doesNotContain("Checkstyle");
   }
 
   // SONAR-3893 & SONAR-4247
