@@ -12,6 +12,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.fest.assertions.Delta;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
@@ -121,6 +122,30 @@ public class NewTechnicalDebtMeasureTest {
     newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     measures = newTechnicalDebt.getMeasures();
     assertThat(measures.get(0).getVariation2().doubleValue()).isEqualTo(0.187, Delta.delta(0.001));
+  }
+
+  /**
+   * SONAR-5059
+   */
+  @Test
+  @Ignore
+  public void new_technical_debt_measures_should_never_be_negative() throws Exception {
+    // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
+
+    // Execute an analysis with a big effort to fix
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-file.xml"));
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-file")
+      .setProperties("sonar.oneIssuePerFile.effortToFix", "100"));
+
+    // Execute a second analysis with a smaller effort to fix -> Added technical debt should be 0, not negative
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-file")
+      .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
+
+    Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
+    List<Measure> measures = newTechnicalDebt.getMeasures();
+    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0d);
   }
 
 }
