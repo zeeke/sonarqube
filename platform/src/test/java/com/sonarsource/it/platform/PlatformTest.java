@@ -27,10 +27,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.version.Version;
 import org.apache.commons.lang.StringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
@@ -229,6 +226,7 @@ public class PlatformTest {
   }
 
   @Test
+  @Ignore("Temporarily disabled as long as SIGMM does not support SQ 4.2")
   public void viewsSIGMM() {
     assertThat(getMeasure(JAVA_VIEWS, "sigmm-maintainability").getValue(), is(-1.0));
   }
