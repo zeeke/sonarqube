@@ -10,6 +10,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.locator.MavenLocation;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
@@ -27,6 +28,8 @@ public class PurgeTest {
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
     .restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-2.7.xml"))
+    .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-checkstyle-plugin", "2.1-SNAPSHOT"))
+    .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1-SNAPSHOT"))
     .build();
 
   @Before

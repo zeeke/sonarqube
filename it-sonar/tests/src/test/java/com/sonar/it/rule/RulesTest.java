@@ -9,6 +9,7 @@ package com.sonar.it.rule;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.fest.assertions.Condition;
 import org.junit.ClassRule;
@@ -29,6 +30,8 @@ public class RulesTest {
     .addPlugin(ItUtils.locateTestPlugin("beta-rule-plugin"))
     .addPlugin(ItUtils.locateTestPlugin("deprecated-rule-plugin"))
     .addPlugin(ItUtils.xooPlugin())
+    .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-checkstyle-plugin", "2.1-SNAPSHOT"))
+    .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1-SNAPSHOT"))
     .build();
 
   @Test
@@ -49,7 +52,7 @@ public class RulesTest {
       .builder()
       .setHtmlTestsInClasspath("search-rules",
         "/selenium/rule/search-rules/rule_search.html",
-        //SONAR-3936
+        // SONAR-3936
         "/selenium/rule/search-rules/rule_search_verify_form_values_on_first_call.html",
         // SONAR-3936
         "/selenium/rule/search-rules/search_and_display_inactive_rules.html",
@@ -138,7 +141,7 @@ public class RulesTest {
 
     @Override
     public boolean matches(List<?> list) {
-      for (RuleParam rp: (List<RuleParam>) list) {
+      for (RuleParam rp : (List<RuleParam>) list) {
         if (ruleName.equals(rp.getName()) &&
           ((ruleDescription != null && ruleDescription.equals(rp.getDescription()))
           || (ruleDescription == null && rp.getDescription() == null))) {
