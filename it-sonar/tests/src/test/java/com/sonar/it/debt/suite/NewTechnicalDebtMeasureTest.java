@@ -12,7 +12,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.fest.assertions.Delta;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
@@ -128,7 +127,6 @@ public class NewTechnicalDebtMeasureTest {
    * SONAR-5059
    */
   @Test
-  @Ignore
   public void new_technical_debt_measures_should_never_be_negative() throws Exception {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over x days"
 
@@ -144,8 +142,7 @@ public class NewTechnicalDebtMeasureTest {
       .setProperties("sonar.oneIssuePerFile.effortToFix", "10"));
 
     Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
-    List<Measure> measures = newTechnicalDebt.getMeasures();
-    assertThat(measures.get(0).getVariation1().doubleValue()).isEqualTo(0d);
+    assertThat(newTechnicalDebt).isNull();
   }
 
 }
