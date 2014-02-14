@@ -15,6 +15,7 @@
     <cppLatest>2.1-SNAPSHOT</cppLatest>
     <clirrLatest>1.2-SNAPSHOT</clirrLatest>
     <cobolLatest>1.18-SNAPSHOT</cobolLatest>
+    <cutoffLatest>0.3-SNAPSHOT</cutoffLatest>
     <devcockpitLatest>1.4-SNAPSHOT</devcockpitLatest>
     <dotnetLatest>2.2-SNAPSHOT</dotnetLatest>
     <emmaLatest>1.4-SNAPSHOT</emmaLatest>
@@ -180,6 +181,7 @@
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
           org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
           org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
+          org.codehaus.sonar-plugins:sonar-cutoff-plugin:${cutoffLatest},
           com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
           org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
           com.sonarsource.cobol:sonar-cobol-plugin:${cobolLatest},
