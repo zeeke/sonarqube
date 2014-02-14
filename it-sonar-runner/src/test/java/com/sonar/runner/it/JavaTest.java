@@ -107,9 +107,9 @@ public class JavaTest extends RunnerTestCase {
       assertThat(file.getName()).isEqualTo("Hello.java");
     } else {
       assertThat(file.getName()).isEqualTo("Hello");
+      assertThat(file.getMeasureIntValue("lcom4")).isNull(); // no bytecode
     }
     assertThat(file.getMeasureIntValue("ncloc")).isEqualTo(7);
-    assertThat(file.getMeasureIntValue("lcom4")).isNull(); // no bytecode
     assertThat(file.getMeasureIntValue("violations")).isGreaterThan(0);
   }
 
@@ -128,7 +128,6 @@ public class JavaTest extends RunnerTestCase {
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
     Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery(findbugsFileKey()).setMetrics("lcom4", "violations"));
-    assertThat(file.getMeasureIntValue("lcom4")).isGreaterThanOrEqualTo(1);
     assertThat(file.getMeasureIntValue("violations")).isGreaterThan(0);
 
     // findbugs is executed on bytecode
