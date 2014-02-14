@@ -30,12 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.Measure;
-import org.sonar.wsclient.services.PropertyUpdateQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.SourceQuery;
-import org.sonar.wsclient.services.ViolationQuery;
+import org.sonar.wsclient.services.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -329,7 +324,10 @@ public class PlatformTest {
       // SONAR-4853 LCOM4 is no more computed on SQ 4.1
       assertThat(getMeasure(JAVA_VIEWS, "lcom4").getValue(), is(1.0));
     }
-    assertThat(getMeasure(JAVA_VIEWS, "rfc").getValue(), is(18.7));
+    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      // RFC removed from 4.2
+      assertThat(getMeasure(JAVA_VIEWS, "rfc").getValue(), is(18.7));
+    }
   }
 
   /**
