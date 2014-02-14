@@ -149,6 +149,9 @@
   <property name="sonar.projectName" value="Ant Cobertura" />
   <property name="sonar.projectVersion" value="0.1-SNAPSHOT" />
   <property name="sonar.sources" value="${src.dir}" />
+  <property name="sonar.exclusions" value="**/*Test.java" />
+  <property name="sonar.tests" value="${src.dir}" />
+  <property name="sonar.test.inclusions" value="**/*Test.java" />
   <property name="sonar.dynamicAnalysis" value="reuseReports" />
   <property name="sonar.junit.reportsPath" value="${reports.junit.xml.dir}" />
   <property name="sonar.core.codeCoveragePlugin" value="cobertura" />
