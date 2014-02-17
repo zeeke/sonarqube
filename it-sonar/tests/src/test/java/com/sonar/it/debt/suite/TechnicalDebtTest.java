@@ -128,15 +128,15 @@ public class TechnicalDebtTest {
 
   @Test
   public void fail_when_set_effort_to_fix_on_constant_issue_requirement() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/has-hello-tag.xml"));
     BuildResult result = orchestrator.executeBuildQuietly(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProfile("one-issue-per-line")
-      .setProperties("sonar.oneIssuePerLine.effortToFix", "720")
+      .setProfile("has-tag")
+      .setProperties("sonar.hasTag.effortToFix", "720")
     );
     assertThat(result.getStatus()).isNotEqualTo(0);
     // with the following message
     assertThat(result.getLogs())
-      .contains("Requirement for 'xoo:OneIssuePerLine' can not use 'Constant/issue' remediation function because this rule does not have a fixed remediation cost.");
+      .contains("Requirement for 'xoo:HasTag' can not use 'Constant/issue' remediation function because this rule does not have a fixed remediation cost.");
   }
 
 }
