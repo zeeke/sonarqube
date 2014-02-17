@@ -6,9 +6,13 @@
 package com.sonar.runner.it;
 
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.orchestrator.locator.MavenLocation;
+import com.sonar.orchestrator.version.Version;
+import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -22,11 +26,34 @@ import static org.junit.Assume.assumeTrue;
 
 @RunWith(Parameterized.class)
 public abstract class RunnerTestCase {
-  @ClassRule
-  public static Orchestrator orchestrator = SonarRunnerTestSuite.ORCHESTRATOR;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
+
+  public static Orchestrator orchestrator = null;
+
+  @BeforeClass
+  public static void startServer() {
+    OrchestratorBuilder builder = Orchestrator.builderEnv();
+
+    builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.4"));
+
+    if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("4.2")) {
+      builder
+        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-checkstyle-plugin", "2.1-SNAPSHOT"))
+        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1-SNAPSHOT"));
+    }
+
+    orchestrator = builder.build();
+    orchestrator.start();
+  }
+
+  @AfterClass
+  public static void stopServer() {
+    if (orchestrator != null) {
+      orchestrator.stop();
+    }
+  }
 
   private boolean fork;
 
@@ -43,7 +70,6 @@ public abstract class RunnerTestCase {
   SonarRunner newRunner(File baseDir, String... keyValueProperties) {
     SonarRunner runner = SonarRunner.create(baseDir, keyValueProperties);
     runner.setRunnerVersion(Util.runnerVersion(orchestrator).toString());
-    runner.setProperty("sonar.language", "java");
     if (fork) {
       runner.setProperty("sonarRunner.mode", "fork");
     }

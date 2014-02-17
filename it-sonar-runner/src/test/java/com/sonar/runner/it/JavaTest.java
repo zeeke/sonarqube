@@ -31,7 +31,6 @@ public class JavaTest extends RunnerTestCase {
    */
   @Test
   public void display_version() {
-    // The provided profile "Sonar way" can't be used because whitespaces are not supported by orchestrator on windows.
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
 
     SonarRunner build = newRunner(new File("projects/java-sample")).setProfile("sonar-way");
@@ -70,7 +69,6 @@ public class JavaTest extends RunnerTestCase {
    */
   @Test
   public void scan_java_sources() {
-    // The provided profile "Sonar way" can't be used because whitespaces are not supported by orchestrator on windows.
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
 
     SonarRunner build = newRunner(new File("projects/java-sample"))
@@ -147,7 +145,6 @@ public class JavaTest extends RunnerTestCase {
   public void basedir_contains_java_sources() {
     assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("3.0"));
 
-    // The provided profile "Sonar way" can't be used because whitespaces are not supported by orchestrator on windows.
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
     SonarRunner build = newRunner(new File("projects/basedir-with-source")).setProfile("sonar-way");
     orchestrator.executeBuild(build);
@@ -164,7 +161,6 @@ public class JavaTest extends RunnerTestCase {
   public void should_support_simple_project_keys() {
     assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("3.0"));
 
-    // The provided profile "Sonar way" can't be used because whitespaces are not supported by orchestrator on windows.
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
     SonarRunner build = newRunner(new File("projects/java-sample"))
       .setProjectKey("SAMPLE")
