@@ -13,6 +13,7 @@
     <artifactSizeLatest>0.4-SNAPSHOT</artifactSizeLatest>
     <buildBreakerLatest>1.2-SNAPSHOT</buildBreakerLatest>
     <cppLatest>2.1-SNAPSHOT</cppLatest>
+    <checkstyleLatest>2.1-SNAPSHOT</checkstyleLatest>
     <clirrLatest>1.2-SNAPSHOT</clirrLatest>
     <cobolLatest>1.18-SNAPSHOT</cobolLatest>
     <cutoffLatest>0.3-SNAPSHOT</cutoffLatest>
@@ -24,6 +25,7 @@
     <groovyLatest>1.0-SNAPSHOT</groovyLatest>
     <naturalLatest>1.3-SNAPSHOT</naturalLatest>
     <plsqlLatest>2.6-SNAPSHOT</plsqlLatest>
+    <pmdLatest>2.1-SNAPSHOT</pmdLatest>
     <reportLatest>1.4-SNAPSHOT</reportLatest>
     <scmActivityLatest>1.7-SNAPSHOT</scmActivityLatest>
     <securityRulesLatest>0.4-SNAPSHOT</securityRulesLatest>
@@ -180,6 +182,8 @@
           org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
           org.codehaus.sonar-plugins:sonar-cutoff-plugin:${cutoffLatest},
           com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
+          org.codehaus.sonar-plugins.java:sonar-checkstyle-plugin:${checkstyleLatest},
+          org.codehaus.sonar-plugins.java:sonar-pmd-plugin:${pmdLatest},
           org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
           com.sonarsource.cobol:sonar-cobol-plugin:${cobolLatest},
           com.sonarsource:sonar-dev-cockpit-plugin:${devcockpitLatest},
