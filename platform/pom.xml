@@ -74,7 +74,6 @@
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gallio-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
           com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest}
@@ -117,7 +116,6 @@
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gallio-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
           com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest}
@@ -160,7 +158,6 @@
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gallio-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
           com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest}
@@ -204,7 +201,6 @@
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gallio-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
           com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest}
