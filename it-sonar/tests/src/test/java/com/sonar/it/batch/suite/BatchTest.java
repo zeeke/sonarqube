@@ -214,6 +214,23 @@ public class BatchTest {
   }
 
   @Test
+  public void should_display_explicit_message_when_wrong_profile() {
+    BuildResult buildResult = scanQuietly("shared/xoo-sample",
+      "sonar.profile", "",
+      "sonar.profile.xoo", "unknow");
+    assertThat(buildResult.getStatus()).isEqualTo(1);
+    assertThat(buildResult.getLogs()).contains(
+      "Quality profile not found : 'unknow' on language 'xoo'");
+
+    // Old property sonar.profile
+    buildResult = scanQuietly("shared/xoo-sample",
+      "sonar.profile", "unknow");
+    assertThat(buildResult.getStatus()).isEqualTo(1);
+    assertThat(buildResult.getLogs()).contains(
+      "sonar.profile was set to 'unknow' but didn't match any profile for any language. Please check your configuration.");
+  }
+
+  @Test
   public void should_authenticate_when_needed() {
     try {
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
