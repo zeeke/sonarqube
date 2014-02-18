@@ -1,6 +1,6 @@
 # HOW TO USE 
 # In order to create the file Foo.java around 10'000 lines long :
-# ruby create_java_file.rb Foo 10000
+# ruby create-java-file.rb Foo 10000
 
 
 if ARGV.size!=2
