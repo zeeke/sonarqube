@@ -12,11 +12,7 @@ import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.version.Version;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -159,10 +155,14 @@ public class AntTest {
     checkProjectAnalysed("org.sonar.ant.tests:custom-layout", "empty");
     Resource project = orchestrator.getServer().getWsClient()
       .find(ResourceQuery.createForMetrics("org.sonar.ant.tests:custom-layout", "packages", "files", "classes", "functions"));
-    assertThat(project.getMeasureValue("packages")).isEqualTo(1.0);
     assertThat(project.getMeasureValue("files")).isEqualTo(2.0);
     assertThat(project.getMeasureValue("classes")).isEqualTo(2.0);
     assertThat(project.getMeasureValue("functions")).isEqualTo(2.0);
+
+    if (!orchestrator.getConfiguration().getSonarVersion().isGreaterThanOrEquals("4.2")) {
+      // the metric "packages" is removed in 4.2
+      assertThat(project.getMeasureValue("packages")).isEqualTo(1.0);
+    }
   }
 
   @Test
