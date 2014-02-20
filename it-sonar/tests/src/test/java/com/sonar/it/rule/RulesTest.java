@@ -64,8 +64,6 @@ public class RulesTest {
         // SONAR-3879
         "/selenium/rule/search-rules/search_by_status.html",
         "/selenium/rule/search-rules/expand_and_collapse.html",
-        // SONAR-3880
-        "/selenium/rule/search-rules/search_by_creation_date.html",
         // SONAR-4193
         "/selenium/rule/search-rules/display-link-to-another-rule-in-description-rule.html"
       ).build();
