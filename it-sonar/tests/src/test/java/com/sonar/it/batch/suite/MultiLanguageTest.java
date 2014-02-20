@@ -12,16 +12,14 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.After;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-/**
- * One language per module
- *
- */
+@Ignore("Requires to upgrade Xoo")
 public class MultiLanguageTest {
 
   @ClassRule
