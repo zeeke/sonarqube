@@ -11,6 +11,7 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class DesignUITest {
@@ -39,6 +40,7 @@ public class DesignUITest {
     orchestrator.executeSelenese(selenese);
   }
 
+  @Ignore("Disabled because of false-positives on Oracle DB (why ?)")
   @Test
   public void test_libraries_page() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("design-page-libraries",
