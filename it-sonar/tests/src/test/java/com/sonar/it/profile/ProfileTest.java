@@ -140,7 +140,7 @@ public class ProfileTest {
       .setProperty("sonar.profile.xoo", "xoo1");
     BuildResult result = orchestrator.executeBuild(build);
 
-    assertThat(result.getLogs()).contains("Quality profile for Xoo: xoo");
+    assertThat(result.getLogs()).contains("Quality profile for xoo: xoo");
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("change-project-profile-from-xoo1-to-xoo2",
       "/selenium/profile/change-project-profile-from-xoo1-to-xoo2.html"
@@ -151,7 +151,7 @@ public class ProfileTest {
       // Use profile defined in UI
       .setProfile("");
     result = orchestrator.executeBuild(build);
-    assertThat(result.getLogs()).contains("Quality profile for Xoo: xoo2");
+    assertThat(result.getLogs()).contains("Quality profile for xoo: xoo2");
   }
 
   @Test
