@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
   BatchTest.class, LinksTest.class, MavenTest.class, ProjectExclusionsTest.class, SqlLogsTest.class, PreviewModeTest.class,
-  IncrementalModeTest.class, TempFolderTest.class
+  IncrementalModeTest.class, TempFolderTest.class, MultiLanguageTest.class
 })
 public class BatchTestSuite {
 

@@ -19,7 +19,11 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class MultiLanguageTest {
+/**
+ * One language per module
+ *
+ */
+public class OldMultiLanguageTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
