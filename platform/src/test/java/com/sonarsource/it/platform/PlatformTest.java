@@ -271,7 +271,10 @@ public class PlatformTest {
       assertThat(getMeasure(JAVA_VIEWS, "statements").getIntValue(), is(34298));
     }
     assertThat(getMeasure(JAVA_VIEWS, "classes").getIntValue(), is(930));
-    assertThat(getMeasure(JAVA_VIEWS, "packages").getIntValue(), is(61));
+    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      // metric "packages" removed from 4.2
+      assertThat(getMeasure(JAVA_VIEWS, "packages").getIntValue(), is(61));
+    }
     assertThat(getMeasure(JAVA_VIEWS, "comment_lines_density").getValue(), is(34.7));
     if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
       // SONAR-3631
