@@ -108,23 +108,23 @@ public class RulesTest {
   public void should_manage_tags_on_rules() {
     final SonarClient wsClient = orchestrator.getServer().adminWsClient();
 
-    assertThat(wsClient.ruleTagClient().list()).isEmpty();
+    assertThat(wsClient.ruleTagClient().list()).excludes("mytag1", "mytag2", "mytag3");
     wsClient.ruleTagClient().create("mytag1");
     wsClient.ruleTagClient().create("mytag2");
     wsClient.ruleTagClient().create("mytag3");
-    assertThat(wsClient.ruleTagClient().list()).containsOnly("mytag1", "mytag2", "mytag3");
+    assertThat(wsClient.ruleTagClient().list()).contains("mytag1", "mytag2", "mytag3");
 
     // select tags 1 and 3
     wsClient.ruleClient().addTags("xoo:OneIssuePerLine", "mytag1", "mytag3");
     // tag 2 should disappear (not associated to any rule)
-    assertThat(wsClient.ruleTagClient().list()).containsOnly("mytag1", "mytag3");
+    assertThat(wsClient.ruleTagClient().list()).contains("mytag1", "mytag3").excludes("mytag2");
 
     // TODO 4.3 Check that rule appears in search filtered by tags, and that tags are set on rule
 
     // remove tags 1 and 3
     wsClient.ruleClient().removeTags("xoo:OneIssuePerLine", "mytag1", "mytag3");
     // no more tags
-    assertThat(wsClient.ruleTagClient().list()).isEmpty();
+    assertThat(wsClient.ruleTagClient().list()).excludes("mytag1", "mytag2", "mytag3");
   }
 
   private static class ContainsParamCondition extends Condition<List<?>> {
