@@ -35,7 +35,7 @@ public class IssueExclusionsTest {
   public void should_not_exclude_anything() {
     scan();
 
-    checkIssueCountBySeverity(70, 2, 57, 4, 0, 7);
+    checkIssueCountBySeverity(67, 2, 57, 4, 0, 4);
   }
 
   @Test
@@ -45,7 +45,7 @@ public class IssueExclusionsTest {
       "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*.xoo",
       "sonar.issue.ignore.multicriteria.1.ruleKey", "*");
 
-    checkIssueCountBySeverity(7, 0, 0, 0, 0, 7);
+    checkIssueCountBySeverity(7, 0, 0, 0, 0, 4);
   }
 
   @Test
@@ -92,12 +92,12 @@ public class IssueExclusionsTest {
       "sonar.issue.enforce.multicriteria.2.ruleKey", "xoo:HasTag");
 
     checkIssueCountBySeverity(
-      1 /* tag in HelloA2 */+ 18 /* lines in HelloA1.xoo */+ 4 /* files */+ 7 /* modules */,
+      1 /* tag in HelloA2 */+ 18 /* lines in HelloA1.xoo */+ 4 /* files */+ 4 /* modules */,
       0 + 1,
       0 + 18,
       4,
       0,
-      7);
+      4);
   }
 
   @Test
@@ -107,12 +107,12 @@ public class IssueExclusionsTest {
       "sonar.issue.ignore.allfile.1.fileRegexp", "EXTERMINATE-ALL-ISSUES");
 
     checkIssueCountBySeverity(
-      70 - 1 /* tag */- 18 /* lines in HelloA1.xoo */- 1 /* file */,
+      67 - 1 /* tag */- 18 /* lines in HelloA1.xoo */- 1 /* file */,
       2 - 1,
       57 - 18,
       4 - 1,
       0,
-      7);
+      4);
   }
 
   @Test
@@ -123,12 +123,12 @@ public class IssueExclusionsTest {
       "sonar.issue.ignore.block.1.endBlockRegexp", "UNMUTE-SONAR");
 
     checkIssueCountBySeverity(
-      70 - 1 /* tag */- 5 /* lines in HelloA2.xoo */,
+      67 - 1 /* tag */- 5 /* lines in HelloA2.xoo */,
       2 - 1,
       57 - 5,
       4,
       0,
-      7);
+      4);
   }
 
   @Test
@@ -139,12 +139,12 @@ public class IssueExclusionsTest {
       "sonar.issue.ignore.block.1.endBlockRegexp", "");
 
     checkIssueCountBySeverity(
-      70 - 1 /* tag */- 7 /* remaining lines in HelloA2.xoo */,
+      67 - 1 /* tag */- 7 /* remaining lines in HelloA2.xoo */,
       2 - 1,
       57 - 7,
       4,
       0,
-      7);
+      4);
   }
 
   @Test
@@ -155,12 +155,12 @@ public class IssueExclusionsTest {
       "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine");
 
     checkIssueCountBySeverity(
-      70 - 18 /* lines in HelloA1.xoo */,
+      67 - 18 /* lines in HelloA1.xoo */,
       2,
       57 - 18,
       4,
       0,
-      7);
+      4);
   }
 
   @Test
@@ -176,14 +176,14 @@ public class IssueExclusionsTest {
       "sonar.issue.ignore.multicriteria.1.ruleKey", "xoo:OneIssuePerLine");
 
     checkIssueCountBySeverity(
-      70 - 1 /* tag in HelloA1.xoo */- 1 /* tag in HelloA2.xoo */
+      67 - 1 /* tag in HelloA1.xoo */- 1 /* tag in HelloA2.xoo */
         - 18 /* lines in HelloA1.xoo */- 5 /* lines in HelloA2.xoo */- 12 /* lines in HelloB1.xoo */
         - 1 /* HelloA1.xoo file */,
       0,
       57 - 18 - 5 - 12,
       4 - 1,
       0,
-      7);
+      4);
   }
 
   @Test
