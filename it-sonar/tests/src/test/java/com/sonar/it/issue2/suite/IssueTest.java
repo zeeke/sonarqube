@@ -46,17 +46,17 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeBuild(scan);
 
     String projectKey = "com.sonarsource.it.samples:multi-modules-sample";
-    assertThat(searchIssuesByComponent(projectKey)).hasSize(65);
+    assertThat(searchIssuesByComponent(projectKey)).hasSize(62);
 
     Resource project = orchestrator.getServer().getWsClient()
       .find(ResourceQuery.createForMetrics(projectKey, "violations", "info_violations", "minor_violations", "major_violations",
         "blocker_violations", "critical_violations", "violations_density"));
-    assertThat(project.getMeasureIntValue("violations")).isEqualTo(65);
+    assertThat(project.getMeasureIntValue("violations")).isEqualTo(62);
     assertThat(project.getMeasureIntValue("info_violations")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("minor_violations")).isEqualTo(52);
     assertThat(project.getMeasureIntValue("major_violations")).isEqualTo(4);
     assertThat(project.getMeasureIntValue("blocker_violations")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("critical_violations")).isEqualTo(7);
+    assertThat(project.getMeasureIntValue("critical_violations")).isEqualTo(4);
     assertThat(project.getMeasureIntValue("violations_density")).isEqualTo(0);
   }
 
@@ -162,7 +162,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     // Create the manual rule
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule",
       "/selenium/issue/manual-issue/create-manual-rule.html"
-    ).build());
+      ).build());
 
     // Create a issue on the test source file
     adminIssueClient().create(NewIssue.create().component(testKey)
@@ -280,7 +280,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issues-code-viewer",
       "/selenium/issue/issues-code-viewer/display-only-unresolved-issues.html",
       "/selenium/issue/issues-code-viewer/display-only-false-positives.html"
-    ).build());
+      ).build());
   }
 
   @Test
