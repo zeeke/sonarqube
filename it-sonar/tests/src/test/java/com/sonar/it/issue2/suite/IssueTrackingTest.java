@@ -165,7 +165,7 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
 
     // One issue by module are created
     List<Issue> issues = search(IssueQuery.create()).list();
-    assertThat(issues).hasSize(7);
+    assertThat(issues).hasSize(4);
 
     // Re analysis of the same project
     orchestrator.executeBuild(scan);

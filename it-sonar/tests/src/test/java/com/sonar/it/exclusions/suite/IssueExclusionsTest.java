@@ -45,7 +45,7 @@ public class IssueExclusionsTest {
       "sonar.issue.ignore.multicriteria.1.resourceKey", "**/*.xoo",
       "sonar.issue.ignore.multicriteria.1.ruleKey", "*");
 
-    checkIssueCountBySeverity(7, 0, 0, 0, 0, 4);
+    checkIssueCountBySeverity(4, 0, 0, 0, 0, 4);
   }
 
   @Test
