@@ -28,6 +28,10 @@ public class MultiLanguageTest {
     orchestrator.getDatabase().truncateInspectionTables();
   }
 
+  /**
+   * SONAR-926
+   * SONAR-5069
+   */
   @Test
   public void test_sonar_runner_inspection() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
