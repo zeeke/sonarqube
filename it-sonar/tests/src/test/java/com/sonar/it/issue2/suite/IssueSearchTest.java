@@ -15,7 +15,12 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
-import org.sonar.wsclient.issue.*;
+import org.sonar.wsclient.issue.ActionPlan;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
+import org.sonar.wsclient.issue.NewActionPlan;
+import org.sonar.wsclient.issue.NewIssue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,11 +55,12 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
 
     // Create a manual issue to test search by reporter
     createManualRule();
-    adminIssueClient().create(NewIssue.create().component("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo")
-      .rule("manual:invalidclassname")
-      .line(3)
-      .severity("CRITICAL")
-      .message("The name of the class is invalid"));
+    adminIssueClient().create(
+      NewIssue.create().component("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo")
+        .rule("manual:invalidclassname")
+        .line(3)
+        .severity("CRITICAL")
+        .message("The name of the class is invalid"));
   }
 
   @AfterClass
@@ -75,21 +81,23 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   @Test
   public void search_issues_by_component_roots() {
     Issues issues = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample"));
-    assertThat(issues.list()).hasSize(66);
+    assertThat(issues.list()).hasSize(63);
     assertThat(search(IssueQuery.create().componentRoots("unknown")).list()).isEmpty();
   }
 
   @Test
   public void search_issues_by_components() {
-    assertThat(search(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo")).list()).hasSize(
-      19);
+    assertThat(
+      search(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo")).list())
+      .hasSize(
+        19);
     assertThat(search(IssueQuery.create().components("unknown")).list()).isEmpty();
   }
 
   @Test
   public void search_issues_by_severities() {
     assertThat(search(IssueQuery.create().severities("BLOCKER")).list()).isEmpty();
-    assertThat(search(IssueQuery.create().severities("CRITICAL")).list()).hasSize(15);
+    assertThat(search(IssueQuery.create().severities("CRITICAL")).list()).hasSize(9);
     assertThat(search(IssueQuery.create().severities("MAJOR")).list()).hasSize(8);
     assertThat(search(IssueQuery.create().severities("MINOR")).list()).hasSize(DEFAULT_PAGINATED_RESULTS);
     assertThat(search(IssueQuery.create().severities("INFO")).list()).hasSize(4);
@@ -141,8 +149,8 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   @Test
   @Ignore("Waiting for next goldenisation in order to use the new hideRules property")
   public void not_return_rules_when_using_hide_rules_parameter() {
-//    assertThat(search(IssueQuery.create().hideRules(false)).rules()).isNotEmpty();
-//    assertThat(search(IssueQuery.create().hideRules(true)).rules()).isEmpty();
+    // assertThat(search(IssueQuery.create().hideRules(false)).rules()).isNotEmpty();
+    // assertThat(search(IssueQuery.create().hideRules(true)).rules()).isEmpty();
   }
 
   /**
@@ -172,8 +180,9 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   @Test
   public void search_issues_by_action_plans() {
     // Create an action plan
-    ActionPlan actionPlan = adminActionPlanClient().create(NewActionPlan.create().name("Short term").project("com.sonarsource.it.samples:multi-modules-sample").description("Short term issues")
-      .deadLine(ItUtils.toDate("2113-01-31")));
+    ActionPlan actionPlan = adminActionPlanClient().create(
+      NewActionPlan.create().name("Short term").project("com.sonarsource.it.samples:multi-modules-sample").description("Short term issues")
+        .deadLine(ItUtils.toDate("2113-01-31")));
 
     // Associate this action plan to an issue
     adminIssueClient().plan(searchRandomIssue().key(), actionPlan.key());
@@ -191,22 +200,22 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     assertThat(paging.pageIndex()).isEqualTo(2);
     assertThat(paging.pageSize()).isEqualTo(20);
     assertThat(paging.pages()).isEqualTo(7);
-    assertThat(paging.total()).isEqualTo(131);
+    assertThat(paging.total()).isEqualTo(125);
     assertThat(issues.maxResultsReached()).isFalse();
 
     // SONAR-3257
     // return max page size results when using negative page size value
-    assertThat(search(IssueQuery.create().pageSize(0)).list()).hasSize(131);
-    assertThat(search(IssueQuery.create().pageSize(-1)).list()).hasSize(131);
+    assertThat(search(IssueQuery.create().pageSize(0)).list()).hasSize(125);
+    assertThat(search(IssueQuery.create().pageSize(-1)).list()).hasSize(125);
   }
 
   @Test
   public void sort_results() {
-    // 15 issue in CRITICAL (including the manual one), following ones are in MAJOR
+    // 9 issue in CRITICAL (including the manual one), following ones are in MAJOR
     List<Issue> issues = search(IssueQuery.create().sort("SEVERITY").asc(false)).list();
     assertThat(issues.get(0).severity()).isEqualTo("CRITICAL");
-    assertThat(issues.get(14).severity()).isEqualTo("CRITICAL");
-    assertThat(issues.get(15).severity()).isEqualTo("MAJOR");
+    assertThat(issues.get(8).severity()).isEqualTo("CRITICAL");
+    assertThat(issues.get(9).severity()).isEqualTo("MAJOR");
   }
 
   /**
