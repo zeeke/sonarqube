@@ -38,21 +38,20 @@ public class TechnicalDebtMeasureTest {
 
   private static final String TECHNICAL_DEBT_MEASURE = "sqale_index";
 
-
   @BeforeClass
   public static void init() {
     orchestrator.getDatabase().truncateInspectionTables();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/with-many-rules.xml"));
     orchestrator.executeBuild(
       SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
-      .withoutDynamicAnalysis()
-      .setProfile("with-many-rules"));
+        .withoutDynamicAnalysis()
+        .setProfile("with-many-rules"));
   }
 
   @Test
   public void technical_debt_measures() {
-    assertThat(getMeasure(PROJECT, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(1.439, DELTA);
-    assertThat(getMeasure(MODULE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(0.639, DELTA);
+    assertThat(getMeasure(PROJECT, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(0.908, DELTA);
+    assertThat(getMeasure(MODULE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(0.462, DELTA);
     assertThat(getMeasure(SUB_MODULE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(0.235, DELTA);
     assertThat(getMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(0.058, DELTA); // 28m
     assertThat(getMeasure(FILE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(0.058, DELTA); // 28m
@@ -62,7 +61,7 @@ public class TechnicalDebtMeasureTest {
   public void technical_debt_measures_on_characteristics_on_project() {
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "PORTABILITY").getValue()).isEqualTo(0.0, DELTA);
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(0.008, DELTA);
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "SECURITY").getValue()).isEqualTo(1.239, DELTA);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "SECURITY").getValue()).isEqualTo(0.708, DELTA);
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(0.108, DELTA);
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(0.083, DELTA);
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "RELIABILITY").getValue()).isEqualTo(0.0, DELTA);
@@ -71,7 +70,7 @@ public class TechnicalDebtMeasureTest {
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "REUSABILITY")).isNull();
 
     // sub characteristics
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "API_ABUSE").getValue()).isEqualTo(1.239, DELTA);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "API_ABUSE").getValue()).isEqualTo(0.708, DELTA);
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(0.083, DELTA);
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(0.108, DELTA);
   }
@@ -80,7 +79,7 @@ public class TechnicalDebtMeasureTest {
   public void technical_debt_measures_on_characteristics_on_modules() {
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "PORTABILITY").getValue()).isEqualTo(0.0, DELTA);
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(0.008, DELTA);
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "SECURITY").getValue()).isEqualTo(0.531, DELTA);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "SECURITY").getValue()).isEqualTo(0.354, DELTA);
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(0.058, DELTA);
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(0.041, DELTA);
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "RELIABILITY").getValue()).isEqualTo(0.0, DELTA);
@@ -89,7 +88,7 @@ public class TechnicalDebtMeasureTest {
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "REUSABILITY")).isNull();
 
     // sub characteristics
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "API_ABUSE").getValue()).isEqualTo(0.531, DELTA);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "API_ABUSE").getValue()).isEqualTo(0.354, DELTA);
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(0.041, DELTA);
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(0.058, DELTA);
   }
@@ -140,7 +139,6 @@ public class TechnicalDebtMeasureTest {
     String sqlRequest = "SELECT count(*) FROM project_measures WHERE characteristic_id IN (select id from characteristics where parent_id IS NOT NULL) AND value = 0";
     assertThat(orchestrator.getDatabase().countSql(sqlRequest)).isEqualTo(0);
   }
-
 
   private Measure getMeasure(String resource, String metricKey) {
     Resource res = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(resource, metricKey));
