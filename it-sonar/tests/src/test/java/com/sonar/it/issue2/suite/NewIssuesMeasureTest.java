@@ -138,7 +138,7 @@ public class NewIssuesMeasureTest {
       .find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:multi-modules-sample", "new_violations", "violations").setIncludeTrends(true));
     List<Measure> measures = project.getMeasures();
     Measure newIssues = find(measures, "new_violations");
-    assertThat(newIssues.getVariation1().intValue()).isEqualTo(57);
+    assertThat(newIssues.getVariation1().intValue()).isEqualTo(56);
   }
 
   /**
@@ -167,8 +167,8 @@ public class NewIssuesMeasureTest {
 
     assertThat(find(newIssuesPerSeverities.getMeasures(), "new_blocker_violations")).isNull();
 
-    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_critical_violations").getVariation1().intValue()).isEqualTo(3);
-    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_critical_violations").getVariation2().intValue()).isEqualTo(4);
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_critical_violations").getVariation1().intValue()).isEqualTo(2);
+    assertThat(find(newIssuesPerSeverities.getMeasures(), "new_critical_violations").getVariation2().intValue()).isEqualTo(3);
 
     assertThat(find(newIssuesPerSeverities.getMeasures(), "new_major_violations").getVariation1().intValue()).isEqualTo(2);
     assertThat(find(newIssuesPerSeverities.getMeasures(), "new_major_violations").getVariation2().intValue()).isEqualTo(3);
