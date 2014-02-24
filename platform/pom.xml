@@ -211,6 +211,53 @@
         </plugins>
       </properties>
     </profile>
+    <profile>
+      <id>4.3</id>
+      <activation>
+        <property>
+          <name>sonarVersion</name>
+          <value>4.3</value>
+        </property>
+      </activation>
+      <properties>
+        <sonar.runtimeVersion>4.3-SNAPSHOT</sonar.runtimeVersion>
+        <plugins>
+          com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
+          org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
+          org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
+          org.codehaus.sonar-plugins:sonar-cutoff-plugin:${cutoffLatest},
+          com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
+          org.codehaus.sonar-plugins.java:sonar-checkstyle-plugin:${checkstyleLatest},
+          org.codehaus.sonar-plugins.java:sonar-pmd-plugin:${pmdLatest},
+          org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
+          com.sonarsource.cobol:sonar-cobol-plugin:${cobolLatest},
+          com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
+          com.sonarsource:sonar-dev-cockpit-plugin:${devcockpitLatest},
+          org.codehaus.sonar-plugins:sonar-fb-contrib-plugin:${fbcontribLatest},
+          org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
+          org.codehaus.sonar-plugins:sonar-greenpepper-plugin:${greenpepperLatest},
+          org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
+          org.codehaus.sonar-plugins.javascript:sonar-javascript-plugin:${javascriptLatest},
+          org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
+          com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
+          com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
+          com.sonarsource.report:sonar-report-plugin:${reportLatest},
+          org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:${scmActivityLatest},
+          org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
+          com.sonarsource.sqale:sonar-sqale-plugin:${sqaleLatest},
+          org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
+          com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
+          com.sonarsource.views:sonar-views-plugin:${viewsLatest},
+          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
+          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
+          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
+          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
+          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
+          com.sonarsource.pli:sonar-pli-plugin:${pliLatest}
+        </plugins>
+      </properties>
+    </profile>    
   </profiles>
   <build>
     <plugins>
