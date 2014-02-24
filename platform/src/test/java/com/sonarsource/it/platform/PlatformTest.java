@@ -42,6 +42,17 @@ import static org.junit.Assume.assumeTrue;
 
 public class PlatformTest {
 
+  private static final String COBOL_PROJECT = "sonar.cobol:custom-check";
+  private static final String COBOL_FILE = "sonar.cobol:custom-check:src/TC4E3H0.CBL";
+  private static final String COBOL_FILE_DEPRECATED_KEY = "sonar.cobol:custom-check:TC4E3H0.CBL";
+  private static final String JAVA_STRUTS = "org.apache.struts:struts-parent";
+  private static final String JAVA_COLLECTIONS = "commons-collections:commons-collections";
+  private static final String JAVA_VIEWS = "views_java";
+  private static final String JAVA_COBOL_VIEWS = "views_java_cobol";
+  private static final String FLEX_PROJECT = "com.adobe:as3corelib";
+  private static final String FLEX_FILE = "com.adobe:as3corelib:src/com/adobe/utils/StringUtil.as";
+  private static final String FLEX_FILE_DEPRECATED_KEY = "com.adobe:as3corelib:com/adobe/utils/StringUtil.as";
+  private static boolean is_sonar_4_2_or_more;
   private static Orchestrator orchestrator;
   private static Sonar wsClient;
 
@@ -66,6 +77,13 @@ public class PlatformTest {
     }
     inspectProjects();
     wsClient = orchestrator.getServer().getWsClient();
+  }
+
+  @AfterClass
+  public static void stop() {
+    if (orchestrator != null) {
+      orchestrator.stop();
+    }
   }
 
   private static void inspectProjects() {
@@ -110,6 +128,7 @@ public class PlatformTest {
       .activateLicense("cobol")
       .activateLicense("devcockpit")
       .activateLicense("natural")
+      .activateLicense("pli")
       .activateLicense("plsql")
       .activateLicense("report")
       .activateLicense("sqale")
@@ -145,30 +164,11 @@ public class PlatformTest {
     MavenBuild build = MavenBuild.create(new File(baseDir, "pom.xml"))
       .setProperty("sonar.cpd.engine", "sonar")
       .setProfile("IT")
-      // following property to not have differences between Sonar version
+        // following property to not have differences between Sonar version
       .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
       .setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
   }
-
-  @AfterClass
-  public static void stop() {
-    if (orchestrator != null) {
-      orchestrator.stop();
-    }
-  }
-
-  private static final String COBOL_PROJECT = "sonar.cobol:custom-check";
-  private static final String COBOL_FILE = "sonar.cobol:custom-check:src/TC4E3H0.CBL";
-  private static final String COBOL_FILE_DEPRECATED_KEY = "sonar.cobol:custom-check:TC4E3H0.CBL";
-  private static final String JAVA_STRUTS = "org.apache.struts:struts-parent";
-  private static final String JAVA_COLLECTIONS = "commons-collections:commons-collections";
-  private static final String JAVA_VIEWS = "views_java";
-  private static final String JAVA_COBOL_VIEWS = "views_java_cobol";
-  private static final String FLEX_PROJECT = "com.adobe:as3corelib";
-  private static final String FLEX_FILE = "com.adobe:as3corelib:src/com/adobe/utils/StringUtil.as";
-  private static final String FLEX_FILE_DEPRECATED_KEY = "com.adobe:as3corelib:com/adobe/utils/StringUtil.as";
-  private static boolean is_sonar_4_2_or_more;
 
   // -------------------------------------------------------------------------------------
   // COBOL
