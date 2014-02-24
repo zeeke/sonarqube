@@ -44,27 +44,28 @@ public class ResourceKeyMigrationTest {
     assumeTrue(!"h2".equals(orchestrator.getDatabase().getClient().getDialect()));
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
     scanProject();
-    assertThat(countIssues(PROJECT_KEY)).isEqualTo(35);
+    int initialIssues = countIssues(PROJECT_KEY);
+    assertThat(initialIssues).isGreaterThan(0);
 
     stopServer();
     startServer(Orchestrator.builderEnv().getSonarVersion(), true);
     upgradeDatabase();
 
-    assertThat(countIssues(PROJECT_KEY)).isEqualTo(35);
+    assertThat(countIssues(PROJECT_KEY)).isEqualTo(initialIssues);
 
     BuildResult result = scanProject();
-    assertThat(result.getLogs()).contains("Starting migration of resource keys");
-    assertThat(result.getLogs()).contains("Migrated resource sample-with-tests:sample/Sample.xoo to sample-with-tests:src/main/xoo/sample/Sample.xoo");
+    assertThat(result.getLogs()).contains("Update component keys");
+    assertThat(result.getLogs()).contains("Component sample-with-tests:sample/Sample.xoo changed to sample-with-tests:src/main/xoo/sample/Sample.xoo");
+    assertThat(result.getLogs()).contains("Component sample-with-tests:sample/SampleTest.xoo changed to sample-with-tests:src/test/xoo/sample/SampleTest.xoo");
     assertThat(result.getLogs()).contains(
       "Directory with key sample-with-tests:sample matches both sample-with-tests:src/main/xoo/sample and sample-with-tests:src/test/xoo/sample. First match is arbitrary chosen.");
-    assertThat(result.getLogs()).contains("Migrated resource sample-with-tests:sample/SampleTest.xoo to sample-with-tests:src/test/xoo/sample/SampleTest.xoo");
-    assertThat(result.getLogs()).contains("Migrated resource sample-with-tests:sample to sample-with-tests:src/main/xoo/sample");
-    assertThat(countIssues(PROJECT_KEY)).isEqualTo(35);
+    assertThat(result.getLogs()).contains("Component sample-with-tests:sample changed to sample-with-tests:src/main/xoo/sample");
+    assertThat(countIssues(PROJECT_KEY)).isEqualTo(initialIssues);
     assertThat(countNewIssues(PROJECT_KEY)).isEqualTo(0);
 
     result = scanProject();
-    assertThat(result.getLogs()).excludes("Starting migration of resource keys");
-    assertThat(countIssues(PROJECT_KEY)).isEqualTo(35);
+    assertThat(result.getLogs()).excludes("Update component keys");
+    assertThat(countIssues(PROJECT_KEY)).isEqualTo(initialIssues);
     assertThat(countNewIssues(PROJECT_KEY)).isEqualTo(0);
   }
 
