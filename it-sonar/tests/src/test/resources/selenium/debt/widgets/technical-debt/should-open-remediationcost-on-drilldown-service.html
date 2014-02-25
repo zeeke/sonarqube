@@ -11,24 +11,24 @@
 <tr><td rowspan="1" colspan="3">should-open-remediationcost-on-drilldown-service</td></tr>
 </thead><tbody>
   <tr>
-  <td>open</td>
-  <td>/sonar/widget?id=rules&amp;resource=com.sonarsource.it.samples:multi-modules-sample</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/widget?id=rules&amp;resource=com.sonarsource.it.samples:multi-modules-sample</td>
+	<td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=0.9</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>css=.link-rules-debt</td>
+	<td></td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>content</td>
-  <td>*Technical Debt*0.9*</td>
+	<td>assertText</td>
+	<td>content</td>
+	<td>*Technical Debt*7h 16m*</td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>content</td>
-  <td>*Module A*com/sonar/it/samples/modules/a1*HelloA1.xoo*</td>
+	<td>assertText</td>
+	<td>content</td>
+	<td>*Module A*com/sonar/it/samples/modules/a1*HelloA1.xoo*</td>
 </tr>
 </tbody></table>
 </body>

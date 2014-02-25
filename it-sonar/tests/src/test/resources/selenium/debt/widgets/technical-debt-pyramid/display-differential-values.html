@@ -9,14 +9,89 @@
 <table cellpadding="1" cellspacing="1" border="1">
 <tbody>
   <tr>
-  <td>open</td>
-  <td>/sonar/widget?id=technical_debt_pyramid&amp;resource=com.sonarsource.it.samples:multi-modules-sample&amp;period=1</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/widget?id=technical_debt_pyramid&amp;resource=com.sonarsource.it.samples:multi-modules-sample&amp;period=1</td>
+	<td></td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>block_1</td>
-  <td>*0.0*(+0.0)*0.9*(+0.2)*0.0*(+0.0)*0.9*(+0.2)*0.0*(+0.0)*0.9*(+0.2)*0.7*(+0.2)*0.9*(+0.2)*0.1*(+0.0)*0.2*(+0.0)*0.1*(+0.0)*0.1*(+0.0)*0.0*(+0.0)*0.0*(+0.0)*</td>
+	<td>assertText</td>
+	<td>css=.value-debt-REUSABILITY</td>
+	<td>*0*(+0)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-total-REUSABILITY</td>
+	<td>*7h 16m*(+1h 49m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-debt-PORTABILITY</td>
+	<td>*0*(+0)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-total-PORTABILITY</td>
+	<td>*7h 16m*(+1h 49m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-debt-MAINTAINABILITY</td>
+	<td>*4m*(+2m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-total-MAINTAINABILITY</td>
+	<td>*7h 16m*(+1h 49m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-debt-SECURITY</td>
+	<td>*5h 40m*(+1h 25m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-total-SECURITY</td>
+	<td>*7h 12m*(+1h 47m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-debt-EFFICIENCY</td>
+	<td>*52m*(+12m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-total-EFFICIENCY</td>
+	<td>*1h 32m*(+22m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-debt-CHANGEABILITY</td>
+	<td>*40m*(+10m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-total-CHANGEABILITY</td>
+	<td>*40m*(+10m)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-debt-RELIABILITY</td>
+	<td>*0*(+0)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-total-RELIABILITY</td>
+	<td>*0*(+0)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-debt-TESTABILITY</td>
+	<td>*0*(+0)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.value-total-TESTABILITY</td>
+	<td>*0*(+0)*</td>
 </tr>
 </tbody></table>
 </body>

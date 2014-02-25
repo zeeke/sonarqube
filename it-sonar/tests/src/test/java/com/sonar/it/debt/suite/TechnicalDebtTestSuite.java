@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
   TechnicalDebtMeasureTest.class, TechnicalDebtWidgetTest.class, TechnicalDebtPurgeTest.class, TechnicalDebtTest.class, NewTechnicalDebtMeasureTest.class,
+  TechnicalDebtInIssueChangelogTest.class
 })
 public class TechnicalDebtTestSuite {
 
