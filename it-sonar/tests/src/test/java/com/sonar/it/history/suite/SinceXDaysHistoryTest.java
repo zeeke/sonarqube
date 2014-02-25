@@ -74,30 +74,12 @@ public class SinceXDaysHistoryTest {
     checkMeasure("new_violations", 24, 36);
   }
 
-  @Test
-  public void check_technical_debt_variation() throws Exception {
-    checkMeasure("sqale_index", 0.05, 0.075);
-  }
-
-  @Test
-  public void check_new_technical_debt_measures() throws Exception {
-    checkMeasure("new_technical_debt", 0.05, 0.075);
-  }
-
   private void checkMeasure(String measure, int variation1, int variation2){
     Resource project = getProject(measure);
     Measure newTechnicalDebt = project.getMeasure(measure);
 
     assertThat(newTechnicalDebt.getVariation1().intValue()).isEqualTo(variation1);
     assertThat(newTechnicalDebt.getVariation2().intValue()).isEqualTo(variation2);
-  }
-
-  private void checkMeasure(String measure, double variation1, double variation2){
-    Resource project = getProject(measure);
-    Measure newTechnicalDebt = project.getMeasure(measure);
-
-    assertThat(newTechnicalDebt.getVariation1().doubleValue()).isEqualTo(variation1);
-    assertThat(newTechnicalDebt.getVariation2().doubleValue()).isEqualTo(variation2);
   }
 
   private Resource getProject(String... metricKeys) {
