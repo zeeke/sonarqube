@@ -44,7 +44,7 @@
     <module>batch-plugin</module>
     <module>beta-rule-plugin</module>
     <module>crash-plugin</module>
-    <!--module>custom-metric-plugin</module-->
+    <module>custom-metric-plugin</module>
     <module>deprecated-rule-plugin</module>
     <module>deprecated-xoo-rule-plugin</module>
     <module>embedded-library-plugin</module>
