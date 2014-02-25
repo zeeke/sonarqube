@@ -12,15 +12,11 @@
   <name>SonarQube Integration Tests :: Plugins :: Batch</name>
   <description>Main plugin for batch tests</description>
 
-  <properties>
-    <sonar.buildVersion>4.0-M11</sonar.buildVersion>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.buildVersion}</version>
+      <version>4.0</version>
     </dependency>
   </dependencies>
 

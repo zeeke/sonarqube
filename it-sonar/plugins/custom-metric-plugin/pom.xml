@@ -11,15 +11,11 @@
   <packaging>sonar-plugin</packaging>
   <name>Plugins :: Custom Metric</name>
 
-  <properties>
-    <sonar.buildVersion>4.2-M14</sonar.buildVersion>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.buildVersion}</version>
+      <version>4.2-M14</version>
     </dependency>
   </dependencies>
 

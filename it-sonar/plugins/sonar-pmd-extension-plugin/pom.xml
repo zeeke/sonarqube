@@ -13,15 +13,11 @@
   <name>Plugins :: PMD Extension Plugin</name>
   <description>PMD Extension</description>
 
-  <properties>
-    <sonar.buildVersion>3.6</sonar.buildVersion>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.buildVersion}</version>
+      <version>3.7.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

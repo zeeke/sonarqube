@@ -11,20 +11,16 @@
   <packaging>sonar-plugin</packaging>
   <name>Plugins :: Property Relocation</name>
 
-  <properties>
-    <sonar.buildVersion>3.6</sonar.buildVersion>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.buildVersion}</version>
+      <version>3.7.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-core</artifactId>
-      <version>${sonar.buildVersion}</version>
+      <version>3.7.1</version>
     </dependency>
 
   </dependencies>
