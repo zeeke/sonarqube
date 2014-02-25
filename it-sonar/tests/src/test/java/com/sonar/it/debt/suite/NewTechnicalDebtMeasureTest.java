@@ -49,8 +49,8 @@ public class NewTechnicalDebtMeasureTest {
     // New technical debt only comes from new issues
     Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     List<Measure> measures = newTechnicalDebt.getMeasures();
-    assertThat(measures.get(0).getVariation1()).isEqualTo(780);
-    assertThat(measures.get(0).getVariation2()).isEqualTo(780);
+    assertThat(measures.get(0).getVariation1()).isEqualTo(13);
+    assertThat(measures.get(0).getVariation2()).isEqualTo(13);
 
     // Third analysis, with exactly the same profile -> no new issues so no new technical debt
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
@@ -78,7 +78,7 @@ public class NewTechnicalDebtMeasureTest {
 
     Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     List<Measure> measures = newTechnicalDebt.getMeasures();
-    assertThat(measures.get(0).getVariation1()).isEqualTo(5400);
+    assertThat(measures.get(0).getVariation1()).isEqualTo(90);
 
     // Fourth analysis, with exactly the same profile -> no new issues so no new technical debt since previous analysis
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
@@ -110,7 +110,7 @@ public class NewTechnicalDebtMeasureTest {
 
     Resource newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     List<Measure> measures = newTechnicalDebt.getMeasures();
-    assertThat(measures.get(0).getVariation2()).isEqualTo(5400);
+    assertThat(measures.get(0).getVariation2()).isEqualTo(90);
 
     // Fourth analysis, with exactly the same profile -> no new issues so no new technical debt since previous analysis but still since 30 days
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
@@ -119,7 +119,7 @@ public class NewTechnicalDebtMeasureTest {
 
     newTechnicalDebt = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample:src/main/xoo/sample/Sample.xoo", "new_technical_debt").setIncludeTrends(true));
     measures = newTechnicalDebt.getMeasures();
-    assertThat(measures.get(0).getVariation2()).isEqualTo(5400);
+    assertThat(measures.get(0).getVariation2()).isEqualTo(90);
   }
 
   /**

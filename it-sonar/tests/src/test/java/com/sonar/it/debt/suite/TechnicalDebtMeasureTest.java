@@ -47,83 +47,83 @@ public class TechnicalDebtMeasureTest {
 
   @Test
   public void technical_debt_measures() {
-    assertThat(getMeasure(PROJECT, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(26160);
-    assertThat(getMeasure(MODULE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(13320);
-    assertThat(getMeasure(SUB_MODULE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(6780);
-    assertThat(getMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(1680); // 28m
-    assertThat(getMeasure(FILE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(1680); // 28m
+    assertThat(getMeasure(PROJECT, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(436);
+    assertThat(getMeasure(MODULE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(222);
+    assertThat(getMeasure(SUB_MODULE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(113);
+    assertThat(getMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(28);
+    assertThat(getMeasure(FILE, TECHNICAL_DEBT_MEASURE).getValue()).isEqualTo(28);
   }
 
   @Test
   public void technical_debt_measures_on_characteristics_on_project() {
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "PORTABILITY").getValue()).isEqualTo(0);
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(240);
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "SECURITY").getValue()).isEqualTo(20400);
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(3120);
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(2400.0);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(4);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "SECURITY").getValue()).isEqualTo(340);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(52);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(40);
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "RELIABILITY").getValue()).isEqualTo(0);
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "READABILITY").getValue()).isEqualTo(240);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "READABILITY").getValue()).isEqualTo(4);
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "TESTABILITY").getValue()).isEqualTo(0);
     assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "REUSABILITY")).isNull();
 
     // sub characteristics
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "API_ABUSE").getValue()).isEqualTo(20400.0);
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(2400.0);
-    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(3120.0);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "API_ABUSE").getValue()).isEqualTo(340);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(40);
+    assertThat(getCharacteristicMeasure(PROJECT, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(52);
   }
 
   @Test
   public void technical_debt_measures_on_characteristics_on_modules() {
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "PORTABILITY").getValue()).isEqualTo(0);
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(240);
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "SECURITY").getValue()).isEqualTo(10200.0);
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(1680.0);
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(1200);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(4);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "SECURITY").getValue()).isEqualTo(170);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(28);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(20);
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "RELIABILITY").getValue()).isEqualTo(0);
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "READABILITY").getValue()).isEqualTo(240);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "READABILITY").getValue()).isEqualTo(4);
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "TESTABILITY").getValue()).isEqualTo(0);
     assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "REUSABILITY")).isNull();
 
     // sub characteristics
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "API_ABUSE").getValue()).isEqualTo(10200);
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(1200);
-    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(1680);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "API_ABUSE").getValue()).isEqualTo(170);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(20);
+    assertThat(getCharacteristicMeasure(MODULE, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(28);
   }
 
   @Test
   public void technical_debt_measures_on_characteristics_on_directory() {
     assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "PORTABILITY")).isNull();
-    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(120);
+    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(2);
     assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "SECURITY")).isNull();
-    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(960);
-    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(600);
+    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(16);
+    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(10);
     assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "RELIABILITY")).isNull();
-    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "READABILITY").getValue()).isEqualTo(120);
+    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "READABILITY").getValue()).isEqualTo(2);
     assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "TESTABILITY")).isNull();
     assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "REUSABILITY")).isNull();
 
     // sub characteristics
     assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "API_ABUSE")).isNull();
-    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(600);
-    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(960);
+    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(10);
+    assertThat(getCharacteristicMeasure(DIRECTORY, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(16);
   }
 
   @Test
   public void technical_debt_measures_on_characteristics_on_file() {
     assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "PORTABILITY")).isNull();
-    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(120);
+    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "MAINTAINABILITY").getValue()).isEqualTo(2);
     assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "SECURITY")).isNull();
-    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(960);
-    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(600);
+    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "EFFICIENCY").getValue()).isEqualTo(16);
+    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "CHANGEABILITY").getValue()).isEqualTo(10);
     assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "RELIABILITY")).isNull();
-    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "READABILITY").getValue()).isEqualTo(120);
+    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "READABILITY").getValue()).isEqualTo(2);
     assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "TESTABILITY")).isNull();
     assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "REUSABILITY")).isNull();
 
     // sub characteristics
     assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "API_ABUSE")).isNull();
-    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(600);
-    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(960);
+    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "ARCHITECTURE_CHANGEABILITY").getValue()).isEqualTo(10);
+    assertThat(getCharacteristicMeasure(FILE, TECHNICAL_DEBT_MEASURE, "MEMORY_EFFICIENCY").getValue()).isEqualTo(16);
   }
 
   @Test
