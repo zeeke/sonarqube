@@ -12,7 +12,7 @@
   <name>Plugins :: Custom Metric</name>
 
   <properties>
-    <sonar.buildVersion>4.2-SNAPSHOT</sonar.buildVersion>
+    <sonar.buildVersion>4.2-M14</sonar.buildVersion>
   </properties>
 
   <dependencies>
