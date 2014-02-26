@@ -27,9 +27,10 @@ public class DifferentialMetricsTest {
   public static void scanProject() {
     SonarRunner firstBuild = SonarRunner
       .create(ItUtils.locateProjectDir("shared/xoo-history-v1"), "sonar.profile", "one-issue-per-line-profile", "sonar.projectDate", "2013-01-05");
+    orchestrator.executeBuild(firstBuild);
+
     SonarRunner secondBuild = SonarRunner
       .create(ItUtils.locateProjectDir("shared/xoo-history-v2"), "sonar.profile", "one-issue-per-line-profile", "sonar.projectDate", "2013-01-07");
-    orchestrator.executeBuild(firstBuild);
     orchestrator.executeBuild(secondBuild);
   }
 
