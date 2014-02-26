@@ -144,9 +144,9 @@ public class MultipleLangTest {
 
   @Test
   public void test_projects() throws Exception {
-    assertThat(getMeasure(MULTI_LANG_PROJECT, "files").getIntValue()).isEqualTo(10);
-    assertThat(getMeasure(MULTI_LANG_PROJECT, "ncloc").getIntValue()).isEqualTo(131);
-    assertThat(getMeasure(MULTI_LANG_PROJECT, "complexity").getIntValue()).isEqualTo(44);
+    assertThat(getMeasure(MULTI_LANG_PROJECT, "files").getIntValue()).isEqualTo(12);
+    assertThat(getMeasure(MULTI_LANG_PROJECT, "ncloc").getIntValue()).isEqualTo(148);
+    assertThat(getMeasure(MULTI_LANG_PROJECT, "complexity").getIntValue()).isEqualTo(47);
     assertThat(getMeasure(MULTI_LANG_PROJECT, "coverage").getValue()).isGreaterThan(40.0);
     assertThat(getMeasure(MULTI_LANG_PROJECT, "violations").getIntValue()).isGreaterThan(10);
 
@@ -163,9 +163,9 @@ public class MultipleLangTest {
     orchestrator.executeBuild(SonarRunner.create().setProjectDir(temp.newFolder()).setTask("views"));
 
     assertThat(getMeasure(MASTER_PROJECT, "projects").getIntValue()).isEqualTo(2);
-    assertThat(getMeasure(MASTER_PROJECT, "files").getIntValue()).isEqualTo(506);
-    assertThat(getMeasure(MASTER_PROJECT, "ncloc").getIntValue()).isEqualTo(50211);
-    assertThat(getMeasure(MASTER_PROJECT, "complexity").getIntValue()).isEqualTo(10957);
+    assertThat(getMeasure(MASTER_PROJECT, "files").getIntValue()).isEqualTo(508);
+    assertThat(getMeasure(MASTER_PROJECT, "ncloc").getIntValue()).isEqualTo(50228);
+    assertThat(getMeasure(MASTER_PROJECT, "complexity").getIntValue()).isEqualTo(10960);
     assertThat(getMeasure(MASTER_PROJECT, "coverage").getValue()).isGreaterThan(10.0);
     assertThat(getMeasure(MASTER_PROJECT, "violations").getIntValue()).isGreaterThan(200);
   }
@@ -177,9 +177,11 @@ public class MultipleLangTest {
 
     // SB -> projects in it-sources
     assertThat(getMeasure("DEV:simon.brandhof@gmail.com", "ncloc").getIntValue()).isGreaterThan(10);
+    assertThat(getMeasure("DEV:simon.brandhof@gmail.com", "violations").getIntValue()).isGreaterThan(0);
 
     // husted is the most active contributor of struts
     assertThat(getMeasure("DEV:husted", "ncloc").getIntValue()).isGreaterThan(10);
+    assertThat(getMeasure("DEV:husted", "violations").getIntValue()).isGreaterThan(0);
   }
 
   @Test
