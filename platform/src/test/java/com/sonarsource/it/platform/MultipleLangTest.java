@@ -138,8 +138,6 @@ public class MultipleLangTest {
     MavenBuild maven = MavenBuild.create(FileLocation.ofShared("it-sonar-performancing/struts-1.3.9/pom.xml").getFile());
     maven.setCleanPackageSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "true")
-      // override Git it-sources
-      .setProperty("sonar.scm.url", "scm:svn:http://svn.apache.org/repos/asf/struts/struts1/tags/STRUTS_1_3_9")
       .setProperty("sonar.profile", PROFILE_NAME);
     orchestrator.executeBuild(maven);
   }
@@ -184,10 +182,6 @@ public class MultipleLangTest {
     // SB -> projects in it-sources
     assertThat(getMeasure("DEV:simon.brandhof@gmail.com", "ncloc").getIntValue()).isGreaterThan(10);
     assertThat(getMeasure("DEV:simon.brandhof@gmail.com", "violations").getIntValue()).isGreaterThan(0);
-
-    // husted is the most active contributor of struts
-    assertThat(getMeasure("DEV:husted", "ncloc").getIntValue()).isGreaterThan(10);
-    assertThat(getMeasure("DEV:husted", "violations").getIntValue()).isGreaterThan(0);
   }
 
   @Test
