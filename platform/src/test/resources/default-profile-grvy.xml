@@ -275,11 +275,6 @@
     </rule>
     <rule>
       <repositoryKey>grvy</repositoryKey>
-      <key>org.codenarc.rule.unused.UnusedPrivateMethodRule</key>
-      <priority>MINOR</priority>
-    </rule>
-    <rule>
-      <repositoryKey>grvy</repositoryKey>
       <key>org.codenarc.rule.unused.UnusedMethodParameterRule</key>
       <priority>MINOR</priority>
     </rule>
