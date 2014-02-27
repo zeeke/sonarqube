@@ -14,20 +14,12 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import com.sonar.orchestrator.util.VersionUtils;
 import org.apache.commons.io.FileUtils;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.*;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.PropertyDeleteQuery;
-import org.sonar.wsclient.services.PropertyUpdateQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.Source;
-import org.sonar.wsclient.services.SourceQuery;
+import org.sonar.wsclient.services.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -416,6 +408,21 @@ public class BatchTest {
     scan("batch/custom-module-key");
     assertThat(getResource("com.sonarsource.it.samples:moduleA")).isNotNull();
     assertThat(getResource("com.sonarsource.it.samples:moduleB")).isNotNull();
+  }
+
+  /**
+   * SONAR-5069
+   */
+  @Test
+  public void sourceDirIsOptional() throws Exception {
+    scan("batch/optional-sourcedir", "sonar.projectKey", "optional-sourcedir", "sonar.projectVersion", "1", "sonar.projectName", "OptionalSourceDir");
+    // project is here
+    assertThat(getResource("optional-sourcedir")).isNotNull();
+
+    // and the file too
+    Resource file = getResource("optional-sourcedir:src/Sample.xoo");
+    assertThat(file).isNotNull();
+    assertThat(file.getMeasureIntValue("lines")).isEqualTo(13);
   }
 
   private Resource getResource(String key) {
