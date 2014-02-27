@@ -138,6 +138,8 @@ public class MultipleLangTest {
     MavenBuild maven = MavenBuild.create(FileLocation.ofShared("it-sonar-performancing/struts-1.3.9/pom.xml").getFile());
     maven.setCleanPackageSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "true")
+      // override Git it-sources
+      .setProperty("sonar.scm.url", "scm:svn:http://svn.apache.org/repos/asf/struts/struts1/tags/STRUTS_1_3_9")
       .setProperty("sonar.profile", PROFILE_NAME);
     orchestrator.executeBuild(maven);
   }
