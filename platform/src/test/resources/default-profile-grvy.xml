@@ -270,11 +270,6 @@
     </rule>
     <rule>
       <repositoryKey>grvy</repositoryKey>
-      <key>org.codenarc.rule.unused.UnusedPrivateFieldRule</key>
-      <priority>MINOR</priority>
-    </rule>
-    <rule>
-      <repositoryKey>grvy</repositoryKey>
       <key>org.codenarc.rule.unused.UnusedPrivateMethodParameterRule</key>
       <priority>MINOR</priority>
     </rule>
