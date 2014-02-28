@@ -13,7 +13,7 @@
   <name>Sonar :: Integration Tests :: Tests</name>
 
   <properties>
-    <sonar.buildVersion>4.2-M14</sonar.buildVersion>
+    <sonar.buildVersion>4.3-SNAPSHOT</sonar.buildVersion>
     <category>*</category>
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
     <surefire.argLine>-Xmx128m -server</surefire.argLine>

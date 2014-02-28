@@ -6,6 +6,8 @@
 
 package com.sonar.it.issue2.suite;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
@@ -14,9 +16,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
+import org.sonar.wsclient.component.Component;
 import org.sonar.wsclient.issue.*;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -83,8 +87,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   public void search_issues_by_components() {
     assertThat(
       search(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo")).list())
-      .hasSize(
-        19);
+      .hasSize(19);
     assertThat(search(IssueQuery.create().components("unknown")).list()).isEmpty();
   }
 
@@ -229,6 +232,43 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     // search with future and past dates that do not match any issues
     assertThat(search(IssueQuery.create().createdAt(ItUtils.toDate("2020-01-01"))).size()).isEqualTo(0);
     assertThat(search(IssueQuery.create().createdAt(ItUtils.toDate("2010-01-01"))).size()).isEqualTo(0);
+  }
+
+  @Test
+  public void components_contain_group_id_and_root_id_informations() {
+    String fileKey = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo";
+
+    Issues issues = issueClient().find(IssueQuery.create().components(fileKey));
+    assertThat(issues.list()).isNotEmpty();
+
+    Collection<Component> components = issues.components();
+
+    Component project = findComponent(components, "com.sonarsource.it.samples:multi-modules-sample");
+    assertThat(project.groupId()).isNull();
+    assertThat(project.rootId()).isNull();
+
+    Component subModuleA1 = findComponent(components, "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1");
+    assertThat(subModuleA1.groupId()).isEqualTo(project.id());
+    assertThat(subModuleA1.rootId()).isEqualTo(project.id());
+
+    Component file = findComponent(components, fileKey);
+    assertThat(file.groupId()).isNotNull();
+    assertThat(file.rootId()).isNotNull();
+
+    Issue issue = issues.list().get(0);
+    assertThat(issue.componentId()).isEqualTo(file.id());
+    assertThat(issues.component(issue)).isNotNull();
+    assertThat(issues.component(issue).groupId()).isEqualTo(subModuleA1.id());
+    assertThat(issues.component(issue).rootId()).isEqualTo(project.id());
+  }
+
+  private static Component findComponent(Collection<Component> components, final String key){
+    return Iterables.find(components, new Predicate<Component>() {
+      @Override
+      public boolean apply(Component input) {
+        return key.equals(input.key());
+      }
+    });
   }
 
 }
