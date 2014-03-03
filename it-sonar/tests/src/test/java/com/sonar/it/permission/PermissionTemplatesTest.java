@@ -23,6 +23,7 @@ import static org.fest.assertions.Assertions.assertThat;
  * Note: those tests should be integrated in the Administration test suite when the permission data integrity can be guaranteed
  * (i.e. with the use of a WS client to restore the default permissions). TODO Test execution order matter while it should not.
  */
+@Ignore("Too many false-positives")
 public class PermissionTemplatesTest {
 
   @ClassRule
