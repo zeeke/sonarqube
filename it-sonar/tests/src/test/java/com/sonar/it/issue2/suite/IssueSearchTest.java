@@ -244,22 +244,22 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     Collection<Component> components = issues.components();
 
     Component project = findComponent(components, "com.sonarsource.it.samples:multi-modules-sample");
-    assertThat(project.groupId()).isNull();
-    assertThat(project.rootId()).isNull();
+//    assertThat(project.subProjectId()).isNull();
+//    assertThat(project.projectId()).isNull();
 
     Component subModuleA1 = findComponent(components, "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1");
-    assertThat(subModuleA1.groupId()).isEqualTo(project.id());
-    assertThat(subModuleA1.rootId()).isEqualTo(project.id());
+//    assertThat(subModuleA1.subProjectId()).isEqualTo(project.id());
+//    assertThat(subModuleA1.projectId()).isEqualTo(project.id());
 
     Component file = findComponent(components, fileKey);
-    assertThat(file.groupId()).isNotNull();
-    assertThat(file.rootId()).isNotNull();
+//    assertThat(file.subProjectId()).isNotNull();
+//    assertThat(file.projectId()).isNotNull();
 
     Issue issue = issues.list().get(0);
     assertThat(issue.componentId()).isEqualTo(file.id());
     assertThat(issues.component(issue)).isNotNull();
-    assertThat(issues.component(issue).groupId()).isEqualTo(subModuleA1.id());
-    assertThat(issues.component(issue).rootId()).isEqualTo(project.id());
+//    assertThat(issues.component(issue).subProjectId()).isEqualTo(subModuleA1.id());
+//    assertThat(issues.component(issue).projectId()).isEqualTo(project.id());
   }
 
   private static Component findComponent(Collection<Component> components, final String key){
