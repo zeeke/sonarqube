@@ -75,7 +75,7 @@
           com.sonarsource.views:sonar-views-plugin:2.2.1,
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
           org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest}
         </plugins>
       </properties>
@@ -113,7 +113,7 @@
           com.sonarsource.views:sonar-views-plugin:2.3,
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
           org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest}
         </plugins>
       </properties>
@@ -151,7 +151,7 @@
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
           org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest}
         </plugins>
       </properties>
@@ -193,7 +193,7 @@
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
           org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest},
           com.sonarsource.pli:sonar-pli-plugin:${pliLatest}
         </plugins>
@@ -236,7 +236,7 @@
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
           org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest},
           com.sonarsource.pli:sonar-pli-plugin:${pliLatest}
         </plugins>
