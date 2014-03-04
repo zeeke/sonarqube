@@ -18,7 +18,7 @@
     <cobolLatest>1.18-SNAPSHOT</cobolLatest>
     <cutoffLatest>0.3-SNAPSHOT</cutoffLatest>
     <devcockpitLatest>1.5-SNAPSHOT</devcockpitLatest>
-    <dotnetLatest>2.2-SNAPSHOT</dotnetLatest>
+    <csharpLatest>2.2-SNAPSHOT</csharpLatest>
     <fbcontribLatest>1.3-SNAPSHOT</fbcontribLatest>
     <flexLatest>2.1-SNAPSHOT</flexLatest>
     <greenpepperLatest>0.3-SNAPSHOT</greenpepperLatest>
@@ -37,6 +37,7 @@
     <vbLatest>1.4-SNAPSHOT</vbLatest>
     <vbnetLatest>1.2-SNAPSHOT</vbnetLatest>
     <viewsLatest>2.5-SNAPSHOT</viewsLatest>
+    <visualstudioLatest>1.0-SNAPSHOT</visualstudioLatest>
   </properties>
 
   <profiles>
@@ -73,12 +74,9 @@
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:2.2.1,
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest}
+          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest}
         </plugins>
       </properties>
     </profile>
@@ -114,12 +112,9 @@
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:2.3,
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest}
+          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest}
         </plugins>
       </properties>
     </profile>
@@ -155,12 +150,9 @@
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest}
+          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest}
         </plugins>
       </properties>
     </profile>
@@ -200,12 +192,9 @@
           org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
+          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest},
           com.sonarsource.pli:sonar-pli-plugin:${pliLatest}
         </plugins>
       </properties>
@@ -246,12 +235,9 @@
           org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-fxcop-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet:sonar-dotnet-gendarme-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${dotnetLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-stylecop-plugin:${dotnetLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
+          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
+          com.sonarsource.vbnet:sonar-vbnet-plugin:#{vbnetLatest},
+          org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest},
           com.sonarsource.pli:sonar-pli-plugin:${pliLatest}
         </plugins>
       </properties>
