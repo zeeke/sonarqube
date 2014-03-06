@@ -177,7 +177,7 @@
           org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
           com.sonarsource.cobol:sonar-cobol-plugin:${cobolLatest},
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
-          com.sonarsource:sonar-dev-cockpit-plugin:1.4-RC1,
+          com.sonarsource:sonar-dev-cockpit-plugin:1.4-SNAPSHOT,
           org.codehaus.sonar-plugins:sonar-fb-contrib-plugin:${fbcontribLatest},
           org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
           org.codehaus.sonar-plugins:sonar-greenpepper-plugin:${greenpepperLatest},
