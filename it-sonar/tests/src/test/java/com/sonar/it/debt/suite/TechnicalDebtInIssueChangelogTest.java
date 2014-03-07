@@ -59,16 +59,8 @@ public class TechnicalDebtInIssueChangelogTest {
     assertThat(change.diffs()).hasSize(1);
     IssueChangeDiff changeDiff = change.diffs().get(0);
     assertThat(changeDiff.key()).isEqualTo("technicalDebt");
-
-//    WorkDayDuration oldValue = (WorkDayDuration) changeDiff.oldValue();
-//    assertThat(oldValue.days()).isEqualTo(0);
-//    assertThat(oldValue.hours()).isEqualTo(0);
-//    assertThat(oldValue.minutes()).isEqualTo(10);
-//
-//    WorkDayDuration newValue = (WorkDayDuration) changeDiff.newValue();
-//    assertThat(newValue.days()).isEqualTo(0);
-//    assertThat(newValue.hours()).isEqualTo(1);
-//    assertThat(newValue.minutes()).isEqualTo(40);
+    assertThat(changeDiff.oldValue()).isEqualTo("10min");
+    assertThat(changeDiff.newValue()).isEqualTo("1h40min");
   }
 
   @Test
@@ -98,16 +90,8 @@ public class TechnicalDebtInIssueChangelogTest {
     assertThat(change.diffs()).hasSize(1);
     IssueChangeDiff changeDiff = change.diffs().get(0);
     assertThat(changeDiff.key()).isEqualTo("technicalDebt");
-
-//    WorkDayDuration oldValue = (WorkDayDuration) changeDiff.oldValue();
-//    assertThat(oldValue.days()).isEqualTo(0);
-//    assertThat(oldValue.hours()).isEqualTo(0);
-//    assertThat(oldValue.minutes()).isEqualTo(10);
-//
-//    WorkDayDuration newValue = (WorkDayDuration) changeDiff.newValue();
-//    assertThat(newValue.days()).isEqualTo(1);
-//    assertThat(newValue.hours()).isEqualTo(2);
-//    assertThat(newValue.minutes()).isEqualTo(0);
+    assertThat(changeDiff.oldValue()).isEqualTo("10min");
+    assertThat(changeDiff.newValue()).isEqualTo("1d2h");
   }
 
 }
