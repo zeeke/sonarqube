@@ -3,12 +3,11 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.profile;
+package com.sonar.it.qualitygate;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
-import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import com.sonar.orchestrator.util.NetworkUtils;
 import org.junit.AfterClass;
@@ -16,7 +15,12 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.qualitygate.NewCondition;
+import org.sonar.wsclient.qualitygate.QualityGate;
+import org.sonar.wsclient.qualitygate.QualityGateClient;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
 import org.subethamail.wiser.Wiser;
 import org.subethamail.wiser.WiserMessage;
 
@@ -26,11 +30,10 @@ import java.util.Iterator;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class AlertNotificationsTest {
+public class QualityGateNotificationsTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/it/profile/AlertNotificationsTest/SimpleAlertProfile.xml"))
     // 1 second
     .setServerProperty("sonar.notifications.delay", "1")
     .build();
@@ -56,6 +59,11 @@ public class AlertNotificationsTest {
         "/selenium/profile/notifications/email_configuration.html",
         "/selenium/profile/notifications/create_user_with_email.html").build();
     orchestrator.executeSelenese(selenese);
+
+    // Create quality gate and condition
+    QualityGateClient qgClient = orchestrator.getServer().adminWsClient().qualityGateClient();
+    QualityGate qGate = qgClient.create("SimpleQualityGate");
+    qgClient.createCondition(NewCondition.create(qGate.id()).metricKey("ncloc").operator("GT").warningThreshold("2").errorThreshold("5"));
   }
 
   @AfterClass
@@ -67,6 +75,7 @@ public class AlertNotificationsTest {
 
   /**
    * SONAR-2746
+   * SONAR-4366
    */
   @Test
   public void notificationsForReviews() throws Exception {
@@ -81,10 +90,14 @@ public class AlertNotificationsTest {
     build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
       .setProperty("sonar.language", "java")
-      .setProperty("sonar.profile.java", "SimpleAlertProfile");
+      .setProperty("sonar.qualitygate", "SimpleQualityGate");
     orchestrator.executeBuild(build);
 
-    // We need to wait until all notifications will be delivered
+    Resource project = orchestrator.getServer().getWsClient()
+      .find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:simple-sample", "alert_status"));
+    assertThat(project.getMeasure("alert_status").getData()).isEqualTo("ERROR");
+
+    // We need to wait until all notifications are delivered
     Thread.sleep(10000);
 
     Iterator<WiserMessage> emails = smtpServer.getMessages().iterator();

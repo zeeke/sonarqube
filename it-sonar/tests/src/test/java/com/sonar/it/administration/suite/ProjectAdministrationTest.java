@@ -9,13 +9,13 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
-import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.connectors.ConnectionException;
+import org.sonar.wsclient.qualitygate.*;
 import org.sonar.wsclient.services.ProjectDeleteQuery;
 import org.sonar.wsclient.services.PropertyQuery;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -158,12 +158,16 @@ public class ProjectAdministrationTest {
   // SONAR-3326
   @Test
   public void should_display_alerts_correctly_in_history_page() throws Exception {
+    QualityGateClient qgClient = orchestrator.getServer().adminWsClient().qualityGateClient();
+    QualityGate qGate = qgClient.create("AlertsForHistory");
+    qgClient.setDefault(qGate.id());
+
     // with this configuration, project should have an Orange alert
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/administration/ProjectAdministrationTest/low-alert-thresholds-profile-backup.xml"));
-    scanSample("2012-01-01", "alert-profile");
+    QualityGateCondition lowThresholds = qgClient.createCondition(NewCondition.create(qGate.id()).metricKey("lines").operator("GT").warningThreshold("5").errorThreshold("50"));
+    scanSampleWithDate("2012-01-01");
     // with this configuration, project should have a Green alert
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/administration/ProjectAdministrationTest/high-alert-thresholds-profile-backup.xml"));
-    scanSample("2012-01-02", "alert-profile");
+    qgClient.updateCondition(UpdateCondition.create(lowThresholds.id()).metricKey("lines").operator("GT").warningThreshold("5000").errorThreshold("5000"));
+    scanSampleWithDate("2012-01-02");
 
     Selenese selenese = Selenese
       .builder()
@@ -171,18 +175,25 @@ public class ProjectAdministrationTest {
         "/selenium/administration/display-alerts-history-page/should-display-alerts-correctly-history-page.html"
       ).build();
     orchestrator.executeSelenese(selenese);
+
+    qgClient.unsetDefault();
+    qgClient.destroy(qGate.id());
   }
 
   // SONAR-1352
   @Test
   public void should_display_period_alert_on_project_dashboard() throws Exception {
+    QualityGateClient qgClient = orchestrator.getServer().adminWsClient().qualityGateClient();
+    QualityGate qGate = qgClient.create("AlertsForHistory");
+    qgClient.createCondition(NewCondition.create(qGate.id()).metricKey("lines").operator("LT").warningThreshold("0").errorThreshold("10")
+      .period(1));
+    qgClient.setDefault(qGate.id());
+
     // No alert
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/administration/ProjectAdministrationTest/period-alert-thresholds-profile-backup.xml"));
-    scanSample("2012-01-01", "alert-profile");
+    scanSampleWithDate("2012-01-01");
 
     // Red alert because lines number has not changed since previous analysis
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/administration/ProjectAdministrationTest/period-alert-thresholds-profile-backup.xml"));
-    scanSampleWithProfile("alert-profile");
+    scanSample();
 
     Selenese selenese = Selenese
       .builder()
@@ -190,6 +201,9 @@ public class ProjectAdministrationTest {
         "/selenium/administration/display-alerts/should-display-period-alerts-correctly.html"
       ).build();
     orchestrator.executeSelenese(selenese);
+
+    qgClient.unsetDefault();
+    qgClient.destroy(qGate.id());
   }
 
   /**

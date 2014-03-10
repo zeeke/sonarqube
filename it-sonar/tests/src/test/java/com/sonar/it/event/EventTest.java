@@ -40,8 +40,7 @@ public class EventTest {
       .builder()
       .setHtmlTestsInClasspath("events",
         "/selenium/event/events/create_event_with_special_character.html",
-        "/selenium/event/events/no_events_widget_on_package.html",
-        "/selenium/event/events/SONAR-2396_do_not_create_alert_for_new_violations.html")
+        "/selenium/event/events/no_events_widget_on_package.html")
       .build();
     orchestrator.executeSelenese(selenese);
   }

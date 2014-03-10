@@ -16,7 +16,6 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.sonar.wsclient.services.MetricCreateQuery;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -198,26 +197,6 @@ public class ProfileTest {
       "/selenium/profile/rule-notes/extend-description-and-remove-it.html",
       "/selenium/profile/rule-notes/add-delete-note-on-active-rule.html",
       "/selenium/profile/rule-notes/cant-add-note-on-inactive-rule.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  @Test
-  public void test_alerts() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java-profile.xml"));
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/Sonar_way_java-profile.xml"));
-    orchestrator.getServer().getAdminWsClient().create(MetricCreateQuery.create("boolean_metric").setName("boolean_metric").setType("BOOL").setDomain("General"));
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-alerts",
-      "/selenium/profile/alerts/create_and_delete_alert_on_lines_of_code.html",
-      // SONAR-1352
-      "/selenium/profile/alerts/create_alert_with_period.html",
-      // SONAR-1352
-      "/selenium/profile/alerts/create_alert_with_period_on_new_metric.html",
-      "/selenium/profile/alerts/should_validate_alert_on_creation.html",
-
-      // SONAR-2983
-      "/selenium/profile/alerts/boolean_criteria.html"
       ).build();
     orchestrator.executeSelenese(selenese);
   }

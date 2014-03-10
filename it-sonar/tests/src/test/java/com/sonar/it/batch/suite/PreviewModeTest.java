@@ -19,6 +19,9 @@ import org.json.simple.JSONObject;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
+import org.sonar.wsclient.qualitygate.NewCondition;
+import org.sonar.wsclient.qualitygate.QualityGate;
+import org.sonar.wsclient.qualitygate.QualityGateClient;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -121,15 +124,18 @@ public class PreviewModeTest {
 
   @Test
   public void test_exclude_plugins_property_with_build_breaker() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"));
+    QualityGate simpleGate = createSimpleQualityGate();
+
     SonarRunner runner = configureRunner("shared/xoo-sample",
       "sonar.preview.excludePlugins", "buildbreaker",
-      "sonar.analysis.mode", "preview")
-      .setProfile("SimpleAlertProfile");
+      "sonar.analysis.mode", "preview",
+      "sonar.qualitygate", "SimpleQualityGate");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     // Build breaker is exclude so it will not be executed
     assertThat(result.getStatus()).isEqualTo(0);
+
+    cleanupQualityGate(simpleGate);
   }
 
   /**
@@ -140,39 +146,44 @@ public class PreviewModeTest {
     // Buildbreaker plugin is exclude on global settings...
     orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.preview.excludePlugins", "buildbreaker"));
 
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"));
+    QualityGate simpleGate = createSimpleQualityGate();
+
     SonarRunner runner = configureRunner("shared/xoo-sample",
       // ... but it's include on the build...
       "sonar.preview.includePlugins", "buildbreaker",
-      "sonar.analysis.mode", "preview")
-      .setProfile("SimpleAlertProfile");
+      "sonar.analysis.mode", "preview",
+      "sonar.qualitygate", "SimpleQualityGate");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     // ... so build should failed
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code > 5");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
+
+    cleanupQualityGate(simpleGate);
   }
 
   // SONAR-4468
   @Test
   public void test_build_breaker_with_dry_run() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/SimpleAlertProfile.xml"));
+    QualityGate simpleGate = createSimpleQualityGate();
     SonarRunner runner = configureRunner("shared/xoo-sample",
       "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
-      "sonar.analysis.mode", "preview")
-      .setProfile("SimpleAlertProfile");
+      "sonar.analysis.mode", "preview",
+      "sonar.qualitygate", "SimpleQualityGate");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code > 5");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
+
+    cleanupQualityGate(simpleGate);
   }
 
   // SONAR-4594
   @Test
   public void test_build_breaker_with_dry_run_and_differential_measures() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/VariationAlertProfile.xml"));
+    QualityGate variationGate = createVariationQualityGate(1);
 
     // First analysis
     SonarRunner runner = configureRunner("shared/xoo-sample");
@@ -181,19 +192,21 @@ public class PreviewModeTest {
     // Second analysis
     runner = configureRunner("batch/dry-run-build-breaker",
       "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
-      "sonar.analysis.mode", "preview")
-      .setProfile("VariationAlertProfile");
+      "sonar.analysis.mode", "preview",
+      "sonar.qualitygate", "VariationQualityGate");
     result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code variation > 2 since previous analysis");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
+
+    cleanupQualityGate(variationGate);
   }
 
   // SONAR-4594
   @Test
   public void test_build_breaker_with_dry_run_and_differential_measures_last_version() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/VariationSinceLastVersionAlertProfile.xml"));
+    QualityGate variationGate = createVariationQualityGate(3);
 
     // First analysis 1.0-SNAPSHOT
     SonarRunner runner = configureRunner("shared/xoo-sample");
@@ -203,14 +216,16 @@ public class PreviewModeTest {
     runner = configureRunner("batch/dry-run-build-breaker",
       "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
       "sonar.analysis.mode", "preview",
-      "sonar.projectVersion", "2.0-SNAPSHOT")
-      .setProfile("VariationSinceLastVersionAlertProfile");
+      "sonar.projectVersion", "2.0-SNAPSHOT",
+      "sonar.qualitygate", "VariationQualityGate");
     BuildResult result = orchestrator.executeBuildQuietly(runner);
 
     assertThat(result.getStatus()).isNotEqualTo(0);
     // SONAR-4767 alert now contains date of matching snapshot, for instance : 1.0-SNAPSHOT - 2014 Feb 04.
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code variation > 2 since previous version (1.0-SNAPSHOT - ");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
+
+    cleanupQualityGate(variationGate);
   }
 
   // SONAR-4602
@@ -447,6 +462,26 @@ public class PreviewModeTest {
     public boolean accept(File dir, String name) {
       return !name.contains(".lock");
     }
+  }
+
+  private QualityGate createSimpleQualityGate() {
+    QualityGateClient qgClient = orchestrator.getServer().adminWsClient().qualityGateClient();
+    QualityGate simpleGate = qgClient.create("SimpleQualityGate");
+    qgClient.createCondition(NewCondition.create(simpleGate.id()).metricKey("ncloc").operator("GT").warningThreshold("2").errorThreshold("5"));
+    return simpleGate;
+  }
+
+  private QualityGate createVariationQualityGate(int period) {
+    QualityGateClient qgClient = orchestrator.getServer().adminWsClient().qualityGateClient();
+    QualityGate simpleGate = qgClient.create("VariationQualityGate");
+    qgClient.createCondition(NewCondition.create(simpleGate.id()).metricKey("ncloc").operator("GT").warningThreshold("1").errorThreshold("2").period(period));
+    return simpleGate;
+  }
+
+  private void cleanupQualityGate(QualityGate simpleGate) {
+    QualityGateClient qgClient;
+    qgClient = orchestrator.getServer().adminWsClient().qualityGateClient();
+    qgClient.destroy(simpleGate.id());
   }
 
 }
