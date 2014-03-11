@@ -121,7 +121,7 @@ public class TechnicalDebtTest {
     assertThat(result.getStatus()).isNotEqualTo(0);
     // with the following message
     assertThat(result.getLogs())
-      .contains("Requirement for 'xoo:HasTag' can not use 'Constant/issue' remediation function because this rule does not have a fixed remediation cost.");
+      .contains("Rule 'xoo:HasTag' can not use 'Constant/issue' remediation function because this rule does not have a fixed remediation cost.");
   }
 
 }
