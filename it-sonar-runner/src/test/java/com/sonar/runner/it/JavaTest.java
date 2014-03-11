@@ -50,7 +50,10 @@ public class JavaTest extends RunnerTestCase {
     assertThat(project.getMeasureIntValue("classes")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("ncloc")).isGreaterThan(10);
     assertThat(project.getMeasureIntValue("lcom4")).isNull(); // no bytecode
-    assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.7")) {
+      // the squid rules enabled in sonar-way-profile do not exist in SQ 3.0
+      assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
+    }
 
     Resource file = orchestrator.getServer().getWsClient()
       .find(new ResourceQuery(helloFileKey()).setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
