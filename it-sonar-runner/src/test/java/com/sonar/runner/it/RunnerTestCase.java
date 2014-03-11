@@ -38,12 +38,6 @@ public abstract class RunnerTestCase {
 
     builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.4"));
 
-    if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("4.2")) {
-      builder
-        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-checkstyle-plugin", "2.1-SNAPSHOT"))
-        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1-SNAPSHOT"));
-    }
-
     orchestrator = builder.build();
     orchestrator.start();
   }
