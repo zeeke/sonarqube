@@ -27,47 +27,6 @@ public class JavaTest extends RunnerTestCase {
   }
 
   /**
-   * SONARPLUGINS-2571
-   */
-  @Test
-  public void display_version() {
-    orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
-
-    SonarRunner build = newRunner(new File("projects/java-sample")).setProfile("sonar-way");
-    orchestrator.executeBuild(build);
-
-    Resource project = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:sample").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
-    if (Util.runnerVersion(orchestrator).isGreaterThanOrEquals("2.1")) {
-      // SONARPLUGINS-2399
-      assertThat(project.getName()).isEqualTo("Java Sample, with comma");
-    }
-    assertThat(project.getDescription()).isEqualTo("This is a Java sample");
-    assertThat(project.getVersion()).isEqualTo("1.2.3");
-    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
-      assertThat(project.getLanguage()).isEqualTo("java");
-    }
-    assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
-    assertThat(project.getMeasureIntValue("classes")).isEqualTo(2);
-    assertThat(project.getMeasureIntValue("ncloc")).isGreaterThan(10);
-    assertThat(project.getMeasureIntValue("lcom4")).isNull(); // no bytecode
-    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.7")) {
-      // the squid rules enabled in sonar-way-profile do not exist in SQ 3.0
-      assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
-    }
-
-    Resource file = orchestrator.getServer().getWsClient()
-      .find(new ResourceQuery(helloFileKey()).setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
-    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
-      assertThat(file.getName()).isEqualTo("Hello.java");
-    } else {
-      assertThat(file.getName()).isEqualTo("Hello");
-    }
-    assertThat(file.getMeasureIntValue("ncloc")).isEqualTo(7);
-    assertThat(file.getMeasureIntValue("lcom4")).isNull(); // no bytecode
-    assertThat(file.getMeasureIntValue("violations")).isGreaterThan(0);
-  }
-
-  /**
    * No bytecode, only sources
    */
   @Test
@@ -100,7 +59,10 @@ public class JavaTest extends RunnerTestCase {
     assertThat(project.getMeasureIntValue("classes")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("ncloc")).isGreaterThan(10);
     assertThat(project.getMeasureIntValue("lcom4")).isNull(); // no bytecode
-    assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.7")) {
+      // the squid rules enabled in sonar-way-profile do not exist in SQ 3.0
+      assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
+    }
 
     Resource file = orchestrator.getServer().getWsClient()
       .find(new ResourceQuery(helloFileKey()).setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
@@ -111,7 +73,10 @@ public class JavaTest extends RunnerTestCase {
       assertThat(file.getMeasureIntValue("lcom4")).isNull(); // no bytecode
     }
     assertThat(file.getMeasureIntValue("ncloc")).isEqualTo(7);
-    assertThat(file.getMeasureIntValue("violations")).isGreaterThan(0);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.7")) {
+      // the squid rules enabled in sonar-way-profile do not exist in SQ 3.0
+      assertThat(file.getMeasureIntValue("violations")).isGreaterThan(0);
+    }
   }
 
   @Test
@@ -126,6 +91,7 @@ public class JavaTest extends RunnerTestCase {
       // SONAR-4853 LCOM4 is no more computed on SQ 4.1
       assertThat(project.getMeasureIntValue("lcom4")).isGreaterThanOrEqualTo(1);
     }
+    // the squid rules enabled in sonar-way-profile do not exist in SQ 3.0
     assertThat(project.getMeasureIntValue("violations")).isGreaterThan(0);
 
     Resource file = orchestrator.getServer().getWsClient().find(new ResourceQuery(findbugsFileKey()).setMetrics("lcom4", "violations"));
