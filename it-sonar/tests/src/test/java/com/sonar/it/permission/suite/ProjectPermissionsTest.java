@@ -32,6 +32,7 @@ public class ProjectPermissionsTest {
    * SONAR-4465
    */
   @Test
+  @Ignore("Too many false positives with ui")
   public void manage_permissions_from_global_settings() {
     SonarRunner sonarRunnerBuild = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .withoutDynamicAnalysis();
