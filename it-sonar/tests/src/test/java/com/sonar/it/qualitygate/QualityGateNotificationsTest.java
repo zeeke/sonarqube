@@ -56,8 +56,8 @@ public class QualityGateNotificationsTest {
     Selenese selenese = Selenese
       .builder()
       .setHtmlTestsInClasspath("notifications",
-        "/selenium/profile/notifications/email_configuration.html",
-        "/selenium/profile/notifications/create_user_with_email.html").build();
+        "/selenium/qualitygate/notifications/email_configuration.html",
+        "/selenium/qualitygate/notifications/create_user_with_email.html").build();
     orchestrator.executeSelenese(selenese);
 
     // Create quality gate and condition
@@ -78,7 +78,7 @@ public class QualityGateNotificationsTest {
    * SONAR-4366
    */
   @Test
-  public void notificationsForReviews() throws Exception {
+  public void should_send_notifications_on_quality_gate_status_change() throws Exception {
     // Run a first analysis
     MavenBuild build = MavenBuild
       .create(ItUtils.locateProjectPom("shared/sample"))
