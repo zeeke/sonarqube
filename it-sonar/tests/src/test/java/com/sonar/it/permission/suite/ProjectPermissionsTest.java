@@ -12,6 +12,7 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
@@ -48,6 +49,7 @@ public class ProjectPermissionsTest {
    * SONAR-4465
    */
   @Test
+  @Ignore("Too many false positives with ui")
   public void manage_permissions_from_project_configuration() {
     String projectAdminUser = "with-admin-permission-on-project";
     SonarClient adminClient = orchestrator.getServer().adminWsClient();
