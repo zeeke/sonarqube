@@ -1,5 +1,9 @@
 lines:13
 ncloc:13
+complexity:7.6
+coverage:89.0
+test_execution_time:630
+sqale_index:4830
 #Used by dashboard/widgets tests
 lcom4:2
 complexity_in_classes:3
