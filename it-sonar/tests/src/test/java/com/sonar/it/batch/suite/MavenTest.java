@@ -230,6 +230,20 @@ public class MavenTest {
       + "please first delete it from SonarQube and then relaunch the analysis of project 'com.sonarsource.it.samples:multi-modules-sample'.");
   }
 
+  /**
+   * src/main/java is missing
+   */
+  @Ignore("Waiting for surefire to be executed even if no main files")
+  @Test
+  public void maven_project_with_only_test_dir() {
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-only-test-dir")).setGoals("sonar:sonar");
+    orchestrator.executeBuild(build);
+
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-only-test-dir", "tests", "files"));
+    assertThat(project.getMeasureIntValue("tests")).isEqualTo(1);
+    assertThat(project.getMeasure("files")).isNull();
+  }
+
   private void checkBuildHelperFiles() {
     Resource project = getResource("com.sonarsource.it.samples:many-source-dirs");
     assertThat(project).isNotNull();
