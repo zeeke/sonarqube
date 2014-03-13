@@ -51,8 +51,7 @@ public class ProfileTest {
       "/selenium/profile/profile-export/permalink-to-sonar-configuration.html",
       "/selenium/profile/profile-export/permalink-to-checkstyle-configuration.html",
       "/selenium/profile/profile-export/permalink-to-default-checkstyle-configuration.html",
-      "/selenium/profile/profile-export/permalink-to-pmd-configuration.html",
-      "/selenium/profile/profile-export/permalink-to-sonar-configuration-alerts.html" // SONAR-1352
+      "/selenium/profile/profile-export/permalink-to-pmd-configuration.html"
     ).build();
     orchestrator.executeSelenese(selenese);
   }
