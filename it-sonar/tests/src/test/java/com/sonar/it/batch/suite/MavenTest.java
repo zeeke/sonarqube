@@ -244,6 +244,60 @@ public class MavenTest {
     assertThat(project.getMeasure("files")).isNull();
   }
 
+  /**
+   * The property sonar.sources overrides the source dirs as declared in Maven
+   */
+  @Test
+  public void override_sources() {
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-override-sources")).setGoals("sonar:sonar");
+    orchestrator.executeBuild(build);
+
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-override-sources", "files"));
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+
+    Resource file = orchestrator.getServer().getWsClient().find(ResourceQuery.create("com.sonarsource.it.samples:maven-override-sources:src/main/java2/Hello2.java"));
+    assertThat(file).isNotNull();
+  }
+
+  /**
+   * The property sonar.inclusions overrides the property sonar.sources
+   */
+  @Test
+  public void inclusions_override_sources() {
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-inclusions-override-sources")).setGoals("sonar:sonar");
+    orchestrator.executeBuild(build);
+
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-inclusions-override-sources", "files"));
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+
+    Resource file = orchestrator.getServer().getWsClient().find(ResourceQuery.create("com.sonarsource.it.samples:maven-inclusions-override-sources:src/main/java2/Hello2.java"));
+    assertThat(file).isNotNull();
+  }
+
+  /**
+   * The property sonar.sources has a typo -> fail, like in sonar-runner
+   */
+  @Test
+  public void fail_if_bad_value_of_sonar_sources_property() {
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-sources-property")).setGoals("sonar:sonar");
+    BuildResult result = orchestrator.executeBuildQuietly(build);
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains(
+      "java2' does not exist for Maven module com.sonarsource.it.samples:maven-bad-sources-property:jar:1.0-SNAPSHOT. Please check the property sonar.sources");
+  }
+
+  /**
+   * The property sonar.sources has a typo -> fail, like in sonar-runner
+   */
+  @Test
+  public void fail_if_bad_value_of_sonar_tests_property() {
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-tests-property")).setGoals("sonar:sonar");
+    BuildResult result = orchestrator.executeBuildQuietly(build);
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains(
+      "java2' does not exist for Maven module com.sonarsource.it.samples:maven-bad-tests-property:jar:1.0-SNAPSHOT. Please check the property sonar.tests");
+  }
+
   private void checkBuildHelperFiles() {
     Resource project = getResource("com.sonarsource.it.samples:many-source-dirs");
     assertThat(project).isNotNull();
