@@ -79,7 +79,6 @@
     <module>sonar-subcategories-plugin</module>
     <module>static-files-plugin</module>
     <module>task-plugin</module>
-    <module>technical-debt-model-with-new-characteristics-plugin</module>
     <module>ui-plugin</module>
     <module>update-center</module>
     <module>user-handler-plugin</module>
