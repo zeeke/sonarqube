@@ -184,7 +184,7 @@ public class ProjectAdministrationTest {
   @Test
   public void should_display_period_alert_on_project_dashboard() throws Exception {
     QualityGateClient qgClient = orchestrator.getServer().adminWsClient().qualityGateClient();
-    QualityGate qGate = qgClient.create("AlertsForHistory");
+    QualityGate qGate = qgClient.create("AlertsForDashboard");
     qgClient.createCondition(NewCondition.create(qGate.id()).metricKey("lines").operator("LT").warningThreshold("0").errorThreshold("10")
       .period(1));
     qgClient.setDefault(qGate.id());
