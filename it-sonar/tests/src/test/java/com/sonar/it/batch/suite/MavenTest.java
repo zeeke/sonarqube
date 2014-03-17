@@ -38,9 +38,11 @@ public class MavenTest {
       .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
-    Resource project = orchestrator.getServer().getWsClient()
-      .find(ResourceQuery.create("com.sonarsource.it.samples.project-with-module-without-sources:project-with-module-without-sources"));
-    assertThat(project.getName()).isEqualTo("Project with 1 module without sources");
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.project-with-module-without-sources:parent", "files"));
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+
+    Resource subProject = orchestrator.getServer().getWsClient().find(ResourceQuery.create("com.sonarsource.it.samples.project-with-module-without-sources:without-sources"));
+    assertThat(subProject).isNotNull();
   }
 
   /**
@@ -233,10 +235,9 @@ public class MavenTest {
   /**
    * src/main/java is missing
    */
-  @Ignore("Waiting for surefire to be executed even if no main files")
   @Test
   public void maven_project_with_only_test_dir() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-only-test-dir")).setGoals("sonar:sonar");
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-only-test-dir")).setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-only-test-dir", "tests", "files"));
@@ -263,14 +264,14 @@ public class MavenTest {
    * The property sonar.inclusions overrides the property sonar.sources
    */
   @Test
-  public void inclusions_override_sources() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-inclusions-override-sources")).setGoals("sonar:sonar");
+  public void inclusions_apply_to_source_dirs() {
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/inclusions_apply_to_source_dirs")).setGoals("sonar:sonar");
     orchestrator.executeBuild(build);
 
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-inclusions-override-sources", "files"));
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:inclusions_apply_to_source_dirs", "files"));
     assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
 
-    Resource file = orchestrator.getServer().getWsClient().find(ResourceQuery.create("com.sonarsource.it.samples:maven-inclusions-override-sources:src/main/java2/Hello2.java"));
+    Resource file = orchestrator.getServer().getWsClient().find(ResourceQuery.create("com.sonarsource.it.samples:inclusions_apply_to_source_dirs:src/main/java/Hello2.java"));
     assertThat(file).isNotNull();
   }
 

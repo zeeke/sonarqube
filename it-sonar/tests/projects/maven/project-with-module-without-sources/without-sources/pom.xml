@@ -4,11 +4,11 @@
   
   <parent>
     <groupId>com.sonarsource.it.samples.project-with-module-without-sources</groupId>
-    <artifactId>project-with-module-without-sources</artifactId>
+    <artifactId>parent</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   
-  <artifactId>module-without-sources</artifactId>
+  <artifactId>without-sources</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>Module without sources</name>
  

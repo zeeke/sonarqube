@@ -3,13 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.sonarsource.it.samples.project-with-module-without-sources</groupId>
-  <artifactId>project-with-module-without-sources</artifactId>
+  <artifactId>parent</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Project with 1 module without sources</name>
-  
+
   <modules>
-    <module>module-with-sources</module>
-    <module>module-without-sources</module>
+    <module>with-sources</module>
+    <module>without-sources</module>
   </modules>
 </project>

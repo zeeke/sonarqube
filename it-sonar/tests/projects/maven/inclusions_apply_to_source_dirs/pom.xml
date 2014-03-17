@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.sonarsource.it.samples</groupId>
-  <artifactId>maven-inclusions-override-sources</artifactId>
+  <artifactId>inclusions_apply_to_source_dirs</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
-    <sonar.inclusions>src/main/java2/**</sonar.inclusions>
+    <sonar.inclusions>src/main/java/**/Hello2.java</sonar.inclusions>
   </properties>
 
   <dependencies>

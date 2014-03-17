@@ -414,15 +414,14 @@ public class BatchTest {
    * SONAR-5069
    */
   @Test
-  public void sourceDirIsOptional() throws Exception {
-    scan("batch/optional-sourcedir", "sonar.projectKey", "optional-sourcedir", "sonar.projectVersion", "1", "sonar.projectName", "OptionalSourceDir");
-    // project is here
-    assertThat(getResource("optional-sourcedir")).isNotNull();
+  public void optional_sources_property() throws Exception {
+    scan("batch/optional_sources", "sonar.projectKey", "optional_sources", "sonar.projectVersion", "1", "sonar.projectName", "OptionalSources");
 
-    // and the file too
-    Resource file = getResource("optional-sourcedir:src/Sample.xoo");
-    assertThat(file).isNotNull();
-    assertThat(file.getMeasureIntValue("lines")).isEqualTo(13);
+    // project is here
+    assertThat(orchestrator.getServer().getWsClient().find(ResourceQuery.create("optional_sources"))).isNotNull();
+
+    // but not file
+    assertThat(orchestrator.getServer().getWsClient().find(ResourceQuery.create("optional_sources:src/Sample.xoo"))).isNull();
   }
 
   private Resource getResource(String key) {
