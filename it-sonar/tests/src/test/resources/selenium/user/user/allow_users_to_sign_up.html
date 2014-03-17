@@ -9,112 +9,101 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=Log in</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>bd</td>
-        <td>*Not a member*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=Sign up</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_login</td>
-        <td>signuplogin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_name</td>
-        <td>SignUpName</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_password</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=user_password_confirmation</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>infomsg</td>
-        <td>*Please log in*</td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>link=Log in</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>nav</td>
-        <td>*Log in*</td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>nav</td>
-        <td>*SignUpName*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=Log in</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=login</td>
-        <td>signuplogin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=password</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>nav</td>
-        <td>*SignUpName*</td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>Link=SignUpName</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>user-panel</td>
-        <td>*Log out*</td>
-    </tr>
-
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Log in</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>bd</td>
+	<td>*Not a member*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Sign up</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_login</td>
+	<td>signuplogin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_name</td>
+	<td>SignUpName</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=user_password_confirmation</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>infomsg</td>
+	<td>*Please log in*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Log in</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=login</td>
+	<td>signuplogin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>nav</td>
+	<td>*SignUpName*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>Link=SignUpName</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>user-panel</td>
+	<td>*Log out*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
