@@ -34,14 +34,12 @@ public class CrossProjectDuplicationsTest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/cross-project/a"))
       .setCleanSonarGoals()
       .setProperty("sonar.cpd.cross_project", "true")
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     build = MavenBuild.create(ItUtils.locateProjectPom("duplications/cross-project/b"))
       .setCleanSonarGoals()
       .setProperty("sonar.cpd.cross_project", "true")
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
@@ -49,7 +47,6 @@ public class CrossProjectDuplicationsTest {
       .setCleanSonarGoals()
       .setProperty("sonar.cpd.cross_project", "true")
       .setProperty("sonar.branch", "branch")
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }
