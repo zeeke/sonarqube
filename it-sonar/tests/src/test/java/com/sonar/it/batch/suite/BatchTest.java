@@ -410,20 +410,6 @@ public class BatchTest {
     assertThat(getResource("com.sonarsource.it.samples:moduleB")).isNotNull();
   }
 
-  /**
-   * SONAR-5069
-   */
-  @Test
-  public void optional_sources_property() throws Exception {
-    scan("batch/optional_sources", "sonar.projectKey", "optional_sources", "sonar.projectVersion", "1", "sonar.projectName", "OptionalSources");
-
-    // project is here
-    assertThat(orchestrator.getServer().getWsClient().find(ResourceQuery.create("optional_sources"))).isNotNull();
-
-    // but not file
-    assertThat(orchestrator.getServer().getWsClient().find(ResourceQuery.create("optional_sources:src/Sample.xoo"))).isNull();
-  }
-
   private Resource getResource(String key) {
     return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(key, "lines"));
   }
