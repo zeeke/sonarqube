@@ -34,7 +34,6 @@ public class MavenTest {
   @Test
   public void shouldSupportJarWithoutSources() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/project-with-module-without-sources"))
-      .setProperty("sonar.language", "java")
       .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
@@ -51,7 +50,6 @@ public class MavenTest {
   @Test
   public void shouldSupportJeeProjects() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/jee"))
-      .setProperty("sonar.language", "java")
       .setGoals("clean install", "sonar:sonar");
     orchestrator.executeBuild(build);
 
@@ -68,7 +66,6 @@ public class MavenTest {
   @Test
   public void shouldSupportMavenExtensions() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-extensions"))
-      .setProperty("sonar.language", "java")
       .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
@@ -83,7 +80,6 @@ public class MavenTest {
   public void testBadMavenParameters() {
     // should not fail
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-parameters"))
-      .setProperty("sonar.language", "java")
       .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
@@ -94,7 +90,6 @@ public class MavenTest {
   @Test
   public void shouldAnalyzeMultiModules() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/modules-order"))
-      .setProperty("sonar.language", "java")
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
@@ -117,7 +112,6 @@ public class MavenTest {
   @Test
   public void shouldSupportDifferentDeclarationsForModules() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/modules-declaration"))
-      .setProperty("sonar.language", "java")
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
@@ -150,7 +144,6 @@ public class MavenTest {
   public void testMavenPluginConfiguration() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-plugin-configuration"))
       .setCleanSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.java.coveragePlugin", "cobertura");
     orchestrator.executeBuild(build);
 
@@ -162,7 +155,6 @@ public class MavenTest {
   public void build_helper_plugin_should_add_dirs_when_dynamic_analysis() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
       .setCleanPackageSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "true");
     orchestrator.executeBuild(build);
 
@@ -177,7 +169,6 @@ public class MavenTest {
   public void build_helper_plugin_should_add_dirs_when_static_analysis() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
       .setCleanSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
@@ -190,7 +181,6 @@ public class MavenTest {
   @Test
   public void should_support_shade_with_dependency_reduced_pom_with_clean_install_sonar_goals() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/shade-with-dependency-reduced-pom"))
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false")
       .setGoals("clean", "install", "sonar:sonar");
     BuildResult result = orchestrator.executeBuildQuietly(build);

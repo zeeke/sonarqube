@@ -49,14 +49,12 @@ public class Struts139Test {
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setGoals("clean", "verify", "sonar:sonar")
-      .setProperty("sonar.language", "java")
       .setProperty("skipTests", "true");
     orchestrator.executeBuild(build);
 
     MavenBuild analysis = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setGoals("sonar:sonar")
       .setProperty("sonar.dynamicAnalysis", "true")
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.profile.java", "sonar-way-2.7");
     orchestrator.executeBuilds(build, analysis);
   }

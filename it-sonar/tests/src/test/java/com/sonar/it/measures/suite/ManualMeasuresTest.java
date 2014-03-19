@@ -189,7 +189,6 @@ public class ManualMeasuresTest {
   private void analyzeProject() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }

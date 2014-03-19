@@ -47,7 +47,6 @@ public class LinksTest {
   @Test
   public void shouldUseLinkProperties() {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("batch/links-project"))
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(runner);
 
@@ -61,7 +60,6 @@ public class LinksTest {
   public void shouldUseLinkPropertiesOverPomLinksInMaven() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/links-project"))
       .setCleanPackageSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 

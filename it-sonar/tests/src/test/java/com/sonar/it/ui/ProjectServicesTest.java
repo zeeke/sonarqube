@@ -38,14 +38,12 @@ public class ProjectServicesTest {
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setGoals("clean", "verify", "sonar:sonar")
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.profile.java", "sonar-way-2.7");
     orchestrator.executeBuild(build);
 
     // this project is used by do-not-offer-coverage-choice-if-no-coverage.html
     build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.profile.java", "empty")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);

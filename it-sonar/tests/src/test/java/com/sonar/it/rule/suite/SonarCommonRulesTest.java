@@ -32,7 +32,6 @@ public class SonarCommonRulesTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/rule/SonarCommonRulesTest/sonar_common_rules_profile.xml"));
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("rule/sonar-common-rules-project"))
       .setCleanPackageSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProfile("sonar_common_rules_profile")
       .setProperty("maven.test.error.ignore", "true")
       .setProperty("maven.test.failure.ignore", "true");

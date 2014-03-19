@@ -24,7 +24,6 @@ public class DesignUITest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setGoals("clean install", "sonar:sonar")
       .setProperty("skipTests", "true")
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }

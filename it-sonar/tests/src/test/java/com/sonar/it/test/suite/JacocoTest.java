@@ -154,7 +154,6 @@ public class JacocoTest {
     return MavenBuild.create(ItUtils.locateProjectPom(projectPath))
       .setProperty("sonar.dynamicAnalysis", "true")
       .setProperty("sonar.java.coveragePlugin", "jacoco")
-      .setProperty("sonar.language", "java")
       .setGoals("sonar:sonar");
   }
 

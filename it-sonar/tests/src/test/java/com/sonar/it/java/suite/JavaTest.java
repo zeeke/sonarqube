@@ -28,8 +28,7 @@ public class JavaTest {
   @Test
   public void shouldSupportJapaneseCharset() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("java/japanese-charset"))
-      .setCleanSonarGoals()
-      .setProperty("sonar.language", "java");
+      .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("java-japanese-charset",
@@ -54,7 +53,6 @@ public class JavaTest {
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
       .setCleanSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
@@ -69,7 +67,6 @@ public class JavaTest {
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
       .setCleanSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 

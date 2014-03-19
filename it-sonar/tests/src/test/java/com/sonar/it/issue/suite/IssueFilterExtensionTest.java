@@ -59,7 +59,6 @@ public class IssueFilterExtensionTest extends AbstractIssueTestCase {
       .setCleanSonarGoals()
       .setProperties("enableIssueFilters", "false")
       // Force language to fix issue with Common Rules
-      .setProperty("sonar.language", "java")
       .setProfile("issues");
     orchestrator.executeBuild(scan);
 
@@ -76,8 +75,6 @@ public class IssueFilterExtensionTest extends AbstractIssueTestCase {
     scan = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
       .setCleanSonarGoals()
       .setProperties("enableIssueFilters", "true")
-      // Force language to fix issue with Common Rules
-      .setProperty("sonar.language", "java")
       .setProfile("issues");
     orchestrator.executeBuild(scan);
 

@@ -140,7 +140,6 @@ public class ProfileChangelogTest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("profile/profile-changelog"))
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false")
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.profile.java", profile)
       .setProperty("sonar.projectDate", projectDate);
     orchestrator.executeBuild(build);

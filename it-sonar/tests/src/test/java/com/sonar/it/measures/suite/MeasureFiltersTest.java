@@ -27,7 +27,6 @@ public class MeasureFiltersTest {
     orchestrator.getDatabase().truncateInspectionTables();
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setCleanSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "true");
     orchestrator.executeBuild(build);
 

@@ -88,7 +88,6 @@ public class BulkDeletionTest {
   private void scanCameleonProject(String overridenProjectKey, String overridenProjectName) {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("administration/cameleon-project"))
       .setCleanSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.dynamicAnalysis", "false")
       .setProperty("artifactSuffix", overridenProjectKey)
       .setProperty("projectName", overridenProjectName);

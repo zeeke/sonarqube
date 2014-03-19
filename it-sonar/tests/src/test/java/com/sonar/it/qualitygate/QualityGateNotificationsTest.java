@@ -82,14 +82,12 @@ public class QualityGateNotificationsTest {
     // Run a first analysis
     MavenBuild build = MavenBuild
       .create(ItUtils.locateProjectPom("shared/sample"))
-      .setProperty("sonar.language", "java")
       .setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
 
     // Run a new analysis so that we get the alert
     build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanPackageSonarGoals()
-      .setProperty("sonar.language", "java")
       .setProperty("sonar.qualitygate", "SimpleQualityGate");
     orchestrator.executeBuild(build);
 
