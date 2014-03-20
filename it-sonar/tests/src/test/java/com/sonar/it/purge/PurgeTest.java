@@ -82,7 +82,7 @@ public class PurgeTest {
     // must be a different date, else a single snapshot is kept per day
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
 
-    int newMeasuresOnTrk = 141;
+    int newMeasuresOnTrk = 139;
     int newMeasuresOnBrc = 350;
     int newMeasuresOnDir = 594;
     int newMeasuresOnFil = 0;
