@@ -8,33 +8,6 @@
   <version>1.0-SNAPSHOT</version>
   <name>SonarSource :: IT :: Platform</name>
 
-  <properties>
-    <abapLatest>3.2-SNAPSHOT</abapLatest>
-    <buildBreakerLatest>1.2-SNAPSHOT</buildBreakerLatest>
-    <cppLatest>2.3-SNAPSHOT</cppLatest>
-    <checkstyleLatest>2.2-SNAPSHOT</checkstyleLatest>
-    <clirrLatest>1.2-SNAPSHOT</clirrLatest>
-    <cobolLatest>1.18-SNAPSHOT</cobolLatest>
-    <cutoffLatest>0.3-SNAPSHOT</cutoffLatest>
-    <devcockpitLatest>1.6-SNAPSHOT</devcockpitLatest>
-    <csharpLatest>3.1-SNAPSHOT</csharpLatest>
-    <fbcontribLatest>1.3-SNAPSHOT</fbcontribLatest>
-    <flexLatest>2.1-SNAPSHOT</flexLatest>
-    <groovyLatest>1.1-SNAPSHOT</groovyLatest>
-    <javascriptLatest>1.7-SNAPSHOT</javascriptLatest>
-    <naturalLatest>1.3-SNAPSHOT</naturalLatest>
-    <pliLatest>1.3-SNAPSHOT</pliLatest>
-    <plsqlLatest>2.7-SNAPSHOT</plsqlLatest>
-    <pmdLatest>2.3-SNAPSHOT</pmdLatest>
-    <reportLatest>1.5-SNAPSHOT</reportLatest>
-    <scmActivityLatest>1.8-SNAPSHOT</scmActivityLatest>
-    <sqaleLatest>2.3-SNAPSHOT</sqaleLatest>
-    <vbLatest>2.1-SNAPSHOT</vbLatest>
-    <vbnetLatest>2.1-SNAPSHOT</vbnetLatest>
-    <viewsLatest>2.6-SNAPSHOT</viewsLatest>
-    <visualstudioLatest>1.1-SNAPSHOT</visualstudioLatest>
-  </properties>
-
   <profiles>
     <profile>
       <id>3.7</id>
@@ -46,28 +19,6 @@
       </activation>
       <properties>
         <sonar.runtimeVersion>3.7.4</sonar.runtimeVersion>
-        <plugins>
-          com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
-          org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
-          com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
-          org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
-          com.sonarsource.cobol:sonar-cobol-plugin:${cobolLatest},
-          com.sonarsource:sonar-dev-cockpit-plugin:1.3,
-          org.codehaus.sonar-plugins:sonar-emma-plugin:1.3,
-          org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
-          org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
-          com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
-          com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
-          com.sonarsource.report:sonar-report-plugin:${reportLatest},
-          org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:1.5.1,
-          com.sonarsource.sqale:sonar-sqale-plugin:1.10,
-          com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
-          com.sonarsource.views:sonar-views-plugin:2.2.1,
-          com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
-          org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest}
-        </plugins>
       </properties>
     </profile>
     <profile>
@@ -80,33 +31,6 @@
       </activation>
       <properties>
         <sonar.runtimeVersion>4.3</sonar.runtimeVersion>
-        <plugins>
-          com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
-          org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
-          org.codehaus.sonar-plugins:sonar-cutoff-plugin:${cutoffLatest},
-          com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
-          org.codehaus.sonar-plugins.java:sonar-checkstyle-plugin:${checkstyleLatest},
-          org.codehaus.sonar-plugins.java:sonar-pmd-plugin:${pmdLatest},
-          org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
-          com.sonarsource.cobol:sonar-cobol-plugin:${cobolLatest},
-          com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
-          com.sonarsource:sonar-dev-cockpit-plugin:${devcockpitLatest},
-          org.codehaus.sonar-plugins:sonar-fb-contrib-plugin:${fbcontribLatest},
-          org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
-          org.codehaus.sonar-plugins.javascript:sonar-javascript-plugin:${javascriptLatest},
-          org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
-          com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
-          com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
-          com.sonarsource.report:sonar-report-plugin:${reportLatest},
-          org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:${scmActivityLatest},
-          com.sonarsource.sqale:sonar-sqale-plugin:${sqaleLatest},
-          com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
-          com.sonarsource.views:sonar-views-plugin:${viewsLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
-          org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest},
-          com.sonarsource.pli:sonar-pli-plugin:${pliLatest}
-        </plugins>
       </properties>
     </profile>
     <profile>
@@ -119,35 +43,8 @@
       </activation>
       <properties>
         <sonar.runtimeVersion>4.4-SNAPSHOT</sonar.runtimeVersion>
-        <plugins>
-          com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
-          org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
-          org.codehaus.sonar-plugins:sonar-cutoff-plugin:${cutoffLatest},
-          com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
-          org.codehaus.sonar-plugins.java:sonar-checkstyle-plugin:${checkstyleLatest},
-          org.codehaus.sonar-plugins.java:sonar-pmd-plugin:${pmdLatest},
-          org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
-          com.sonarsource.cobol:sonar-cobol-plugin:${cobolLatest},
-          com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
-          com.sonarsource:sonar-dev-cockpit-plugin:${devcockpitLatest},
-          org.codehaus.sonar-plugins:sonar-fb-contrib-plugin:${fbcontribLatest},
-          org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
-          org.codehaus.sonar-plugins.javascript:sonar-javascript-plugin:${javascriptLatest},
-          org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
-          com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
-          com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
-          com.sonarsource.report:sonar-report-plugin:${reportLatest},
-          org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:${scmActivityLatest},
-          com.sonarsource.sqale:sonar-sqale-plugin:${sqaleLatest},
-          com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
-          com.sonarsource.views:sonar-views-plugin:${viewsLatest},
-          org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
-          com.sonarsource.vbnet:sonar-vbnet-plugin:${vbnetLatest},
-          org.codehaus.sonar-plugins.visualstudio:sonar-visual-studio-plugin:${visualstudioLatest},
-          com.sonarsource.pli:sonar-pli-plugin:${pliLatest}
-        </plugins>
       </properties>
-    </profile>        
+    </profile>
   </profiles>
   <build>
     <plugins>
@@ -200,10 +97,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.12</version>
+        <version>2.17</version>
         <configuration>
           <systemPropertyVariables>
-            <plugins>${plugins}</plugins>
             <sonar.runtimeVersion>${sonar.runtimeVersion}</sonar.runtimeVersion>
           </systemPropertyVariables>
         </configuration>

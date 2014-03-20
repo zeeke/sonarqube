@@ -26,12 +26,14 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.version.Version;
-import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.sonar.updatecenter.common.Plugin;
+import org.sonar.updatecenter.common.Release;
+import org.sonar.updatecenter.common.UpdateCenter;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
@@ -44,7 +46,9 @@ import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -153,26 +157,35 @@ public class PlatformTest {
   }
 
   private static void configurePlugins(OrchestratorBuilder builder) {
-    String pluginsProperty = builder.getOrchestratorConfiguration().getString("plugins");
-    if (StringUtils.isBlank(pluginsProperty)) {
-      throw new IllegalArgumentException("Missing pluginsProperty: plugins");
+    org.sonar.updatecenter.common.Version sonarVersion = org.sonar.updatecenter.common.Version.create(builder.getSonarVersion());
+    for (Plugin p : findAllCompatiblePlugins(builder.getUpdateCenter(), sonarVersion)) {
+      Release r = p.getLastCompatible(sonarVersion);
+      if ("views".equals(p.getKey())) {
+        viewsVersion = Version.create(r.getVersion().toString());
+      }
+      builder.addPlugin(MavenLocation.create(r.groupId(), r.artifactId(), r.getVersion().toString()));
     }
-    for (String pluginProperty : StringUtils.split(pluginsProperty, ",")) {
-      String[] pluginFields = StringUtils.split(pluginProperty, ":");
-      String artifactId = StringUtils.trim(pluginFields[1]);
-      String version = StringUtils.trim(pluginFields[2]);
-      builder.addPlugin(MavenLocation.create(StringUtils.trim(pluginFields[0]), artifactId, version));
-      if ("sonar-views-plugin".equals(artifactId)) {
-        viewsVersion = Version.create(version);
+  }
+
+  /**
+   * Can't use UpdateCenter::findAllCompatiblePlugins() as it normalize SQ version before comparison
+   */
+  private static List<Plugin> findAllCompatiblePlugins(UpdateCenter center, org.sonar.updatecenter.common.Version sqVersion) {
+    List<Plugin> availables = newArrayList();
+    for (Plugin plugin : center.getUpdateCenterPluginReferential().getPlugins()) {
+      Release release = plugin.getLastCompatible(sqVersion);
+      if (release != null) {
+        availables.add(plugin);
       }
     }
+    return availables;
   }
 
   private static void inspect(File baseDir) {
     MavenBuild build = MavenBuild.create(new File(baseDir, "pom.xml"))
       .setProperty("sonar.cpd.engine", "sonar")
       .setProfile("IT")
-        // following property to not have differences between Sonar version
+      // following property to not have differences between Sonar version
       .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
       .setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
