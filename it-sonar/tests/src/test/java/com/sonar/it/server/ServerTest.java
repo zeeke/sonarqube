@@ -134,7 +134,7 @@ public class ServerTest {
 
       // SONAR-3127 - hide passwords
       "/selenium/server/settings/hide-passwords.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -156,7 +156,7 @@ public class ServerTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("property_relocation",
       "/selenium/server/settings/property_relocation.html"
-      ).build();
+    ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -287,4 +287,32 @@ public class ServerTest {
     assertThat(new File(tempDir, "sonar-it")).doesNotExist();
   }
 
+  /**
+   * SONAR-4843
+   */
+  @Test
+  public void restart_forbidden_if_not_dev_mode() throws Exception {
+    orchestrator = Orchestrator.builderEnv().build();
+    orchestrator.start();
+    try {
+      orchestrator.getServer().adminWsClient().systemClient().restart();
+      fail();
+    } catch (Exception e) {
+      assertThat(e.getMessage()).contains("403");
+    }
+  }
+
+  /**
+   * SONAR-4843
+   */
+  @Test
+  public void restart_on_dev_mode() throws Exception {
+    orchestrator = Orchestrator.builderEnv().setServerProperty("sonar.dev", "true").build();
+    orchestrator.start();
+
+    orchestrator.getServer().adminWsClient().systemClient().restart();
+    assertThat(FileUtils.readFileToString(orchestrator.getServer().getLogs()))
+      .contains("Restart server")
+      .contains("Server restarted");
+  }
 }
