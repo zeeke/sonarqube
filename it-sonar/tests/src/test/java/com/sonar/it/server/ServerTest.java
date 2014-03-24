@@ -20,7 +20,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -292,12 +291,11 @@ public class ServerTest {
    * SONAR-4843
    */
   @Test
-  @Ignore("Wait for next goldenisation")
   public void restart_forbidden_if_not_dev_mode() throws Exception {
     orchestrator = Orchestrator.builderEnv().build();
     orchestrator.start();
     try {
-//      orchestrator.getServer().adminWsClient().systemClient().restart();
+      orchestrator.getServer().adminWsClient().systemClient().restart();
       fail();
     } catch (Exception e) {
       assertThat(e.getMessage()).contains("403");
@@ -308,12 +306,11 @@ public class ServerTest {
    * SONAR-4843
    */
   @Test
-  @Ignore("Wait for next goldenisation")
   public void restart_on_dev_mode() throws Exception {
     orchestrator = Orchestrator.builderEnv().setServerProperty("sonar.dev", "true").build();
     orchestrator.start();
 
-//    orchestrator.getServer().adminWsClient().systemClient().restart();
+    orchestrator.getServer().adminWsClient().systemClient().restart();
     assertThat(FileUtils.readFileToString(orchestrator.getServer().getLogs()))
       .contains("Restart server")
       .contains("Server restarted");
