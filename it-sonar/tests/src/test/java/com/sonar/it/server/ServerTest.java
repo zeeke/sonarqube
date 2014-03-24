@@ -14,6 +14,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -292,13 +293,16 @@ public class ServerTest {
    */
   @Test
   public void restart_forbidden_if_not_dev_mode() throws Exception {
-    orchestrator = Orchestrator.builderEnv().build();
-    orchestrator.start();
-    try {
-      orchestrator.getServer().adminWsClient().systemClient().restart();
-      fail();
-    } catch (Exception e) {
-      assertThat(e.getMessage()).contains("403");
+    // server classloader locks Jar files on Windows
+    if (!SystemUtils.IS_OS_WINDOWS) {
+      orchestrator = Orchestrator.builderEnv().build();
+      orchestrator.start();
+      try {
+        orchestrator.getServer().adminWsClient().systemClient().restart();
+        fail();
+      } catch (Exception e) {
+        assertThat(e.getMessage()).contains("403");
+      }
     }
   }
 
@@ -307,12 +311,15 @@ public class ServerTest {
    */
   @Test
   public void restart_on_dev_mode() throws Exception {
-    orchestrator = Orchestrator.builderEnv().setServerProperty("sonar.dev", "true").build();
-    orchestrator.start();
+    // server classloader locks Jar files on Windows
+    if (!SystemUtils.IS_OS_WINDOWS) {
+      orchestrator = Orchestrator.builderEnv().setServerProperty("sonar.dev", "true").build();
+      orchestrator.start();
 
-    orchestrator.getServer().adminWsClient().systemClient().restart();
-    assertThat(FileUtils.readFileToString(orchestrator.getServer().getLogs()))
-      .contains("Restart server")
-      .contains("Server restarted");
+      orchestrator.getServer().adminWsClient().systemClient().restart();
+      assertThat(FileUtils.readFileToString(orchestrator.getServer().getLogs()))
+        .contains("Restart server")
+        .contains("Server restarted");
+    }
   }
 }
