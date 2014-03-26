@@ -165,7 +165,7 @@
         </property>
       </activation>
       <properties>
-        <sonar.runtimeVersion>4.2-SNAPSHOT</sonar.runtimeVersion>
+        <sonar.runtimeVersion>4.2.1-SNAPSHOT</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
           org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
