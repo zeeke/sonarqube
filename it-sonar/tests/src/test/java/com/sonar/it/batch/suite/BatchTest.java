@@ -12,14 +12,21 @@ import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import com.sonar.orchestrator.util.VersionUtils;
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.Source;
+import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -311,7 +318,7 @@ public class BatchTest {
    */
   @Test
   public void should_display_project_url_after_analysis() throws IOException {
-    Assume.assumeTrue(VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.6"));
+    Assume.assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("3.6"));
 
     BuildResult result = scan("shared/xoo-multi-modules-sample");
 
@@ -355,7 +362,7 @@ public class BatchTest {
     buildResult = scanQuietly("shared/xoo-sample",
       "sonar.branch", "arg$l:");
     assertThat(buildResult.getStatus()).isEqualTo(1);
-    assertThat(buildResult.getLogs()).contains("arg$l: is not a valid branch");
+    assertThat(buildResult.getLogs()).contains("\"arg$l:\" is not a valid branch");
   }
 
   /**
@@ -408,6 +415,20 @@ public class BatchTest {
     scan("batch/custom-module-key");
     assertThat(getResource("com.sonarsource.it.samples:moduleA")).isNotNull();
     assertThat(getResource("com.sonarsource.it.samples:moduleB")).isNotNull();
+  }
+
+  /**
+   * SONAR-4692
+   */
+  @Test
+  public void prevent_same_module_key_in_two_projects() {
+    scan("batch/prevent-common-module/projectAB");
+    assertThat(getResource("com.sonarsource.it.samples:moduleA")).isNotNull();
+    assertThat(getResource("com.sonarsource.it.samples:moduleB")).isNotNull();
+
+    BuildResult result = scanQuietly("batch/prevent-common-module/projectAC");
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("Module \"com.sonarsource.it.samples:moduleA\" is already part of project \"projectAB\"");
   }
 
   private Resource getResource(String key) {
