@@ -53,7 +53,7 @@ public class AntTest {
       builder
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.5-RC1"))
         // PMD is used by testJavaVersion
-        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1"));
+        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1-RC1"));
     } else if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("3.7")) {
       // Update to Sonar Java 2.0 in order to allow installation of Cobertura 1.4
       builder.removeDistributedPlugins()
