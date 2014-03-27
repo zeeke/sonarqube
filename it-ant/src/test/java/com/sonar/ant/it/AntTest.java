@@ -12,7 +12,11 @@ import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.version.Version;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -46,13 +50,10 @@ public class AntTest {
     // SONAR-4358
     // Wating for ORCH-184
     if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("4.2")) {
-      // Update to Sonar Java 2.1 in order to allow installation of Cobertura 1.5-SNAPSHOT
-      builder.removeDistributedPlugins()
-        .setOrchestratorProperty("javaVersion", "2.1-SNAPSHOT")
-        .addPlugin("java")
-        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.5-SNAPSHOT"))
+      builder
+        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.5-RC1"))
         // PMD is used by testJavaVersion
-        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1-SNAPSHOT"));
+        .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1"));
     } else if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("3.7")) {
       // Update to Sonar Java 2.0 in order to allow installation of Cobertura 1.4
       builder.removeDistributedPlugins()
