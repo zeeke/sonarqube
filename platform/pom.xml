@@ -28,7 +28,7 @@
     <pliLatest>1.3-SNAPSHOT</pliLatest>
     <plsqlLatest>2.7-SNAPSHOT</plsqlLatest>
     <pmdLatest>2.1-SNAPSHOT</pmdLatest>
-    <reportLatest>1.4-SNAPSHOT</reportLatest>
+    <reportLatest>1.5-SNAPSHOT</reportLatest>
     <scmActivityLatest>1.8-SNAPSHOT</scmActivityLatest>
     <securityRulesLatest>0.4-SNAPSHOT</securityRulesLatest>
     <sqaleLatest>2.2-SNAPSHOT</sqaleLatest>
