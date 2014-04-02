@@ -202,4 +202,8 @@ public final class ItUtils {
     }
     return count;
   }
+
+  public static boolean isUpgradableDatabase(Orchestrator orchestrator) {
+    return !"h2".equals(orchestrator.getDatabase().getClient().getDialect());
+  }
 }

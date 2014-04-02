@@ -40,8 +40,7 @@ public class ResourceKeyMigrationTest {
   @Test
   public void testResourceKeyMigration() {
     startServer("4.1", false);
-    // Database migration is not supported with H2
-    assumeTrue(!"h2".equals(orchestrator.getDatabase().getClient().getDialect()));
+    assumeTrue(ItUtils.isUpgradableDatabase(orchestrator));
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
     scanProject();
     int initialIssues = countIssues(PROJECT_KEY);

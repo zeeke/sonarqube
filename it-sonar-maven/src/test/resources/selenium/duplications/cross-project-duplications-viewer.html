@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>cross-project-duplications-viewer</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">cross-project-duplications-viewer</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/resource/index/com.sonarsource.it.samples.duplications:b:src/main/java/MyClass2.java?tab=duplications</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForElementPresent</td>
+        <td>class=accordion-item</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>m_duplicated_lines_density</td>
+        <td>66.7%</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>m_lines</td>
+        <td>15</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>m_duplicated_lines</td>
+        <td>10</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>m_duplicated_blocks</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>duplGroup_0</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>source-0</td>
+        <td>*MyClass2*</td>
+    </tr>
+    <tr>
+        <td>assertElementPresent</td>
+        <td>css=table.code</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>Link=MyClass.java</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>setTimeout</td>
+        <td>90000</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>source-0</td>
+        <td>glob:*a*MyClass*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

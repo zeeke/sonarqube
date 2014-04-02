@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>display-covered-lines-per-test-in-tests-viewer</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">display-covered-lines-per-test-in-tests-viewer</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples:sample-with-tests:src/test/java/sample/SampleTest.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*SampleTest*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Tests</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*100.0%*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>body</td>
+	<td>*Duration*Covered Lines*Unit test name*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.tests-viewer-body</td>
+	<td>*5*should_return_i*4*should_return_to_string*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>class=test-overed-lines-link-0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>accordion-item1</td>
+	<td>*Files covered by should_return_i*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.testcase-head</td>
+	<td>*Covered Lines*File*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.testcase-body</td>
+	<td>*5*sample/Sample*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=src/main/java/sample/Sample.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>accordion-item2</td>
+	<td>*public class Sample*</td>
+</tr>
+<tr>
+	<td>assertSelectedLabel</td>
+	<td>css=#accordion-item2 .coverage_filter</td>
+	<td>Covered lines</td>
+</tr>
+<tr>
+	<td>assertSelectedLabel</td>
+	<td>css=#accordion-item2 .test_case_filter</td>
+	<td>should_return_i</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>SONAR-538-duplications_viewer</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">duplications_viewer</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>open</td>
+        <td>/sonar/drilldown/measures/com.sonarsource.it.samples:duplications?highlight=duplicated_lines_density&amp;metric=duplicated_lines</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>click</td>
+        <td>link=Class1.java</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>waitForText</td>
+        <td>class=source_title</td>
+        <td>glob:*duplicated_same_lines_within_3_classes/Class1.java*</td>
+    </tr>
+    <tr>
+        <td>waitForElementPresent</td>
+        <td>css=.source_header</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.source_tabs a.selected</td>
+        <td>Duplications</td>
+    </tr>
+    <tr>
+        <td>assertText</td>
+        <td>css=.source_header</td>
+        <td>glob:*Duplicated lines*</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

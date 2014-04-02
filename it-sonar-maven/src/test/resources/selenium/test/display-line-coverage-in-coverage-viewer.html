@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>display-line-coverage-in-coverage-viewer</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+    <thead>
+    <tr>
+        <td rowspan="1" colspan="3">display-line-coverage-in-coverage-viewer</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples:sample-with-tests:src/main/java/sample/Sample.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*sample/Sample*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.source_tabs</td>
+	<td>*Coverage*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Coverage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Line coverage*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.sources-testable-link-7</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.sources-testable-link-7</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>accordion-item1</td>
+	<td>*Tests covering src/main/java/sample/Sample.java on line 7*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.testable-testplan-link</td>
+	<td>*sample/SampleTest*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.testable-body</td>
+	<td>*should_return_i*should_return_to_string*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.testable-testplan-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>accordion-item2</td>
+	<td>*public class SampleTest*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=should_return_i</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>accordion-item2</td>
+	<td>*Files covered by should_return_i*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>accordion-item2</td>
+	<td>*package sample*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=#accordion-item2 .testcase-body</td>
+	<td>*5*src/main/java/sample/Sample.java*</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
