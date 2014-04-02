@@ -6,22 +6,17 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
-import org.junit.ClassRule;
 import org.junit.Test;
 
-public class IntegrationTestTest {
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class IntegrationTestTest extends AbstractMavenTest {
 
   @BeforeClass
   public static void inspectProject() {
     orchestrator.getDatabase().truncateInspectionTables();
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("test/jacoco-integration-tests")).setGoals("clean", "install", "sonar:sonar");
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("test/jacoco-integration-tests")).setGoals(cleanInstallSonarGoal());
     orchestrator.executeBuilds(build);
   }
 

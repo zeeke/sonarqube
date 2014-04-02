@@ -7,24 +7,19 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.number.OrderingComparisons.greaterThan;
 import static org.junit.Assert.assertThat;
 
-public class JacocoTest {
-
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class JacocoTest extends AbstractMavenTest {
 
   @Before
   public void delete_data() {
@@ -131,7 +126,7 @@ public class JacocoTest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
       .setGoals("clean test-compile");
     orchestrator.executeBuild(build);
-    build.setGoals("sonar:sonar");
+    build.setGoals(sonarGoal());
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("test-display-coverage-per-test",
@@ -143,18 +138,16 @@ public class JacocoTest {
   }
 
   private MavenBuild newBuild(String projectPath, boolean skipTests) {
-    return MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom(projectPath))
+    return MavenBuild.create(ItUtils.locateProjectPom(projectPath))
       .addGoal("clean install")
-      .withProperty("skipTests", String.valueOf(skipTests))
-      .build();
+      .setProperty("skipTests", String.valueOf(skipTests));
   }
 
   private MavenBuild newAnalysis(String projectPath) {
     return MavenBuild.create(ItUtils.locateProjectPom(projectPath))
       .setProperty("sonar.dynamicAnalysis", "true")
       .setProperty("sonar.java.coveragePlugin", "jacoco")
-      .setGoals("sonar:sonar");
+      .setGoals(sonarGoal());
   }
 
 }

@@ -6,11 +6,9 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
@@ -21,10 +19,7 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class MavenTest {
-
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class MavenTest extends AbstractMavenTest {
 
   @Before
   public void deleteData() {
@@ -34,7 +29,7 @@ public class MavenTest {
   @Test
   public void shouldSupportJarWithoutSources() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/project-with-module-without-sources"))
-      .setCleanSonarGoals();
+      .setGoals(cleanSonarGoal());
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient()
@@ -51,7 +46,7 @@ public class MavenTest {
   @Test
   public void shouldSupportJeeProjects() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/jee"))
-      .setGoals("clean install", "sonar:sonar");
+      .setGoals(cleanInstallSonarGoal());
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.jee:parent", "files"));
@@ -67,7 +62,7 @@ public class MavenTest {
   @Test
   public void shouldSupportMavenExtensions() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-extensions"))
-      .setCleanSonarGoals();
+      .setGoals(cleanSonarGoal());
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-extensions", "files"));
@@ -81,7 +76,7 @@ public class MavenTest {
   public void testBadMavenParameters() {
     // should not fail
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-parameters"))
-      .setCleanSonarGoals();
+      .setGoals(cleanSonarGoal());
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.maven-bad-parameters:parent", "files"));
@@ -91,7 +86,7 @@ public class MavenTest {
   @Test
   public void shouldAnalyzeMultiModules() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/modules-order"))
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
@@ -113,7 +108,7 @@ public class MavenTest {
   @Test
   public void shouldSupportDifferentDeclarationsForModules() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/modules-declaration"))
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
     Sonar sonar = orchestrator.getServer().getWsClient();
@@ -144,7 +139,7 @@ public class MavenTest {
   @Ignore("TODO should be migrated as it uses Cobertura")
   public void testMavenPluginConfiguration() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-plugin-configuration"))
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperty("sonar.java.coveragePlugin", "cobertura");
     orchestrator.executeBuild(build);
 
@@ -155,7 +150,7 @@ public class MavenTest {
   @Test
   public void build_helper_plugin_should_add_dirs_when_dynamic_analysis() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
-      .setCleanPackageSonarGoals()
+      .setGoals(cleanPackageSonarGoal())
       .setProperty("sonar.dynamicAnalysis", "true");
     orchestrator.executeBuild(build);
 
@@ -169,7 +164,7 @@ public class MavenTest {
   @Test
   public void build_helper_plugin_should_add_dirs_when_static_analysis() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
@@ -183,7 +178,7 @@ public class MavenTest {
   public void should_support_shade_with_dependency_reduced_pom_with_clean_install_sonar_goals() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/shade-with-dependency-reduced-pom"))
       .setProperty("sonar.dynamicAnalysis", "false")
-      .setGoals("clean", "install", "sonar:sonar");
+      .setGoals(cleanInstallSonarGoal());
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isEqualTo(0);
     assertThat(result.getLogs()).doesNotContain(
@@ -197,12 +192,12 @@ public class MavenTest {
   public void should_prevent_analysis_of_module_then_project() {
     MavenBuild scan = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample/module_a"))
       .setProperty("sonar.dynamicAnalysis", "false")
-      .setCleanSonarGoals();
+      .setGoals(cleanSonarGoal());
     orchestrator.executeBuild(scan);
 
     scan = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
       .setProperty("sonar.dynamicAnalysis", "false")
-      .setCleanSonarGoals();
+      .setGoals(cleanSonarGoal());
     BuildResult result = orchestrator.executeBuildQuietly(scan);
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("The project 'com.sonarsource.it.samples:module_a' is already defined in SonarQube "
@@ -216,7 +211,7 @@ public class MavenTest {
    */
   @Test
   public void maven_project_with_only_test_dir() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-only-test-dir")).setCleanPackageSonarGoals();
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-only-test-dir")).setGoals(cleanPackageSonarGoal());
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-only-test-dir", "tests", "files"));
@@ -229,7 +224,7 @@ public class MavenTest {
    */
   @Test
   public void override_sources() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-override-sources")).setGoals("sonar:sonar");
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-override-sources")).setGoals(sonarGoal());
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-override-sources", "files"));
@@ -244,7 +239,7 @@ public class MavenTest {
    */
   @Test
   public void inclusions_apply_to_source_dirs() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/inclusions_apply_to_source_dirs")).setGoals("sonar:sonar");
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/inclusions_apply_to_source_dirs")).setGoals(sonarGoal());
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:inclusions_apply_to_source_dirs", "files"));
@@ -259,7 +254,7 @@ public class MavenTest {
    */
   @Test
   public void fail_if_bad_value_of_sonar_sources_property() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-sources-property")).setGoals("sonar:sonar");
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-sources-property")).setGoals(sonarGoal());
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains(
@@ -271,7 +266,7 @@ public class MavenTest {
    */
   @Test
   public void fail_if_bad_value_of_sonar_tests_property() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-tests-property")).setGoals("sonar:sonar");
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-tests-property")).setGoals(sonarGoal());
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains(

@@ -6,31 +6,27 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import org.junit.BeforeClass;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class SourceFiltersTest {
-  static final String PROJECT = "com.sonarsource.it.projects.batch:source-filters";
+public class SourceFiltersTest extends AbstractMavenTest {
 
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+  static final String PROJECT = "com.sonarsource.it.projects.batch:source-filters";
 
   @BeforeClass
   public static void scanProject() {
     orchestrator.getDatabase().truncateInspectionTables();
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/source-filters"))
       .setProperty("sonar.exclusions", "src/main/java/sourceFilters/**/*BeExcluded.java")
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperties("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }

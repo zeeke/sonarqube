@@ -6,19 +6,14 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
+
 import static org.fest.assertions.Assertions.assertThat;
 
-public class JavaTest {
-
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class JavaTest extends AbstractMavenTest {
 
   @Before
   public void deleteData() {
@@ -28,7 +23,7 @@ public class JavaTest {
   @Test
   public void shouldSupportJapaneseCharset() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("java/japanese-charset"))
-      .setCleanSonarGoals();
+      .setGoals(cleanSonarGoal());
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("java-japanese-charset",
@@ -40,7 +35,7 @@ public class JavaTest {
   // SONAR-3726 & SONAR-3823
   @Test
   public void shouldNotActivateJavaRelatedExtensionsIfNotJavaProject() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("java/non-java-project")).setGoals("clean", "sonar:sonar");
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("java/non-java-project")).setGoals(cleanSonarGoal());
     String logs = orchestrator.executeBuild(build).getLogs();
 
     assertThat(logs).doesNotContain("Cobertura");
@@ -52,7 +47,7 @@ public class JavaTest {
   public void shouldHighlightJavaSourceCode() throws Exception {
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
@@ -66,7 +61,7 @@ public class JavaTest {
   public void shouldHighlightJavaSymbolsUsage() throws Exception {
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 

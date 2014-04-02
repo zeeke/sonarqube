@@ -6,32 +6,27 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class DuplicationsTest {
-
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class DuplicationsTest extends AbstractMavenTest {
 
   @BeforeClass
   public static void init() {
     orchestrator.getDatabase().truncateInspectionTables();
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/file-duplications"))
-      .setCleanPackageSonarGoals()
+      .setGoals(cleanPackageSonarGoal())
       .setProperties("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
   }
@@ -156,7 +151,7 @@ public class DuplicationsTest {
   @Test
   public void hugeFile() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("huge-file"))
-      .setCleanPackageSonarGoals()
+      .setGoals(cleanPackageSonarGoal())
       .setProperties("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
     Resource file = getResource("com.sonarsource.it.samples:huge-file:src/main/java/huge/HugeFile.java");
@@ -181,7 +176,7 @@ public class DuplicationsTest {
   @Test
   public void use_duplication_exclusions() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/file-duplications"))
-      .setCleanPackageSonarGoals()
+      .setGoals(cleanPackageSonarGoal())
       .setProperties("sonar.dynamicAnalysis", "false")
       .setProperties("sonar.cpd.exclusions", "**/Class*");
     orchestrator.executeBuild(build);

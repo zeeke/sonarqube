@@ -6,11 +6,9 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
-import org.junit.After;
-import org.junit.ClassRule;
+import org.junit.Before;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -21,12 +19,9 @@ import static org.fest.assertions.Assertions.assertThat;
  * One language per module
  *
  */
-public class OldMultiLanguageTest {
+public class OldMultiLanguageTest extends AbstractMavenTest {
 
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
-
-  @After
+  @Before
   public void cleanDatabase() {
     orchestrator.getDatabase().truncateInspectionTables();
   }
@@ -38,7 +33,7 @@ public class OldMultiLanguageTest {
       .setProperty("sonar.profile.java", "empty")
       .setProperty("sonar.profile.js", "empty")
       .setProperty("sonar.profile.py", "empty")
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setDebugLogs(true);
     BuildResult result = orchestrator.executeBuild(build);
 

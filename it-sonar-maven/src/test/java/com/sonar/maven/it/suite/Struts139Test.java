@@ -6,15 +6,12 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.lang.StringUtils;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.BeforeClass;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Dependency;
 import org.sonar.wsclient.services.DependencyQuery;
@@ -33,10 +30,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.number.OrderingComparisons.greaterThan;
 import static org.junit.Assert.assertThat;
 
-public class Struts139Test {
-
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class Struts139Test extends AbstractMavenTest {
 
   private static final String PROJECT_STRUTS = "org.apache.struts:struts-parent";
   private static final String MODULE_CORE = "org.apache.struts:struts-core";
@@ -49,12 +43,12 @@ public class Struts139Test {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
-      .setGoals("clean", "verify", "sonar:sonar")
+      .setGoals(cleanVerifySonarGoal())
       .setProperty("skipTests", "true");
     orchestrator.executeBuild(build);
 
     MavenBuild analysis = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
-      .setGoals("sonar:sonar")
+      .setGoals(sonarGoal())
       .setProperty("sonar.dynamicAnalysis", "true")
       .setProperty("sonar.profile.java", "sonar-way-2.7");
     orchestrator.executeBuilds(build, analysis);

@@ -6,21 +6,16 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Delta.delta;
 
-public class CoverageExclusionsTest {
-
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class CoverageExclusionsTest extends AbstractMavenTest {
 
   @Before
   public void resetData() {
@@ -82,7 +77,7 @@ public class CoverageExclusionsTest {
     return MavenBuild.create()
       .setPom(ItUtils.locateProjectPom(projectPath))
       .setProperties(properties)
-      .setCleanPackageSonarGoals();
+      .setGoals(cleanPackageSonarGoal());
   }
 
   private Resource getResourceForCoverage(String componentKey) {

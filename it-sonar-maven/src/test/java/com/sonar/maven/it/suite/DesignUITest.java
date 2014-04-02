@@ -6,22 +6,19 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
-import org.junit.ClassRule;
 import org.junit.Test;
 
-public class DesignUITest {
-
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class DesignUITest extends AbstractMavenTest {
 
   @BeforeClass
   public static void analyseProject() throws Exception {
+    orchestrator.getDatabase().truncateInspectionTables();
+
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
-      .setGoals("clean install", "sonar:sonar")
+      .setGoals(cleanInstallSonarGoal())
       .setProperty("skipTests", "true")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);

@@ -6,45 +6,40 @@
 package com.sonar.maven.it.suite;
 
 import com.sonar.maven.it.ItUtils;
-
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.ProjectDeleteQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class CrossProjectDuplicationsTest {
-
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class CrossProjectDuplicationsTest extends AbstractMavenTest {
 
   @Before
   public void analyzeProjects() {
     orchestrator.getDatabase().truncateInspectionTables();
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/cross-project/a"))
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperty("sonar.cpd.cross_project", "true")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     build = MavenBuild.create(ItUtils.locateProjectPom("duplications/cross-project/b"))
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperty("sonar.cpd.cross_project", "true")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
     build = MavenBuild.create(ItUtils.locateProjectPom("duplications/cross-project/b"))
-      .setCleanSonarGoals()
+      .setGoals(cleanSonarGoal())
       .setProperty("sonar.cpd.cross_project", "true")
       .setProperty("sonar.branch", "branch")
       .setProperty("sonar.dynamicAnalysis", "false");

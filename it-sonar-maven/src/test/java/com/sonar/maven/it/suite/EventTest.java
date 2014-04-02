@@ -6,10 +6,8 @@
 package com.sonar.maven.it.suite;
 
 import com.google.common.collect.Lists;
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.After;
-import org.junit.ClassRule;
+import org.junit.Before;
 import org.junit.Test;
 import org.sonar.wsclient.services.Event;
 import org.sonar.wsclient.services.EventQuery;
@@ -18,17 +16,13 @@ import java.util.List;
 import java.util.Properties;
 
 import static com.sonar.maven.it.ItUtils.inspectWithoutTests;
-
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-public class EventTest {
+public class EventTest extends AbstractMavenTest {
 
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
-
-  @After
+  @Before
   public void clean() {
     orchestrator.getDatabase().truncateInspectionTables();
   }

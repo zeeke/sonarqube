@@ -5,15 +5,12 @@
  */
 package com.sonar.maven.it.suite;
 
-import com.sonar.maven.it.ItUtils;
-
 import com.google.common.collect.Lists;
-import com.sonar.orchestrator.Orchestrator;
+import com.sonar.maven.it.ItUtils;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.db.Database;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -22,10 +19,7 @@ import java.util.Map;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class LinksTest {
-
-  @ClassRule
-  public static Orchestrator orchestrator = MavenTestSuite.ORCHESTRATOR;
+public class LinksTest extends AbstractMavenTest {
 
   private static Object[] expectedLinks = new String[] {
     "homepage=http://www.simplesample.org_OVERRIDDEN",
@@ -34,6 +28,11 @@ public class LinksTest {
     "scm=https://github.com/SonarSource/simplesample",
     "scm_dev=scm:git:git@github.com:SonarSource/simplesample.git"
   };
+
+  @Before
+  public void deleteData() {
+    orchestrator.getDatabase().truncateInspectionTables();
+  }
 
   @Before
   @After
@@ -47,7 +46,7 @@ public class LinksTest {
   @Test
   public void shouldUseLinkPropertiesOverPomLinksInMaven() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/links-project"))
-      .setCleanPackageSonarGoals()
+      .setGoals(cleanPackageSonarGoal())
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 
