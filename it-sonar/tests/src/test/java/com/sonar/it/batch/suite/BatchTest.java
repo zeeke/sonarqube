@@ -340,29 +340,28 @@ public class BatchTest {
   }
 
   /**
-   * SONAR-4188
+   * SONAR-4188, SONAR-5178
    */
   @Test
   public void should_display_explicit_message_when_invalid_project_key_or_branch() {
     BuildResult buildResult = scanQuietly("shared/xoo-sample",
       "sonar.projectKey", "arg$l:");
     assertThat(buildResult.getStatus()).isEqualTo(1);
-    assertThat(buildResult.getLogs()).contains("Invalid project key")
-      .contains("arg$l:")
+    assertThat(buildResult.getLogs()).contains("\"arg$l:\" is not a valid project or module key")
       .contains("Allowed characters");
 
     // SONAR-4629
     buildResult = scanQuietly("shared/xoo-sample",
       "sonar.projectKey", "12345");
     assertThat(buildResult.getStatus()).isEqualTo(1);
-    assertThat(buildResult.getLogs()).contains("Invalid project key")
-      .contains("12345")
+    assertThat(buildResult.getLogs()).contains("\"12345\" is not a valid project or module key")
       .contains("Allowed characters");
 
     buildResult = scanQuietly("shared/xoo-sample",
       "sonar.branch", "arg$l:");
     assertThat(buildResult.getStatus()).isEqualTo(1);
-    assertThat(buildResult.getLogs()).contains("\"arg$l:\" is not a valid branch");
+    assertThat(buildResult.getLogs()).contains("\"arg$l:\" is not a valid branch")
+      .contains("Allowed characters");
   }
 
   /**
