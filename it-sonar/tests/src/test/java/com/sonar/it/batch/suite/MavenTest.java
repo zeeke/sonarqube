@@ -37,7 +37,8 @@ public class MavenTest {
       .setCleanSonarGoals();
     orchestrator.executeBuild(build);
 
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.project-with-module-without-sources:parent", "files"));
+    Resource project = orchestrator.getServer().getWsClient()
+      .find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.project-with-module-without-sources:parent", "files"));
     assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
 
     Resource subProject = orchestrator.getServer().getWsClient().find(ResourceQuery.create("com.sonarsource.it.samples.project-with-module-without-sources:without-sources"));
@@ -149,17 +150,6 @@ public class MavenTest {
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-plugin-configuration", "coverage"));
     assertThat(project.getMeasureIntValue("coverage")).isGreaterThan(0);
-  }
-
-  @Test
-  public void build_helper_plugin_should_add_dirs_when_dynamic_analysis() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
-      .setCleanPackageSonarGoals()
-      .setProperty("sonar.dynamicAnalysis", "true");
-    orchestrator.executeBuild(build);
-
-    checkBuildHelperFiles();
-    checkBuildHelperTestFiles();
   }
 
   /**
