@@ -8,19 +8,25 @@ package com.sonar.runner.it;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.ResourceLocation;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 import org.sonar.wsclient.services.Violation;
 import org.sonar.wsclient.services.ViolationQuery;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
 
 public class JavaTest extends RunnerTestCase {
+
+  @Rule
+  public TemporaryFolder temp = new TemporaryFolder();
 
   public JavaTest(boolean fork) {
     super(fork);
@@ -34,7 +40,6 @@ public class JavaTest extends RunnerTestCase {
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
 
     SonarRunner build = newRunner(new File("projects/java-sample"))
-      .setProperty("sonarRunner.mode", "fork")
       .setProperty("sonar.verbose", "true")
       .addArguments("-e", "-X")
       .setProfile("sonar-way");
@@ -112,8 +117,6 @@ public class JavaTest extends RunnerTestCase {
 
   @Test
   public void basedir_contains_java_sources() {
-    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("3.0"));
-
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
     SonarRunner build = newRunner(new File("projects/basedir-with-source")).setProfile("sonar-way");
     orchestrator.executeBuild(build);
@@ -128,8 +131,6 @@ public class JavaTest extends RunnerTestCase {
    */
   @Test
   public void should_support_simple_project_keys() {
-    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("3.0"));
-
     orchestrator.getServer().restoreProfile(ResourceLocation.create("/sonar-way-profile.xml"));
     SonarRunner build = newRunner(new File("projects/java-sample"))
       .setProjectKey("SAMPLE")
@@ -186,6 +187,7 @@ public class JavaTest extends RunnerTestCase {
    */
   @Test
   public void should_log_message_when_deprecated_properties_are_used() {
+    assumeTrue(!orchestrator.getServer().version().isGreaterThanOrEquals("4.3"));
     SonarRunner build = newRunner(new File("projects/using-deprecated-props"));
 
     BuildResult result = orchestrator.executeBuild(build);
@@ -215,7 +217,7 @@ public class JavaTest extends RunnerTestCase {
   public void should_fail_if_unable_to_connect() {
     assumeTrue(Util.runnerVersion(orchestrator).isGreaterThan("2.1"));
 
-    SonarRunner build = newRunner(new File("projects/multi-module/failures/unexisting-config-file"))
+    SonarRunner build = newRunner(new File("projects/java-sample"))
       .setProperty("sonar.host.url", "http://foo");
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
@@ -223,6 +225,20 @@ public class JavaTest extends RunnerTestCase {
     assertThat(result.getStatus()).isNotEqualTo(0);
     // with the following message
     assertThat(result.getLogs()).contains("ERROR: Sonar server 'http://foo' can not be reached");
+  }
+
+  // SONARPLUGINS-3574
+  @Test
+  public void run_from_external_location() throws IOException {
+    File tempDir = temp.newFolder();
+    SonarRunner build = newRunner(tempDir)
+      .setProperty("sonar.projectBaseDir", new File("projects/java-sample").getAbsolutePath())
+      .addArguments("-e");
+    orchestrator.executeBuild(build);
+
+    Resource project = orchestrator.getServer().getWsClient().find(new ResourceQuery("java:sample").setMetrics("files", "ncloc", "classes", "lcom4", "violations"));
+    assertThat(project.getDescription()).isEqualTo("This is a Java sample");
+    assertThat(project.getVersion()).isEqualTo("1.2.3");
   }
 
   private String findbugsFileKey() {

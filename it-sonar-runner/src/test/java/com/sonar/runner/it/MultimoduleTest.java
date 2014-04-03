@@ -45,10 +45,10 @@ public class MultimoduleTest extends RunnerTestCase {
     assertThat(module2.getVersion()).isEqualTo("1.2.3");
 
     // And verify that the working directories are all located in the root folder
-    File baseDir = new File("projects/multi-module/simplest/simplest-with-props-on-root/.sonar");
-    assertThat(baseDir).exists();
-    assertThat(new File(baseDir, "simplest-with-props-on-root_module1")).exists();
-    assertThat(new File(baseDir, "simplest-with-props-on-root_module2")).exists();
+    File workDir = new File("projects/multi-module/simplest/simplest-with-props-on-root/.sonar");
+    assertThat(workDir).exists();
+    assertThat(new File(workDir, "simplest-with-props-on-root_module1")).exists();
+    assertThat(new File(workDir, "simplest-with-props-on-root_module2")).exists();
     assertThat(new File("projects/multi-module/simplest/simplest-with-props-on-root/module1/.sonar")).doesNotExist();
     assertThat(new File("projects/multi-module/simplest/simplest-with-props-on-root/module2/.sonar")).doesNotExist();
   }
