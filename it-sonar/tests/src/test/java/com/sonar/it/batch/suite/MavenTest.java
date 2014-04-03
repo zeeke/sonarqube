@@ -153,19 +153,6 @@ public class MavenTest {
   }
 
   /**
-   * There was a regression in 2.9 and 2.10, which was fixed in 2.10.1 and 2.11 - SONAR-2744
-   */
-  @Test
-  public void build_helper_plugin_should_add_dirs_when_static_analysis() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
-      .setCleanSonarGoals()
-      .setProperty("sonar.dynamicAnalysis", "false");
-    orchestrator.executeBuild(build);
-
-    checkBuildHelperFiles();
-  }
-
-  /**
    * See SONAR-3843
    */
   @Test
