@@ -230,6 +230,8 @@ public class JavaTest extends RunnerTestCase {
   // SONARPLUGINS-3574
   @Test
   public void run_from_external_location() throws IOException {
+    assumeTrue(Util.runnerVersion(orchestrator).isGreaterThan("2.4"));
+
     File tempDir = temp.newFolder();
     SonarRunner build = newRunner(tempDir)
       .setProperty("sonar.projectBaseDir", new File("projects/java-sample").getAbsolutePath())
