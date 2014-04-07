@@ -18,6 +18,7 @@ import org.sonar.wsclient.services.ResourceQuery;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assume.assumeFalse;
 
 public class MavenTest extends AbstractMavenTest {
 
@@ -149,6 +150,8 @@ public class MavenTest extends AbstractMavenTest {
 
   @Test
   public void build_helper_plugin_should_add_dirs_when_dynamic_analysis() {
+    // sonar.phase is no more supported in SQ 4.3
+    assumeFalse(orchestrator.getServer().version().isGreaterThanOrEquals("4.3"));
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
       .setGoals(cleanPackageSonarGoal())
       .setProperty("sonar.dynamicAnalysis", "true");
@@ -163,6 +166,8 @@ public class MavenTest extends AbstractMavenTest {
    */
   @Test
   public void build_helper_plugin_should_add_dirs_when_static_analysis() {
+    // sonar.phase is no more supported in SQ 4.3
+    assumeFalse(orchestrator.getServer().version().isGreaterThanOrEquals("4.3"));
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/many-source-dirs"))
       .setGoals(cleanSonarGoal())
       .setProperty("sonar.dynamicAnalysis", "false");
