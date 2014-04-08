@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2012 SonarSource SA
+ * Copyright (C) 2009-2014 SonarSource SA
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
@@ -83,6 +83,27 @@ public class ServerAdministrationTest {
       // quick test of the first widget
       assertThat(((Map) widgets.get(0)).get("title")).isNotNull();
 
+      EntityUtils.consume(response.getEntity());
+
+    } finally {
+      httpclient.getConnectionManager().shutdown();
+    }
+  }
+
+  /**
+   * SONAR-5197
+   */
+  @Test
+  public void api_ws_shortcut() throws Exception {
+    HttpClient httpclient = new DefaultHttpClient();
+    try {
+      HttpGet get = new HttpGet(orchestrator.getServer().getUrl() + "/api");
+      HttpResponse response = httpclient.execute(get);
+
+      assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+      String json = IOUtils.toString(response.getEntity().getContent());
+      Map jsonAsMap = (Map) JSONValue.parse(json);
+      assertThat(jsonAsMap.get("webServices")).isNotNull();
       EntityUtils.consume(response.getEntity());
 
     } finally {
