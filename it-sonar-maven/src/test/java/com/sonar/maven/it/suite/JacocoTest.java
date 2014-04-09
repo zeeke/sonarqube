@@ -109,7 +109,7 @@ public class JacocoTest extends AbstractMavenTest {
       .setProperty("sonar.dynamicAnalysis", "true")
       .setProperty("sonar.java.coveragePlugin", "jacoco")
       .setProperty("sonar.jacoco.excludes", "*Hello")
-      .setGoals(cleanSonarGoal());
+      .setGoals(sonarGoal());
     orchestrator.executeBuild(analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:with-tests",

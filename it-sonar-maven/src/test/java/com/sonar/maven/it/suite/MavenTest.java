@@ -294,8 +294,8 @@ public class MavenTest extends AbstractMavenTest {
       assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:src/main/java/FirstClass.java")).isNotNull();
       assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:src/main/java2/SecondClass.java")).isNotNull();
     } else {
-      assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:FirstClass")).isNotNull();
-      assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:SecondClass")).isNotNull();
+      assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:[default].FirstClass")).isNotNull();
+      assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:[default].SecondClass")).isNotNull();
     }
   }
 
