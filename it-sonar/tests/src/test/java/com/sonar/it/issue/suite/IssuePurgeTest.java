@@ -28,13 +28,13 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
    * SONAR-4308
    */
   @Test
-  public void should_delete_all_closed_issues() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
+  public void delete_all_closed_issues() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
 
     // Generate some issues
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7");
-    orchestrator.executeBuilds(scan);
+    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false")
+      .setProfile("with-many-rules"));
 
     // All the issues are open
     List<Issue> issues = search(IssueQuery.create()).list();
@@ -43,9 +43,8 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     }
 
     // Second scan with empty profile -> all issues are resolve and closed -> deleted by purge because property value is zero
-    scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "0");
-    orchestrator.executeBuilds(scan);
+    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "0"));
     issues = search(IssueQuery.create()).list();
     assertThat(issues).isEmpty();
   }
@@ -54,13 +53,13 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
    * SONAR-4308
    */
   @Test
-  public void should_purge_old_closed_issues() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
+  public void purge_old_closed_issues() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
 
     // Generate some issues
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "sonar-way-2.7", "sonar.projectDate", "2010-01-01");
-    orchestrator.executeBuilds(scan);
+    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2010-01-01")
+      .setProfile("with-many-rules"));
 
     // All the issues are open
     List<Issue> issues = search(IssueQuery.create()).list();
@@ -70,9 +69,8 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
 
     // Second scan with empty profile -> all issues are resolve and closed
     // -> Not delete because less than 30 days long
-    scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.projectDate", "2010-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30");
-    orchestrator.executeBuilds(scan);
+    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2010-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30"));
     issues = search(IssueQuery.create()).list();
     for (Issue issue : issues) {
       assertThat(issue.resolution()).isNotNull();
@@ -80,10 +78,45 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     }
 
     // Third scan much later -> closed issues are deleted
-    scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.profile", "empty", "sonar.projectDate", "2013-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30");
-    orchestrator.executeBuilds(scan);
+    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2013-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30"));
     issues = search(IssueQuery.create()).list();
     assertThat(issues.isEmpty());
+  }
+
+  /**
+   * SONAR-5200
+   */
+  @Test
+  public void resolve_issues_when_removing_module() throws Exception {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
+
+    // Generate some issues
+    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false")
+      .setProfile("with-many-rules"));
+
+    // All the issues are open
+    List<Issue> issues = search(IssueQuery.create()).list();
+    for (Issue issue : issues) {
+      assertThat(issue.resolution()).isNull();
+    }
+
+    int issuesOnModuleB = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample:module_b")).list().size();
+
+    // Second scan without module B -> issues on module B are resolved as removed and closed
+    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.modules", "module_a")
+      .setProfile("with-many-rules"));
+
+    // Resolved should should all be mark as REMOVED and affect to module b
+    issues = search(IssueQuery.create().resolved(true)).list();
+    for (Issue issue : issues) {
+      assertThat(issue.resolution()).isEqualTo("REMOVED");
+      assertThat(issue.status()).isEqualTo("CLOSED");
+      assertThat(issue.componentKey()).contains("com.sonarsource.it.samples:multi-modules-sample:module_b");
+    }
+
+    assertThat(issues).hasSize(issuesOnModuleB);
   }
 }
