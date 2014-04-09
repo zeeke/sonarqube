@@ -49,7 +49,7 @@ public class PurgeTest {
     assertThat(count("projects where qualifier in ('FIL')")).as("Wrong number of files").isEqualTo(320);
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
 
-    // Number of measures was more, but as debt from rule templates defining debt is ignored, there's no more debt measures on following rules :
+    // SONAR-5195 Number of measures was more, but as debt from rule templates defining debt is ignored, there's no more debt measures on following rules :
     // ConstantNameCheck, LocalVariableNameCheck, MemberNameCheck and StaticVariableNameCheck
     int measuresOnTrk = 191;
     int measuresOnBrc = 442;
