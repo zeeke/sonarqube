@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 public class DuplicationsTest extends AbstractMavenTest {
 
@@ -33,6 +34,8 @@ public class DuplicationsTest extends AbstractMavenTest {
 
   @Test
   public void duplicated_lines_within_same_class() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
+
     Resource file = getResource("com.sonarsource.it.samples:duplications:src/main/java/duplicated_lines_within_same_class/DuplicatedLinesInSameClass.java");
     assertThat(file, not(nullValue()));
     assertThat(file.getMeasureValue("duplicated_blocks"), is(2.0));
@@ -43,6 +46,8 @@ public class DuplicationsTest extends AbstractMavenTest {
 
   @Test
   public void duplicated_same_lines_within_3_classes() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
+
     Resource file1 = getResource("com.sonarsource.it.samples:duplications:src/main/java/duplicated_same_lines_within_3_classes/Class1.java");
     assertThat(file1, not(nullValue()));
     assertThat(file1.getMeasureValue("duplicated_blocks"), is(1.0));
@@ -74,6 +79,8 @@ public class DuplicationsTest extends AbstractMavenTest {
 
   @Test
   public void duplicated_lines_within_package() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
+
     Resource file1 = getResource("com.sonarsource.it.samples:duplications:src/main/java/duplicated_lines_within_package/DuplicatedLinesInSamePackage1.java");
     assertThat(file1, not(nullValue()));
     assertThat(file1.getMeasureValue("duplicated_blocks"), is(4.0));
@@ -98,6 +105,8 @@ public class DuplicationsTest extends AbstractMavenTest {
 
   @Test
   public void duplicated_lines_with_other_package() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
+
     Resource file1 = getResource("com.sonarsource.it.samples:duplications:src/main/java/duplicated_lines_with_other_package1/DuplicatedLinesWithOtherPackage.java");
     assertThat(file1, not(nullValue()));
     assertThat(file1.getMeasureValue("duplicated_blocks"), is(1.0));
@@ -154,20 +163,13 @@ public class DuplicationsTest extends AbstractMavenTest {
       .setGoals(cleanPackageSonarGoal())
       .setProperties("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
-    Resource file = getResource("com.sonarsource.it.samples:huge-file:src/main/java/huge/HugeFile.java");
+    Resource file;
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      file = getResource("com.sonarsource.it.samples:huge-file:src/main/java/huge/HugeFile.java");
+    } else {
+      file = getResource("com.sonarsource.it.samples:huge-file:huge.HugeFile");
+    }
     assertThat(file.getMeasureValue("duplicated_lines"), greaterThan(50000.0));
-  }
-
-  @Test
-  public void testDuplicationsViewer() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("duplications-viewer",
-      "/selenium/duplications/duplications-viewer/display-six-lines-in-snippet-by-default.html",
-      "/selenium/duplications/duplications-viewer/display-all-duplicated-lines-in-snippet.html",// SONAR-3101
-      "/selenium/duplications/duplications-viewer/drilldown-to-duplications-viewer.html",
-      "/selenium/duplications/duplications-viewer/test-duplications-viewer.html"
-      )
-      .build();
-    orchestrator.executeSelenese(selenese);
   }
 
   /**

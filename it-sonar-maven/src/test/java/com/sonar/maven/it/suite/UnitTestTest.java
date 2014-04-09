@@ -41,9 +41,11 @@ public class UnitTestTest extends AbstractMavenTest {
     assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("test",
-      "/selenium/test/display-conditions-by-line.html").build();
-    orchestrator.executeSelenese(selenese);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("test",
+        "/selenium/test/display-conditions-by-line.html").build();
+      orchestrator.executeSelenese(selenese);
+    }
   }
 
   private MavenBuild newBuild(String projectPath) {
@@ -73,9 +75,11 @@ public class UnitTestTest extends AbstractMavenTest {
     assertThat(project.getMeasureIntValue("test_success_density")).isEqualTo(100);
     assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("no-branch-coverage",
-      "/selenium/test/branch-coverage-hidden-if-no-branch.html").build();
-    orchestrator.executeSelenese(selenese);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("no-branch-coverage",
+        "/selenium/test/branch-coverage-hidden-if-no-branch.html").build();
+      orchestrator.executeSelenese(selenese);
+    }
   }
 
   /**
@@ -102,7 +106,7 @@ public class UnitTestTest extends AbstractMavenTest {
 
     // check package measures
     // TODO Godin: are we really sure about this behavior? maybe we should save zero tests on packages too?
-    Resource packagee = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:no-tests:src/main/java/org/sonar/tests",
+    Resource packagee = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(getPackageKey(),
       "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
     assertThat(packagee.getMeasureIntValue("tests")).isNull();
     assertThat(packagee.getMeasureIntValue("coverage")).isEqualTo(0);
@@ -111,6 +115,14 @@ public class UnitTestTest extends AbstractMavenTest {
     assertThat(packagee.getMeasure("test_success_density")).isNull();
     assertThat(packagee.getMeasure("skipped_tests")).isNull();
     assertThat(packagee.getMeasure("test_execution_time")).isNull();
+  }
+
+  private String getPackageKey() {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      return "com.sonarsource.it.samples:no-tests:src/main/java/org/sonar/tests";
+    } else {
+      return "com.sonarsource.it.samples:no-tests:org.sonar.tests";
+    }
   }
 
   @Test
@@ -176,12 +188,14 @@ public class UnitTestTest extends AbstractMavenTest {
     assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(1);
     assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("test-failures",
-      "/selenium/test-failures/SONAR-1099-html-characters.html",
-      "/selenium/test-failures/tests-viewer.html", // SONAR-3786
-      "/selenium/test-failures/tests-viewer-with-skipped-test.html" // SONAR-3786
-    ).build();
-    orchestrator.executeSelenese(selenese);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("test-failures",
+        "/selenium/test-failures/SONAR-1099-html-characters.html",
+        "/selenium/test-failures/tests-viewer.html", // SONAR-3786
+        "/selenium/test-failures/tests-viewer-with-skipped-test.html" // SONAR-3786
+      ).build();
+      orchestrator.executeSelenese(selenese);
+    }
   }
 
   @Test

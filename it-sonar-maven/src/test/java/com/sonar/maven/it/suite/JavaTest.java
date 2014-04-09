@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 public class JavaTest extends AbstractMavenTest {
 
@@ -22,6 +23,8 @@ public class JavaTest extends AbstractMavenTest {
 
   @Test
   public void shouldSupportJapaneseCharset() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
+
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("java/japanese-charset"))
       .setGoals(cleanSonarGoal());
     orchestrator.executeBuild(build);
@@ -42,31 +45,4 @@ public class JavaTest extends AbstractMavenTest {
     assertThat(logs).doesNotContain("Checkstyle");
   }
 
-  // SONAR-3893 & SONAR-4247
-  @Test
-  public void shouldHighlightJavaSourceCode() throws Exception {
-
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
-      .setGoals(cleanSonarGoal())
-      .setProperty("sonar.dynamicAnalysis", "false");
-    orchestrator.executeBuild(build);
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("java-syntax-highlighting",
-      "/selenium/java/syntax-highlighting.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  // SONAR-4249 & SONAR-4250
-  @Test
-  public void shouldHighlightJavaSymbolsUsage() throws Exception {
-
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
-      .setGoals(cleanSonarGoal())
-      .setProperty("sonar.dynamicAnalysis", "false");
-    orchestrator.executeBuild(build);
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("highlight-symbol-usages",
-      "/selenium/java/symbol-usages-highlighting.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
 }

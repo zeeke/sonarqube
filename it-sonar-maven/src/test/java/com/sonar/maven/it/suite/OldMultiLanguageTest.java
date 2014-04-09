@@ -47,22 +47,26 @@ public class OldMultiLanguageTest extends AbstractMavenTest {
     Resource javaModule = getResource("com.sonarsource.it.projects.batch.multi-languages:java-module", "files");
     Resource jsModule = getResource("com.sonarsource.it.projects.batch.multi-languages:javascript-module", "files");
     Resource pyModule = getResource("com.sonarsource.it.projects.batch.multi-languages:python-module", "files");
-    verifyModule(javaModule, 1);
-    verifyModule(jsModule, 1);
-    verifyModule(pyModule, 2);
+    verifyModule(javaModule, 1, "java");
+    verifyModule(jsModule, 1, "js");
+    verifyModule(pyModule, 2, "py");
 
     // project
     Resource project = getResource("com.sonarsource.it.projects.batch.multi-languages:multi-languages", "files");
     verifyProject(project);
   }
 
-  private void verifyModule(Resource module, int files) {
+  private void verifyModule(Resource module, int files, String lang) {
     assertThat(module.getMeasureIntValue("files")).isEqualTo(files);
-    assertThat(module.getLanguage()).isNull();
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      assertThat(module.getLanguage()).isNull();
+    } else {
+      assertThat(module.getLanguage()).isEqualTo(lang);
+    }
   }
 
   private void verifyProject(Resource project) {
-    verifyModule(project, 4);
+    verifyModule(project, 4, "java");
   }
 
   private Resource getResource(String resourceKey, String metricKey) {

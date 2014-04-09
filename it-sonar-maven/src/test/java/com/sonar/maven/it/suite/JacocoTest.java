@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.number.OrderingComparisons.greaterThan;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 public class JacocoTest extends AbstractMavenTest {
 
@@ -104,13 +105,11 @@ public class JacocoTest extends AbstractMavenTest {
   @Test
   public void excludes() {
     orchestrator.executeBuild(newBuild("test/with-tests", true));
-    MavenBuild analysis = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("test/with-tests"))
-      .withDynamicAnalysis(true)
-      .withProperty("sonar.java.coveragePlugin", "jacoco")
-      .withProperty("sonar.jacoco.excludes", "*Hello")
-      .addSonarGoal()
-      .build();
+    MavenBuild analysis = MavenBuild.create(ItUtils.locateProjectPom("test/with-tests"))
+      .setProperty("sonar.dynamicAnalysis", "true")
+      .setProperty("sonar.java.coveragePlugin", "jacoco")
+      .setProperty("sonar.jacoco.excludes", "*Hello")
+      .setGoals(cleanSonarGoal());
     orchestrator.executeBuild(analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:with-tests",
@@ -123,6 +122,8 @@ public class JacocoTest extends AbstractMavenTest {
    */
   @Test
   public void should_display_coverage_per_test() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
+
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
       .setGoals("clean test-compile");
     orchestrator.executeBuild(build);

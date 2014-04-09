@@ -34,7 +34,9 @@ public class Struts139Test extends AbstractMavenTest {
 
   private static final String PROJECT_STRUTS = "org.apache.struts:struts-parent";
   private static final String MODULE_CORE = "org.apache.struts:struts-core";
+  private static final String DEPRECATED_PACKAGE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action";
   private static final String PACKAGE_ACTION = "org.apache.struts:struts-core:src/main/java/org/apache/struts/action";
+  private static final String DEPRECATED_FILE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action.Action";
   private static final String FILE_ACTION = "org.apache.struts:struts-core:src/main/java/org/apache/struts/action/Action.java";
 
   @BeforeClass
@@ -108,7 +110,11 @@ public class Struts139Test extends AbstractMavenTest {
   }
 
   private Measure getFileMeasure(String metricKey) {
-    return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(FILE_ACTION, metricKey)).getMeasure(metricKey);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(FILE_ACTION, metricKey)).getMeasure(metricKey);
+    } else {
+      return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(DEPRECATED_FILE_ACTION, metricKey)).getMeasure(metricKey);
+    }
   }
 
   private Measure getCoreModuleMeasure(String metricKey) {
@@ -120,6 +126,10 @@ public class Struts139Test extends AbstractMavenTest {
   }
 
   private Measure getPackageMeasure(String metricKey) {
-    return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(PACKAGE_ACTION, metricKey)).getMeasure(metricKey);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(PACKAGE_ACTION, metricKey)).getMeasure(metricKey);
+    } else {
+      return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(DEPRECATED_PACKAGE_ACTION, metricKey)).getMeasure(metricKey);
+    }
   }
 }

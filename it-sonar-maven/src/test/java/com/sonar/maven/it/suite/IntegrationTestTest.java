@@ -26,12 +26,4 @@ public class IntegrationTestTest extends AbstractMavenTest {
       "/selenium/test/integration-test-widget.html").build();
     orchestrator.executeSelenese(selenese);
   }
-
-  @Test
-  public void testIntegrationTestViewer() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("integration-test-viewer",
-      "/selenium/test/header-of-integration-tests-viewer.html",
-      "/selenium/test/filter-integration-test-lines.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
 }

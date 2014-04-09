@@ -11,6 +11,8 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assume.assumeTrue;
+
 public class DesignUITest extends AbstractMavenTest {
 
   @BeforeClass
@@ -46,6 +48,7 @@ public class DesignUITest extends AbstractMavenTest {
 
   @Test
   public void test_design() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("design-on-project",
       "/selenium/design/design_from_tools_menu.html",
       "/selenium/design/design_from_drilldown.html",

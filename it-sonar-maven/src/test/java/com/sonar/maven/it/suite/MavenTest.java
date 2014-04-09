@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 
 public class MavenTest extends AbstractMavenTest {
 
@@ -97,10 +98,12 @@ public class MavenTest extends AbstractMavenTest {
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:parent")).getName()).isEqualTo("Parent");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_a")).getName()).isEqualTo("Module A");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_a:src/main/java/HelloA.java")).getName()).isEqualTo("HelloA.java");
-
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_b")).getName()).isEqualTo("Module B");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_b:src/main/java/HelloB.java")).getName()).isEqualTo("HelloB.java");
+
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_a:src/main/java/HelloA.java")).getName()).isEqualTo("HelloA.java");
+      assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-order:module_b:src/main/java/HelloB.java")).getName()).isEqualTo("HelloB.java");
+    }
   }
 
   /**
@@ -117,19 +120,18 @@ public class MavenTest extends AbstractMavenTest {
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:root")).getName()).isEqualTo("Root");
 
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_a")).getName()).isEqualTo("Module A");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_a:src/main/java/HelloA.java")).getName()).isEqualTo("HelloA.java");
-
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_b")).getName()).isEqualTo("Module B");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_b:src/main/java/HelloB.java")).getName()).isEqualTo("HelloB.java");
-
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_c")).getName()).isEqualTo("Module C");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_c:src/main/java/HelloC.java")).getName()).isEqualTo("HelloC.java");
-
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d")).getName()).isEqualTo("Module D");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d:src/main/java/HelloD.java")).getName()).isEqualTo("HelloD.java");
-
     assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e")).getName()).isEqualTo("Module E");
-    assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e:src/main/java/HelloE.java")).getName()).isEqualTo("HelloE.java");
+
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_a:src/main/java/HelloA.java")).getName()).isEqualTo("HelloA.java");
+      assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_b:src/main/java/HelloB.java")).getName()).isEqualTo("HelloB.java");
+      assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_c:src/main/java/HelloC.java")).getName()).isEqualTo("HelloC.java");
+      assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d:src/main/java/HelloD.java")).getName()).isEqualTo("HelloD.java");
+      assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e:src/main/java/HelloE.java")).getName()).isEqualTo("HelloE.java");
+    }
   }
 
   /**
@@ -229,6 +231,8 @@ public class MavenTest extends AbstractMavenTest {
    */
   @Test
   public void override_sources() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
+
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-override-sources")).setGoals(sonarGoal());
     orchestrator.executeBuild(build);
 
@@ -244,6 +248,8 @@ public class MavenTest extends AbstractMavenTest {
    */
   @Test
   public void inclusions_apply_to_source_dirs() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
+
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/inclusions_apply_to_source_dirs")).setGoals(sonarGoal());
     orchestrator.executeBuild(build);
 
@@ -259,6 +265,7 @@ public class MavenTest extends AbstractMavenTest {
    */
   @Test
   public void fail_if_bad_value_of_sonar_sources_property() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-sources-property")).setGoals(sonarGoal());
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
@@ -271,6 +278,7 @@ public class MavenTest extends AbstractMavenTest {
    */
   @Test
   public void fail_if_bad_value_of_sonar_tests_property() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-bad-tests-property")).setGoals(sonarGoal());
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
@@ -282,8 +290,13 @@ public class MavenTest extends AbstractMavenTest {
     Resource project = getResource("com.sonarsource.it.samples:many-source-dirs");
     assertThat(project).isNotNull();
     assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
-    assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:src/main/java/FirstClass.java")).isNotNull();
-    assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:src/main/java2/SecondClass.java")).isNotNull();
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:src/main/java/FirstClass.java")).isNotNull();
+      assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:src/main/java2/SecondClass.java")).isNotNull();
+    } else {
+      assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:FirstClass")).isNotNull();
+      assertThat(getResource("com.sonarsource.it.samples:many-source-dirs:SecondClass")).isNotNull();
+    }
   }
 
   private void checkBuildHelperTestFiles() {

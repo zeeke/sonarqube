@@ -14,11 +14,13 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Delta.delta;
+import static org.junit.Assume.assumeTrue;
 
 public class CoverageExclusionsTest extends AbstractMavenTest {
 
   @Before
   public void resetData() {
+    assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.0"));
     orchestrator.getDatabase().truncateInspectionTables();
   }
 
@@ -38,8 +40,13 @@ public class CoverageExclusionsTest extends AbstractMavenTest {
    */
   @Test
   public void should_ignore_coverage_on_full_path() {
-    scan("exclusions/java-half-covered",
-      "sonar.coverage.exclusions", "src/main/java/org/sonar/tests/halfcovered/UnCovered.java");
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      scan("exclusions/java-half-covered",
+        "sonar.coverage.exclusions", "src/main/java/org/sonar/tests/halfcovered/UnCovered.java");
+    } else {
+      scan("exclusions/java-half-covered",
+        "sonar.coverage.exclusions", "org/sonar/tests/halfcovered/UnCovered.java");
+    }
 
     Resource project = getResourceForCoverage("com.sonarsource.it.exclusions:java-half-covered");
     assertThat(project.getMeasureValue("coverage")).isEqualTo(100.0);
