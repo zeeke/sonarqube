@@ -107,8 +107,8 @@ public class QualityGateNotificationsTest {
     assertThat(emails.hasNext()).isTrue();
     message = emails.next().getMimeMessage();
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
-    assertThat((String) message.getContent()).contains("Alert level: Red");
-    assertThat((String) message.getContent()).contains("New alert: Lines of code > 5");
+    assertThat((String) message.getContent()).contains("Quality gate status: Red");
+    assertThat((String) message.getContent()).contains("New quality gate threshold: Lines of code > 5");
     assertThat((String) message.getContent()).contains("/dashboard/index/com.sonarsource.it.samples:simple-sample");
 
     assertThat(emails.hasNext()).isFalse();
