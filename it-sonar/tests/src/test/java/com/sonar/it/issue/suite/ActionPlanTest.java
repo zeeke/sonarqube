@@ -12,10 +12,14 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.sonar.wsclient.SonarClient;
+import org.sonar.wsclient.base.HttpException;
 import org.sonar.wsclient.issue.ActionPlan;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.NewActionPlan;
 import org.sonar.wsclient.issue.UpdateActionPlan;
+import org.sonar.wsclient.permissions.PermissionParameters;
+import org.sonar.wsclient.user.UserParameters;
 
 import java.util.List;
 
@@ -60,7 +64,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_create_action_plan() {
+  public void create_action_plan() {
     assertThat(adminActionPlanClient().find(PROJECT_KEY)).isEmpty();
 
     ActionPlan newActionPlan = adminActionPlanClient().create(
@@ -79,8 +83,45 @@ public class ActionPlanTest extends AbstractIssueTestCase {
     assertThat(actionPlan.unresolvedIssues()).isEqualTo(0);
   }
 
+  /**
+   * SONAR-5179
+   */
   @Test
-  public void should_fail_create_action_plan_if_missing_project() {
+  public void need_project_administrator_permission_to_create_action_plan() {
+    String projectAdminUser = "with-admin-permission-on-project";
+    String projectUser = "with-user-permission-on-project";
+    SonarClient adminClient = orchestrator.getServer().adminWsClient();
+    try {
+      // Create a user having admin permission on the project
+      adminClient.userClient().create(UserParameters.create().login(projectAdminUser).name(projectAdminUser).password("password").passwordConfirmation("password"));
+      adminClient.permissionClient().addPermission(PermissionParameters.create().user(projectAdminUser).component(PROJECT_KEY).permission("admin"));
+
+      // Create a user having browse permission on the project
+      adminClient.userClient().create(UserParameters.create().login(projectUser).name(projectUser).password("password").passwordConfirmation("password"));
+      adminClient.permissionClient().addPermission(PermissionParameters.create().user(projectUser).component(PROJECT_KEY).permission("user"));
+
+      // Without project admin permission, a user cannot set action plan
+      try {
+        orchestrator.getServer().wsClient(projectUser, "password").actionPlanClient().create(
+          NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues"));
+        fail();
+      } catch (Exception e) {
+        assertThat(e).isInstanceOf(HttpException.class).describedAs("404");
+      }
+
+      // With project admin permission, a user can set action plan
+      orchestrator.getServer().wsClient(projectAdminUser, "password").actionPlanClient().create(
+        NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues"));
+      assertThat(actionPlanClient().find(PROJECT_KEY)).hasSize(1);
+
+    } finally {
+      adminClient.userClient().deactivate(projectAdminUser);
+      adminClient.userClient().deactivate(projectUser);
+    }
+  }
+
+  @Test
+  public void fail_create_action_plan_if_missing_project() {
     try {
       adminActionPlanClient().create(NewActionPlan.create().name("Short term")
         .description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
@@ -91,7 +132,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_fail_create_action_plan_if_missing_name() {
+  public void fail_create_action_plan_if_missing_name() {
     try {
       adminActionPlanClient().create(NewActionPlan.create().project(PROJECT_KEY)
         .description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
@@ -102,7 +143,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_update_action_plan() {
+  public void update_action_plan() {
     ActionPlan newActionPlan = adminActionPlanClient().create(
       NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
@@ -120,7 +161,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_fail_update_action_plan_if_missing_name() {
+  public void fail_update_action_plan_if_missing_name() {
     try {
       adminActionPlanClient().create(
         NewActionPlan.create().project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
@@ -131,7 +172,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_delete_action_plan() {
+  public void delete_action_plan() {
     ActionPlan newActionPlan = adminActionPlanClient().create(
       NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
@@ -145,7 +186,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
    * SONAR-4449
    */
   @Test
-  public void should_delete_action_plan_also_unplan_linked_issues() {
+  public void delete_action_plan_also_unplan_linked_issues() {
     // Create action plan
     ActionPlan newActionPlan = adminActionPlanClient().create(
       NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
@@ -162,7 +203,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_close_action_plan() {
+  public void close_action_plan() {
     ActionPlan newActionPlan = adminActionPlanClient().create(
       NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
     assertThat(firstActionPlan(PROJECT_KEY).status()).isEqualTo("OPEN");
@@ -174,7 +215,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_open_action_plan() {
+  public void open_action_plan() {
     ActionPlan newActionPlan = adminActionPlanClient().create(
       NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
 
@@ -186,7 +227,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
   }
 
   @Test
-  public void should_find_action_plans() {
+  public void find_action_plans() {
     assertThat(actionPlanClient().find(PROJECT_KEY)).isEmpty();
 
     adminActionPlanClient().create(NewActionPlan.create().name("Short term").project(PROJECT_KEY).description("Short term issues").deadLine(ItUtils.toDate("2113-01-31")));
