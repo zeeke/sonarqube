@@ -10,14 +10,3 @@ public class Sample {
 		return "hello";
 	}
 }
-
-class Sample {
-	
-	public Sample(int i) {
-		int j = i++;
-	}
-	
-	private String myMethod() {
-		return "hello";
-	}
-}
