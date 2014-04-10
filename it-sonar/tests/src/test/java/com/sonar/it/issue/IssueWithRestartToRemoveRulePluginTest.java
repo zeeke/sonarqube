@@ -27,6 +27,7 @@ public class IssueWithRestartToRemoveRulePluginTest {
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
     .addPlugin(ItUtils.locateTestPlugin("deprecated-xoo-rule-plugin"))
+    .removeDistributedPlugins()
     .build();
 
   /**
@@ -34,7 +35,7 @@ public class IssueWithRestartToRemoveRulePluginTest {
    */
   @Test
   public void scan_should_close_issue_on_more_existing_rule() throws Exception {
-    IssueClient issueClient = ItUtils.newWsClientForAnonymous(orchestrator).issueClient();
+    IssueClient issueClient = orchestrator.getServer().wsClient().issueClient();
 
     orchestrator.getDatabase().truncateInspectionTables();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-deprecated-rule-profile.xml"));
