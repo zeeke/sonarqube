@@ -14,76 +14,81 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/login</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTextPresent</td>
-        <td>Simple Sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/dashboard/index/com.sonarsource.it.samples:simple-sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=Deletion</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>delete_resource</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertConfirmation</td>
-        <td>Are you sure you want to delete this Project?</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>pause</td>
-        <td>3000</td>
-        <td>NOTE: necessary as the deletion is asynchronous</td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTextNotPresent</td>
-        <td>content</td>
-        <td>*Simple Sample*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Simple Sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/dashboard/index/com.sonarsource.it.samples:simple-sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Deletion</td>
+	<td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>delete_resource</td>
+  <td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>delete-project-form</td>
+	<td>*Delete Project*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>delete-project-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>3000</td>
+	<td>NOTE: necessary as the deletion is asynchronous</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextNotPresent</td>
+	<td>content</td>
+	<td>*Simple Sample*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

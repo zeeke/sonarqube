@@ -42,7 +42,7 @@ public class ProjectAdministrationTest {
   }
 
   @Test
-  public void should_delete_project_by_web_service() {
+  public void delete_project_by_web_service() {
     scanSampleWithDate("2012-01-01");
 
     assertThat(orchestrator.getServer().getWsClient().find(ResourceQuery.create(PROJECT_KEY))).isNotNull();
@@ -55,7 +55,7 @@ public class ProjectAdministrationTest {
   }
 
   @Test(expected = ConnectionException.class)
-  public void should_delete_only_projects() {
+  public void delete_only_projects() {
     scanSampleWithDate("2012-01-01");
 
     assertThat(orchestrator.getServer().getWsClient().find(ResourceQuery.create(PROJECT_KEY))).isNotNull();
@@ -79,19 +79,20 @@ public class ProjectAdministrationTest {
    * Test updated for SONAR-3570
    */
   @Test
-  public void test_project_deletion() throws Exception {
+  public void project_deletion() throws Exception {
     // For an unknown reason, this test fails if the analysis id one with SonarRunner...
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build.setProperty("sonar.projectDate", "2012-01-01"));
 
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-deletion", "/selenium/administration/project-deletion/project-deletion.html").build();
-    orchestrator.executeSelenese(selenese);
+    orchestrator.executeSelenese(
+      Selenese.builder().setHtmlTestsInClasspath("project-deletion", "/selenium/administration/project-deletion/project-deletion.html").build()
+    );
   }
 
   @Test
-  public void test_project_administration() throws Exception {
+  public void project_administration() throws Exception {
     GregorianCalendar today = new GregorianCalendar();
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
@@ -119,7 +120,7 @@ public class ProjectAdministrationTest {
 
   // SONAR-4203
   @Test
-  public void should_delete_version_of_multimodule_project() throws Exception {
+  public void delete_version_of_multimodule_project() throws Exception {
     GregorianCalendar today = new GregorianCalendar();
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
       .setProperty("sonar.dynamicAnalysis", "false")
@@ -155,7 +156,7 @@ public class ProjectAdministrationTest {
 
   // SONAR-3326
   @Test
-  public void should_display_alerts_correctly_in_history_page() throws Exception {
+  public void display_alerts_correctly_in_history_page() throws Exception {
     QualityGateClient qgClient = orchestrator.getServer().adminWsClient().qualityGateClient();
     QualityGate qGate = qgClient.create("AlertsForHistory");
     qgClient.setDefault(qGate.id());
@@ -178,9 +179,11 @@ public class ProjectAdministrationTest {
     qgClient.destroy(qGate.id());
   }
 
-  // SONAR-1352
+  /**
+   * SONAR-1352
+   */
   @Test
-  public void should_display_period_alert_on_project_dashboard() throws Exception {
+  public void display_period_alert_on_project_dashboard() throws Exception {
     QualityGateClient qgClient = orchestrator.getServer().adminWsClient().qualityGateClient();
     QualityGate qGate = qgClient.create("AlertsForDashboard");
     qgClient.createCondition(NewCondition.create(qGate.id()).metricKey("lines").operator("LT").warningThreshold("0").errorThreshold("10")
@@ -227,7 +230,7 @@ public class ProjectAdministrationTest {
    * SONAR-1608
    */
   @Test
-  public void should_bulk_update_project_keys() {
+  public void bulk_update_project_keys() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false");
@@ -248,7 +251,7 @@ public class ProjectAdministrationTest {
    * SONAR-1608
    */
   @Test
-  public void should_fine_grain_update_project_keys() {
+  public void fine_grain_update_project_keys() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/multi-modules-sample"))
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false");
@@ -321,7 +324,7 @@ public class ProjectAdministrationTest {
    * SONAR-4060
    */
   @Test
-  public void should_display_module_settings() {
+  public void display_module_settings() {
     orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("maven/modules-declaration"))
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false"));
@@ -343,10 +346,6 @@ public class ProjectAdministrationTest {
       scan.setProfile(profile);
     }
     orchestrator.executeBuild(scan);
-  }
-
-  private void scanSampleWithProfile(String profile) {
-    scanSample(null, profile);
   }
 
   private void scanSampleWithDate(String date) {
