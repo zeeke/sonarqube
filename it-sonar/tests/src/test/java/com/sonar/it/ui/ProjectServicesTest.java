@@ -52,18 +52,6 @@ public class ProjectServicesTest {
   }
 
   @Test
-  public void testClouds() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-clouds",
-      "/selenium/ui/clouds/do-not-offer-coverage-choice-if-no-coverage.html",
-      "/selenium/ui/clouds/cloud-for-package.html",
-      "/selenium/ui/clouds/coverage-quick-wins.html",
-      "/selenium/ui/clouds/coverage-top-risks.html",
-      "/selenium/ui/clouds/violations-density-quick-wins.html",
-      "/selenium/ui/clouds/open-file-popup.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  @Test
   public void testComponents() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-components",
       "/selenium/ui/components/add_and_remove_column.html",
