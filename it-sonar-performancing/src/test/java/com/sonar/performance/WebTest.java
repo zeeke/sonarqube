@@ -102,12 +102,6 @@ public class WebTest extends PerfTestCase {
   }
 
   @Test
-  public void struts_cloud() throws Exception {
-    PageStats counters = request("/cloud/index/org.apache.struts:struts-parent");
-    assertDurationLessThan(counters.durationMs, DEFAULT_PAGE_TIMEOUT_MS);
-  }
-
-  @Test
   public void struts_hotspot() throws Exception {
     PageStats counters = request("/dashboard/index/org.apache.struts:struts-parent?name=Hotspots");
     assertDurationLessThan(counters.durationMs, DEFAULT_PAGE_TIMEOUT_MS);
