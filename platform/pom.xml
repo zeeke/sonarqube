@@ -29,7 +29,6 @@
     <reportLatest>1.5-SNAPSHOT</reportLatest>
     <scmActivityLatest>1.8-SNAPSHOT</scmActivityLatest>
     <sqaleLatest>2.2-SNAPSHOT</sqaleLatest>
-    <technicalDebtLatest>1.3-SNAPSHOT</technicalDebtLatest>
     <vbLatest>1.4-SNAPSHOT</vbLatest>
     <vbnetLatest>1.2-SNAPSHOT</vbnetLatest>
     <viewsLatest>2.5-SNAPSHOT</viewsLatest>
@@ -62,7 +61,6 @@
           com.sonarsource.report:sonar-report-plugin:${reportLatest},
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:1.5.1,
           com.sonarsource.sqale:sonar-sqale-plugin:1.10,
-          org.codehaus.sonar-plugins:sonar-technicaldebt-plugin:${technicalDebtLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:2.2.1,
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
