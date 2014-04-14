@@ -8,6 +8,7 @@ package com.sonar.it.batch.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
+import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.After;
@@ -55,6 +56,21 @@ public class MultiLanguageTest {
 
     Resource xoo2File = getResource("multi-language-sample:src/sample/Sample.xoo2", "violations");
     assertThat(xoo2File.getMeasureIntValue("violations")).isEqualTo(13);
+  }
+
+  /**
+   * SONAR-5212
+   */
+  @Test
+  public void test_two_languages_with_tests() {
+    MavenBuild maven = MavenBuild.create(ItUtils.locateProjectPom("batch/multi-languages-with-tests"))
+      .setCleanPackageSonarGoals();
+    orchestrator.executeBuild(maven);
+
+    // modules
+    Resource project = getResource("com.sonarsource.it.projects.batch.multi-languages:multi-languages-with-tests", "tests");
+    assertThat(project.getMeasureIntValue("tests")).isEqualTo(3);
+
   }
 
   private Resource getResource(String resourceKey, String... metricKeys) {
