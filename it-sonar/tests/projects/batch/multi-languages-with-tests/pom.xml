@@ -5,8 +5,8 @@
   <artifactId>multi-languages-with-tests</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>Multi Languages Java/Groovy</name>
-  <description>Multi Languages Java/Groovy</description>
+  <name>Multi Languages Java/PHP</name>
+  <description>Multi Languages Java/PHP</description>
   
   <properties>
     <sonar.sources>src/main/java,src/main/php</sonar.sources>
