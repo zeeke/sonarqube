@@ -20,7 +20,6 @@
     <csharpLatest>2.2-SNAPSHOT</csharpLatest>
     <fbcontribLatest>1.3-SNAPSHOT</fbcontribLatest>
     <flexLatest>2.1-SNAPSHOT</flexLatest>
-    <greenpepperLatest>0.3-SNAPSHOT</greenpepperLatest>
     <groovyLatest>1.1-SNAPSHOT</groovyLatest>
     <javascriptLatest>1.7-SNAPSHOT</javascriptLatest>
     <naturalLatest>1.3-SNAPSHOT</naturalLatest>
@@ -59,7 +58,6 @@
           com.sonarsource:sonar-dev-cockpit-plugin:1.3,
           org.codehaus.sonar-plugins:sonar-emma-plugin:1.3,
           org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
-          org.codehaus.sonar-plugins:sonar-greenpepper-plugin:${greenpepperLatest},
           org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
           com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
@@ -97,7 +95,6 @@
           com.sonarsource:sonar-dev-cockpit-plugin:1.3,
           org.codehaus.sonar-plugins:sonar-emma-plugin:1.3,
           org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
-          org.codehaus.sonar-plugins:sonar-greenpepper-plugin:${greenpepperLatest},
           org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
           com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
@@ -134,7 +131,6 @@
           com.sonarsource:sonar-dev-cockpit-plugin:1.3,
           org.codehaus.sonar-plugins:sonar-emma-plugin:1.3,
           org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
-          org.codehaus.sonar-plugins:sonar-greenpepper-plugin:${greenpepperLatest},
           org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
           com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
@@ -175,7 +171,6 @@
           com.sonarsource:sonar-dev-cockpit-plugin:1.4-RC2,
           org.codehaus.sonar-plugins:sonar-fb-contrib-plugin:${fbcontribLatest},
           org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
-          org.codehaus.sonar-plugins:sonar-greenpepper-plugin:${greenpepperLatest},
           org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
           org.codehaus.sonar-plugins.javascript:sonar-javascript-plugin:${javascriptLatest},
           com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
@@ -217,7 +212,6 @@
           com.sonarsource:sonar-dev-cockpit-plugin:${devcockpitLatest},
           org.codehaus.sonar-plugins:sonar-fb-contrib-plugin:${fbcontribLatest},
           org.codehaus.sonar-plugins.flex:sonar-flex-plugin:${flexLatest},
-          org.codehaus.sonar-plugins:sonar-greenpepper-plugin:${greenpepperLatest},
           org.codehaus.sonar-plugins.javascript:sonar-javascript-plugin:${javascriptLatest},
           org.codehaus.sonar-plugins:sonar-groovy-plugin:${groovyLatest},
           com.sonarsource.plugins.natural:sonar-natural-plugin:${naturalLatest},
