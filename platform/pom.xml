@@ -28,9 +28,7 @@
     <pmdLatest>2.2-SNAPSHOT</pmdLatest>
     <reportLatest>1.5-SNAPSHOT</reportLatest>
     <scmActivityLatest>1.8-SNAPSHOT</scmActivityLatest>
-    <securityRulesLatest>0.4-SNAPSHOT</securityRulesLatest>
     <sqaleLatest>2.2-SNAPSHOT</sqaleLatest>
-    <taglistLatest>1.1-SNAPSHOT</taglistLatest>
     <technicalDebtLatest>1.3-SNAPSHOT</technicalDebtLatest>
     <vbLatest>1.4-SNAPSHOT</vbLatest>
     <vbnetLatest>1.2-SNAPSHOT</vbnetLatest>
@@ -63,9 +61,7 @@
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
           com.sonarsource.report:sonar-report-plugin:${reportLatest},
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:1.5.1,
-          org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
           com.sonarsource.sqale:sonar-sqale-plugin:1.10,
-          org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
           org.codehaus.sonar-plugins:sonar-technicaldebt-plugin:${technicalDebtLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:2.2.1,
@@ -100,9 +96,7 @@
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
           com.sonarsource.report:sonar-report-plugin:${reportLatest},
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:1.6,
-          org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
           com.sonarsource.sqale:sonar-sqale-plugin:2.0,
-          org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:2.3,
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
@@ -136,9 +130,7 @@
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
           com.sonarsource.report:sonar-report-plugin:${reportLatest},
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:1.6,
-          org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
           com.sonarsource.sqale:sonar-sqale-plugin:2.1,
-          org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
           com.sonarsource.cobol:custom-cobol-sample-plugin:${cobolLatest},
@@ -177,9 +169,7 @@
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
           com.sonarsource.report:sonar-report-plugin:${reportLatest},
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:${scmActivityLatest},
-          org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
           com.sonarsource.sqale:sonar-sqale-plugin:2.1,
-          org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
@@ -218,9 +208,7 @@
           com.sonarsource.plsql:sonar-plsql-plugin:${plsqlLatest},
           com.sonarsource.report:sonar-report-plugin:${reportLatest},
           org.codehaus.sonar-plugins.scm-activity:sonar-scm-activity-plugin:${scmActivityLatest},
-          org.codehaus.sonar-plugins:sonar-security-rules-plugin:${securityRulesLatest},
           com.sonarsource.sqale:sonar-sqale-plugin:${sqaleLatest},
-          org.codehaus.sonar-plugins:sonar-taglist-plugin:${taglistLatest},
           com.sonarsource.plugins.vb:sonar-vb-plugin:${vbLatest},
           com.sonarsource.views:sonar-views-plugin:${viewsLatest},
           org.codehaus.sonar-plugins.dotnet.csharp:sonar-csharp-plugin:${csharpLatest},
