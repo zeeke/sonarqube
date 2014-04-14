@@ -10,7 +10,6 @@
 
   <properties>
     <abapLatest>3.1-SNAPSHOT</abapLatest>
-    <artifactSizeLatest>0.4-SNAPSHOT</artifactSizeLatest>
     <buildBreakerLatest>1.2-SNAPSHOT</buildBreakerLatest>
     <cppLatest>2.2-SNAPSHOT</cppLatest>
     <checkstyleLatest>2.2-SNAPSHOT</checkstyleLatest>
@@ -53,7 +52,6 @@
         <sonar.runtimeVersion>3.7.5-SNAPSHOT</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
-          org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
           org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
           com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
           org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
@@ -92,7 +90,6 @@
         <sonar.runtimeVersion>4.0</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
-          org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
           org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
           com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
           org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
@@ -130,7 +127,6 @@
         <sonar.runtimeVersion>4.1.2</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
-          org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
           org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
           com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
           org.codehaus.sonar-plugins:sonar-clirr-plugin:${clirrLatest},
@@ -168,7 +164,6 @@
         <sonar.runtimeVersion>4.2.1-SNAPSHOT</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
-          org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
           org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
           org.codehaus.sonar-plugins:sonar-cutoff-plugin:${cutoffLatest},
           com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
@@ -211,7 +206,6 @@
         <sonar.runtimeVersion>4.3-SNAPSHOT</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
-          org.codehaus.sonar-plugins:sonar-artifact-size-plugin:${artifactSizeLatest},
           org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
           org.codehaus.sonar-plugins:sonar-cutoff-plugin:${cutoffLatest},
           com.sonarsource.cpp:sonar-cpp-plugin:${cppLatest},
