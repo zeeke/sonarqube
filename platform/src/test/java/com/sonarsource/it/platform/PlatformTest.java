@@ -27,10 +27,18 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.version.Version;
 import org.apache.commons.lang.StringUtils;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.SourceQuery;
+import org.sonar.wsclient.services.ViolationQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +46,6 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeTrue;
 
 public class PlatformTest {
 
@@ -218,37 +225,6 @@ public class PlatformTest {
     assertThat(wsClient.find(ResourceQuery.createForMetrics(JAVA_STRUTS, "ncloc")).getMeasure("ncloc").getIntValue(), is(50080));
     assertThat(wsClient.find(ResourceQuery.createForMetrics(JAVA_COLLECTIONS, "ncloc")).getMeasure("ncloc").getIntValue(), is(26558));
     assertThat(wsClient.find(ResourceQuery.createForMetrics(JAVA_VIEWS, "ncloc")).getMeasure("ncloc").getIntValue(), is(76638));
-  }
-
-  @Test
-  @Ignore("Temporarily disabled as long as SIGMM does not support SQ 4.2")
-  public void viewsSIGMM() {
-    assertThat(getMeasure(JAVA_VIEWS, "sigmm-maintainability").getValue(), is(-1.0));
-  }
-
-  @Test
-  public void viewsTechnicalDebt() {
-    assumeTrue(!orchestrator.getServer().version().isGreaterThanOrEquals("4.0"));
-
-    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.4")) {
-      // JAVA-17
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt").getValue(), is(495719.3));
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt_ratio").getValue(), is(20.0));
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt_repart").getData(), is("Comments=5.78;Complexity=11.79;Coverage=20.37;Design=9.27;Duplication=39.63;Violations=13.11"));
-    } else if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
-      // SONAR-3793 and SONAR-3793
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt").getValue(), is(495725.5));
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt_ratio").getValue(), is(20.0));
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt_repart").getData(), is("Comments=5.78;Complexity=11.79;Coverage=20.37;Design=9.27;Duplication=39.63;Violations=13.12"));
-    } else if (orchestrator.getServer().version().isGreaterThanOrEquals("3.1")) {
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt").getValue(), is(497336.2));
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt_ratio").getValue(), is(20.1));
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt_repart").getData(), is("Comments=5.77;Complexity=11.75;Coverage=20.63;Design=9.24;Duplication=39.51;Violations=13.07"));
-    } else {
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt").getValue(), is(497330.0));
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt_ratio").getValue(), is(20.1));
-      assertThat(getMeasure(JAVA_VIEWS, "technical_debt_repart").getData(), is("Comments=5.77;Complexity=11.75;Coverage=20.63;Design=9.24;Duplication=39.51;Violations=13.07"));
-    }
   }
 
   /**
