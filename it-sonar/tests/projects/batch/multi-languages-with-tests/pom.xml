@@ -11,7 +11,7 @@
   <properties>
     <sonar.sources>src/main/java,src/main/php</sonar.sources>
     <sonar.tests>src/test/java,src/test/php</sonar.tests>
-    <sonar.php.tests.reportPath>phpunit.xml</sonar.php.tests.reportPath>
+    <sonar.php.tests.reportPath>target/phpunit.xml</sonar.php.tests.reportPath>
   </properties>
   
 <dependencies>
