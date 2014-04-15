@@ -20,6 +20,7 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -76,7 +77,7 @@ public class MultiLanguageTest {
     File phpunitFile = new File(ItUtils.locateProjectDir("batch/multi-languages-with-tests"), "target/phpunit.xml");
     File phpTestFile = new File(ItUtils.locateProjectDir("batch/multi-languages-with-tests"), "src/test/php/SomeTest.php");
     String phpunit = FileUtils.readFileToString(phpunitTemplate);
-    phpunit = phpunit.replaceAll("SomeTest\\.php", phpTestFile.getAbsolutePath());
+    phpunit = phpunit.replaceAll("SomeTest\\.php", Matcher.quoteReplacement(phpTestFile.getAbsolutePath()));
     FileUtils.write(phpunitFile, phpunit);
 
     // Don't clean target as it contains phpunit report
