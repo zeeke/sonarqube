@@ -67,7 +67,9 @@ public class MultiLanguageTest {
       .setCleanPackageSonarGoals();
     orchestrator.executeBuild(maven);
 
-    // modules
+    Resource phpTestDir = getResource("com.sonarsource.it.projects.batch.multi-languages:multi-languages-with-tests:src/test/php", "tests");
+    assertThat(phpTestDir.getMeasureIntValue("tests")).isEqualTo(3);
+
     Resource project = getResource("com.sonarsource.it.projects.batch.multi-languages:multi-languages-with-tests", "tests");
     assertThat(project.getMeasureIntValue("tests")).isEqualTo(3);
 
