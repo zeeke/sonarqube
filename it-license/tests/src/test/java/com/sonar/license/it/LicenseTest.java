@@ -65,7 +65,7 @@ public class LicenseTest {
     } else {
       assertThat(result.getLogs()).excludes("No valid license for plugin sqale");
     }
-    assertThat(result.getLogs()).contains("sqale EVALUATION");
+    assertThat(result.getLogs()).contains("sqale").contains("EVALUATION");
     assertThat(result.getLogs()).contains("-- BIP BIP --");
   }
 

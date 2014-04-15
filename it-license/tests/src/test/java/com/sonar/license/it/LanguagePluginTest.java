@@ -101,7 +101,7 @@ public class LanguagePluginTest {
     MavenBuild build = MavenBuild.create(new File("projects/cobol-sample/pom.xml")).setCleanSonarGoals();
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
-    assertThat(result.getLogs()).contains("cobol EVALUATION");
+    assertThat(result.getLogs()).contains("cobol").contains("EVALUATION");
     assertThat(result.getLogs()).contains("COBOL ENABLED");
   }
 
@@ -124,7 +124,7 @@ public class LanguagePluginTest {
       .setProperty("sonar.language", "cpp");
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
-    assertThat(result.getLogs()).contains("cpp EVALUATION");
+    assertThat(result.getLogs()).contains("cpp").contains("EVALUATION");
     assertThat(result.getLogs()).contains("CPP ENABLED");
 
     // C
@@ -132,7 +132,7 @@ public class LanguagePluginTest {
       .setProperty("sonar.language", "c");
 
     result = orchestrator.executeBuildQuietly(build);
-    assertThat(result.getLogs()).contains("cpp EVALUATION");
+    assertThat(result.getLogs()).contains("cpp").contains("EVALUATION");
     assertThat(result.getLogs()).contains("CPP ENABLED");
   }
 }
