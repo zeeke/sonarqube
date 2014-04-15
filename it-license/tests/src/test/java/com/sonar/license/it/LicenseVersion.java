@@ -6,7 +6,7 @@
 package com.sonar.license.it;
 
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.util.VersionUtils;
+import com.sonar.orchestrator.version.Version;
 
 class LicenseVersion {
   static String version(Orchestrator orchestrator) {
@@ -14,6 +14,6 @@ class LicenseVersion {
   }
 
   static boolean isGreaterThanOrEqualTo(Orchestrator orchestrator, String version) {
-    return VersionUtils.isGreaterThanOrEqual(version(orchestrator), version);
+    return Version.create(version(orchestrator)).isGreaterThanOrEquals(version);
   }
 }
