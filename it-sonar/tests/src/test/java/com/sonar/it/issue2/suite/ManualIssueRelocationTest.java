@@ -96,7 +96,6 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
     assertThat(issue.ruleKey()).isEqualTo("manual:invalidclassname");
     if (line == null) {
       assertThat(issue.line()).isNull();
-      ;
     } else {
       assertThat(issue.line()).isEqualTo(line);
     }
