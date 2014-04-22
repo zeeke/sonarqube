@@ -222,7 +222,6 @@ public class BatchTest {
   }
 
   @Test
-  @Ignore
   public void should_authenticate_when_needed() {
     try {
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
@@ -256,7 +255,6 @@ public class BatchTest {
    * SONAR-4211 Test Sonar Runner when server requires authentication
    */
   @Test
-  @Ignore
   public void sonar_runner_with_secured_server() {
     try {
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
