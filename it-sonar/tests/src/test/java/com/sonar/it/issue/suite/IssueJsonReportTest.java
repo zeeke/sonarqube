@@ -11,6 +11,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.sonar.wsclient.services.PropertyCreateQuery;
@@ -92,6 +93,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
    * Multi-modules project but Eclipse scans only a single module
    */
   @Test
+  @Ignore
   public void test_json_report_on_sub_module() throws Exception {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
 
