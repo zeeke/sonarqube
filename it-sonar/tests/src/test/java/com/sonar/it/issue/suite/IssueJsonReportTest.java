@@ -11,7 +11,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.sonar.wsclient.services.PropertyCreateQuery;
@@ -93,7 +92,6 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
    * Multi-modules project but Eclipse scans only a single module
    */
   @Test
-  @Ignore
   public void test_json_report_on_sub_module() throws Exception {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
 
@@ -124,6 +122,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
     assertThat(report).isFile().exists();
 
     String json = sanitize(FileUtils.readFileToString(report));
+    // SONAR-5218 All issues are updated as their root project id has changed (it's now the sub module)
     String expectedJson = sanitize(IOUtils.toString(getClass().getResource("/com/sonar/it/issue/suite/IssueJsonReportTest/report-on-sub-module.json")));
     JSONAssert.assertEquals(expectedJson, json, false);
   }
