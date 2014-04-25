@@ -47,11 +47,21 @@ public class PreviewModeTest {
 
   private File dryRunCacheLocation;
 
+  private QualityGate qualityGate;
+
   @Before
   public void deleteData() {
     orchestrator.getDatabase().truncateInspectionTables();
     dryRunCacheLocation = new File(new File(orchestrator.getServer().getHome(), "temp"), "dryRun");
     FileUtils.deleteQuietly(dryRunCacheLocation);
+  }
+
+  @After
+  public void cleanupQualityGate() {
+    if (qualityGate != null) {
+      cleanupQualityGate(qualityGate);
+      qualityGate = null;
+    }
   }
 
   @Test
@@ -124,7 +134,7 @@ public class PreviewModeTest {
 
   @Test
   public void test_exclude_plugins_property_with_build_breaker() {
-    QualityGate simpleGate = createSimpleQualityGate();
+    qualityGate = createSimpleQualityGate();
 
     SonarRunner runner = configureRunner("shared/xoo-sample",
       "sonar.preview.excludePlugins", "buildbreaker",
@@ -134,8 +144,6 @@ public class PreviewModeTest {
 
     // Build breaker is exclude so it will not be executed
     assertThat(result.getStatus()).isEqualTo(0);
-
-    cleanupQualityGate(simpleGate);
   }
 
   /**
@@ -146,7 +154,7 @@ public class PreviewModeTest {
     // Buildbreaker plugin is exclude on global settings...
     orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.preview.excludePlugins", "buildbreaker"));
 
-    QualityGate simpleGate = createSimpleQualityGate();
+    qualityGate = createSimpleQualityGate();
 
     SonarRunner runner = configureRunner("shared/xoo-sample",
       // ... but it's include on the build...
@@ -159,14 +167,12 @@ public class PreviewModeTest {
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code > 5");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
-
-    cleanupQualityGate(simpleGate);
   }
 
   // SONAR-4468
   @Test
   public void test_build_breaker_with_dry_run() {
-    QualityGate simpleGate = createSimpleQualityGate();
+    qualityGate = createSimpleQualityGate();
     SonarRunner runner = configureRunner("shared/xoo-sample",
       "sonar.preview.excludePlugins", "pdfreport,report,scmactivity",
       "sonar.analysis.mode", "preview",
@@ -176,14 +182,12 @@ public class PreviewModeTest {
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code > 5");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
-
-    cleanupQualityGate(simpleGate);
   }
 
   // SONAR-4594
   @Test
   public void test_build_breaker_with_dry_run_and_differential_measures() {
-    QualityGate variationGate = createVariationQualityGate(1);
+    qualityGate = createVariationQualityGate(1);
 
     // First analysis
     SonarRunner runner = configureRunner("shared/xoo-sample");
@@ -199,14 +203,12 @@ public class PreviewModeTest {
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code variation > 2 since previous analysis");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
-
-    cleanupQualityGate(variationGate);
   }
 
   // SONAR-4594
   @Test
   public void test_build_breaker_with_dry_run_and_differential_measures_last_version() {
-    QualityGate variationGate = createVariationQualityGate(3);
+    qualityGate = createVariationQualityGate(3);
 
     // First analysis 1.0-SNAPSHOT
     SonarRunner runner = configureRunner("shared/xoo-sample");
@@ -224,8 +226,6 @@ public class PreviewModeTest {
     // SONAR-4767 alert now contains date of matching snapshot, for instance : 1.0-SNAPSHOT - 2014 Feb 04.
     assertThat(result.getLogs()).contains("[BUILD BREAKER] Lines of code variation > 2 since previous version (1.0-SNAPSHOT - ");
     assertThat(result.getLogs()).contains("Alert thresholds have been hit (1 times)");
-
-    cleanupQualityGate(variationGate);
   }
 
   // SONAR-4602
