@@ -11,7 +11,7 @@
   <properties>
     <abapLatest>3.1-SNAPSHOT</abapLatest>
     <buildBreakerLatest>1.2-SNAPSHOT</buildBreakerLatest>
-    <cppLatest>2.2-SNAPSHOT</cppLatest>
+    <cppLatest>2.3-SNAPSHOT</cppLatest>
     <checkstyleLatest>2.2-SNAPSHOT</checkstyleLatest>
     <clirrLatest>1.2-SNAPSHOT</clirrLatest>
     <cobolLatest>1.18-SNAPSHOT</cobolLatest>
