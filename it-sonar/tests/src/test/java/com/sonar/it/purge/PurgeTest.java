@@ -67,7 +67,7 @@ public class PurgeTest {
 
     int expectedMeasures = measuresOnTrk + measuresOnBrc + measuresOnDir + measuresOnFil;
     assertThat(count("project_measures")).as("Wrong number of measures").isEqualTo(expectedMeasures);
-    assertThat(count("measure_data")).as("Wrong number of measure_data").isEqualTo(962);
+    assertThat(count("project_measures where measure_data is not null")).as("Wrong number of measure data").isEqualTo(962);
 
     // count other tables that are constant between 2 scans
     int expectedIssues = 4000;
@@ -101,7 +101,7 @@ public class PurgeTest {
     assertThat(count("project_measures")).as("Wrong number of measures after second analysis").isEqualTo(expectedMeasures);
 
     assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
-    assertThat(count("measure_data")).as("Wrong number of measure_data").isEqualTo(966);
+    assertThat(count("project_measures where measure_data is not null")).as("Wrong number of measure data").isEqualTo(962);
     assertThat(count("issues")).as("Wrong number of issues").isEqualTo(expectedIssues);
     assertThat(count("dependencies")).as("Wrong number of dependencies").isEqualTo(expectedDependencies);
   }
