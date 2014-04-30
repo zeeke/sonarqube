@@ -115,6 +115,9 @@ public class ProjectServicesTest {
   // SONAR-3014
   @Test
   public void testDescriptionWidget() {
+    long projectId = orchestrator.getServer().getWsClient().find(ResourceQuery.create("org.apache.struts:struts-parent")).getId();
+    long qgateId = orchestrator.getServer().adminWsClient().qualityGateClient().show("SonarQube way").id();
+    orchestrator.getServer().adminWsClient().qualityGateClient().selectProject(qgateId, projectId);
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-description-widget",
       "/selenium/ui/widgets/description-widget.html").build();
     orchestrator.executeSelenese(selenese);
