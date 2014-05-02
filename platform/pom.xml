@@ -31,7 +31,7 @@
     <sqaleLatest>2.2-SNAPSHOT</sqaleLatest>
     <vbLatest>1.4-SNAPSHOT</vbLatest>
     <vbnetLatest>1.2-SNAPSHOT</vbnetLatest>
-    <viewsLatest>2.5-SNAPSHOT</viewsLatest>
+    <viewsLatest>2.6-SNAPSHOT</viewsLatest>
     <visualstudioLatest>1.0-SNAPSHOT</visualstudioLatest>
   </properties>
 
