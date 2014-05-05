@@ -186,7 +186,7 @@
         </property>
       </activation>
       <properties>
-        <sonar.runtimeVersion>4.3-SNAPSHOT</sonar.runtimeVersion>
+        <sonar.runtimeVersion>4.3.1-SNAPSHOT</sonar.runtimeVersion>
         <plugins>
           com.sonarsource.abap:sonar-abap-plugin:${abapLatest},
           org.codehaus.sonar-plugins:sonar-build-breaker-plugin:${buildBreakerLatest},
