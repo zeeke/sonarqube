@@ -7,7 +7,6 @@ package com.sonar.it.batch;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -33,19 +32,6 @@ public class CustomMetricTest {
 
     checkFiles();
     checkAggregation();
-  }
-
-  // SONAR-4066
-  @Test
-  public void useful_error_when_unable_to_save_measure() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/custom-metric"))
-      .setCleanSonarGoals()
-      .setProperty("sonar.dynamicAnalysis", "false")
-      .setProperty("sonar.it.failingMeasure", "true");
-
-    BuildResult result = orchestrator.executeBuildQuietly(build);
-
-    assertThat(result.getLogs()).contains("Unable to save measure for metric [custom] on component [src/main/java/One.java]");
   }
 
   private void checkFiles() {
