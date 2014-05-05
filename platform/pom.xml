@@ -28,7 +28,7 @@
     <pmdLatest>2.2-SNAPSHOT</pmdLatest>
     <reportLatest>1.5-SNAPSHOT</reportLatest>
     <scmActivityLatest>1.8-SNAPSHOT</scmActivityLatest>
-    <sqaleLatest>2.2-SNAPSHOT</sqaleLatest>
+    <sqaleLatest>2.3-SNAPSHOT</sqaleLatest>
     <vbLatest>2.1-SNAPSHOT</vbLatest>
     <vbnetLatest>1.2-SNAPSHOT</vbnetLatest>
     <viewsLatest>2.6-SNAPSHOT</viewsLatest>
