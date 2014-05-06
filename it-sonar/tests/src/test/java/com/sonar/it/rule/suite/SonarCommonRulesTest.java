@@ -12,8 +12,8 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.sonar.wsclient.services.Violation;
-import org.sonar.wsclient.services.ViolationQuery;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
 
 import java.util.List;
 
@@ -43,8 +43,8 @@ public class SonarCommonRulesTest {
    */
   @Test
   public void shouldFindDuplicationViolation() {
-    List<Violation> violations = findViolations(HELLO_CLASS, "common-java:DuplicatedBlocks");
-    assertThat(violations.size()).isEqualTo(1);
+    List<Issue> issues = findIssues(HELLO_CLASS, "common-java:DuplicatedBlocks");
+    assertThat(issues.size()).isEqualTo(1);
   }
 
   /**
@@ -52,8 +52,8 @@ public class SonarCommonRulesTest {
    */
   @Test
   public void shouldFindInsufficientCommentViolation() {
-    List<Violation> violations = findViolations(HELLO_CLASS, "common-java:InsufficientCommentDensity");
-    assertThat(violations.size()).isEqualTo(1);
+    List<Issue> issues = findIssues(HELLO_CLASS, "common-java:InsufficientCommentDensity");
+    assertThat(issues.size()).isEqualTo(1);
   }
 
   /**
@@ -61,11 +61,11 @@ public class SonarCommonRulesTest {
    */
   @Test
   public void shouldFindInsufficientCoverageViolation() {
-    List<Violation> violations = findViolations(HELLO_CLASS, "common-java:InsufficientBranchCoverage");
-    assertThat(violations.size()).isEqualTo(1);
+    List<Issue> issues = findIssues(HELLO_CLASS, "common-java:InsufficientBranchCoverage");
+    assertThat(issues.size()).isEqualTo(1);
 
-    violations = findViolations(HELLO_CLASS, "common-java:InsufficientLineCoverage");
-    assertThat(violations.size()).isEqualTo(1);
+    issues = findIssues(HELLO_CLASS, "common-java:InsufficientLineCoverage");
+    assertThat(issues.size()).isEqualTo(1);
   }
 
   /**
@@ -73,8 +73,8 @@ public class SonarCommonRulesTest {
    */
   @Test
   public void shouldFindSkippedUnitTest() {
-    List<Violation> violations = findViolations("com.sonarsource.it.samples:sonar-common-rules-project:src/test/java/IgnoredTest.java", "common-java:SkippedUnitTests");
-    assertThat(violations.size()).isEqualTo(1);
+    List<Issue> issues = findIssues("com.sonarsource.it.samples:sonar-common-rules-project:src/test/java/IgnoredTest.java", "common-java:SkippedUnitTests");
+    assertThat(issues.size()).isEqualTo(1);
   }
 
   /**
@@ -82,15 +82,14 @@ public class SonarCommonRulesTest {
    */
   @Test
   public void shouldFindFailedAndErrorUnitTests() {
-    List<Violation> violations = findViolations("com.sonarsource.it.samples:sonar-common-rules-project:src/test/java/FailingTest.java", "common-java:FailedUnitTests");
-    assertThat(violations.size()).isEqualTo(1);
+    List<Issue> issues = findIssues("com.sonarsource.it.samples:sonar-common-rules-project:src/test/java/FailingTest.java", "common-java:FailedUnitTests");
+    assertThat(issues.size()).isEqualTo(1);
 
-    violations = findViolations("com.sonarsource.it.samples:sonar-common-rules-project:src/test/java/ErrorTest.java", "common-java:FailedUnitTests");
-    assertThat(violations.size()).isEqualTo(1);
+    issues = findIssues("com.sonarsource.it.samples:sonar-common-rules-project:src/test/java/ErrorTest.java", "common-java:FailedUnitTests");
+    assertThat(issues.size()).isEqualTo(1);
   }
 
-  private List<Violation> findViolations(String resourceKey, String violationId) {
-    List<Violation> violations = orchestrator.getServer().getWsClient().findAll(ViolationQuery.createForResource(resourceKey).setRuleKeys(violationId));
-    return violations;
+  private List<Issue> findIssues(String componentKey, String ruleKey) {
+    return orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().components(componentKey).rules(ruleKey)).list();
   }
 }
