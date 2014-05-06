@@ -130,9 +130,9 @@ public class MultipleLangTest {
     FileLocation basedir = FileLocation.ofShared("it-sonar-performancing/multi-lang-project/");
     orchestrator.executeBuild(SonarRunner.create()
       .setProjectDir(basedir.getFile())
-        // this name is defined on all languages
+      // this name is defined on all languages
       .setProperty("sonar.profile", PROFILE_NAME)
-    );
+      );
 
     // inspect Struts (maven)
     MavenBuild maven = MavenBuild.create(FileLocation.ofShared("it-sonar-performancing/struts-1.3.9/pom.xml").getFile());
@@ -144,17 +144,17 @@ public class MultipleLangTest {
 
   @Test
   public void test_projects() throws Exception {
-    // flex:   files: 2    ncloc: 12+8          complexity: 2+1
-    // groovy: files: 2    ncloc: 11 + 6        complexity: 2+1
-    // java:   files: 4    ncloc: 9+8+4+3       complexity: 3+1+1+0
-    // js:     files: 4    ncloc: 42+34+21+10   complexity: 15+13+8+3
+    // flex: files: 2 ncloc: 12+8 complexity: 2+1
+    // groovy: files: 2 ncloc: 11 + 6 complexity: 2+1
+    // java: files: 4 ncloc: 9+8+4+3 complexity: 3+1+1+0
+    // js: files: 4 ncloc: 42+34+21+10 complexity: 15+13+8+3
     assertThat(getMeasure(MULTI_LANG_PROJECT, "files").getIntValue()).isEqualTo(12);
     assertThat(getMeasure(MULTI_LANG_PROJECT, "ncloc").getIntValue()).isEqualTo(168);
     assertThat(getMeasure(MULTI_LANG_PROJECT, "complexity").getIntValue()).isEqualTo(50);
     assertThat(getMeasure(MULTI_LANG_PROJECT, "coverage").getValue()).isGreaterThan(20.0);
     assertThat(getMeasure(MULTI_LANG_PROJECT, "violations").getIntValue()).isGreaterThan(10);
 
-    assertThat(getMeasure(STRUTS_PROJECT, "files").getIntValue()).isEqualTo(496);
+    assertThat(getMeasure(STRUTS_PROJECT, "files").getIntValue()).isEqualTo(494);
     assertThat(getMeasure(STRUTS_PROJECT, "ncloc").getIntValue()).isEqualTo(50080);
     assertThat(getMeasure(STRUTS_PROJECT, "complexity").getIntValue()).isEqualTo(10913);
     assertThat(getMeasure(STRUTS_PROJECT, "coverage").getValue()).isGreaterThan(14.0);
@@ -167,9 +167,9 @@ public class MultipleLangTest {
     orchestrator.executeBuild(SonarRunner.create().setProjectDir(temp.newFolder()).setTask("views"));
 
     assertThat(getMeasure(MASTER_PROJECT, "projects").getIntValue()).isEqualTo(2);
-    assertThat(getMeasure(MASTER_PROJECT, "files").getIntValue()).isEqualTo(12+496);
-    assertThat(getMeasure(MASTER_PROJECT, "ncloc").getIntValue()).isEqualTo(168+50080);
-    assertThat(getMeasure(MASTER_PROJECT, "complexity").getIntValue()).isEqualTo(50+10913);
+    assertThat(getMeasure(MASTER_PROJECT, "files").getIntValue()).isEqualTo(12 + 494);
+    assertThat(getMeasure(MASTER_PROJECT, "ncloc").getIntValue()).isEqualTo(168 + 50080);
+    assertThat(getMeasure(MASTER_PROJECT, "complexity").getIntValue()).isEqualTo(50 + 10913);
     assertThat(getMeasure(MASTER_PROJECT, "coverage").getValue()).isGreaterThan(10.0);
     assertThat(getMeasure(MASTER_PROJECT, "violations").getIntValue()).isGreaterThan(200);
   }
