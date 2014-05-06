@@ -186,6 +186,15 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     assertThat(search(IssueQuery.create().actionPlans("unknown")).list()).isEmpty();
   }
 
+  /**
+   * SONAR-5132
+   */
+  @Test
+  public void search_issues_by_languages() {
+    assertThat(search(IssueQuery.create().languages("xoo")).list()).hasSize(DEFAULT_PAGINATED_RESULTS);
+    assertThat(search(IssueQuery.create().languages("foo")).list()).isEmpty();
+  }
+
   @Test
   public void paginate_results() {
     Issues issues = search(IssueQuery.create().pageSize(20).pageIndex(2));
