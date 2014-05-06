@@ -33,6 +33,9 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Resource;
@@ -197,11 +200,15 @@ public class PlatformTest {
   }
 
   @Test
-  public void cobolFileViolations() {
-    assertThat(wsClient.find(ViolationQuery.createForResource(cobolFileKey())).getRuleKey(), is("cobol:com.mycompany.cobol.sample.checks.SampleCheck"));
-    assertThat(wsClient.find(ViolationQuery.createForResource(cobolFileKey())).getLine(), is(3));
-    assertThat(wsClient.find(ViolationQuery.createForResource(cobolFileKey())).getSeverity(), is("INFO"));
-    assertThat(wsClient.find(ViolationQuery.createForResource(cobolFileKey())).getRuleName(), is("Sample check"));
+  public void cobolFileIssues() {
+    Issues issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().components(cobolFileKey()));
+    assertThat(issues.list().size(), is(1));
+
+    Issue issue = issues.list().get(0);
+    assertThat(issue.ruleKey(), is("cobol:com.mycompany.cobol.sample.checks.SampleCheck"));
+    assertThat(issue.line(), is(3));
+    assertThat(issue.severity(), is("INFO"));
+    assertThat(issues.rule(issue).name(), is("Sample check"));
   }
 
   private String cobolFileKey() {
