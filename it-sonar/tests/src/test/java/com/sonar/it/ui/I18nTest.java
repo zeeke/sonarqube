@@ -11,10 +11,7 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.After;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.sonar.wsclient.services.Rule;
-import org.sonar.wsclient.services.RuleQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -47,8 +44,7 @@ public class I18nTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("ui-i18n",
         "/selenium/ui/i18n/default-locale-is-english.html",
         "/selenium/ui/i18n/french-locale.html",
-        // Temoprary ignored test, waiting for 3Lignes de code (Java)" to be translated in french
-      //"/selenium/ui/i18n/french-pack.html",
+        "/selenium/ui/i18n/french-pack.html",
         "/selenium/ui/i18n/locale-with-france-country.html",
         "/selenium/ui/i18n/locale-with-swiss-country.html").build();
     orchestrator.executeSelenese(selenese);
