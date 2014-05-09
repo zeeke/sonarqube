@@ -30,7 +30,7 @@
     <scmActivityLatest>1.8-SNAPSHOT</scmActivityLatest>
     <sqaleLatest>2.3-SNAPSHOT</sqaleLatest>
     <vbLatest>2.1-SNAPSHOT</vbLatest>
-    <vbnetLatest>1.2-SNAPSHOT</vbnetLatest>
+    <vbnetLatest>2.1-SNAPSHOT</vbnetLatest>
     <viewsLatest>2.6-SNAPSHOT</viewsLatest>
     <visualstudioLatest>1.0-SNAPSHOT</visualstudioLatest>
   </properties>
