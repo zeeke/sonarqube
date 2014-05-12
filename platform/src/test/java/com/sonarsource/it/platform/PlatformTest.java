@@ -41,7 +41,6 @@ import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 import org.sonar.wsclient.services.SourceQuery;
-import org.sonar.wsclient.services.ViolationQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,7 +109,6 @@ public class PlatformTest {
       SonarRunner runner;
       try {
         runner = SonarRunner.create()
-          .setRunnerVersion("2.1")
           .setProjectDir(temp.newFolder())
           .setTask("views");
       } catch (IOException e) {
@@ -295,9 +293,9 @@ public class PlatformTest {
       assertThat(getMeasure(JAVA_VIEWS, "file_complexity_distribution").getData(), is("0=212;5=138;10=143;20=95;30=95;60=41;90=43"));
     }
 
-    assertThat(getMeasure(JAVA_VIEWS, "violations").getIntValue(), is(10431));
-    assertThat(getMeasure(JAVA_VIEWS, "weighted_violations").getIntValue(), is(17726));
-    assertThat(getMeasure(JAVA_VIEWS, "violations_density").getValue(), is(76.9));
+    assertThat(getMeasure(JAVA_VIEWS, "violations").getIntValue(), is(9253));
+    assertThat(getMeasure(JAVA_VIEWS, "weighted_violations").getIntValue(), is(14192));
+    assertThat(getMeasure(JAVA_VIEWS, "violations_density").getValue(), is(81.5));
 
     assertThat(getMeasure(JAVA_VIEWS, "coverage").getValue(), is(38.3));
     assertThat(getMeasure(JAVA_VIEWS, "tests").getIntValue(), is(13346));

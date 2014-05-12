@@ -17,7 +17,7 @@
     <cobolLatest>1.18-SNAPSHOT</cobolLatest>
     <cutoffLatest>0.3-SNAPSHOT</cutoffLatest>
     <devcockpitLatest>1.6-SNAPSHOT</devcockpitLatest>
-    <csharpLatest>2.2-SNAPSHOT</csharpLatest>
+    <csharpLatest>3.1-SNAPSHOT</csharpLatest>
     <fbcontribLatest>1.3-SNAPSHOT</fbcontribLatest>
     <flexLatest>2.1-SNAPSHOT</flexLatest>
     <groovyLatest>1.1-SNAPSHOT</groovyLatest>
@@ -30,9 +30,9 @@
     <scmActivityLatest>1.8-SNAPSHOT</scmActivityLatest>
     <sqaleLatest>2.3-SNAPSHOT</sqaleLatest>
     <vbLatest>2.1-SNAPSHOT</vbLatest>
-    <vbnetLatest>1.2-SNAPSHOT</vbnetLatest>
+    <vbnetLatest>2.1-SNAPSHOT</vbnetLatest>
     <viewsLatest>2.6-SNAPSHOT</viewsLatest>
-    <visualstudioLatest>1.0-SNAPSHOT</visualstudioLatest>
+    <visualstudioLatest>1.1-SNAPSHOT</visualstudioLatest>
   </properties>
 
   <profiles>
