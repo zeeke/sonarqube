@@ -5,6 +5,8 @@
  */
 package com.sonar.ant.it;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.build.AntBuild;
@@ -18,6 +20,8 @@ import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
+import javax.annotation.Nullable;
 
 import java.util.List;
 
@@ -128,8 +132,8 @@ public class AntTest {
 
     List<Issue> issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().componentRoots("org.sonar.ant.tests:classpath")).list();
     assertThat(issues.size()).isEqualTo(2);
-    assertThat(issues).onProperty("ruleKey").contains("squid:CallToDeprecatedMethod");
-    assertThat(issues).onProperty("ruleKey").contains("findbugs:DM_EXIT");
+    assertThat(containsRule("squid:CallToDeprecatedMethod", issues)).isTrue();
+    assertThat(containsRule("findbugs:DM_EXIT", issues)).isTrue();
   }
 
   /**
@@ -142,7 +146,7 @@ public class AntTest {
 
     List<Issue> issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().componentRoots("org.sonar.ant.tests:squid")).list();
     assertThat(issues.size()).isEqualTo(1);
-    assertThat(issues).onProperty("ruleKey").contains("squid:CallToDeprecatedMethod");
+    assertThat(issues.get(0).ruleKey()).isEqualTo("squid:CallToDeprecatedMethod");
   }
 
   @Test
@@ -422,6 +426,15 @@ public class AntTest {
     String logs = analysisResults.getLogs();
     assertThat(logs).contains("You must define the following mandatory properties");
     assertThat(logs).contains("sonar.projectKey, sonar.projectName, sonar.projectVersion, sonar.sources");
+  }
+
+  private static boolean containsRule(final String ruleKey, List<Issue> issues){
+    return Iterables.any(issues, new Predicate<Issue>() {
+      @Override
+      public boolean apply(@Nullable Issue input) {
+        return input != null && ruleKey.equals(input.ruleKey());
+      }
+    });
   }
 
 }
