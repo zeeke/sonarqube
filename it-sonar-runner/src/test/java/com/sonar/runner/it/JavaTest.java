@@ -11,10 +11,10 @@ import com.sonar.orchestrator.locator.ResourceLocation;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.Violation;
-import org.sonar.wsclient.services.ViolationQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -103,16 +103,14 @@ public class JavaTest extends RunnerTestCase {
     assertThat(file.getMeasureIntValue("violations")).isGreaterThan(0);
 
     // findbugs is executed on bytecode
-    ViolationQuery query = ViolationQuery.createForResource("java:bytecode").setDepth(-1).setRuleKeys("findbugs:DM_EXIT");
-    List<Violation> violations = orchestrator.getServer().getWsClient().findAll(query);
-    assertThat(violations).hasSize(1);
-    assertThat(violations.get(0).getRuleKey()).isEqualTo("findbugs:DM_EXIT");
+    List<Issue> issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().componentRoots("java:bytecode").rules("findbugs:DM_EXIT")).list();
+    assertThat(issues).hasSize(1);
+    assertThat(issues.get(0).ruleKey()).isEqualTo("findbugs:DM_EXIT");
 
     // Squid performs analysis of dependencies
-    query = ViolationQuery.createForResource("java:bytecode").setDepth(-1).setRuleKeys("squid:CallToDeprecatedMethod");
-    violations = orchestrator.getServer().getWsClient().findAll(query);
-    assertThat(violations).hasSize(1);
-    assertThat(violations.get(0).getRuleKey()).isEqualTo("squid:CallToDeprecatedMethod");
+    issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().componentRoots("java:bytecode").rules("squid:CallToDeprecatedMethod")).list();
+    assertThat(issues).hasSize(1);
+    assertThat(issues.get(0).ruleKey()).isEqualTo("squid:CallToDeprecatedMethod");
   }
 
   @Test

@@ -17,7 +17,7 @@
   <inceptionYear>2009</inceptionYear>
 
   <properties>
-    <sonar.buildVersion>3.1</sonar.buildVersion>
+    <sonar.buildVersion>3.7</sonar.buildVersion>
     <surefire.argLine>-server</surefire.argLine>
     <!-- following properties must be set in command-line : sonar.runtimeVersion and sonarRunner.version -->
   </properties>
