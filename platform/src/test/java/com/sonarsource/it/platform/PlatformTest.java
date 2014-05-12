@@ -296,7 +296,7 @@ public class PlatformTest {
     }
 
     assertThat(getMeasure(JAVA_VIEWS, "violations").getIntValue(), is(10385));
-    assertThat(getMeasure(JAVA_VIEWS, "weighted_violations").getIntValue(), is(17726));
+    assertThat(getMeasure(JAVA_VIEWS, "weighted_violations").getIntValue(), is(17588));
     assertThat(getMeasure(JAVA_VIEWS, "violations_density").getValue(), is(76.9));
 
     assertThat(getMeasure(JAVA_VIEWS, "coverage").getValue(), is(38.3));
