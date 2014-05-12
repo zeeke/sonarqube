@@ -293,7 +293,8 @@ public class PlatformTest {
       assertThat(getMeasure(JAVA_VIEWS, "file_complexity_distribution").getData(), is("0=212;5=138;10=143;20=95;30=95;60=41;90=43"));
     }
 
-    assertThat(getMeasure(JAVA_VIEWS, "violations").getIntValue(), is(10385));
+    System.out.println(getMeasure(JAVA_VIEWS, "violations").getIntValue() + " violations, " + getMeasure(JAVA_VIEWS, "weighted_violations").getIntValue() + " wv, " + getMeasure(JAVA_VIEWS, "violations_density").getValue() + "%");
+    assertThat(getMeasure(JAVA_VIEWS, "violations").getIntValue(), is(9253));
     assertThat(getMeasure(JAVA_VIEWS, "weighted_violations").getIntValue(), is(17588));
     assertThat(getMeasure(JAVA_VIEWS, "violations_density").getValue(), is(77.1));
 
