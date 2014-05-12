@@ -12,16 +12,12 @@ import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.version.Version;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.Violation;
-import org.sonar.wsclient.services.ViolationQuery;
 
 import java.util.List;
 
@@ -52,7 +48,7 @@ public class AntTest {
     if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("4.2")) {
       builder
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.5-RC1"))
-        // PMD is used by testJavaVersion
+          // PMD is used by testJavaVersion
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1-RC1"));
     } else if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("3.7")) {
       // Update to Sonar Java 2.0 in order to allow installation of Cobertura 1.4
@@ -60,7 +56,7 @@ public class AntTest {
         .setOrchestratorProperty("javaVersion", "2.0")
         .addPlugin("java")
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.4"))
-        // PMD is used by testJavaVersion
+          // PMD is used by testJavaVersion
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.0"));
     }
 
@@ -129,11 +125,11 @@ public class AntTest {
   public void testClasspath() {
     buildJava("classpath", "all", "classpath");
     checkProjectAnalysed("org.sonar.ant.tests:classpath", "classpath");
-    ViolationQuery query = ViolationQuery.createForResource("org.sonar.ant.tests:classpath").setDepth(-1);
-    List<Violation> violations = orchestrator.getServer().getWsClient().findAll(query);
-    assertThat(violations.size()).isEqualTo(2);
-    assertThat(violations).onProperty("ruleKey").contains("squid:CallToDeprecatedMethod");
-    assertThat(violations).onProperty("ruleKey").contains("findbugs:DM_EXIT");
+
+    List<Issue> issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().componentRoots("org.sonar.ant.tests:classpath")).list();
+    assertThat(issues.size()).isEqualTo(2);
+    assertThat(issues).onProperty("ruleKey").contains("squid:CallToDeprecatedMethod");
+    assertThat(issues).onProperty("ruleKey").contains("findbugs:DM_EXIT");
   }
 
   /**
@@ -144,10 +140,9 @@ public class AntTest {
     buildJava("squid", "all", "classpath");
     checkProjectAnalysed("org.sonar.ant.tests:squid", "classpath");
 
-    ViolationQuery query = ViolationQuery.createForResource("org.sonar.ant.tests:squid").setDepth(-1);
-    List<Violation> violations = orchestrator.getServer().getWsClient().findAll(query);
-    assertThat(violations.size()).isEqualTo(1);
-    assertThat(violations).onProperty("ruleKey").contains("squid:CallToDeprecatedMethod");
+    List<Issue> issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().componentRoots("org.sonar.ant.tests:squid")).list();
+    assertThat(issues.size()).isEqualTo(1);
+    assertThat(issues).onProperty("ruleKey").contains("squid:CallToDeprecatedMethod");
   }
 
   @Test
@@ -170,10 +165,9 @@ public class AntTest {
   public void testJavaVersion() {
     buildJava("java-version", "all", "java-version");
     checkProjectAnalysed("org.sonar.ant.tests:java-version", "java-version");
-    ViolationQuery query = ViolationQuery.createForResource("org.sonar.ant.tests:java-version").setDepth(-1);
-    List<Violation> violations = orchestrator.getServer().getWsClient().findAll(query);
-    assertThat(violations.size()).isEqualTo(1);
-    assertThat(violations.get(0).getRuleKey()).isEqualTo("pmd:IntegerInstantiation");
+    List<Issue> issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().componentRoots("org.sonar.ant.tests:java-version")).list();
+    assertThat(issues.size()).isEqualTo(1);
+    assertThat(issues.get(0).ruleKey()).isEqualTo("pmd:IntegerInstantiation");
   }
 
   @Test
@@ -385,8 +379,7 @@ public class AntTest {
       if (orchestrator.getServer().version().isGreaterThanOrEquals("3.2")) {
         // < sonarqube 4.2 and >= sonar 3.2 and mybatis 3.1
         assertThat(logs).contains("==>  Preparing");
-      }
-      else {
+      } else {
         // < sonar 3.2 and mybatis 3.0
         assertThat(logs).contains("==>  Executing");
       }
@@ -403,7 +396,7 @@ public class AntTest {
     assumeTrue(antTaskVersion.isGreaterThanOrEquals("2.1"));
     AntBuild build = AntBuild.create()
       .setBuildLocation(FileLocation.of("projects/shared/build.xml"))
-      // Workaround for ORCH-174
+        // Workaround for ORCH-174
       .setTargets("all", "clean", "-v");
     BuildResult analysisResults = orchestrator.executeBuild(build);
 
