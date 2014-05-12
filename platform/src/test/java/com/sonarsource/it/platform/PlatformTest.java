@@ -41,7 +41,6 @@ import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 import org.sonar.wsclient.services.SourceQuery;
-import org.sonar.wsclient.services.ViolationQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,7 +109,6 @@ public class PlatformTest {
       SonarRunner runner;
       try {
         runner = SonarRunner.create()
-          .setRunnerVersion("2.1")
           .setProjectDir(temp.newFolder())
           .setTask("views");
       } catch (IOException e) {
