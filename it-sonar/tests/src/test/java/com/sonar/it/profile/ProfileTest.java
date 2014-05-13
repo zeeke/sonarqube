@@ -15,11 +15,13 @@ import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+@Ignore
 public class ProfileTest {
 
   @ClassRule

@@ -15,6 +15,7 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Event;
 import org.sonar.wsclient.services.EventQuery;
@@ -27,6 +28,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+@Ignore
 public class ProfileChangelogTest {
 
   private static final String SELENIUM_CATEGORY = "profile-changelog";
