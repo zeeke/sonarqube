@@ -17,7 +17,11 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.sonar.wsclient.SonarClient;
+import org.sonar.wsclient.permissions.PermissionParameters;
+import org.sonar.wsclient.project.NewProject;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.user.UserParameters;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -109,6 +113,33 @@ public class ProfileTest {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-relationship-with-projects",
       "/selenium/profile/dashboard_links_to_used_profile.html",
       "/selenium/profile/link-profile-to-project.html"
+      ).build();
+    orchestrator.executeSelenese(selenese);
+  }
+
+  @Test
+  public void user_withouth_rights_should_not_see_associated_projects() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/IT_java-profile.xml"));
+
+    SonarClient adminWsClient = orchestrator.getServer().adminWsClient();
+    adminWsClient.projectClient().create(
+      NewProject.create().key("newProject1").name("New Project 1"));
+    adminWsClient.userClient().create(
+      UserParameters.create().login("usernoauth").password("usernoauth").passwordConfirmation("usernoauth").name("User No Auth"));
+    adminWsClient.userClient().create(
+      UserParameters.create().login("userwithauth").password("userwithauth").passwordConfirmation("userwithauth").name("User With Auth"));
+    adminWsClient.permissionClient().removePermission(
+      PermissionParameters.create().component("newProject1").group("Anyone").permission("user"));
+    adminWsClient.permissionClient().addPermission(
+      PermissionParameters.create().component("newProject1").user("userwithauth").permission("user"));
+    adminWsClient.permissionClient().addPermission(
+      PermissionParameters.create().component("newProject1").user("admin").permission("user"));
+
+
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-association-auth-check",
+      "/selenium/profile/project-association-admin.html",
+      "/selenium/profile/project-association-auth.html",
+      "/selenium/profile/project-association-no-auth.html"
       ).build();
     orchestrator.executeSelenese(selenese);
   }
