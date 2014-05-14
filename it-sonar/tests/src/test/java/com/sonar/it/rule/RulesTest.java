@@ -12,6 +12,7 @@ import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.fest.assertions.Condition;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.services.Rule;
@@ -70,6 +71,7 @@ public class RulesTest {
   }
 
   @Test
+  @Ignore("New rule templates are under development")
   public void should_edit_rules() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/rule/RulesTest/rule-with-parameters-profile.xml"));
     Selenese selenese = Selenese.builder()
