@@ -9,7 +9,7 @@
   <name>SonarSource :: IT :: Platform</name>
 
   <properties>
-    <abapLatest>3.1-SNAPSHOT</abapLatest>
+    <abapLatest>3.2-SNAPSHOT</abapLatest>
     <buildBreakerLatest>1.2-SNAPSHOT</buildBreakerLatest>
     <cppLatest>2.3-SNAPSHOT</cppLatest>
     <checkstyleLatest>2.2-SNAPSHOT</checkstyleLatest>
