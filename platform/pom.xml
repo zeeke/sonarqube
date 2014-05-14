@@ -27,7 +27,7 @@
     <plsqlLatest>2.7-SNAPSHOT</plsqlLatest>
     <pmdLatest>2.2-SNAPSHOT</pmdLatest>
     <reportLatest>1.5-SNAPSHOT</reportLatest>
-    <scmActivityLatest>1.8-SNAPSHOT</scmActivityLatest>
+    <scmActivityLatest>1.7.1-SNAPSHOT</scmActivityLatest>
     <sqaleLatest>2.3-SNAPSHOT</sqaleLatest>
     <vbLatest>2.1-SNAPSHOT</vbLatest>
     <vbnetLatest>2.1-SNAPSHOT</vbnetLatest>
