@@ -23,6 +23,7 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+@Ignore("New rule templates are under development")
 public class RulesTest {
 
   @ClassRule
@@ -106,6 +107,7 @@ public class RulesTest {
   }
 
   @Test
+  @Ignore("New rules are under development")
   public void should_manage_tags_on_rules() {
     final SonarClient wsClient = orchestrator.getServer().adminWsClient();
 
