@@ -105,30 +105,6 @@ public class RulesTest {
       "Controls whether to ignore checking for the abstract modifier on classes that match the name. Default is false."));
   }
 
-  @Test
-  @Ignore("New rules are under development")
-  public void should_manage_tags_on_rules() {
-//    final SonarClient wsClient = orchestrator.getServer().adminWsClient();
-//
-//    assertThat(wsClient.ruleTagClient().list()).excludes("mytag1", "mytag2", "mytag3");
-//    wsClient.ruleTagClient().create("mytag1");
-//    wsClient.ruleTagClient().create("mytag2");
-//    wsClient.ruleTagClient().create("mytag3");
-//    assertThat(wsClient.ruleTagClient().list()).contains("mytag1", "mytag2", "mytag3");
-//
-//    // select tags 1 and 3
-//    wsClient.ruleClient().addTags("xoo:OneIssuePerLine", "mytag1", "mytag3");
-//    // tag 2 should disappear (not associated to any rule)
-//    assertThat(wsClient.ruleTagClient().list()).contains("mytag1", "mytag3").excludes("mytag2");
-//
-//    // TODO 4.3 Check that rule appears in search filtered by tags, and that tags are set on rule
-//
-//    // remove tags 1 and 3
-//    wsClient.ruleClient().removeTags("xoo:OneIssuePerLine", "mytag1", "mytag3");
-//    // no more tags
-//    assertThat(wsClient.ruleTagClient().list()).excludes("mytag1", "mytag2", "mytag3");
-  }
-
   private static class ContainsParamCondition extends Condition<List<?>> {
 
     private String ruleName;
@@ -144,7 +120,7 @@ public class RulesTest {
       for (RuleParam rp : (List<RuleParam>) list) {
         if (ruleName.equals(rp.getName()) &&
           ((ruleDescription != null && ruleDescription.equals(rp.getDescription()))
-          || (ruleDescription == null && rp.getDescription() == null))) {
+            || (ruleDescription == null && rp.getDescription() == null))) {
           return true;
         }
       }
