@@ -160,10 +160,8 @@ public class MavenTest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/shade-with-dependency-reduced-pom"))
       .setProperty("sonar.dynamicAnalysis", "false")
       .setGoals("clean", "install", "sonar:sonar");
-    BuildResult result = orchestrator.executeBuildQuietly(build);
-    assertThat(result.getStatus()).isEqualTo(0);
-    assertThat(result.getLogs()).doesNotContain(
-      "Unable to determine structure of project. Probably you use Maven Advanced Reactor Options, which is not supported by Sonar and should not be used.");
+
+    orchestrator.executeBuild(build);
   }
 
   @Test
