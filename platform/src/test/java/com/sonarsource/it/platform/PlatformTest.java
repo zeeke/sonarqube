@@ -77,10 +77,11 @@ public class PlatformTest {
   public static void start() {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
     configureProfiles(builder);
-    configurePlugins(builder);
+    TestUtils.addAllCompatiblePlugins(builder);
     configureLicenses(builder);
     orchestrator = builder.build();
     orchestrator.start();
+    viewsVersion = orchestrator.getConfiguration().getPluginVersion("views");
     configureViews();
     is_sonar_4_2_or_more = orchestrator.getServer().version().isGreaterThanOrEquals("4.2");
     if (is_sonar_4_2_or_more) {
@@ -153,18 +154,6 @@ public class PlatformTest {
       .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-cobol-IT.xml"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-flex-IT.xml"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-java-IT.xml"));
-  }
-
-  private static void configurePlugins(OrchestratorBuilder builder) {
-    org.sonar.updatecenter.common.Version sonarVersion = org.sonar.updatecenter.common.Version.create(builder.getSonarVersion());
-    for (Plugin p : findAllCompatiblePlugins(builder.getUpdateCenter(), sonarVersion)) {
-      Release r = p.getLastCompatible(sonarVersion);
-      if ("views".equals(p.getKey())) {
-        viewsVersion = Version.create(r.getVersion().toString());
-      }
-      builder.setOrchestratorProperty(p.getKey() + "Version", r.getVersion().toString());
-      builder.addPlugin(p.getKey());
-    }
   }
 
   /**

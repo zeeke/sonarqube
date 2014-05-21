@@ -24,8 +24,6 @@ import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
-import com.sonar.orchestrator.locator.MavenLocation;
-import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -60,7 +58,7 @@ public class MultipleLangTest {
   public static void start() throws Exception {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
     configureProfiles(builder);
-    addPlugins(builder);
+    TestUtils.addAllCompatiblePlugins(builder);
     activateLicenses(builder);
     orchestrator = builder.build();
     orchestrator.start();
@@ -98,19 +96,6 @@ public class MultipleLangTest {
       .activateLicense("vb")
       .activateLicense("vbnet")
       .activateLicense("views");
-  }
-
-  private static void addPlugins(OrchestratorBuilder builder) throws IOException {
-    String pluginsProperty = builder.getOrchestratorConfiguration().getString("plugins");
-    if (StringUtils.isBlank(pluginsProperty)) {
-      throw new IllegalArgumentException("Missing pluginsProperty: plugins");
-    }
-    for (String pluginProperty : StringUtils.split(pluginsProperty, ",")) {
-      String[] pluginFields = StringUtils.split(pluginProperty, ":");
-      String artifactId = StringUtils.trim(pluginFields[1]);
-      String version = StringUtils.trim(pluginFields[2]);
-      builder.addPlugin(MavenLocation.create(StringUtils.trim(pluginFields[0]), artifactId, version));
-    }
   }
 
   private static void configureViews() {
