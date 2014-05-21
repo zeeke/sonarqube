@@ -78,7 +78,7 @@ public class PlatformTest {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
     configureProfiles(builder);
     TestUtils.addAllCompatiblePlugins(builder);
-    configureLicenses(builder);
+    TestUtils.activateLicenses(builder);
     orchestrator = builder.build();
     orchestrator.start();
     viewsVersion = orchestrator.getConfiguration().getPluginVersion("views");
@@ -132,21 +132,6 @@ public class PlatformTest {
           "views.def",
           "<views><vw key='views_java' def='false'><name>Java</name><p>org.apache.struts:struts-parent</p><p>commons-collections:commons-collections</p></vw><vw key='views_java_cobol' def='false'><name>Java+Cobol</name><p>sonar.cobol:custom-check</p><p>commons-collections:commons-collections</p></vw></views>")
       );
-  }
-
-  private static void configureLicenses(OrchestratorBuilder builder) {
-    builder
-      .activateLicense("abap")
-      .activateLicense("cobol")
-      .activateLicense("devcockpit")
-      .activateLicense("natural")
-      .activateLicense("pli")
-      .activateLicense("plsql")
-      .activateLicense("report")
-      .activateLicense("sqale")
-      .activateLicense("vb")
-      .activateLicense("vbnet")
-      .activateLicense("views");
   }
 
   private static void configureProfiles(OrchestratorBuilder builder) {

@@ -59,7 +59,7 @@ public class MultipleLangTest {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
     configureProfiles(builder);
     TestUtils.addAllCompatiblePlugins(builder);
-    activateLicenses(builder);
+    TestUtils.activateLicenses(builder);
     orchestrator = builder.build();
     orchestrator.start();
     assumeTrue(orchestrator.getConfiguration().getSonarVersion().isGreaterThanOrEquals("4.2"));
@@ -79,23 +79,6 @@ public class MultipleLangTest {
     for (String language : LANGUAGES) {
       builder.restoreProfileAtStartup(FileLocation.ofClasspath("/default-profile-" + language + ".xml"));
     }
-  }
-
-  private static void activateLicenses(OrchestratorBuilder builder) {
-    builder
-      .activateLicense("abap")
-      .activateLicense("cobol")
-      .activateLicense("cpp")
-      .activateLicense("devcockpit")
-      .activateLicense("natural")
-      .activateLicense("pacbase")
-      .activateLicense("pli")
-      .activateLicense("plsql")
-      .activateLicense("report")
-      .activateLicense("sqale")
-      .activateLicense("vb")
-      .activateLicense("vbnet")
-      .activateLicense("views");
   }
 
   private static void configureViews() {

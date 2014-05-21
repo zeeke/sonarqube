@@ -39,12 +39,27 @@ public class TestUtils {
     }
   }
 
-  /**
-   * Can't use UpdateCenter::findAllCompatiblePlugins() as it normalizes SQ version before comparison
-   */
+  public static void activateLicenses(OrchestratorBuilder builder) {
+    builder
+      .activateLicense("abap")
+      .activateLicense("cobol")
+      .activateLicense("cpp")
+      .activateLicense("devcockpit")
+      .activateLicense("natural")
+      .activateLicense("pacbase")
+      .activateLicense("pli")
+      .activateLicense("plsql")
+      .activateLicense("report")
+      .activateLicense("rpg")
+      .activateLicense("sqale")
+      .activateLicense("vb")
+      .activateLicense("vbnet")
+      .activateLicense("views");
+  }
+
   private static List<Plugin> findAllCompatiblePlugins(UpdateCenter center, org.sonar.updatecenter.common.Version sqVersion) {
     List<Plugin> availables = newArrayList();
-    for (Plugin plugin : center.getUpdateCenterPluginReferential().getPlugins()) {
+    for (Plugin plugin : center.findAllCompatiblePlugins()) {
       Release release = plugin.getLastCompatible(sqVersion);
       if (release != null
         // Don't install member of an ecosystem as they will be automatically installed by Orchestrator with the parent
