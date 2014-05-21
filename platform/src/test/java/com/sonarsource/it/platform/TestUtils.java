@@ -22,17 +22,13 @@ package com.sonarsource.it.platform;
 import com.sonar.orchestrator.OrchestratorBuilder;
 import org.sonar.updatecenter.common.Plugin;
 import org.sonar.updatecenter.common.Release;
-import org.sonar.updatecenter.common.UpdateCenter;
-
-import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 public class TestUtils {
 
   public static void addAllCompatiblePlugins(OrchestratorBuilder builder) {
     org.sonar.updatecenter.common.Version sonarVersion = org.sonar.updatecenter.common.Version.create(builder.getSonarVersion());
-    for (Plugin p : findAllCompatiblePlugins(builder.getUpdateCenter(), sonarVersion)) {
+    builder.getUpdateCenter().setInstalledSonarVersion(sonarVersion);
+    for (Plugin p : builder.getUpdateCenter().findAllCompatiblePlugins()) {
       Release r = p.getLastCompatible(sonarVersion);
       builder.setOrchestratorProperty(p.getKey() + "Version", r.getVersion().toString());
       builder.addPlugin(p.getKey());
@@ -55,19 +51,6 @@ public class TestUtils {
       .activateLicense("vb")
       .activateLicense("vbnet")
       .activateLicense("views");
-  }
-
-  private static List<Plugin> findAllCompatiblePlugins(UpdateCenter center, org.sonar.updatecenter.common.Version sqVersion) {
-    List<Plugin> availables = newArrayList();
-    for (Plugin plugin : center.findAllCompatiblePlugins()) {
-      Release release = plugin.getLastCompatible(sqVersion);
-      if (release != null
-        // Don't install member of an ecosystem as they will be automatically installed by Orchestrator with the parent
-        && release.getParent() == null) {
-        availables.add(plugin);
-      }
-    }
-    return availables;
   }
 
 }
