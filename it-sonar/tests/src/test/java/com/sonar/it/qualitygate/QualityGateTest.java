@@ -5,12 +5,10 @@
  */
 package com.sonar.it.qualitygate;
 
-import org.junit.Before;
-
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.project.NewProject;
@@ -20,6 +18,7 @@ import org.sonar.wsclient.qualitygate.QualityGateClient;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
+
 import static org.fest.assertions.Assertions.assertThat;
 
 public class QualityGateTest {
@@ -40,7 +39,7 @@ public class QualityGateTest {
   }
 
   @Test
-  public void should_not_compute_alert_status_if_no_quality_gate_exist() {
+  public void not_compute_alert_status_if_no_quality_gate_exist() {
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("qualitygate/xoo-sample"));
     orchestrator.executeBuild(build);
 
@@ -48,7 +47,7 @@ public class QualityGateTest {
   }
 
   @Test
-  public void should_compute_alert_status_ok_with_default_empty_quality_gate() {
+  public void compute_alert_status_ok_with_default_empty_quality_gate() {
     QualityGate empty = qgClient().create("Empty");
     qgClient().setDefault(empty.id());
 
@@ -62,7 +61,7 @@ public class QualityGateTest {
   }
 
   @Test
-  public void should_compute_alert_status_ok_when_threshold_not_met() {
+  public void compute_alert_status_ok_when_threshold_not_met() {
     QualityGate simple = qgClient().create("SimpleWithHighThreshold");
     qgClient().setDefault(simple.id());
     qgClient().createCondition(NewCondition.create(simple.id()).metricKey("ncloc").operator("GT").warningThreshold("20"));
@@ -77,7 +76,7 @@ public class QualityGateTest {
   }
 
   @Test
-  public void should_compute_alert_status_warning_with_default_quality_gate() {
+  public void compute_alert_status_warning_with_default_quality_gate() {
     QualityGate simple = qgClient().create("SimpleWithLowThreshold");
     qgClient().setDefault(simple.id());
     qgClient().createCondition(NewCondition.create(simple.id()).metricKey("ncloc").operator("GT").warningThreshold("10"));
@@ -92,7 +91,7 @@ public class QualityGateTest {
   }
 
   @Test
-  public void should_compute_alert_status_error_with_default_quality_gate() {
+  public void compute_alert_status_error_with_default_quality_gate() {
     QualityGate simple = qgClient().create("SimpleWithLowThreshold");
     qgClient().setDefault(simple.id());
     qgClient().createCondition(NewCondition.create(simple.id()).metricKey("ncloc").operator("GT").errorThreshold("10"));
@@ -107,7 +106,7 @@ public class QualityGateTest {
   }
 
   @Test
-  public void should_use_local_settings_instead_of_default_qgate() {
+  public void use_local_settings_instead_of_default_qgate() {
     QualityGate alert = qgClient().create("AlertWithLowThreshold");
     qgClient().createCondition(NewCondition.create(alert.id()).metricKey("ncloc").operator("GT").warningThreshold("10"));
     QualityGate error = qgClient().create("ErrorWithLowThreshold");
@@ -126,7 +125,7 @@ public class QualityGateTest {
   }
 
   @Test
-  public void should_use_server_settings_instead_of_default_qgate() {
+  public void use_server_settings_instead_of_default_qgate() {
     QualityGate alert = qgClient().create("AlertWithLowThreshold");
     qgClient().createCondition(NewCondition.create(alert.id()).metricKey("ncloc").operator("GT").warningThreshold("10"));
     QualityGate error = qgClient().create("ErrorWithLowThreshold");
@@ -146,7 +145,7 @@ public class QualityGateTest {
   }
 
   @Test
-  public void should_raise_alerts_on_multiple_metric_types() {
+  public void raise_alerts_on_multiple_metric_types() {
     QualityGate allTypes = qgClient().create("AllMetricTypes");
     qgClient().createCondition(NewCondition.create(allTypes.id()).metricKey("ncloc").operator("GT").warningThreshold("10"));
     qgClient().createCondition(NewCondition.create(allTypes.id()).metricKey("file_complexity").operator("GT").warningThreshold("7.5"));
@@ -168,7 +167,7 @@ public class QualityGateTest {
   }
 
   @Test
-  public void should_compute_alert_status_on_metric_variation() {
+  public void compute_alert_status_on_metric_variation() {
     QualityGate simple = qgClient().create("SimpleWithDifferential");
     qgClient().setDefault(simple.id());
     qgClient().createCondition(NewCondition.create(simple.id()).metricKey("ncloc").period(1).operator("EQ").warningThreshold("0"));
