@@ -24,7 +24,6 @@ import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
-import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.version.Version;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -163,7 +162,8 @@ public class PlatformTest {
       if ("views".equals(p.getKey())) {
         viewsVersion = Version.create(r.getVersion().toString());
       }
-      builder.addPlugin(MavenLocation.create(r.groupId(), r.artifactId(), r.getVersion().toString()));
+      builder.setOrchestratorProperty(p.getKey() + "Version", r.getVersion().toString());
+      builder.addPlugin(p.getKey());
     }
   }
 
@@ -174,7 +174,9 @@ public class PlatformTest {
     List<Plugin> availables = newArrayList();
     for (Plugin plugin : center.getUpdateCenterPluginReferential().getPlugins()) {
       Release release = plugin.getLastCompatible(sqVersion);
-      if (release != null) {
+      if (release != null
+        // Don't install member of an ecosystem as they will be automatically installed by Orchestrator with the parent
+        && release.getParent() == null) {
         availables.add(plugin);
       }
     }
