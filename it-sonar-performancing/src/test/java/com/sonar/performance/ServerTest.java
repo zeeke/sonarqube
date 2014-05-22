@@ -24,6 +24,7 @@ public class ServerTest extends PerfTestCase {
       // "Creation of SecureRandom instance for session ID generation using [SHA1PRNG]"
       // Using /dev/urandom fixes the issue on linux
       .addServerJvmArgument("-Djava.security.egd=file:/dev/./urandom")
+      .addServerJvmArgument("-server")
       .build();
     try {
       long startupDuration = start(orchestrator);

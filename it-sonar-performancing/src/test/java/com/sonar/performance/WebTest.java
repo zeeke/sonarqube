@@ -30,7 +30,7 @@ public class WebTest extends PerfTestCase {
     FileLocation strutsHome = FileLocation.ofShared("it-sonar-performancing/struts-1.3.9/pom.xml");
     MavenBuild scan = MavenBuild.create(strutsHome.getFile());
     scan.setGoals("sonar:sonar -V");
-    scan.setEnvironmentVariable("MAVEN_OPTS", "-Xmx512m");
+    scan.setEnvironmentVariable("MAVEN_OPTS", "-Xmx512m -server");
     orchestrator.executeBuild(scan);
   }
 
