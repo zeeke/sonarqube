@@ -21,32 +21,32 @@
 <tr>
 	<td>assertText</td>
 	<td>block_1</td>
-	<td>*Apache Struts*Key:*org.apache.struts:struts-parent*Profiles:*Java: sonar-way-2.7 (version 1)*Quality Gate*SonarQube way*Links:*Developer connection*Home*Issues*Sources*</td>
+	<td>*Struts*org.apache.struts:struts-parent*Apache Struts*Profiles:*sonar-way-2.7 (Java, version 1)*Quality Gate*SonarQube way*Developer connection*Home*Issues*Sources*</td>
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>link=Home@href</td>
+	<td>css=.link-homepage@href</td>
 	<td>*http://struts.apache.org*</td>
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>link=Issues@href</td>
+	<td>css=.link-issue@href</td>
 	<td>*http://issues.apache.org/struts/*</td>
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>link=Sources@href</td>
+	<td>css=.link-scm@href</td>
 	<td>*http://svn.apache.org/viewcvs.cgi/struts/struts1/trunk*</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Developer connection</td>
+	<td>css=.link-scm_dev</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=#resource_links &gt; div</td>
-	<td>*Developer connection*scm:svn:https://svn.apache.org/repos/asf/struts/struts1/trunk*</td>
+	<td>css=.description-widget-link-data</td>
+	<td>*scm:svn:https://svn.apache.org/repos/asf/struts/struts1/trunk*</td>
 </tr>
 </tbody>
 </table>
