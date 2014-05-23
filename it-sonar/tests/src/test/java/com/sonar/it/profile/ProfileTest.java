@@ -218,21 +218,6 @@ public class ProfileTest {
     orchestrator.executeSelenese(selenese);
   }
 
-  // SONAR-1492
-  @Test
-  public void test_rule_notes() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/one-rule-profile.xml"));
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-rule-notes",
-      "/selenium/profile/rule-notes/check-no-action-if-not-authenticated.html",
-      // SONAR-3382, SONAR-4657
-      "/selenium/profile/rule-notes/extend-description-and-remove-it.html",
-      "/selenium/profile/rule-notes/add-delete-note-on-active-rule.html",
-      "/selenium/profile/rule-notes/cant-add-note-on-inactive-rule.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
   /**
    * SONAR-4107
    */
@@ -251,26 +236,6 @@ public class ProfileTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("profile-deletion-associations",
       "/selenium/profile/SONAR-4107_delete_quality_profile_removes_all_associations.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  @Test
-  public void should_activate_a_rule() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/profile-empty.xml"));
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-activate-a-rule",
-      "/selenium/profile/activate-a-rule.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  @Test
-  public void should_deactivate_a_rule() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/profile/ProfileTest/profile-with-one-rule.xml"));
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-deactivate-a-rule",
-      "/selenium/profile/deactivate-a-rule.html"
       ).build();
     orchestrator.executeSelenese(selenese);
   }
