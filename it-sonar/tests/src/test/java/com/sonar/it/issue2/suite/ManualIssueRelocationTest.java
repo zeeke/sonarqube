@@ -132,7 +132,7 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
   }
 
   private void createManualIssue() {
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("manual-issues-on-line",
+    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("manual-issues-relocation",
       "/selenium/issue/manual-issue/create-manual-issue-on-line.html"
       ).build());
     this.issueCreationDate = searchIssuesByComponent(COMPONENT_KEY).get(0).creationDate();
