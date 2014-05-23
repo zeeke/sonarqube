@@ -103,7 +103,8 @@ public class AntTest {
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey, "profile", "profiles"));
     assertThat(project.getVersion()).isEqualTo("0.1-SNAPSHOT");
     if (orchestrator.getServer().version().isGreaterThanOrEquals("4.4")) {
-      assertThat(project.getMeasure("profiles").getData()).as("Profile").isEqualTo(profile);
+      // json format
+      assertThat(project.getMeasure("profiles").getData()).as("Profile").contains(profile);
     } else {
       assertThat(project.getMeasure("profile").getData()).as("Profile").isEqualTo(profile);
     }
