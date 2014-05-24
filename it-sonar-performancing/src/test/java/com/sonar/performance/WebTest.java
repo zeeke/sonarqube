@@ -17,7 +17,7 @@ import static org.junit.Assert.fail;
 
 public class WebTest extends PerfTestCase {
 
-  static final int DEFAULT_PAGE_TIMEOUT_MS = 800;
+  static final int DEFAULT_PAGE_TIMEOUT_MS = 900;
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
