@@ -17,7 +17,7 @@ import static org.junit.Assert.fail;
 
 public class WebTest extends PerfTestCase {
 
-  static final int DEFAULT_PAGE_TIMEOUT_MS = 900;
+  static final int DEFAULT_PAGE_TIMEOUT_MS = 1000;
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
@@ -79,7 +79,7 @@ public class WebTest extends PerfTestCase {
   @Test
   public void struts_dashboard() throws Exception {
     PageStats counters = request("/dashboard/index/org.apache.struts:struts-parent");
-    assertDurationLessThan(counters.durationMs, 350);
+    assertDurationLessThan(counters.durationMs, 400);
   }
 
   @Test
@@ -91,7 +91,7 @@ public class WebTest extends PerfTestCase {
   @Test
   public void struts_issues_drilldown() throws Exception {
     PageStats counters = request("/drilldown/issues/org.apache.struts:struts-parent");
-    assertDurationLessThan(counters.durationMs, 350);
+    assertDurationLessThan(counters.durationMs, 400);
   }
 
   @Test
