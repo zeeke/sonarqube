@@ -20,6 +20,7 @@
 package com.sonarsource.it.platform;
 
 import com.sonar.orchestrator.OrchestratorBuilder;
+import com.sonar.orchestrator.locator.MavenLocation;
 import org.sonar.updatecenter.common.Plugin;
 import org.sonar.updatecenter.common.Release;
 
@@ -33,7 +34,7 @@ public class TestUtils {
       builder.setOrchestratorProperty(p.getKey() + "Version", r.getVersion().toString());
       builder.addPlugin(p.getKey());
       if ("cobol".equals(p.getKey())) {
-        builder.addMavenPlugin("com.sonarsource.cobol", "custom-cobol-sample-plugin", r.getVersion().toString());
+        builder.addPlugin(MavenLocation.of("com.sonarsource.cobol", "custom-cobol-sample-plugin", r.getVersion().toString()));
       }
     }
   }
