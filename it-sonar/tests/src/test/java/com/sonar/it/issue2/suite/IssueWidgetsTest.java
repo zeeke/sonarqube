@@ -102,7 +102,6 @@ public class IssueWidgetsTest extends AbstractIssueTestCase2 {
   /**
    * SONAR-4333
    */
-  @Ignore("Need /issues/search to manage 'resolved' param")
   @Test
   public void test_unresolved_issue_statuses_widget() throws Exception {
     List<Issue> issues = searchIssuesByComponent(PROJECT_KEY);

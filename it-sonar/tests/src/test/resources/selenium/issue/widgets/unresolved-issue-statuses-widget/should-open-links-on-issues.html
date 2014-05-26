@@ -25,138 +25,18 @@
 </tr>
 <tr>
 	<td>waitForVisible</td>
-	<td>css=.navigator-actions-order</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
 	<td>css=.navigator-actions-total</td>
-	<td>Found: 12</td>
+	<td>*Found: 12*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>body</td>
-	<td>*Open*</td>
+	<td>waitForSelectedLabel</td>
+	<td>resolutions</td>
+	<td>Unresolved</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>body</td>
-	<td>*Confirmed*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>body</td>
-	<td>*Reopened*</td>
-</tr>
-<tr>
-	<td>assertLocation</td>
-	<td>*/issues/search?componentRoots=*</td>
-	<td></td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>/sonar/widget?id=unresolved_issues_statuses&amp;resource=sample</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=9</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForVisible</td>
-	<td>css=.navigator-actions-order</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.navigator-actions-total</td>
-	<td>Found: 9</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>body</td>
-	<td>*Open*</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>body</td>
-	<td>*Confirmed*</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>body</td>
-	<td>*Reopened*</td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>/sonar/widget?id=unresolved_issues_statuses&amp;resource=sample</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=1</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForVisible</td>
-	<td>css=.navigator-actions-order</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.navigator-actions-total</td>
-	<td>Found: 1</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>body</td>
-	<td>*Open*</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>body</td>
-	<td>*Confirmed*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>body</td>
-	<td>*Reopened*</td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>/sonar/widget?id=unresolved_issues_statuses&amp;resource=sample</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=2</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForVisible</td>
-	<td>css=.navigator-actions-order</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.navigator-actions-total</td>
-	<td>Found: 2</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>body</td>
-	<td>*Open*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>body</td>
-	<td>*Confirmed*</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>body</td>
-	<td>*Reopened*</td>
+	<td>assertValue</td>
+	<td>componentRoots</td>
+	<td>sample</td>
 </tr>
 </tbody>
 </table>
