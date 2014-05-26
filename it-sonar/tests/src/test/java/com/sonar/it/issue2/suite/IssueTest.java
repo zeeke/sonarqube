@@ -11,7 +11,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.issue.Issue;
@@ -234,25 +233,6 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeBuild(scan.setProperties("sonar.customMessage.message", null));
     issue = issueClient().find(IssueQuery.create()).list().get(0);
     assertThat(issue.message()).isEqualTo("Issue With Custom Message");
-  }
-
-  /**
-   * SONAR-4210
-   */
-  @Test
-  @Ignore("Disabled as long as list of issues is not displayed when selecting a non-file component")
-  public void test_issue_drilldown() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("with-many-rules");
-    orchestrator.executeBuild(scan);
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("issues-drilldown",
-      "/selenium/issue/issues-drilldown/unselect-module-filter.html",
-      "/selenium/issue/issues-drilldown/unselect-rule-filter.html",
-      "/selenium/issue/issues-drilldown/guess-rule-severity.html").build();
-    orchestrator.executeSelenese(selenese);
   }
 
   /**
