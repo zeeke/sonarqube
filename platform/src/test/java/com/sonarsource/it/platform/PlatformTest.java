@@ -30,9 +30,6 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.sonar.updatecenter.common.Plugin;
-import org.sonar.updatecenter.common.Release;
-import org.sonar.updatecenter.common.UpdateCenter;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
@@ -45,9 +42,7 @@ import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -75,7 +70,7 @@ public class PlatformTest {
 
   @BeforeClass
   public static void start() {
-    OrchestratorBuilder builder = Orchestrator.builderEnv();
+    OrchestratorBuilder builder = Orchestrator.builderEnv().removeDistributedPlugins();
     configureProfiles(builder);
     TestUtils.addAllCompatiblePlugins(builder);
     TestUtils.activateLicenses(builder);
@@ -139,22 +134,6 @@ public class PlatformTest {
       .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-cobol-IT.xml"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-flex-IT.xml"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/profile-java-IT.xml"));
-  }
-
-  /**
-   * Can't use UpdateCenter::findAllCompatiblePlugins() as it normalize SQ version before comparison
-   */
-  private static List<Plugin> findAllCompatiblePlugins(UpdateCenter center, org.sonar.updatecenter.common.Version sqVersion) {
-    List<Plugin> availables = newArrayList();
-    for (Plugin plugin : center.getUpdateCenterPluginReferential().getPlugins()) {
-      Release release = plugin.getLastCompatible(sqVersion);
-      if (release != null
-        // Don't install member of an ecosystem as they will be automatically installed by Orchestrator with the parent
-        && release.getParent() == null) {
-        availables.add(plugin);
-      }
-    }
-    return availables;
   }
 
   private static void inspect(File baseDir) {

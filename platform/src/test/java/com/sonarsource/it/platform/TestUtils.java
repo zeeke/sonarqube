@@ -32,6 +32,9 @@ public class TestUtils {
       Release r = p.getLastCompatible(sonarVersion);
       builder.setOrchestratorProperty(p.getKey() + "Version", r.getVersion().toString());
       builder.addPlugin(p.getKey());
+      if ("cobol".equals(p.getKey())) {
+        builder.addMavenPlugin("com.sonarsource.cobol", "custom-cobol-sample-plugin", r.getVersion().toString());
+      }
     }
   }
 
