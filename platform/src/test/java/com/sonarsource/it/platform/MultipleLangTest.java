@@ -98,18 +98,20 @@ public class MultipleLangTest {
     // inspect multi-lang-project
     FileLocation basedir = FileLocation.ofShared("it-sonar-performancing/multi-lang-project/");
     orchestrator.executeBuild(SonarRunner.create()
-        .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-server -Xmx512m -XX:MaxPermSize=160m")
-        .setProjectDir(basedir.getFile())
-          // this name is defined on all languages
-        .setProperty("sonar.profile", PROFILE_NAME)
-    );
+      .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-server -Xmx512m -XX:MaxPermSize=160m")
+      .setProjectDir(basedir.getFile())
+      // this name is defined on all languages
+      .setProperty("sonar.profile", PROFILE_NAME)
+      );
 
     // inspect Struts (maven)
-    MavenBuild maven = MavenBuild.create(FileLocation.ofShared("it-sonar-performancing/struts-1.3.9/pom.xml").getFile());
-    maven.setEnvironmentVariable("MAVEN_OPTS", TestUtils.BATCH_JVM_OPTS);
-    maven.setCleanPackageSonarGoals()
-      .setProperty("sonar.dynamicAnalysis", "true")
-      .setProperty("sonar.profile", PROFILE_NAME);
+    MavenBuild maven = MavenBuild.create(FileLocation.ofShared("it-sonar-performancing/struts-1.3.9/pom.xml").getFile())
+      .setEnvironmentVariable("MAVEN_OPTS", TestUtils.BATCH_JVM_OPTS)
+      .setProperty("sonar.profile", PROFILE_NAME)
+      // following property to not have differences between SonarQube Java version
+      .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
+      .setProperty("sonar.dynamicAnalysis", "reuseReports")
+      .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
     orchestrator.executeBuild(maven);
   }
 

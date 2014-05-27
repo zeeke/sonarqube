@@ -142,9 +142,10 @@ public class PlatformTest {
       .setEnvironmentVariable("MAVEN_OPTS", TestUtils.BATCH_JVM_OPTS)
       .setProperty("sonar.cpd.engine", "sonar")
       .setProfile("IT")
-      // following property to not have differences between Sonar version
+      // following property to not have differences between SonarQube Java version
       .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
-      .setCleanPackageSonarGoals();
+      .setProperty("sonar.dynamicAnalysis", "reuseReports")
+      .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
     orchestrator.executeBuild(build);
   }
 
@@ -267,7 +268,7 @@ public class PlatformTest {
     assertThat(getMeasure(JAVA_VIEWS, "weighted_violations").getIntValue(), is(14192));
     assertThat(getMeasure(JAVA_VIEWS, "violations_density").getValue(), is(81.5));
 
-    assertThat(getMeasure(JAVA_VIEWS, "coverage").getValue(), is(38.3));
+    assertThat(getMeasure(JAVA_VIEWS, "coverage").getValue(), is(49.1));
     assertThat(getMeasure(JAVA_VIEWS, "tests").getIntValue(), is(13346));
     assertThat(getMeasure(JAVA_VIEWS, "test_success_density").getValue(), is(100.0));
     assertThat(getMeasure(JAVA_VIEWS, "test_errors").getIntValue(), is(0));
