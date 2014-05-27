@@ -37,7 +37,7 @@ public class WebTest extends PerfTestCase {
   @Test
   public void homepage() throws Exception {
     PageStats counters = request("/");
-    assertDurationLessThan(counters.durationMs, 200);
+    assertDurationLessThan(counters.durationMs, 300);
   }
 
   @Test
@@ -49,7 +49,7 @@ public class WebTest extends PerfTestCase {
   @Test
   public void issues_search() throws Exception {
     PageStats counters = request("/issues/search");
-    assertDurationLessThan(counters.durationMs, 200);
+    assertDurationLessThan(counters.durationMs, 300);
   }
 
   @Test
@@ -61,13 +61,13 @@ public class WebTest extends PerfTestCase {
   @Test
   public void all_projects() throws Exception {
     PageStats counters = request("/all_projects?qualifier=TRK");
-    assertDurationLessThan(counters.durationMs, 200);
+    assertDurationLessThan(counters.durationMs, 300);
   }
 
   @Test
   public void project_measures_search() throws Exception {
     PageStats counters = request("/measures/search?qualifiers[]=TRK");
-    assertDurationLessThan(counters.durationMs, 200);
+    assertDurationLessThan(counters.durationMs, 300);
   }
 
   @Test
@@ -85,7 +85,7 @@ public class WebTest extends PerfTestCase {
   @Test
   public void struts_issues() throws Exception {
     PageStats counters = request("/issues/search?componentRoots=org.apache.struts:struts-parent");
-    assertDurationLessThan(counters.durationMs, 200);
+    assertDurationLessThan(counters.durationMs, 300);
   }
 
   @Test
