@@ -49,6 +49,7 @@ public class MultipleLangTest {
   private static final String STRUTS_PROJECT = "org.apache.struts:struts-parent";
   private static final String PROFILE_NAME = "Default";
   private static final List<String> LANGUAGES = Arrays.asList("abap", "c", "cobol", "cpp", "cs", "flex", "grvy", "java", "js", "natur", "pli", "plsql", "vb", "vbnet");
+
   private static Orchestrator orchestrator;
 
   @ClassRule
@@ -97,13 +98,15 @@ public class MultipleLangTest {
     // inspect multi-lang-project
     FileLocation basedir = FileLocation.ofShared("it-sonar-performancing/multi-lang-project/");
     orchestrator.executeBuild(SonarRunner.create()
-      .setProjectDir(basedir.getFile())
-      // this name is defined on all languages
-      .setProperty("sonar.profile", PROFILE_NAME)
-      );
+        .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-server -Xmx512m -XX:MaxPermSize=160m")
+        .setProjectDir(basedir.getFile())
+          // this name is defined on all languages
+        .setProperty("sonar.profile", PROFILE_NAME)
+    );
 
     // inspect Struts (maven)
     MavenBuild maven = MavenBuild.create(FileLocation.ofShared("it-sonar-performancing/struts-1.3.9/pom.xml").getFile());
+    maven.setEnvironmentVariable("MAVEN_OPTS", TestUtils.BATCH_JVM_OPTS);
     maven.setCleanPackageSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "true")
       .setProperty("sonar.profile", PROFILE_NAME);
@@ -145,7 +148,9 @@ public class MultipleLangTest {
   @Test
   public void test_developers() throws Exception {
     // consolidate developer cockpit
-    orchestrator.executeBuild(SonarRunner.create().setProjectDir(temp.newFolder()).setTask("devcockpit"));
+    orchestrator.executeBuild(SonarRunner.create()
+      .setEnvironmentVariable("SONAR_RUNNER_OPTS", TestUtils.BATCH_JVM_OPTS)
+      .setProjectDir(temp.newFolder()).setTask("devcockpit"));
 
     // SB -> projects in it-sources
     assertThat(getMeasure("DEV:simon.brandhof@gmail.com", "ncloc").getIntValue()).isGreaterThan(10);
@@ -156,7 +161,9 @@ public class MultipleLangTest {
   public void test_report() throws Exception {
     // generate report
     File basedir = temp.newFolder();
-    orchestrator.executeBuild(SonarRunner.create().setProjectDir(basedir).setTask("report"));
+    orchestrator.executeBuild(SonarRunner.create()
+      .setEnvironmentVariable("SONAR_RUNNER_OPTS", TestUtils.BATCH_JVM_OPTS)
+      .setProjectDir(basedir).setTask("report"));
 
     // TODO verify that report is correctly generated
     // Requires http://jira.sonarsource.com/browse/REP-43

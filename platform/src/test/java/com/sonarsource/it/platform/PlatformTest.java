@@ -108,6 +108,7 @@ public class PlatformTest {
       SonarRunner runner;
       try {
         runner = SonarRunner.create()
+          .setEnvironmentVariable("SONAR_RUNNER_OPTS", TestUtils.BATCH_JVM_OPTS)
           .setProjectDir(temp.newFolder())
           .setTask("views");
       } catch (IOException e) {
@@ -138,6 +139,7 @@ public class PlatformTest {
 
   private static void inspect(File baseDir) {
     MavenBuild build = MavenBuild.create(new File(baseDir, "pom.xml"))
+      .setEnvironmentVariable("MAVEN_OPTS", TestUtils.BATCH_JVM_OPTS)
       .setProperty("sonar.cpd.engine", "sonar")
       .setProfile("IT")
       // following property to not have differences between Sonar version

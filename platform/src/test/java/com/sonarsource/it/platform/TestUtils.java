@@ -26,6 +26,8 @@ import org.sonar.updatecenter.common.Release;
 
 public class TestUtils {
 
+  public static final String BATCH_JVM_OPTS = "-server -Xmx512m -XX:MaxPermSize=160m";
+
   public static void addAllCompatiblePlugins(OrchestratorBuilder builder) {
     org.sonar.updatecenter.common.Version sonarVersion = org.sonar.updatecenter.common.Version.create(builder.getSonarVersion());
     builder.getUpdateCenter().setInstalledSonarVersion(sonarVersion);
