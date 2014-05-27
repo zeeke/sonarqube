@@ -8,44 +8,6 @@
   <version>1.0-SNAPSHOT</version>
   <name>SonarSource :: IT :: Platform</name>
 
-  <profiles>
-    <profile>
-      <id>3.7</id>
-      <activation>
-        <property>
-          <name>sonarVersion</name>
-          <value>3.7</value>
-        </property>
-      </activation>
-      <properties>
-        <sonar.runtimeVersion>3.7.4</sonar.runtimeVersion>
-      </properties>
-    </profile>
-    <profile>
-      <id>4.3</id>
-      <activation>
-        <property>
-          <name>sonarVersion</name>
-          <value>4.3</value>
-        </property>
-      </activation>
-      <properties>
-        <sonar.runtimeVersion>4.3</sonar.runtimeVersion>
-      </properties>
-    </profile>
-    <profile>
-      <id>4.4</id>
-      <activation>
-        <property>
-          <name>sonarVersion</name>
-          <value>4.4</value>
-        </property>
-      </activation>
-      <properties>
-        <sonar.runtimeVersion>4.4-SNAPSHOT</sonar.runtimeVersion>
-      </properties>
-    </profile>
-  </profiles>
   <build>
     <plugins>
       <plugin>
