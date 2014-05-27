@@ -129,7 +129,7 @@ public class MultipleLangTest {
 
     assertThat(getMeasure(STRUTS_PROJECT, "files").getIntValue()).isEqualTo(524);
     assertThat(getMeasure(STRUTS_PROJECT, "ncloc").getIntValue()).isEqualTo(53615);
-    assertThat(getMeasure(STRUTS_PROJECT, "complexity").getIntValue()).isEqualTo(10913);
+    assertThat(getMeasure(STRUTS_PROJECT, "complexity").getIntValue()).isEqualTo(10963);
     assertThat(getMeasure(STRUTS_PROJECT, "coverage").getValue()).isGreaterThan(14.0);
     assertThat(getMeasure(STRUTS_PROJECT, "violations").getIntValue()).isGreaterThan(100);
   }
@@ -142,7 +142,7 @@ public class MultipleLangTest {
     assertThat(getMeasure(MASTER_PROJECT, "projects").getIntValue()).isEqualTo(2);
     assertThat(getMeasure(MASTER_PROJECT, "files").getIntValue()).isEqualTo(12 + 524);
     assertThat(getMeasure(MASTER_PROJECT, "ncloc").getIntValue()).isEqualTo(168 + 53615);
-    assertThat(getMeasure(MASTER_PROJECT, "complexity").getIntValue()).isEqualTo(50 + 10913);
+    assertThat(getMeasure(MASTER_PROJECT, "complexity").getIntValue()).isEqualTo(50 + 10963);
     assertThat(getMeasure(MASTER_PROJECT, "coverage").getValue()).isGreaterThan(10.0);
     assertThat(getMeasure(MASTER_PROJECT, "violations").getIntValue()).isGreaterThan(200);
   }
