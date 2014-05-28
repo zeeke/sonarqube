@@ -138,7 +138,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
       assertThat(search(IssueQuery.create().rules("unknown")).list()).isEmpty();
       fail();
     } catch (Exception e) {
-      verifyHttpException(e, 500);
+      verifyHttpException(e, 400);
     }
   }
 
@@ -243,7 +243,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   }
 
   @Test
-  public void components_contain_group_id_and_root_id_informations() {
+  public void components_contain_sub_project_id_and_project_id_informations() {
     String fileKey = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo";
 
     Issues issues = issueClient().find(IssueQuery.create().components(fileKey));
@@ -264,7 +264,6 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     assertThat(file.projectId()).isNotNull();
 
     Issue issue = issues.list().get(0);
-    assertThat(issue.componentId()).isEqualTo(file.id());
     assertThat(issues.component(issue)).isNotNull();
     assertThat(issues.component(issue).subProjectId()).isEqualTo(subModuleA1.id());
     assertThat(issues.component(issue).projectId()).isEqualTo(project.id());
