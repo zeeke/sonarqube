@@ -104,7 +104,7 @@ public class AntTest {
   }
 
   private void checkProjectAnalysed(String projectKey, String profile) {
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey, "profile", "profiles"));
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(projectKey, "profile", "quality_profiles"));
     assertThat(project.getVersion()).isEqualTo("0.1-SNAPSHOT");
     if (orchestrator.getServer().version().isGreaterThanOrEquals("4.4")) {
       // json format
