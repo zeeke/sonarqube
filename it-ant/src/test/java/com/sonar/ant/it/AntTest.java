@@ -14,7 +14,11 @@ import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.version.Version;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
@@ -52,7 +56,7 @@ public class AntTest {
     if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("4.2")) {
       builder
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.5-RC1"))
-          // PMD is used by testJavaVersion
+        // PMD is used by testJavaVersion
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1-RC1"));
     } else if (Version.create(builder.getSonarVersion()).isGreaterThanOrEquals("3.7")) {
       // Update to Sonar Java 2.0 in order to allow installation of Cobertura 1.4
@@ -60,7 +64,7 @@ public class AntTest {
         .setOrchestratorProperty("javaVersion", "2.0")
         .addPlugin("java")
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-cobertura-plugin", "1.4"))
-          // PMD is used by testJavaVersion
+        // PMD is used by testJavaVersion
         .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.0"));
     }
 
@@ -104,7 +108,7 @@ public class AntTest {
     assertThat(project.getVersion()).isEqualTo("0.1-SNAPSHOT");
     if (orchestrator.getServer().version().isGreaterThanOrEquals("4.4")) {
       // json format
-      assertThat(project.getMeasure("profiles").getData()).as("Profile").contains(profile);
+      assertThat(project.getMeasure("quality_profiles").getData()).as("Profile").contains(profile);
     } else {
       assertThat(project.getMeasure("profile").getData()).as("Profile").isEqualTo(profile);
     }
@@ -405,7 +409,7 @@ public class AntTest {
     assumeTrue(antTaskVersion.isGreaterThanOrEquals("2.1"));
     AntBuild build = AntBuild.create()
       .setBuildLocation(FileLocation.of("projects/shared/build.xml"))
-        // Workaround for ORCH-174
+      // Workaround for ORCH-174
       .setTargets("all", "clean", "-v");
     BuildResult analysisResults = orchestrator.executeBuild(build);
 
@@ -433,7 +437,7 @@ public class AntTest {
     assertThat(logs).contains("sonar.projectKey, sonar.projectName, sonar.projectVersion, sonar.sources");
   }
 
-  private static boolean containsRule(final String ruleKey, List<Issue> issues){
+  private static boolean containsRule(final String ruleKey, List<Issue> issues) {
     return Iterables.any(issues, new Predicate<Issue>() {
       @Override
       public boolean apply(@Nullable Issue input) {
