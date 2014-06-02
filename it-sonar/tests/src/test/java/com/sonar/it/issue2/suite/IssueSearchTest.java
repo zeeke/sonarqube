@@ -13,7 +13,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
 import org.sonar.wsclient.component.Component;
@@ -244,7 +243,6 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   }
 
   @Test
-  @Ignore("Need goldenisation in order to manage new way to get component")
   public void components_contain_sub_project_id_and_project_id_informations() {
     String fileKey = "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1:src/main/xoo/com/sonar/it/samples/modules/a1/HelloA1.xoo";
 
