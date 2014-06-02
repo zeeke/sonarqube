@@ -82,7 +82,7 @@ public class CoverageExclusionsTest {
     return MavenBuild.create()
       .setPom(ItUtils.locateProjectPom(projectPath))
       .setProperties(properties)
-      .setCleanPackageSonarGoals();
+      .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
   }
 
   private Resource getResourceForCoverage(String componentKey) {
