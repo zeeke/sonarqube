@@ -32,29 +32,11 @@ public class JacocoTest {
 
   @Test
   public void normal() {
-    orchestrator.executeBuilds(newBuild("test/with-tests", true), newAnalysis("test/with-tests"));
+    orchestrator.executeBuilds(newBuild("test/with-tests", false), newAnalysis("test/with-tests"));
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:with-tests",
       "coverage"));
     assertThat(project.getMeasureValue("coverage"), closeTo(66.7, 0.1));
-  }
-
-  @Test
-  public void no_tests() {
-    orchestrator.executeBuilds(newBuild("test/no-tests", true), newAnalysis("test/no-tests"));
-
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:no-tests",
-      "coverage"));
-    assertThat(project.getMeasureValue("coverage"), is(0.0));
-  }
-
-  @Test
-  public void surefire_disabled() {
-    orchestrator.executeBuilds(newBuild("test/disable-surefire", true), newAnalysis("test/disable-surefire"));
-
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:disable-surefire",
-      "coverage"));
-    assertThat(project.getMeasureValue("coverage"), is(0.0));
   }
 
   @Test
@@ -68,7 +50,7 @@ public class JacocoTest {
 
   @Test
   public void test_struts() {
-    orchestrator.executeBuilds(newBuild("shared/struts-1.3.9-diet", true), newAnalysis("shared/struts-1.3.9-diet"));
+    orchestrator.executeBuilds(newBuild("shared/struts-1.3.9-diet", false), newAnalysis("shared/struts-1.3.9-diet"));
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.apache.struts:struts-parent",
       "coverage"));
@@ -103,34 +85,12 @@ public class JacocoTest {
   }
 
   /**
-   * SONAR-3295
-   */
-  @Test
-  public void excludes() {
-    orchestrator.executeBuild(newBuild("test/with-tests", true));
-    MavenBuild analysis = MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom("test/with-tests"))
-      .withDynamicAnalysis(true)
-      .withProperty("sonar.java.coveragePlugin", "jacoco")
-      .withProperty("sonar.jacoco.excludes", "*Hello")
-      .addSonarGoal()
-      .build();
-    orchestrator.executeBuild(analysis);
-
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:with-tests",
-      "coverage"));
-    assertThat(project.getMeasureValue("coverage"), is(0.0));
-  }
-
-  /**
    * SONAR-2501
    */
   @Test
   public void should_display_coverage_per_test() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
-      .setGoals("clean test-compile");
-    orchestrator.executeBuild(build);
-    build.setGoals("sonar:sonar");
+      .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("test-display-coverage-per-test",
@@ -141,12 +101,10 @@ public class JacocoTest {
     orchestrator.executeSelenese(selenese);
   }
 
-  private MavenBuild newBuild(String projectPath, boolean skipTests) {
-    return MavenBuild.builder()
-      .setPom(ItUtils.locateProjectPom(projectPath))
-      .addGoal("clean install")
-      .withProperty("skipTests", String.valueOf(skipTests))
-      .build();
+  private MavenBuild newBuild(String projectPath, boolean ignoreTestFailure) {
+    return MavenBuild.create(ItUtils.locateProjectPom(projectPath))
+      .setProperty("maven.test.failure.ignore", String.valueOf(ignoreTestFailure))
+      .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent install");
   }
 
   private MavenBuild newAnalysis(String projectPath) {
