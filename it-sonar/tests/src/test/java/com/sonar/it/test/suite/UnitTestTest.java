@@ -33,8 +33,8 @@ public class UnitTestTest {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/with-tests"))
       .setProperty("sonar.profile.java", "empty")
-      .addGoal("sonar:sonar");
-    orchestrator.executeBuilds(newBuild("test/with-tests"), analysis);
+      .setGoals("sonar:sonar");
+    orchestrator.executeBuilds(newBuild("test/with-tests", false), analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:with-tests",
       "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
@@ -51,11 +51,11 @@ public class UnitTestTest {
     orchestrator.executeSelenese(selenese);
   }
 
-  private MavenBuild newBuild(String projectPath) {
+  private MavenBuild newBuild(String projectPath, boolean ignoreTestFailure) {
     return MavenBuild.create()
       .setPom(ItUtils.locateProjectPom(projectPath))
-      .setGoals("clean", "install")
-      .setProperty("skipTests", "true");
+      .setProperty("maven.test.failure.ignore", "" + ignoreTestFailure)
+      .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package");
   }
 
   /**
@@ -66,7 +66,7 @@ public class UnitTestTest {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("exclusions/java-half-covered"))
       .setProperty("sonar.profile.java", "empty")
-      .setCleanPackageSonarGoals();
+      .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
     orchestrator.executeBuilds(analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.exclusions:java-half-covered",
@@ -83,41 +83,6 @@ public class UnitTestTest {
     orchestrator.executeSelenese(selenese);
   }
 
-  /**
-   * See SONAR-2371
-   */
-  @Test
-  public void testDynamicAnalysisWithNoTests() {
-    MavenBuild analysis = MavenBuild.create()
-      .setPom(ItUtils.locateProjectPom("test/no-tests"))
-      .setProperty("sonar.profile.java", "empty")
-      .addGoal("sonar:sonar");
-    orchestrator.executeBuilds(newBuild("test/no-tests"), analysis);
-
-    // check project measures
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:no-tests",
-      "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
-    assertThat(project.getMeasureIntValue("tests")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("coverage")).isEqualTo(0);
-    assertThat(project.getMeasure("test_failures")).isNull();
-    assertThat(project.getMeasure("test_errors")).isNull();
-    assertThat(project.getMeasure("test_success_density")).isNull();
-    assertThat(project.getMeasure("skipped_tests")).isNull();
-    assertThat(project.getMeasure("test_execution_time")).isNull();
-
-    // check package measures
-    // TODO Godin: are we really sure about this behavior? maybe we should save zero tests on packages too?
-    Resource packagee = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:no-tests:src/main/java/org/sonar/tests",
-      "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
-    assertThat(packagee.getMeasureIntValue("tests")).isNull();
-    assertThat(packagee.getMeasureIntValue("coverage")).isEqualTo(0);
-    assertThat(packagee.getMeasure("test_failures")).isNull();
-    assertThat(packagee.getMeasure("test_errors")).isNull();
-    assertThat(packagee.getMeasure("test_success_density")).isNull();
-    assertThat(packagee.getMeasure("skipped_tests")).isNull();
-    assertThat(packagee.getMeasure("test_execution_time")).isNull();
-  }
-
   @Test
   public void shouldNotHaveTestMeasuresOnStaticAnalysis() {
     MavenBuild analysis = MavenBuild.create()
@@ -125,34 +90,12 @@ public class UnitTestTest {
       .withoutDynamicAnalysis()
       .setProperty("sonar.profile.java", "empty")
       .addGoal("sonar:sonar");
-    orchestrator.executeBuilds(newBuild("test/with-tests"), analysis);
+    orchestrator.executeBuilds(newBuild("test/with-tests", false), analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:with-tests",
       "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
     assertThat(project.getMeasure("tests")).isNull();
     assertThat(project.getMeasure("coverage")).isNull();
-    assertThat(project.getMeasure("test_failures")).isNull();
-    assertThat(project.getMeasure("test_errors")).isNull();
-    assertThat(project.getMeasure("test_success_density")).isNull();
-    assertThat(project.getMeasure("skipped_tests")).isNull();
-    assertThat(project.getMeasure("test_execution_time")).isNull();
-  }
-
-  /**
-   * See SONAR-401
-   */
-  @Test
-  public void surefireShouldBeDisabled() {
-    MavenBuild analysis = MavenBuild.create()
-      .setPom(ItUtils.locateProjectPom("test/disable-surefire"))
-      .setProperty("sonar.profile.java", "empty")
-      .addGoal("sonar:sonar");
-    orchestrator.executeBuilds(newBuild("test/disable-surefire"), analysis);
-
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:disable-surefire",
-      "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
-    assertThat(project.getMeasureIntValue("tests")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("coverage")).isEqualTo(0);
     assertThat(project.getMeasure("test_failures")).isNull();
     assertThat(project.getMeasure("test_errors")).isNull();
     assertThat(project.getMeasure("test_success_density")).isNull();
@@ -169,7 +112,7 @@ public class UnitTestTest {
       .setPom(ItUtils.locateProjectPom("test/test-failures"))
       .setProperty("sonar.profile.java", "empty")
       .addGoal("sonar:sonar");
-    orchestrator.executeBuilds(newBuild("test/test-failures"), analysis);
+    orchestrator.executeBuilds(newBuild("test/test-failures", true), analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.test-failures:parent",
       "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
@@ -198,8 +141,7 @@ public class UnitTestTest {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
       .addGoal("sonar:sonar")
-      .setProperty("sonar.profile.java", "empty")
-      .setProperty("sonar.dynamicAnalysis", "reuseReports");
+      .setProperty("sonar.profile.java", "empty");
     orchestrator.executeBuilds(build, analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:reuse-surefire-reports",
@@ -207,7 +149,7 @@ public class UnitTestTest {
     assertThat(project.getMeasureIntValue("tests")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("test_failures")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("test_errors")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("coverage")).isEqualTo(0);
+    assertThat(project.getMeasureIntValue("coverage")).isNull();
     assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
   }
@@ -221,7 +163,6 @@ public class UnitTestTest {
       .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
       .addGoal("sonar:sonar")
       .setProperty("sonar.profile.java", "empty")
-      .setProperty("sonar.dynamicAnalysis", "reuseReports")
       .setProperty("sonar.surefire.reportsPath", "existing-test-and-testsuite-reports");
     orchestrator.executeBuild(build);
 
@@ -230,7 +171,7 @@ public class UnitTestTest {
     assertThat(project.getMeasureIntValue("tests")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("test_failures")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("test_errors")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("coverage")).isEqualTo(0);
+    assertThat(project.getMeasureIntValue("coverage")).isNull();
     assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
   }
@@ -244,7 +185,6 @@ public class UnitTestTest {
       .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
       .addGoal("sonar:sonar")
       .setProperty("sonar.profile.java", "empty")
-      .setProperty("sonar.dynamicAnalysis", "reuseReports")
       .setProperty("sonar.surefire.reportsPath", "existing-testsuite-report");
     orchestrator.executeBuild(build);
 
@@ -253,7 +193,7 @@ public class UnitTestTest {
     assertThat(project.getMeasureIntValue("tests")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("test_failures")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("test_errors")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("coverage")).isEqualTo(0);
+    assertThat(project.getMeasureIntValue("coverage")).isNull();
     assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
   }

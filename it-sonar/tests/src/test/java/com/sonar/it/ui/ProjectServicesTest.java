@@ -37,7 +37,7 @@ public class ProjectServicesTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
-      .setGoals("clean", "verify", "sonar:sonar")
+      .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent verify", "sonar:sonar")
       .setProperty("sonar.language", "java")
       .setProperty("sonar.profile.java", "sonar-way-2.7");
     orchestrator.executeBuild(build);
