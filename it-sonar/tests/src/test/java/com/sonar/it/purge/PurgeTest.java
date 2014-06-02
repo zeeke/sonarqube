@@ -49,10 +49,10 @@ public class PurgeTest {
     assertThat(count("projects where qualifier in ('FIL')")).as("Wrong number of files").isEqualTo(320);
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
 
-    int measuresOnTrk = 197;
-    int measuresOnBrc = 456;
-    int measuresOnDir = 2664;
-    int measuresOnFil = 12853;
+    int measuresOnTrk = 190;
+    int measuresOnBrc = 435;
+    int measuresOnDir = 2450;
+    int measuresOnFil = 10353;
 
     // count measures 
     measures("TRK", measuresOnTrk);
@@ -81,8 +81,8 @@ public class PurgeTest {
     // must be a different date, else a single snapshot is kept per day
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
 
-    int newMeasuresOnTrk = 141;
-    int newMeasuresOnBrc = 356;
+    int newMeasuresOnTrk = 134;
+    int newMeasuresOnBrc = 335;
     int newMeasuresOnDir = 594;
     int newMeasuresOnFil = 0;
 
@@ -243,7 +243,7 @@ public class PurgeTest {
 
   private MavenBuild scan(String path, String... extraProperties) {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom(path))
-      .setCleanPackageSonarGoals()
+      .setGoals("clean package", "sonar:sonar")
       .setProperty("skipTests", "true")
       .setProperty("sonar.profile.java", "sonar-way-2.7");
     if (extraProperties != null) {
