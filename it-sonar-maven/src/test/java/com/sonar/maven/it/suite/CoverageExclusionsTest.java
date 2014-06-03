@@ -21,6 +21,9 @@ public class CoverageExclusionsTest extends AbstractMavenTest {
   @Before
   public void resetData() {
     assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.0"));
+    // Since 4.4 only reuse report mode is supported so no dependency on Maven
+    assumeTrue(!orchestrator.getServer().version().isGreaterThanOrEquals("4.4"));
+
     orchestrator.getDatabase().truncateInspectionTables();
   }
 

@@ -15,11 +15,15 @@ import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 public class UnitTestTest extends AbstractMavenTest {
 
   @Before
   public void deleteData() {
+    // Since 4.4 only reuse report mode is supported so no dependency on Maven
+    assumeTrue(!orchestrator.getServer().version().isGreaterThanOrEquals("4.4"));
+
     orchestrator.getDatabase().truncateInspectionTables();
   }
 
