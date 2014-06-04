@@ -20,33 +20,6 @@
     </rule>
     <rule>
       <repositoryKey>checkstyle</repositoryKey>
-      <key>com.puppycrawl.tools.checkstyle.checks.naming.StaticVariableNameCheck</key>
-      <priority>MAJOR</priority>
-      <parameters>
-        <parameter>
-          <key>format</key>
-          <value>^[a-z][a-zA-Z0-9]*$</value>
-        </parameter>
-        <parameter>
-          <key>applyToPublic</key>
-          <value>true</value>
-        </parameter>
-        <parameter>
-          <key>applyToProtected</key>
-          <value>true</value>
-        </parameter>
-        <parameter>
-          <key>applyToPackage</key>
-          <value>true</value>
-        </parameter>
-        <parameter>
-          <key>applyToPrivate</key>
-          <value>true</value>
-        </parameter>
-      </parameters>
-    </rule>
-    <rule>
-      <repositoryKey>checkstyle</repositoryKey>
       <key>com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck</key>
       <priority>MINOR</priority>
     </rule>
@@ -109,60 +82,6 @@
       <repositoryKey>checkstyle</repositoryKey>
       <key>com.puppycrawl.tools.checkstyle.checks.sizes.AnonInnerLengthCheck</key>
       <priority>MAJOR</priority>
-    </rule>
-    <rule>
-      <repositoryKey>checkstyle</repositoryKey>
-      <key>com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck</key>
-      <priority>MAJOR</priority>
-      <parameters>
-        <parameter>
-          <key>format</key>
-          <value>^[a-z][a-zA-Z0-9]*$</value>
-        </parameter>
-        <parameter>
-          <key>applyToPublic</key>
-          <value>true</value>
-        </parameter>
-        <parameter>
-          <key>applyToProtected</key>
-          <value>true</value>
-        </parameter>
-        <parameter>
-          <key>applyToPackage</key>
-          <value>true</value>
-        </parameter>
-        <parameter>
-          <key>applyToPrivate</key>
-          <value>true</value>
-        </parameter>
-      </parameters>
-    </rule>
-    <rule>
-      <repositoryKey>checkstyle</repositoryKey>
-      <key>com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck</key>
-      <priority>MINOR</priority>
-      <parameters>
-        <parameter>
-          <key>format</key>
-          <value>^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$</value>
-        </parameter>
-        <parameter>
-          <key>applyToPublic</key>
-          <value>true</value>
-        </parameter>
-        <parameter>
-          <key>applyToProtected</key>
-          <value>true</value>
-        </parameter>
-        <parameter>
-          <key>applyToPackage</key>
-          <value>true</value>
-        </parameter>
-        <parameter>
-          <key>applyToPrivate</key>
-          <value>true</value>
-        </parameter>
-      </parameters>
     </rule>
     <rule>
       <repositoryKey>checkstyle</repositoryKey>
@@ -238,17 +157,6 @@
       <repositoryKey>checkstyle</repositoryKey>
       <key>com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck</key>
       <priority>MINOR</priority>
-    </rule>
-    <rule>
-      <repositoryKey>checkstyle</repositoryKey>
-      <key>com.puppycrawl.tools.checkstyle.checks.naming.LocalVariableNameCheck</key>
-      <priority>MAJOR</priority>
-      <parameters>
-        <parameter>
-          <key>format</key>
-          <value>^[a-z][a-zA-Z0-9]*$</value>
-        </parameter>
-      </parameters>
     </rule>
     <rule>
       <repositoryKey>checkstyle</repositoryKey>

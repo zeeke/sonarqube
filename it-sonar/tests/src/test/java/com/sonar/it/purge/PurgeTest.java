@@ -49,16 +49,18 @@ public class PurgeTest {
     assertThat(count("projects where qualifier in ('FIL')")).as("Wrong number of files").isEqualTo(320);
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
 
-    int measuresOnTrk = 190;
-    int measuresOnBrc = 435;
-    int measuresOnDir = 2450;
-    int measuresOnFil = 10353;
+    int measuresOnTrk = 182;
+    int measuresOnBrc = 419;
+    int measuresOnDir = 2411;
+    int measuresOnFil = 10286;
 
     // count measures 
-    measures("First analysis", "TRK", measuresOnTrk);
-    measures("First analysis", "BRC", measuresOnBrc);
-    measures("First analysis", "DIR", measuresOnDir);
-    measures("First analysis", "FIL", measuresOnFil);
+    logMeasures("First analysis - TRK measures", "TRK");
+    logMeasures("First analysis - BRC measures", "BRC");
+    measures("TRK", measuresOnTrk);
+    measures("BRC", measuresOnBrc);
+    measures("DIR", measuresOnDir);
+    measures("FIL", measuresOnFil);
 
     // No new_* metrics measure should be recorded the first time
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
@@ -70,7 +72,7 @@ public class PurgeTest {
     assertThat(count("project_measures where measure_data is not null")).as("Wrong number of measure data").isEqualTo(56);
 
     // count other tables that are constant between 2 scans
-    int expectedIssues = 4000;
+    int expectedIssues = 3859;
     int expectedSources = 348;
     int expectedDependencies = 977;
     assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
@@ -81,20 +83,22 @@ public class PurgeTest {
     // must be a different date, else a single snapshot is kept per day
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
 
-    int newMeasuresOnTrk = 134;
-    int newMeasuresOnBrc = 335;
-    int newMeasuresOnDir = 594;
+    int newMeasuresOnTrk = 130;
+    int newMeasuresOnBrc = 327;
+    int newMeasuresOnDir = 577;
     int newMeasuresOnFil = 0;
 
-    measures("Second analysis", "TRK", measuresOnTrk + newMeasuresOnTrk);
-    measures("Second analysis", "BRC", measuresOnBrc + newMeasuresOnBrc);
-    measures("Second analysis", "DIR", measuresOnDir + newMeasuresOnDir);
-    measures("Second analysis", "FIL", measuresOnFil + newMeasuresOnFil);
+    logMeasures("Second analysis - TRK measures", "TRK");
+    logMeasures("Second analysis - BRC measures", "BRC");
+    measures("TRK", measuresOnTrk + newMeasuresOnTrk);
+    measures("BRC", measuresOnBrc + newMeasuresOnBrc);
+    measures("DIR", measuresOnDir + newMeasuresOnDir);
+    measures("FIL", measuresOnFil + newMeasuresOnFil);
 
     // Measures on new_* metrics should be recorded
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
       .as("Wrong number of measure of new_ metrics")
-      .isEqualTo(798);
+      .isEqualTo(769);
 
     // added measures relate to project and new_* metrics
     expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnDir + newMeasuresOnFil;
@@ -257,10 +261,10 @@ public class PurgeTest {
     return orchestrator.getDatabase().countSql("select count(*) from " + condition);
   }
 
-  private int measures(String title, String qualifier, int count) {
-    logMeasures(title, qualifier);
+  private int measures(String qualifier, int count) {
     int result = countMeasures(qualifier);
     if (result != count) {
+      logMeasures("GOT" , qualifier);
       assertThat(result).isEqualTo(count);
     }
     return result;
