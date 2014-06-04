@@ -55,10 +55,10 @@ public class PurgeTest {
     int measuresOnFil = 10353;
 
     // count measures 
-    measures("TRK", measuresOnTrk);
-    measures("BRC", measuresOnBrc);
-    measures("DIR", measuresOnDir);
-    measures("FIL", measuresOnFil);
+    measures("First analysis", "TRK", measuresOnTrk);
+    measures("First analysis", "BRC", measuresOnBrc);
+    measures("First analysis", "DIR", measuresOnDir);
+    measures("First analysis", "FIL", measuresOnFil);
 
     // No new_* metrics measure should be recorded the first time
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
@@ -86,10 +86,10 @@ public class PurgeTest {
     int newMeasuresOnDir = 594;
     int newMeasuresOnFil = 0;
 
-    measures("TRK", measuresOnTrk + newMeasuresOnTrk);
-    measures("BRC", measuresOnBrc + newMeasuresOnBrc);
-    measures("DIR", measuresOnDir + newMeasuresOnDir);
-    measures("FIL", measuresOnFil + newMeasuresOnFil);
+    measures("Second analysis", "TRK", measuresOnTrk + newMeasuresOnTrk);
+    measures("Second analysis", "BRC", measuresOnBrc + newMeasuresOnBrc);
+    measures("Second analysis", "DIR", measuresOnDir + newMeasuresOnDir);
+    measures("Second analysis", "FIL", measuresOnFil + newMeasuresOnFil);
 
     // Measures on new_* metrics should be recorded
     assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
@@ -257,10 +257,10 @@ public class PurgeTest {
     return orchestrator.getDatabase().countSql("select count(*) from " + condition);
   }
 
-  private int measures(String qualifier, int count) {
+  private int measures(String title, String qualifier, int count) {
+    logMeasures(title, qualifier);
     int result = countMeasures(qualifier);
     if (result != count) {
-      logMeasures(qualifier);
       assertThat(result).isEqualTo(count);
     }
     return result;
@@ -271,7 +271,7 @@ public class PurgeTest {
     return orchestrator.getDatabase().countSql(sql);
   }
 
-  private void logMeasures(String qualifier) {
+  private void logMeasures(String title, String qualifier) {
     String sql = "SELECT m.name as metricName, pm.value as value, pm.text_value as textValue, pm.variation_value_1, pm.variation_value_2, pm.variation_value_3, pm.rule_id, pm.characteristic_id "
       +
       "FROM project_measures pm, snapshots s, metrics m " +
@@ -279,7 +279,7 @@ public class PurgeTest {
       + qualifier + "'";
     List<Map<String, String>> rows = orchestrator.getDatabase().executeSql(sql);
 
-    System.out.println("---- measures on qualifier = [" + qualifier + "]");
+    System.out.println("---- " + title + " - measures on qualifier " + qualifier);
     for (Map<String, String> row : rows) {
       System.out.println("  " + row);
     }
