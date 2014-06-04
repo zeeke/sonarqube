@@ -14,6 +14,7 @@ import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.user.UserParameters;
 
+@Ignore("Too many false-positives")
 public class ProjectTemplatePermissionsTest {
 
   @ClassRule
