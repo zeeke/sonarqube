@@ -25,6 +25,7 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.version.Version;
+import org.fest.assertions.Delta;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -44,6 +45,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -210,43 +212,23 @@ public class PlatformTest {
   @Test
   public void viewsMeasures() {
     assertThat(getMeasure(JAVA_VIEWS, "ncloc").getIntValue(), is(76638));
-    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.4")) {
-      // JAVA-17
-      assertThat(getMeasure(JAVA_VIEWS, "lines").getIntValue(), is(179835));
-    } else {
-      assertThat(getMeasure(JAVA_VIEWS, "lines").getIntValue(), is(179068));
-    }
+    assertThat(getMeasure(JAVA_VIEWS, "lines").getIntValue()).isGreaterThan(179000);
     assertThat(getMeasure(JAVA_VIEWS, "files").getIntValue(), is(767));
-    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
-      // SONAR-3712
-      assertThat(getMeasure(JAVA_VIEWS, "statements").getIntValue(), is(33246));
-    } else {
-      assertThat(getMeasure(JAVA_VIEWS, "statements").getIntValue(), is(34298));
-    }
+    assertThat(getMeasure(JAVA_VIEWS, "statements").getIntValue()).isGreaterThan(33000);
     assertThat(getMeasure(JAVA_VIEWS, "classes").getIntValue(), is(930));
     if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
       // metric "packages" removed from 4.2
       assertThat(getMeasure(JAVA_VIEWS, "packages").getIntValue(), is(61));
     }
-    assertThat(getMeasure(JAVA_VIEWS, "comment_lines_density").getValue(), is(34.7));
-    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
-      // SONAR-3631
-      assertThat(getMeasure(JAVA_VIEWS, "comment_lines").getIntValue(), is(40774));
-    } else {
-      assertThat(getMeasure(JAVA_VIEWS, "comment_lines").getIntValue(), is(40777));
-    }
+    assertThat(getMeasure(JAVA_VIEWS, "comment_lines_density").getValue()).isEqualTo(34.7, Delta.delta(0.05));
+    assertThat(getMeasure(JAVA_VIEWS, "comment_lines").getIntValue()).isGreaterThan(40000);
     assertThat(getMeasure(JAVA_VIEWS, "public_api").getIntValue(), is(7480));
     assertThat(getMeasure(JAVA_VIEWS, "public_undocumented_api").getIntValue(), is(2296));
     assertThat(getMeasure(JAVA_VIEWS, "public_documented_api_density").getValue(), is(69.3));
     assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines").getIntValue(), is(31312));
     assertThat(getMeasure(JAVA_VIEWS, "duplicated_blocks").getIntValue(), is(1572));
     assertThat(getMeasure(JAVA_VIEWS, "duplicated_files").getIntValue(), is(201));
-    if (orchestrator.getServer().version().isGreaterThanOrEquals("3.4")) {
-      // JAVA-17
-      assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines_density").getValue(), is(17.4));
-    } else {
-      assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines_density").getValue(), is(17.5));
-    }
+    assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines_density").getValue()).isEqualTo(17.5, Delta.delta(0.2));
 
     if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
       // SONAR-3793 and SONAR-3793
@@ -265,9 +247,9 @@ public class PlatformTest {
       assertThat(getMeasure(JAVA_VIEWS, "file_complexity_distribution").getData(), is("0=212;5=138;10=143;20=95;30=95;60=41;90=43"));
     }
 
-    assertThat(getMeasure(JAVA_VIEWS, "violations").getIntValue(), is(9253));
-    assertThat(getMeasure(JAVA_VIEWS, "weighted_violations").getIntValue(), is(14192));
-    assertThat(getMeasure(JAVA_VIEWS, "violations_density").getValue(), is(81.5));
+    assertThat(getMeasure(JAVA_VIEWS, "violations").getIntValue()).isGreaterThan(9000);
+    assertThat(getMeasure(JAVA_VIEWS, "weighted_violations").getIntValue()).isGreaterThan(12000);
+    assertThat(getMeasure(JAVA_VIEWS, "violations_density").getValue()).isGreaterThan(80.0);
 
     assertThat(getMeasure(JAVA_VIEWS, "coverage").getValue()).isGreaterThan(30);
     assertThat(getMeasure(JAVA_VIEWS, "tests").getIntValue(), is(13346));
