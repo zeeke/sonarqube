@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.sonar.wsclient.issue.IssueQuery;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static org.fest.assertions.Assertions.assertThat;

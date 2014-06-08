@@ -47,7 +47,6 @@
     <module>custom-metric-plugin</module>
     <module>deprecated-rule-plugin</module>
     <module>deprecated-xoo-rule-plugin</module>
-    <module>embedded-library-plugin</module>
     <module>extension-lifecycle-plugin</module>
     <module>foo-language-plugin</module>
     <module>global-property-change-plugin</module>
@@ -67,7 +66,6 @@
     <module>ruby-api-tester-plugin</module>
     <module>ruby-rails-app-plugin</module>
     <module>ruby-tab-plugin</module>
-    <module>ruby-ws-plugin</module>
     <module>security-plugin</module>
     <module>self-l10ned-plugin</module>
     <module>server-plugin</module>

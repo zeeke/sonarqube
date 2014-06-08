@@ -48,33 +48,6 @@ public class ServerTest {
     }
   }
 
-  @Test
-  public void load_embedded_libraries() throws IOException {
-    orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.locateTestPlugin("embedded-library-plugin"))
-      .build();
-    orchestrator.start();
-
-    // Should raise an exception because server is not started
-    Server server = orchestrator.getServer().getWsClient().find(new ServerQuery());
-    assertThat(server.getStatus()).isEqualTo(Server.Status.UP);
-
-    assertThat(FileUtils.readFileToString(orchestrator.getServer().getLogs()))
-      .contains("Embedded dependency from server extension");
-  }
-
-  @Test
-  public void test_ruby_web_service_extension() {
-    orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.locateTestPlugin("ruby-ws-plugin"))
-      .build();
-    orchestrator.start();
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("server-ruby-ws",
-      "/selenium/server/ruby-extensions/ruby-ws.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
-
   /**
    * See http://jira.codehaus.org/browse/SONAR-2727
    */
