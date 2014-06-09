@@ -15,8 +15,6 @@ import org.junit.After;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.ServerSetup;
-import org.sonar.wsclient.services.ServerSetupQuery;
 import org.sonar.wsclient.system.Migration;
 import org.sonar.wsclient.system.SystemClient;
 
@@ -41,42 +39,19 @@ public class SonarUpgradeTest {
     }
   }
 
-  /**
-   * Note that not possible to test a version prior to 2.9 due to SONAR-2493.
-   */
-  @Test
-  public void test_upgrade_from_2_9() {
-    testDatabaseUpgrade("2.9", Orchestrator.builderEnv().getSonarVersion());
-  }
-
-  /**
-   * SONAR-4608 - failed on oracle because of triggers created in 3.7
-   */
-  @Test
-  public void should_reindex_projects_in_3_0_when_upgrading_to_3_7() {
-    testDatabaseUpgrade("2.9", Orchestrator.builderEnv().getSonarVersion(), new BeforeUpgrade() {
-      @Override
-      public void execute() {
-        // force re-index
-        orchestrator.getDatabase().truncate("resource_index");
-      }
-    });
-    assertThat(orchestrator.getDatabase().countSql("select count(kee) from resource_index")).isGreaterThan(0);
-  }
-
   @Test
   public void test_upgrade_from_3_0() {
     testDatabaseUpgrade("3.0", Orchestrator.builderEnv().getSonarVersion());
   }
 
   @Test
-  public void test_upgrade_from_3_4() {
-    testDatabaseUpgrade("3.4", Orchestrator.builderEnv().getSonarVersion());
+  public void test_upgrade_from_3_7_1() {
+    testDatabaseUpgrade("3.7.1", Orchestrator.builderEnv().getSonarVersion());
   }
 
   @Test
-  public void test_upgrade_from_3_5_1() {
-    testDatabaseUpgrade("3.5.1", Orchestrator.builderEnv().getSonarVersion());
+  public void test_upgrade_from_4_1() {
+    testDatabaseUpgrade("4.1", Orchestrator.builderEnv().getSonarVersion());
   }
 
   private void testDatabaseUpgrade(String fromVersion, String toVersion, BeforeUpgrade... tasks) {
