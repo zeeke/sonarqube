@@ -77,9 +77,6 @@ public class Struts139Test {
     }));
   }
 
-  /**
-   * Dependencies query will fail with ClassCastException in sonar-ws-client 2.7 - see http://jira.codehaus.org/browse/SONAR-2379
-   */
   @Test
   public void dependencies() {
     List<Dependency> dependencies = orchestrator.getServer().getWsClient().findAll(DependencyQuery.createForResource(PROJECT_STRUTS));
