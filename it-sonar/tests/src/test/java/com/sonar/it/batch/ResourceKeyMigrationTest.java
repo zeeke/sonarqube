@@ -24,7 +24,8 @@ import static org.junit.Assume.assumeTrue;
 
 public class ResourceKeyMigrationTest {
 
-  public static final String PROJECT_KEY = "sample-with-tests";
+  public static final String PROJECT_WITH_TESTS_KEY = "sample-with-tests";
+  public static final String PROJECT_KEY = "sample";
 
   private Orchestrator orchestrator;
 
@@ -42,7 +43,43 @@ public class ResourceKeyMigrationTest {
     startServer("4.1", false);
     assumeTrue(ItUtils.isUpgradableDatabase(orchestrator));
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
-    scanProject();
+    scanXooSampleWithTest();
+    int initialIssues = countIssues(PROJECT_WITH_TESTS_KEY);
+    assertThat(initialIssues).isGreaterThan(0);
+
+    stopServer();
+    startServer(Orchestrator.builderEnv().getSonarVersion(), true);
+    upgradeDatabase();
+
+    assertThat(countIssues(PROJECT_WITH_TESTS_KEY)).isEqualTo(initialIssues);
+
+    BuildResult result = scanXooSampleWithTest();
+    assertThat(result.getLogs()).contains("Update component keys");
+    assertThat(result.getLogs()).contains("Component sample-with-tests:sample/Sample.xoo changed to sample-with-tests:src/main/xoo/sample/Sample.xoo");
+    assertThat(result.getLogs()).contains("Component sample-with-tests:sample/SampleTest.xoo changed to sample-with-tests:src/test/xoo/sample/SampleTest.xoo");
+    assertThat(result.getLogs()).contains(
+      "Directory with key sample-with-tests:sample matches both sample-with-tests:src/main/xoo/sample and sample-with-tests:src/test/xoo/sample. First match is arbitrary chosen.");
+    assertThat(result.getLogs()).contains("Component sample-with-tests:sample changed to sample-with-tests:src/main/xoo/sample");
+    assertThat(countIssues(PROJECT_WITH_TESTS_KEY)).isEqualTo(initialIssues);
+    assertThat(countNewIssues(PROJECT_WITH_TESTS_KEY)).isEqualTo(0);
+
+    result = scanXooSampleWithTest();
+    assertThat(result.getLogs()).excludes("Update component keys");
+    assertThat(countIssues(PROJECT_WITH_TESTS_KEY)).isEqualTo(initialIssues);
+    assertThat(countNewIssues(PROJECT_WITH_TESTS_KEY)).isEqualTo(0);
+  }
+
+  // SONAR-5233
+  @Test
+  public void testResourceKeyMigration_with_conflicting_disabled_resources() {
+    startServer("4.1", false);
+    assumeTrue(ItUtils.isUpgradableDatabase(orchestrator));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+    // 1- First scan from basedir
+    scanXooSample("sonar.sources", ".", "sonar.inclusions", "src/**");
+    // 2- Second scan from src to produce disabled resources
+    scanXooSample();
+
     int initialIssues = countIssues(PROJECT_KEY);
     assertThat(initialIssues).isGreaterThan(0);
 
@@ -52,20 +89,13 @@ public class ResourceKeyMigrationTest {
 
     assertThat(countIssues(PROJECT_KEY)).isEqualTo(initialIssues);
 
-    BuildResult result = scanProject();
+    BuildResult result = scanXooSample();
     assertThat(result.getLogs()).contains("Update component keys");
-    assertThat(result.getLogs()).contains("Component sample-with-tests:sample/Sample.xoo changed to sample-with-tests:src/main/xoo/sample/Sample.xoo");
-    assertThat(result.getLogs()).contains("Component sample-with-tests:sample/SampleTest.xoo changed to sample-with-tests:src/test/xoo/sample/SampleTest.xoo");
-    assertThat(result.getLogs()).contains(
-      "Directory with key sample-with-tests:sample matches both sample-with-tests:src/main/xoo/sample and sample-with-tests:src/test/xoo/sample. First match is arbitrary chosen.");
-    assertThat(result.getLogs()).contains("Component sample-with-tests:sample changed to sample-with-tests:src/main/xoo/sample");
+    assertThat(result.getLogs()).contains("Component sample:src/main/xoo/sample/Sample.xoo changed to sample:src/main/xoo/sample/Sample.xoo_renamed_by_resource_key_migration");
+    assertThat(result.getLogs()).contains("Component sample:sample/Sample.xoo changed to sample:src/main/xoo/sample/Sample.xoo");
+    assertThat(result.getLogs()).contains("Component sample:src/main/xoo/sample changed to sample:src/main/xoo/sample_renamed_by_resource_key_migration");
+    assertThat(result.getLogs()).contains("Component sample:sample changed to sample:src/main/xoo/sample");
     assertThat(countIssues(PROJECT_KEY)).isEqualTo(initialIssues);
-    assertThat(countNewIssues(PROJECT_KEY)).isEqualTo(0);
-
-    result = scanProject();
-    assertThat(result.getLogs()).excludes("Update component keys");
-    assertThat(countIssues(PROJECT_KEY)).isEqualTo(initialIssues);
-    assertThat(countNewIssues(PROJECT_KEY)).isEqualTo(0);
   }
 
   private int countIssues(String key) {
@@ -85,10 +115,18 @@ public class ResourceKeyMigrationTest {
     assertThat(migration.status()).isEqualTo(Migration.Status.MIGRATION_SUCCEEDED);
   }
 
-  private BuildResult scanProject() {
+  private BuildResult scanXooSampleWithTest() {
     SonarRunner build = SonarRunner.create()
       .setProjectDir(ItUtils.locateProjectDir("shared/xoo-sample-with-tests"))
       .setProfile("one-issue-per-line");
+    return orchestrator.executeBuild(build);
+  }
+
+  private BuildResult scanXooSample(String... props) {
+    SonarRunner build = SonarRunner.create()
+      .setProjectDir(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-line")
+      .setProperties(props);
     return orchestrator.executeBuild(build);
   }
 
