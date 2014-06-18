@@ -11,6 +11,7 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -164,6 +165,7 @@ public class DuplicationsTest {
   }
 
   @Test
+  @Ignore // TODO: enable after resolving SONAR-5209
   public void testDuplicationsViewer() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("duplications-viewer",
       "/selenium/duplications/duplications-viewer/display-six-lines-in-snippet-by-default.html",
