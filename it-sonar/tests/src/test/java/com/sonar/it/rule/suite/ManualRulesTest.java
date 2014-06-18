@@ -20,10 +20,7 @@ public class ManualRulesTest {
     Selenese selenese = Selenese
       .builder()
       .setHtmlTestsInClasspath("manual-rules",
-        "/selenium/rule/manual-rules/create_edit_delete_manual_rule.html",
-
-        // SONAR-3359
-        "/selenium/rule/manual-rules/create_manual_rule_without_description.html"
+        "/selenium/rule/manual-rules/create_edit_delete_manual_rule.html"
       ).build();
     orchestrator.executeSelenese(selenese);
   }
