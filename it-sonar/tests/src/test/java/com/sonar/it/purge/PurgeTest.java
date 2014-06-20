@@ -50,7 +50,7 @@ public class PurgeTest {
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
 
     int measuresOnTrk = 182;
-    int measuresOnBrc = 419;
+    int measuresOnBrc = 413;
     int measuresOnDir = 2411;
     int measuresOnFil = 10286;
 
@@ -84,7 +84,7 @@ public class PurgeTest {
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
 
     int newMeasuresOnTrk = 130;
-    int newMeasuresOnBrc = 327;
+    int newMeasuresOnBrc = 321;
     int newMeasuresOnDir = 577;
     int newMeasuresOnFil = 0;
 
