@@ -10,26 +10,21 @@
 
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/resource/index/do-not-import-sources:src/test/xoo/org/sonar/tests/HelloTest.xoo</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=a.selected</td>
-        <td>Source</td>
-    </tr>
-    <tr>
-        <td>assertElementNotPresent</td>
-        <td>css=table.code</td>
-        <td></td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/resource/index/do-not-import-sources:src/test/xoo/org/sonar/tests/HelloTest.xoo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=table.code</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>css=table.code</td>
+	<td>public class HelloTest</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
