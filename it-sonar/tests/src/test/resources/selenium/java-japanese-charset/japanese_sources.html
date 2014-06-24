@@ -14,26 +14,26 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples:japanese-charset:src/main/java/com/test/AppDuplication.java</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>glob:*public class AppDuplication*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>glob:*証明書パス構築に失敗しました。*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples:japanese-charset:src/main/java/com/test/AppDuplication.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>class=component-viewer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=table.code</td>
+	<td>glob:*public class AppDuplication*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=table.code</td>
+	<td>glob:*証明書パス構築に失敗しました。*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

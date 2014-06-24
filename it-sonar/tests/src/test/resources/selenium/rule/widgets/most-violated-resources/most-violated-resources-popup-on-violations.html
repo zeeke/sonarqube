@@ -14,41 +14,41 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/widget?id=hotspot_most_violated_resources&amp;resource=rule-widgets</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>link=ManyViolations.java</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForPopUp</td>
-        <td>resource</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>selectPopUp</td>
-        <td>resource</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>class=source_title</td>
-        <td>*ManyViolations*</td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>css=.violations_header.tab_header</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>close</td>
-        <td></td>
-        <td></td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/widget?id=hotspot_most_violated_resources&amp;resource=rule-widgets</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ManyViolations.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPopUp</td>
+	<td>resource</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectPopUp</td>
+	<td>resource</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>id=content</td>
+	<td>*src/main/java/sample/ManyViolations.java*</td>
+</tr>
+<tr>
+    <td>assertElementPresent</td>
+    <td>css=.violations_header.tab_header</td>
+    <td></td>
+</tr>
+<tr>
+	<td>close</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
