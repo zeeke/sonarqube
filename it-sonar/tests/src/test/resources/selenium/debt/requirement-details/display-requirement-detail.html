@@ -10,7 +10,7 @@
 <tbody>
 	<tr>
 	<td>open</td>
-	<td>/sonar/resource/index/com.sonarsource.it.samples:multi-modules-sample:module_a:module_a2:src%2Fmain%2Fxoo%2Fcom%2Fsonar%2Fit%2Fsamples%2Fmodules%2Fa2%2FHelloA2.xoo?display_title=true&amp;metric=sqale_index&amp;period=&amp;rule=</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples:multi-modules-sample:module_a:module_a2:src%2Fmain%2Fxoo%2Fcom%2Fsonar%2Fit%2Fsamples%2Fmodules%2Fa2%2FHelloA2.xoo?display_title=true&amp;metric=sqale_index&amp;period=&amp;rule=&amp;tab=issues</td>
 	<td></td>
 </tr>
 <tr>
@@ -19,23 +19,23 @@
 	<td>*com/sonar/it/samples/modules/a2/HelloA2.xoo*</td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>name=rule</td>
-	<td>Has Tag (1)</td>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Has Tag*</td>
 </tr>
 <tr>
-	<td>waitForVisible</td>
-	<td>resource_loading</td>
+	<td>click</td>
+	<td>link=Has Tag 1</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForNotVisible</td>
-	<td>resource_loading</td>
-	<td></td>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Has Tag*</td>
 </tr>
 <tr>
 	<td>waitForNotText</td>
-	<td>css=.code</td>
+	<td>css=.component-viewer-source</td>
 	<td>*This issue is generated on each line*</td>
 </tr>
 <tr>
