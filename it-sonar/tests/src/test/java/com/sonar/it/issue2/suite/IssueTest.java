@@ -181,7 +181,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
    * See SONAR-582 - issues not attached to a line of code
    */
   @Test
-  public void get_issues_even_if_no_issue_on_line_of_code() {
+  public void show_issue_linked_to_a_file() {
     // all the detected issues are not attached to a line
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-file-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))

@@ -34,18 +34,28 @@
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>class=source_title</td>
+	<td>css=.component-viewer-source</td>
 	<td>*Sample*</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=.pos3 &gt; td.plus &gt; a</td>
+	<td>//tr[@class=('row')][3]/td</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForVisible</td>
-	<td>class=code-issue</td>
+	<td>waitForText</td>
+	<td>css=.component-viewer-popup</td>
+	<td>*Add Manual Issue*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.js-add-manual-issue</td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.code-issue-create-form</td>
+	<td>*InvalidClassName*</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -64,13 +74,8 @@
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>css=.sources2.code</td>
-	<td>glob:*InvalidClassName*</td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>css=.sources2.code</td>
-	<td>glob:*The name 'Sample' is too generic*</td>
+	<td>css=.component-viewer-source</td>
+	<td>*The name 'Sample' is too generic*</td>
 </tr>
 </tbody>
 </table>

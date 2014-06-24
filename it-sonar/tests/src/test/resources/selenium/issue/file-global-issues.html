@@ -24,13 +24,29 @@
 	<td>*Sample*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>class=code-global-issues</td>
-	<td>glob:*This issue is generated on each file*</td>
+	<td>waitForText</td>
+	<td>id=body</td>
+	<td>*Unresolved Issues*</td>
 </tr>
 <tr>
-	<td>assertNotText</td>
-	<td>css=table.code</td>
+	<td>click</td>
+	<td>link=Unresolved Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>class=component-viewer-source</td>
+	<td>*Open*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=body</td>
+	<td>glob:*This issue is generated on each file*</td>
+</tr>
+<!--Code source should be displayed-->
+<tr>
+	<td>assertText</td>
+	<td>id=body</td>
 	<td>glob:*This issue is generated on each file*package*</td>
 </tr>
 </tbody>

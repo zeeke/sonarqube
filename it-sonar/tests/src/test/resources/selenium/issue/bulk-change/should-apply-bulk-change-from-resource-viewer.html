@@ -8,104 +8,104 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-  <td>open</td>
-  <td>/sonar/sessions/new</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>login</td>
-  <td>admin</td>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>password</td>
-  <td>admin</td>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>commit</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>/sonar/resource/index/sample:src/main/xoo/sample/Sample.xoo</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/resource/index/sample:src/main/xoo/sample/Sample.xoo?tab=issues</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>class=source_title</td>
-  <td>*Sample*</td>
+	<td>waitForText</td>
+	<td>id=body</td>
+	<td>*Sample*</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>link=Issues</td>
-  <td></td>
+	<td>click</td>
+	<td>link=Unresolved Issues</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>css=.sourceHeader</td>
-  <td>*13 issues*</td>
+	<td>waitForText</td>
+	<td>css=.js-filter-MINOR-issues</td>
+	<td>*Minor*13*</td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>css=.source_options</td>
-  <td>*Bulk Change*</td>
+	<td>assertText</td>
+	<td>id=body</td>
+	<td>*Bulk Change*</td>
 </tr>
 <tr>
-  <td>assertNotText</td>
-  <td>css=.sources2.code</td>
-  <td>*Confirmed*</td>
+	<td>assertText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Open*</td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>css=.sources2.code</td>
-  <td>*Open*</td>
+	<td>assertText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Confirmed*</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>link=Bulk Change</td>
-  <td></td>
+	<td>click</td>
+	<td>link=Bulk Change</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>bulk-change-form</td>
-  <td>*Change 13 issues*</td>
+	<td>waitForText</td>
+	<td>bulk-change-form</td>
+	<td>*Change 13 issues*</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>transition-confirm</td>
-  <td></td>
+	<td>click</td>
+	<td>transition-confirm</td>
+	<td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>id=bulk-change-submit</td>
-  <td></td>
+	<td>clickAndWait</td>
+	<td>id=bulk-change-submit</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>class=source_title</td>
-  <td>*Sample*</td>
+	<td>waitForText</td>
+	<td>id=body</td>
+	<td>*Sample*</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>link=Issues</td>
-  <td></td>
+	<td>click</td>
+	<td>link=Unresolved Issues</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>css=.sourceHeader</td>
-  <td>*13 issues*</td>
+	<td>waitForText</td>
+	<td>css=.js-filter-MINOR-issues</td>
+	<td>*Minor*13*</td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>css=.sources2.code</td>
-  <td>*Confirmed*</td>
+	<td>assertText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Confirmed*</td>
 </tr>
 <tr>
-  <td>assertNotText</td>
-  <td>css=.sources2.code</td>
-  <td>*Open*</td>
+	<td>assertNotText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Open*</td>
 </tr>
 </tbody>
 </table>

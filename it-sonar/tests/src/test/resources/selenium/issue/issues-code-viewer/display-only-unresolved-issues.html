@@ -29,57 +29,67 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/resource/index/sample:src/main/java/sample/Sample.java</td>
+	<td>/sonar/resource/index/sample:src/main/java/sample/Sample.java?tab=issues</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>class=source_title</td>
+	<td>body</td>
 	<td>*sample/Sample*</td>
 </tr>
 <tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Severities*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.js-filter-MAJOR-issues</td>
+	<td>*Major*2*</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>link=Issues</td>
+	<td>link=Unresolved Issues</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>css=.sourceHeader</td>
-	<td>*4 issues*</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Open*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=.sources2.code</td>
+	<td>css=.component-viewer-source</td>
 	<td>*Assignment of parameter 'i' is not allowed.*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=.sources2.code</td>
+	<td>css=.component-viewer-source</td>
 	<td>*Avoid unused private methods such as 'myMethod()'.*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=.sources2.code</td>
+	<td>css=.component-viewer-source</td>
 	<td>*Open*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>css=.sources2.code</td>
+	<td>css=.component-viewer-source</td>
 	<td>*Avoid unused local variables such as 'j'.*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>css=.sources2.code</td>
-	<td>*False Positive*</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Resolved (False Positive)*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>css=.sources2.code</td>
+	<td>css=.component-viewer-source</td>
 	<td>*File contains tab characters (this is the first instance).*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>css=.sources2.code</td>
+	<td>css=.component-viewer-source</td>
 	<td>*Fixed*</td>
 </tr>
 </tbody>
