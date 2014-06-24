@@ -244,6 +244,20 @@ public class MavenTest extends AbstractMavenTest {
   }
 
   /**
+   * The property sonar.sources overrides the source dirs as declared in Maven
+   */
+  @Test
+  public void override_sources_in_multi_module() {
+    assumeTrue(mojoVersion().isGreaterThanOrEquals("2.4"));
+
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/multi-modules-override-sources")).setGoals(sonarGoal());
+    orchestrator.executeBuild(build);
+
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:module_a1", "files"));
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+  }
+
+  /**
    * The property sonar.inclusions overrides the property sonar.sources
    */
   @Test
