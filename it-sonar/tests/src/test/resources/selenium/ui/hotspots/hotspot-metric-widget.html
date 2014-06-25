@@ -14,64 +14,59 @@
     </thead>
     <tbody>
     <tr>
-  <td>open</td>
-  <td>/sonar/widget?id=hotspot_metric&amp;resource=org.apache.struts:struts-parent&amp;metric=comment_lines_density&amp;title=NewTitle</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/widget?id=hotspot_metric&amp;resource=org.apache.struts:struts-parent&amp;metric=comment_lines_density&amp;title=NewTitle</td>
+	<td></td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>class=hotspot_metric</td>
-  <td>*NewTitle*ValidWhenLexer*ValidWhenParser*MockPageContext*MockFormBean*PerformForward*</td>
+	<td>assertText</td>
+	<td>class=hotspot_metric</td>
+	<td>*NewTitle*ValidWhenLexer*ValidWhenParser*MockPageContext*MockFormBean*PerformForward*</td>
 </tr>
 <tr>
-  <td>assertElementPresent</td>
-  <td>link=PerformForward.java</td>
-  <td></td>
+	<td>assertElementPresent</td>
+	<td>link=PerformForward.java</td>
+	<td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>/sonar/widget?id=hotspot_metric&amp;resource=org.apache.struts:struts-parent&amp;metric=ncloc</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/widget?id=hotspot_metric&amp;resource=org.apache.struts:struts-parent&amp;metric=ncloc</td>
+	<td></td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>class=hotspot_metric</td>
-  <td>*Hotspots by Lines of code*</td>
+	<td>assertText</td>
+	<td>class=hotspot_metric</td>
+	<td>*Hotspots by Lines of code*</td>
 </tr>
 <tr>
-  <td>assertElementPresent</td>
-  <td>link=ActionServlet.java</td>
-  <td></td>
+	<td>assertElementPresent</td>
+	<td>link=ActionServlet.java</td>
+	<td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>link=ActionServlet.java</td>
-  <td></td>
+	<td>click</td>
+	<td>link=ActionServlet.java</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForPopUp</td>
-  <td>resource</td>
-  <td>30000</td>
+	<td>waitForPopUp</td>
+	<td>resource</td>
+	<td>30000</td>
 </tr>
 <tr>
-  <td>selectPopUp</td>
-  <td>resource</td>
-  <td></td>
+	<td>selectPopUp</td>
+	<td>resource</td>
+	<td></td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>class=accordion-item</td>
-  <td></td>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*ActionServlet*</td>
 </tr>
 <tr>
-  <td>assertText</td>
-  <td>class=source_title</td>
-  <td>*org/apache/struts/action/ActionServlet.java*</td>
-</tr>
-<tr>
-  <td>close</td>
-  <td>resource</td>
-  <td></td>
+	<td>close</td>
+	<td>resource</td>
+	<td></td>
 </tr>
 </tbody>
 </table>

@@ -14,51 +14,61 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/drilldown/measures/org.apache.struts:struts-core?metric=ncloc</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>link=ActionServlet.java</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=source_tabs</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>new-window-org-apache-struts-struts-core-src-main-java-org-apache-struts-action-actionservlet-java</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForPopUp</td>
-        <td>resource</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>selectPopUp</td>
-        <td>resource</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTextPresent</td>
-        <td>org/apache/struts/action/ActionServlet.java</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>close</td>
-        <td>resource</td>
-        <td></td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/drilldown/measures/org.apache.struts:struts-core?metric=ncloc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Lines of code*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ActionServlet.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer</td>
+	<td>*ActionServlet*</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.code</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.js-permalink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPopUp</td>
+	<td>resource</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectPopUp</td>
+	<td>resource</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*ActionServlet*</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>org/apache/struts/action/ActionServlet.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>close</td>
+	<td>resource</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

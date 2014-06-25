@@ -19,74 +19,39 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForElementPresent</td>
-	<td>class=accordion-item</td>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Severities*Critical*Major*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.js-filter-MAJOR-issues</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertSelectOptions</td>
-	<td>rule</td>
-	<td>glob:*Critical*Major*</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>rule</td>
-	<td>value=MAJOR</td>
-</tr>
-<tr>
-	<td>waitForVisible</td>
-	<td>class=accordion-loading</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForNotVisible</td>
-	<td>class=accordion-loading</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertSelectedValue</td>
-	<td>rule</td>
-	<td>MAJOR</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=table.code</td>
-	<td>glob:*Variable 'log' must be private and have accessor methods.*</td>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Variable 'log' must be private and have accessor methods.*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>css=table.code</td>
-	<td>glob:* A catch statement should never catch throwable since it includes errors.*</td>
+	<td>css=.component-viewer-source</td>
+	<td>* A catch statement should never catch throwable since it includes errors.*</td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>rule</td>
-	<td>value=CRITICAL</td>
-</tr>
-<tr>
-	<td>waitForVisible</td>
-	<td>class=accordion-loading</td>
+	<td>click</td>
+	<td>css=.js-filter-CRITICAL-issues</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForNotVisible</td>
-	<td>class=accordion-loading</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertSelectedValue</td>
-	<td>rule</td>
-	<td>CRITICAL</td>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*A catch statement should never catch throwable since it includes errors.*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>css=table.code</td>
-	<td>glob:*Variable 'log' must be private and have accessor methods.*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=table.code</td>
-	<td>glob:*A catch statement should never catch throwable since it includes errors.*</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Variable 'log' must be private and have accessor methods.*</td>
 </tr>
 </tbody>
 </table>

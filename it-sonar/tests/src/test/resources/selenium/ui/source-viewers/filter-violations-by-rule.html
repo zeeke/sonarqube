@@ -19,39 +19,24 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForElementPresent</td>
-	<td>class=accordion-item</td>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Rules*Parameter Assignment*Visibility Modifier*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Parameter Assignment*1</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertSelectOptions</td>
-	<td>rule</td>
-	<td>glob:*Parameter Assignment*Visibility Modifier*</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>rule</td>
-	<td>label=glob:*Parameter Assignment*</td>
-</tr>
-<tr>
-	<td>waitForVisible</td>
-	<td>class=accordion-loading</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForNotVisible</td>
-	<td>class=accordion-loading</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=table.code</td>
-	<td>glob:*Assignment of parameter 'locale' is not allowed.*</td>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Assignment of parameter 'locale' is not allowed.*</td>
 </tr>
 <tr>
 	<td>assertNotText</td>
-	<td>css=table.code</td>
-	<td>glob:*Variable 'servlet' must be private and have accessor methods.*</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Variable 'servlet' must be private and have accessor methods.*</td>
 </tr>
 </tbody>
 </table>

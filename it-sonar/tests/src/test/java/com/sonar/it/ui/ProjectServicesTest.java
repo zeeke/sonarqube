@@ -14,7 +14,6 @@ import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Resource;
@@ -88,7 +87,6 @@ public class ProjectServicesTest {
   }
 
   @Test
-  @Ignore // TODO: enable after resolving SONAR-5209
   public void test_source_viewers() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-source-viewers",
       "/selenium/ui/source-viewers/do-not-display-commits-option.html",

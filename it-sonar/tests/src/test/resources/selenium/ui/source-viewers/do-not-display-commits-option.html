@@ -14,21 +14,21 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/org.apache.struts:struts-core:src/main/java/org/apache/struts/action/Action.java</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>source_header</td>
-        <td>glob:*commit*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/org.apache.struts:struts-core:src/main/java/org/apache/struts/action/Action.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Action*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>body</td>
+	<td>*commit*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
