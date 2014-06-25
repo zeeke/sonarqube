@@ -84,7 +84,7 @@ public class SonarUpgradeTest {
     testUrl("/drilldown/issues/org.apache.struts:struts-parent");
     testUrl("/plugins/resource/org.apache.struts:struts-parent?page=org.sonar.plugins.design.ui.page.DesignPage");
     testUrl("/plugins/resource/org.apache.struts:struts-parent?page=org.sonar.plugins.design.ui.libraries.LibrariesPage");
-    testUrl("/resource/index/org.apache.struts:struts-core:org.apache.struts.chain.commands.generic.WrappingLookupCommand");
+    testUrl("/component/index#component=org.apache.struts:struts-core:src/main/java/org/apache/struts/chain/commands/generic/WrappingLookupCommand.java");
     testUrl("/profiles");
   }
 
