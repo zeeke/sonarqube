@@ -14,34 +14,39 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples:with-tests:src/main/java/org/sonar/tests/Hello.java?tab=coverage</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <!-- branch coverage -->
-    <tr>
-        <td>assertText</td>
-        <td>id=coverage_header</td>
-        <td>glob:*Branch coverage: 50.0% (1/2)*</td>
-    </tr>
-    <!-- hits -->
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>glob:*1*1*1*0*</td>
-    </tr>
-    <!-- conditions -->
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>glob:*1/2*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples:with-tests:src/main/java/org/sonar/tests/Hello.java?tab=coverage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>class=component-viewer-header-expanded-bar-section</td>
+	<td></td>
+</tr>
+<!-- branch coverage -->
+<tr>
+	<td>assertText</td>
+	<td>css=div.component-viewer-header-expanded-bar</td>
+	<td>glob:*Branch coverage*50.0%*</td>
+</tr>
+<!-- hits -->
+<tr>
+	<td>assertText</td>
+	<td>css=table.code</td>
+	<td>glob:*1*1*1*0*</td>
+</tr>
+<!-- conditions -->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=span.coverage-branches</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=table.code</td>
+	<td>glob:*1/2*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
