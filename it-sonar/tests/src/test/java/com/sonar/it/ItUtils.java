@@ -26,7 +26,6 @@ import java.sql.PreparedStatement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -125,13 +124,6 @@ public final class ItUtils {
   /**
    * @deprecated
    */
-  public static SonarClient newWsClient(Orchestrator o, String login, String password) {
-    return o.getServer().wsClient(login, password);
-  }
-
-  /**
-   * @deprecated
-   */
   public static SonarClient newWsClientForAdmin(Orchestrator o) {
     return o.getServer().adminWsClient();
   }
@@ -194,9 +186,9 @@ public final class ItUtils {
     JSONObject obj = getJSONReport(result);
     JSONArray issues = (JSONArray) obj.get("issues");
     int count = 0;
-    for (Iterator it = issues.iterator(); it.hasNext();) {
-      JSONObject issue = (JSONObject) it.next();
-      if (!onlyNews || (Boolean) issue.get("isNew")) {
+    for (Object issue : issues) {
+      JSONObject jsonIssue = (JSONObject) issue;
+      if (!onlyNews || (Boolean) jsonIssue.get("isNew")) {
         count++;
       }
     }

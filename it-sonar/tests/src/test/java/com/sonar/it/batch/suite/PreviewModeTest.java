@@ -65,7 +65,7 @@ public class PreviewModeTest {
   }
 
   @Test
-  public void test_dry_run() {
+  public void test_preview_mode() {
     BuildResult result = scan("shared/xoo-sample",
       "sonar.analysis.mode", "preview");
 
@@ -230,7 +230,7 @@ public class PreviewModeTest {
 
   // SONAR-4602
   @Test
-  public void use_dry_run_cache_on_new_project() throws Exception {
+  public void use_preview_cache_on_new_project() throws Exception {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
     // First dry run
     String profileName = "one-issue-per-line";
