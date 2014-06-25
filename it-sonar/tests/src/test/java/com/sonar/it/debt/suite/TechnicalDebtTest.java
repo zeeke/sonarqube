@@ -13,7 +13,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueClient;
@@ -62,7 +61,6 @@ public class TechnicalDebtTest {
    * SONAR-4716
    */
   @Test
-  @Ignore("Characteristic and sub characteristic is missing in the rule description of an issue (just right after the rule key)")
   public void display_requirement_details_on_issue() throws Exception {
     // Generate some issues
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/with-many-rules.xml"));

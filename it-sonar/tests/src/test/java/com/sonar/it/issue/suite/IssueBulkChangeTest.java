@@ -12,7 +12,6 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.*;
 
@@ -246,7 +245,6 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
    * SONAR-4418
    */
   @Test
-  @Ignore("The bulk change modal window never disappear after the bulk change has been done")
   public void should_apply_bulk_change_from_resource_viewer() {
     analyzeSampleProjectWillSmallNumberOfIssues();
 
