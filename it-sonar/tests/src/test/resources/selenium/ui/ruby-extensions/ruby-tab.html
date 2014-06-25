@@ -14,36 +14,31 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=ul.tabs</td>
-        <td>glob:*Ruby tab*</td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>link=Ruby tab</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>ruby-tab-content</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>ruby-tab-content</td>
-        <td>Test ruby tab. File name is src/main/java/sample/Sample.java</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples:simple-sample:src/main/java/sample/Sample.java&amp;tab=RubyTab</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Sample*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Sample*</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>ruby-tab-content</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>ruby-tab-content</td>
+	<td>Test ruby tab. File name is src/main/java/sample/Sample.java</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
