@@ -14,31 +14,31 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/drilldown/issues/org.apache.struts:struts-core</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>link=ValidWhenLexer.java</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>class=source_title</td>
-        <td>glob:*org/apache/struts/validator/validwhen/ValidWhenLexer.java*</td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>css=.violations_header.tab_header</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>css=table.code</td>
-        <td></td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/drilldown/issues/org.apache.struts:struts-core</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*ValidWhenLexer.java*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ValidWhenLexer.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*ValidWhenLexer*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.component-viewer-header</td>
+	<td>*Severities*Rules*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

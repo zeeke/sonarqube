@@ -19,29 +19,44 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForElementPresent</td>
-	<td>class=accordion-item</td>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Struts*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-header</td>
+	<td>*Severities*Major*Minor*Info*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*ValidWhenLexer*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Unused import - java.util.Stack.*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.js-filter-MAJOR-issues</td>
+	<td>Major*59</td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>css=.js-filter-MAJOR-issues.active</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertSelectOptions</td>
-	<td>rule</td>
-	<td>glob:*Major*Info*</td>
-</tr>
-<tr>
-	<td>assertSelectedValue</td>
-	<td>rule</td>
-	<td>all</td>
+	<td>assertText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Unused import*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=table.code</td>
-	<td>glob:*Unused import*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=table.code</td>
-	<td>glob:*Avoid instantiating Integer objects. Call Integer.valueOf() instead.*</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Avoid instantiating Integer objects. Call Integer.valueOf() instead.*</td>
 </tr>
 </tbody>
 </table>
