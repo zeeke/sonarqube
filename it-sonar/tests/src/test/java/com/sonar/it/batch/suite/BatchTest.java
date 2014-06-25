@@ -22,6 +22,7 @@ import org.sonar.wsclient.services.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -420,6 +421,18 @@ public class BatchTest {
     BuildResult result = scanQuietly("batch/prevent-common-module/projectAC");
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("Module \"com.sonarsource.it.samples:moduleA\" is already part of project \"projectAB\"");
+  }
+
+  /**
+   * SONAR-4235
+   */
+  @Test
+  public void test_project_creation_date() {
+    long before = new Date().getTime();
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")));
+    long after = new Date().getTime();
+    Resource xooSample = orchestrator.getServer().getWsClient().find(new ResourceQuery().setResourceKeyOrId("sample"));
+    assertThat(xooSample.getCreationDate().getTime()).isGreaterThan(before).isLessThan(after);
   }
 
   private Resource getResource(String key) {

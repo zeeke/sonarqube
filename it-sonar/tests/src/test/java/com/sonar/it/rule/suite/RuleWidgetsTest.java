@@ -29,7 +29,7 @@ public class RuleWidgetsTest {
 
   // SONAR-2071
   @Test
-  public void test_most_violated_resources_widget() throws Exception {
+  public void test_most_violated_components_widget() throws Exception {
     Selenese selenese = Selenese
       .builder()
       .setHtmlTestsInClasspath("most-violated-resources-widget",
