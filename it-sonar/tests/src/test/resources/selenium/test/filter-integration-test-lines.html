@@ -14,81 +14,71 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples:jacoco-integration-tests:src/main/java/example/Greeting.java?metric=it_coverage</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertSelectedValue</td>
-        <td>coverage_filter</td>
-        <td>it_lines_to_cover</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>*0/2 if (unitTest)*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>*1/2 if (integrationTest)*</td>
-    </tr>
-    <tr>
-        <td>select</td>
-        <td>class=coverage_filter</td>
-        <td>value=it_uncovered_conditions</td>
-    </tr>
-    <tr>
-        <td>waitForVisible</td>
-        <td>class=accordion-loading</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForNotVisible</td>
-        <td>class=accordion-loading</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>*0/2 if (unitTest)*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>*1/2 if (integrationTest)*</td>
-    </tr>
-    <tr>
-        <td>select</td>
-        <td>class=coverage_filter</td>
-        <td>value=lines_to_cover</td>
-    </tr>
-    <tr>
-        <td>waitForVisible</td>
-        <td>class=accordion-loading</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForNotVisible</td>
-        <td>class=accordion-loading</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>*1/2 if (unitTest)*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=table.code</td>
-        <td>*0/2 if (integrationTest)*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/component/index#component=com.sonarsource.it.samples:jacoco-integration-tests:src/main/java/example/Greeting.java&amp;tab=coverage&amp;item=.js-filter-lines-to-cover-it</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=component-viewer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.js-filter-lines-to-cover-it.active</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=table.code</td>
+	<td>*1/2*if (unitTest)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=table.code</td>
+	<td>*0/2*if (integrationTest)*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.js-filter-uncovered-branches-it</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.js-filter-uncovered-branches-it.active</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=table.code</td>
+	<td>*1/2*if (unitTest)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=table.code</td>
+	<td>*0/2*if (integrationTest)*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.js-filter-lines-to-cover</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.js-filter-lines-to-cover.active</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=table.code</td>
+	<td>*1/2*if (unitTest)*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=table.code</td>
+	<td>*0/2*if (integrationTest)*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
