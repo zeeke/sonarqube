@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.batch;
+package com.sonar.it.batch2;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -65,7 +65,7 @@ public class SettingsEncryptionTest {
   }
 
   private String pathToValidSecretKey() throws Exception {
-    URL resource = getClass().getResource("/com/sonar/it/batch/SettingsEncryptionTest/sonar-secret.txt");
+    URL resource = getClass().getResource("SettingsEncryptionTest/sonar-secret.txt");
     return new File(resource.toURI()).getCanonicalPath();
   }
 }

@@ -333,7 +333,7 @@ public class PreviewModeTest {
   // SONAR-4602
   @Test
   public void evict_dry_run_cache_after_profile_change() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/DryRunTest/one-issue-per-line-empty.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/PreviewModeTest/one-issue-per-line-empty.xml"));
     // First run (not dry run)
     SonarRunner runner = configureRunner("shared/xoo-sample")
       .setProfile("one-issue-per-line");

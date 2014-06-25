@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.batch;
+package com.sonar.it.batch2;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
