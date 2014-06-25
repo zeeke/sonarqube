@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.server;
+package com.sonar.it.updatecenter;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -23,7 +23,7 @@ public class UpdateCenterTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .setServerProperty("sonar.updatecenter.url", UpdateCenterTest.class.getResource("/com/sonar/it/server/UpdateCenterTest/update-center.properties").toString())
+    .setServerProperty("sonar.updatecenter.url", UpdateCenterTest.class.getResource("UpdateCenterTest/update-center.properties").toString())
     .addPlugin(ItUtils.locateTestPlugin("sonar-fake-plugin"))
     .build();
 

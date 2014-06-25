@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.server;
+package com.sonar.it.updatecenter;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -19,13 +19,12 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class UpdateCenterSystemUpdateTest {
 
-  private Orchestrator orchestrator;
+  Orchestrator orchestrator;
 
   @After
   public void stop() {
     if (orchestrator != null) {
       orchestrator.stop();
-      orchestrator = null;
     }
   }
 
@@ -37,7 +36,7 @@ public class UpdateCenterSystemUpdateTest {
     orchestrator = Orchestrator.builderEnv()
       .setServerProperty("sonar.updatecenter.url",
         UpdateCenterSystemUpdateTest.class.getResource(
-          "/com/sonar/it/server/UpdateCenterTest/update-center-system-update-with-already-compatible-plugins.properties").toString())
+          "UpdateCenterTest/update-center-system-update-with-already-compatible-plugins.properties").toString())
       .addPlugin(ItUtils.locateTestPlugin("sonar-fake-plugin"))
       .build();
 
@@ -56,7 +55,7 @@ public class UpdateCenterSystemUpdateTest {
     orchestrator = Orchestrator.builderEnv()
       .setServerProperty("sonar.updatecenter.url",
         UpdateCenterSystemUpdateTest.class.getResource(
-          "/com/sonar/it/server/UpdateCenterTest/update-center-with-missing-plugin-version.properties").toString())
+          "UpdateCenterTest/update-center-with-missing-plugin-version.properties").toString())
       .addPlugin(ItUtils.locateTestPlugin("sonar-fake-plugin"))
       .build();
 

@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.server;
+package com.sonar.it.updatecenter;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -31,14 +31,14 @@ import static org.fest.assertions.Fail.fail;
 public class UpdateCenterDependenciesTest {
 
   @Rule
-  public TemporaryFolder updateCenterFolder = new TemporaryFolder();
-  private File updateCenterFile;
-  private Orchestrator orchestrator;
+  public TemporaryFolder temp = new TemporaryFolder();
+  File updateCenterFile;
+  Orchestrator orchestrator;
 
   @Before
   public void before() throws Exception {
-    URL updateCenter = UpdateCenterDependenciesTest.class.getResource("/com/sonar/it/server/UpdateCenterTest/update-center-dependencies.properties");
-    updateCenterFile = updateCenterFolder.newFile("update-center.properties");
+    URL updateCenter = UpdateCenterDependenciesTest.class.getResource("UpdateCenterTest/update-center-dependencies.properties");
+    updateCenterFile = temp.newFile("update-center.properties");
     File file = new File(updateCenter.toURI());
     FileInputStream in = new FileInputStream(file);
     try {
@@ -64,7 +64,7 @@ public class UpdateCenterDependenciesTest {
     orchestrator = Orchestrator
       .builderEnv()
       .setServerProperty("sonar.updatecenter.url",
-        UpdateCenterDependenciesTest.class.getResource("/com/sonar/it/server/UpdateCenterTest/update-center-dependencies.properties").toString())
+        UpdateCenterDependenciesTest.class.getResource("UpdateCenterTest/update-center-dependencies.properties").toString())
       // C Sharp requires DotNet
       .addPlugin(ItUtils.locateTestPlugin("update-center/csharp-plugin-1.0", "csharp-plugin-v10", "1.0"))
       .build();
@@ -82,7 +82,7 @@ public class UpdateCenterDependenciesTest {
     orchestrator = Orchestrator
       .builderEnv()
       .setServerProperty("sonar.updatecenter.url",
-        UpdateCenterDependenciesTest.class.getResource("/com/sonar/it/server/UpdateCenterTest/update-center-dependencies.properties").toString())
+        UpdateCenterDependenciesTest.class.getResource("UpdateCenterTest/update-center-dependencies.properties").toString())
       // C Sharp 1.1 requires DotNet 1.1
       .addPlugin(ItUtils.locateTestPlugin("update-center/csharp-plugin-1.1", "csharp-plugin-v11", "1.1"))
       .addPlugin(ItUtils.locateTestPlugin("update-center/dotnet-plugin-1.0", "dotnet-plugin-v10", "1.0"))
@@ -101,7 +101,7 @@ public class UpdateCenterDependenciesTest {
     orchestrator = Orchestrator
       .builderEnv()
       .setServerProperty("sonar.updatecenter.url",
-        UpdateCenterDependenciesTest.class.getResource("/com/sonar/it/server/UpdateCenterTest/update-center-dependencies.properties").toString())
+        UpdateCenterDependenciesTest.class.getResource("UpdateCenterTest/update-center-dependencies.properties").toString())
       // FxCop is the child of DotNet
       .addPlugin(ItUtils.locateTestPlugin("update-center/fxcop-plugin-1.0", "fxcop-plugin-v10", "1.0"))
       .build();
@@ -119,7 +119,7 @@ public class UpdateCenterDependenciesTest {
     orchestrator = Orchestrator
       .builderEnv()
       .setServerProperty("sonar.updatecenter.url",
-        UpdateCenterDependenciesTest.class.getResource("/com/sonar/it/server/UpdateCenterTest/update-center-dependencies.properties").toString())
+        UpdateCenterDependenciesTest.class.getResource("UpdateCenterTest/update-center-dependencies.properties").toString())
       // FxCop is the child of DotNet
       .addPlugin(ItUtils.locateTestPlugin("update-center/fxcop-plugin-1.1", "fxcop-plugin-v11", "1.1"))
       .addPlugin(ItUtils.locateTestPlugin("update-center/dotnet-plugin-1.0", "dotnet-plugin-v10", "1.0"))
@@ -237,10 +237,10 @@ public class UpdateCenterDependenciesTest {
   }
 
   private void setUpdateCenterProperties() throws Exception {
-    setUpdateCenterProperty("dotnet.1.1.downloadUrl", getUrlPath(updateCenterFolder.newFile("dotnet-plugin-v11-1.1.jar")));
-    setUpdateCenterProperty("fxcop.1.1.downloadUrl", getUrlPath(updateCenterFolder.newFile("fxcop-plugin-v11-1.1.jar")));
-    setUpdateCenterProperty("csharp.1.1.downloadUrl", getUrlPath(updateCenterFolder.newFile("csharp-plugin-v11-1.1.jar")));
-    setUpdateCenterProperty("visualstudio.1.1.downloadUrl", getUrlPath(updateCenterFolder.newFile("visualstudio-plugin-v11-1.1.jar")));
+    setUpdateCenterProperty("dotnet.1.1.downloadUrl", getUrlPath(temp.newFile("dotnet-plugin-v11-1.1.jar")));
+    setUpdateCenterProperty("fxcop.1.1.downloadUrl", getUrlPath(temp.newFile("fxcop-plugin-v11-1.1.jar")));
+    setUpdateCenterProperty("csharp.1.1.downloadUrl", getUrlPath(temp.newFile("csharp-plugin-v11-1.1.jar")));
+    setUpdateCenterProperty("visualstudio.1.1.downloadUrl", getUrlPath(temp.newFile("visualstudio-plugin-v11-1.1.jar")));
   }
 
   private void setUpdateCenterProperty(String key, String value) throws Exception {
