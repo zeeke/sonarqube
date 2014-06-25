@@ -50,11 +50,9 @@ public class DesignUITest {
   }
 
   @Test
-  public void test_design() {
+  public void test_design_page() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("design-on-project",
-      "/selenium/design/design_from_tools_menu.html",
-      "/selenium/design/design_from_drilldown.html",
-      "/selenium/design/design_in_popup.html"
+      "/selenium/design/design_page.html"
       ).build();
     orchestrator.executeSelenese(selenese);
   }
