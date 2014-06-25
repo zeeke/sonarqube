@@ -14,32 +14,37 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples:sample-with-tests:src/main/java/sample/Sample.java</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>//tr[6]/td[2]/pre/span[3]</td>
-        <td></td>
-
-    </tr>
-    <tr>
-        <td>assertXpathCount</td>
-        <td>//span[contains(@class, 'sym highlighted')]</td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>assertXpathCount</td>
-        <td>//span[contains(@class, 'sym')]</td>
-        <td>13</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples:sample-with-tests:src/main/java/sample/Sample.java</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//tr[22]/td[5]/pre</td>
+	<td></td>
+</tr>
+<!--wait event handlers-->
+<tr>
+	<td>waitForCondition</td>
+	<td>var symbol = selenium.browserbot.getCurrentWindow().$j(&quot;span.sym&quot;)[3]; while(!symbol.className.contains(&quot;highlighted&quot;)) { selenium.browserbot.getCurrentWindow().$j(&quot;body&quot;).delay(500); symbol.click(); }; true</td>
+	<td>5000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//tr[7]/td[5]/pre/span[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertXpathCount</td>
+	<td>//span[contains(@class, 'sym highlighted')]</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>assertXpathCount</td>
+	<td>//span[contains(@class, 'sym')]</td>
+	<td>13</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
