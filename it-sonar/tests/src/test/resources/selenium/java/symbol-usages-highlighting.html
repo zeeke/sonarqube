@@ -20,18 +20,22 @@
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>//table[@class='code']/tbody/tr[22]/td[2]/pre</td>
+	<td>//table[@class='code']</td>
 	<td></td>
 </tr>
-<!--wait event handlers-->
 <tr>
-	<td>waitForCondition</td>
-	<td>var symbol = selenium.browserbot.getCurrentWindow().$j(&quot;span.sym&quot;)[3]; while(!symbol.className.contains(&quot;highlighted&quot;)) { selenium.browserbot.getCurrentWindow().$j(&quot;body&quot;).delay(500); symbol.click(); }; true</td>
+	<td>click</td>
+	<td>//i[@class='icon-list']</td>
 	<td>5000</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//table[@class='code']/tbody/tr[7]/td[2]/pre/span[3]</td>
+	<td>//a[@class='js-full-source underlined-link']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@class='code']/tbody/tr[7]/td[5]/pre/span[3]</td>
 	<td></td>
 </tr>
 <tr>
