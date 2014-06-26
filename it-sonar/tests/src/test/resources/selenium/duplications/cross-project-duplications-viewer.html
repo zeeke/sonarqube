@@ -15,7 +15,7 @@
     <tbody>
     <tr>
 	<td>open</td>
-	<td>/sonar/resource/index/com.sonarsource.it.samples.duplications:b:src/main/java/MyClass2.java?tab=duplications</td>
+	<td>/sonar/component/index#component=com.sonarsource.it.samples.duplications%3Ab%3Asrc%2Fmain%2Fjava%2FMyClass2.java&amp;settings=issues%2Cduplications&amp;blocks=2%2C14&amp;tab=duplications</td>
 	<td></td>
 </tr>
 <tr>
@@ -29,9 +29,14 @@
 	<td>*66.7%*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>css=.component-viewer-header-expanded-bar-section</td>
+	<td>waitForElementPresent</td>
+	<td>css=[data-metric=duplicated_blocks]</td>
 	<td>glob:*Duplications*1*10*</td>
+</tr>
+<tr>
+  <td>assertText</td>
+  <td>css=.component-viewer-header-expanded-bar-section</td>
+  <td>glob:*Duplications*1*10*</td>
 </tr>
 <tr>
 	<td>assertElementPresent</td>
@@ -49,13 +54,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>setTimeout</td>
-	<td>90000</td>
+	<td>waitForElementPresent</td>
+	<td>css=.component-viewer-popup</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>source-0</td>
+	<td>assertText</td>
+	<td>css=.component-viewer-popup</td>
 	<td>glob:*a*MyClass*</td>
 </tr>
 </tbody>
