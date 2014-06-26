@@ -29,13 +29,18 @@
 	<td>*ActionServlet*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>class=source_tabs</td>
-	<td>glob:*Raw*</td>
+	<td>click</td>
+	<td>css=.js-actions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.component-viewer-header-more-actions</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Raw</td>
+	<td>link=Show raw source</td>
 	<td></td>
 </tr>
 <tr>
@@ -45,7 +50,7 @@
 </tr>
 <tr>
 	<td>assertLocation</td>
-	<td>glob:*org.apache.struts:struts-core:src/main/java/org/apache/struts/action/ActionServlet.java*format=txt*</td>
+	<td>*ActionServlet.java*format=txt*</td>
 	<td></td>
 </tr>
 <tr>

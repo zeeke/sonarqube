@@ -92,11 +92,7 @@ public class ProjectServicesTest {
       "/selenium/ui/source-viewers/do-not-display-commits-option.html",
       "/selenium/ui/source-viewers/filter-violations-by-rule.html",
       "/selenium/ui/source-viewers/filter-violations-by-severity.html",
-
-      // FIXME link-to-raw is failing because the link to the raw source is missing
       "/selenium/ui/source-viewers/link-to-raw.html",
-
-      // FIXME rule-severity-filter-is-not-set-by-default is failing because issues are not loaded
       "/selenium/ui/source-viewers/rule-severity-filter-is-not-set-by-default.html",
       "/selenium/ui/source-viewers/select-tab-by-metric.html",
       "/selenium/ui/source-viewers/SONAR-517-violations-drilldown-opens-violations-tab.html",
