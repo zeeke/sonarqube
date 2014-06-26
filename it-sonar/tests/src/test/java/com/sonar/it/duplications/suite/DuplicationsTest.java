@@ -145,7 +145,7 @@ public class DuplicationsTest {
 
   @Test
   public void drilldown() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("duplications",
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("drilldown",
       "/selenium/duplications/drilldown-without-ratio.html")
       .build();
     orchestrator.executeSelenese(selenese);
