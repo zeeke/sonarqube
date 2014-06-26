@@ -24,64 +24,59 @@
 	<td>*SampleTest*</td>
 </tr>
 <tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-header</td>
+	<td>*2*Unit tests*</td>
+</tr>
+<tr>
 	<td>click</td>
-	<td>link=Tests</td>
+	<td>css=.js-header-tab-tests</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-header</td>
+	<td>*Tests*Test Names*Covered Lines*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.component-viewer-header</td>
+	<td>*should_return_i*5*should_return_to_string*4*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=*should_return_i*5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.component-viewer-popup</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-popup</td>
+	<td>*Covers*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.component-viewer-popup</td>
+	<td>*Sample.java*5 lines are covered*src/main/java/sample*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Sample.java</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
 	<td>body</td>
-	<td>*100.0%*</td>
+	<td>*Sample*package sample;*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>body</td>
-	<td>*Duration*Covered Lines*Unit test name*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.tests-viewer-body</td>
-	<td>*5*should_return_i*4*should_return_to_string*</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>class=test-overed-lines-link-0</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>accordion-item1</td>
-	<td>*Files covered by should_return_i*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.testcase-head</td>
-	<td>*Covered Lines*File*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.testcase-body</td>
-	<td>*5*sample/Sample*</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=src/main/java/sample/Sample.java</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>accordion-item2</td>
-	<td>*public class Sample*</td>
-</tr>
-<tr>
-	<td>assertSelectedLabel</td>
-	<td>css=#accordion-item2 .coverage_filter</td>
-	<td>Covered lines</td>
-</tr>
-<tr>
-	<td>assertSelectedLabel</td>
-	<td>css=#accordion-item2 .test_case_filter</td>
-	<td>should_return_i</td>
+	<td>css=.component-viewer-header</td>
+	<td>*src/main/java/sample/Sample.java*</td>
 </tr>
 </tbody>
 </table>

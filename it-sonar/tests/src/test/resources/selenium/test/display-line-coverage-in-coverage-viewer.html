@@ -15,7 +15,7 @@
     <tbody>
     <tr>
 	<td>open</td>
-	<td>/sonar/resource/index/com.sonarsource.it.samples:sample-with-tests:src/main/java/sample/Sample.java</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples:sample-with-tests:src/main/java/sample/Sample.java?tab=coverage</td>
 	<td></td>
 </tr>
 <tr>
@@ -24,74 +24,65 @@
 	<td>*sample/Sample*</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>css=.source_tabs</td>
-	<td>*Coverage*</td>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Sample*</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Coverage</td>
+	<td>css=.js-toggle-coverage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-header</td>
+	<td>*Line coverage*</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.coverage-green</td>
+	<td></td>
+</tr>
+<!--Check number of hits on first line-->
+<tr>
+	<td>assertText</td>
+	<td>css=.coverage-green .coverage-tests</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.coverage-green .coverage-tests</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.component-viewer-popup</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.component-viewer-popup</td>
+	<td>*Covered By*src/test/java/sample/SampleTest.java*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.component-viewer-popup-list</td>
+	<td>*should_return_i*should_return_to_string*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=src/test/java/sample/SampleTest.java</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
 	<td>body</td>
-	<td>*Line coverage*</td>
+	<td>*SampleTest*Test Names*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=.sources-testable-link-7</td>
-	<td>2</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>css=.sources-testable-link-7</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>accordion-item1</td>
-	<td>*Tests covering src/main/java/sample/Sample.java on line 7*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.testable-testplan-link</td>
-	<td>*sample/SampleTest*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=.testable-body</td>
-	<td>*should_return_i*should_return_to_string*</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>css=.testable-testplan-link</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>accordion-item2</td>
-	<td>*public class SampleTest*</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=should_return_i</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>accordion-item2</td>
-	<td>*Files covered by should_return_i*</td>
-</tr>
-<tr>
-	<td>assertNotText</td>
-	<td>accordion-item2</td>
-	<td>*package sample*</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>css=#accordion-item2 .testcase-body</td>
-	<td>*5*src/main/java/sample/Sample.java*</td>
+	<td>css=.component-viewer-header</td>
+	<td>*should_return_i*5*should_return_to_string*4*</td>
 </tr>
 </tbody>
 </table>

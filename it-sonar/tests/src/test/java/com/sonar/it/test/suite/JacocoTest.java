@@ -95,8 +95,7 @@ public class JacocoTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("test-display-coverage-per-test",
       "/selenium/test/display-covered-lines-per-test-in-tests-viewer.html",
-      "/selenium/test/display-line-coverage-in-coverage-viewer.html",
-      "/selenium/test/display-covered-lines-on-selected-test-in-coverage-viewer.html"
+      "/selenium/test/display-line-coverage-in-coverage-viewer.html"
       ).build();
     orchestrator.executeSelenese(selenese);
   }
