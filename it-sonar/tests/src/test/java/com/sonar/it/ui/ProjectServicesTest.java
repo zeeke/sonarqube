@@ -98,10 +98,7 @@ public class ProjectServicesTest {
 
       // FIXME rule-severity-filter-is-not-set-by-default is failing because issues are not loaded
       "/selenium/ui/source-viewers/rule-severity-filter-is-not-set-by-default.html",
-
-      // FIXME select-tab-by-metric is failing because resource/index...&metric=line_coverage does not automatically select coverage tab
       "/selenium/ui/source-viewers/select-tab-by-metric.html",
-
       "/selenium/ui/source-viewers/SONAR-517-violations-drilldown-opens-violations-tab.html",
       "/selenium/ui/source-viewers/flag-resource-as-favourite.html" // SONAR-1650
     ).build();
