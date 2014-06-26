@@ -14,56 +14,61 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples.test-failures:moduleB:src/test/java/sonar/samples/testFailures/moduleB/SkippedTest.java?tab=tests_viewer</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=test_success_density</td>
-        <td>100.0%</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=tests</td>
-        <td>1 (+1 skipped)</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=test_failures_errors</td>
-        <td>0/0</td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>id=m_test_execution_time</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>class=test_name_1</td>
-        <td>skippedTest</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=test_status_1_SKIPPED</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>class=test_name_0</td>
-        <td>normalTest</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=test_status_0_OK</td>
-        <td></td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples.test-failures:moduleB:src/test/java/sonar/samples/testFailures/moduleB/SkippedTest.java?tab=tests_viewer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-header</td>
+	<td>*Tests*Failures/Errors*Duration*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*SkippedTest*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=test_success_density</td>
+	<td>100.0%</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=tests</td>
+	<td>1 (+1 skipped)</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=test_failures_errors</td>
+	<td>0/0</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>id=m_test_execution_time</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>class=test_name_1</td>
+	<td>skippedTest</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=test_status_1_SKIPPED</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>class=test_name_0</td>
+	<td>normalTest</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=test_status_0_OK</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

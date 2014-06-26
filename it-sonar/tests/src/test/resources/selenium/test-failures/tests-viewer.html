@@ -14,81 +14,86 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples.test-failures:moduleA:src/test/java/sonar/samples/testFailures/moduleA/FailTest.java?tab=tests_viewer</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=test_success_density</td>
-        <td>25.0%</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=m_tests</td>
-        <td>4</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=m_test_failures</td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=m_test_errors</td>
-        <td>1</td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>id=m_test_execution_time</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>class=test_expandLink_2</td>
-        <td>testAWithFailure</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=test_status_2_FAILURE</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>class=test_expandLink_1</td>
-        <td>testAWithError</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=test_status_1_ERROR</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>class=test_expandLink_0</td>
-        <td>shouldNotFail</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=test_status_0_FAILURE</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>class=test_name_3</td>
-        <td>testWithSucces</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>id=test_status_3_OK</td>
-        <td></td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples.test-failures:moduleA:src/test/java/sonar/samples/testFailures/moduleA/FailTest.java?tab=tests_viewer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-header</td>
+	<td>*Tests*Failures/Errors*Duration*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*FailTest*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.tests_header</td>
+	<td>*25.0%*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=m_tests</td>
+	<td>4</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=m_test_failures</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=m_test_errors</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>id=m_test_execution_time</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>class=test_expandLink_2</td>
+	<td>testAWithFailure</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=test_status_2_FAILURE</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>class=test_expandLink_1</td>
+	<td>testAWithError</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=test_status_1_ERROR</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>class=test_expandLink_0</td>
+	<td>shouldNotFail</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=test_status_0_FAILURE</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>class=test_name_3</td>
+	<td>testWithSucces</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>id=test_status_3_OK</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

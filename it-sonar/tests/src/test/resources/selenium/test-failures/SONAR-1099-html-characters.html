@@ -14,26 +14,36 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples.test-failures:moduleA:src/test/java/sonar/samples/testFailures/moduleA/FailTest.java?tab=tests_viewer</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>class=test_expandLink_2</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>css=.test_message_2</td>
-        <td>glob:expected:&lt;true&gt; but was:&lt;false&gt;*expected:&lt;true&gt; but was:&lt;false&gt;*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/resource/index/com.sonarsource.it.samples.test-failures:moduleA:src/test/java/sonar/samples/testFailures/moduleA/FailTest.java?tab=tests_viewer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-header</td>
+	<td>*Tests*Failures/Errors*Duration*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*FailTest*</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=testAWithFailure</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.tests-viewer-body</td>
+	<td>*expected:&lt;true&gt; but was:&lt;false&gt;*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=.tests-viewer-body</td>
+	<td>*expected:&lt;true&gt; but was:&lt;false&gt;*expected:&lt;true&gt; but was:&lt;false&gt;*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
