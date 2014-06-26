@@ -8,20 +8,31 @@ package com.sonar.maven.it.suite;
 import com.sonar.maven.it.ItUtils;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
 
 public class MavenTest extends AbstractMavenTest {
+
+  @Rule
+  public TemporaryFolder temp = new TemporaryFolder();
 
   @Before
   public void deleteData() {
@@ -258,6 +269,20 @@ public class MavenTest extends AbstractMavenTest {
   }
 
   /**
+   * The property sonar.sources overrides the source dirs as declared in Maven
+   */
+  @Test
+  public void override_sources_in_multi_module_aggregator() {
+    assumeTrue(mojoVersion().isGreaterThanOrEquals("2.4"));
+
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/multi-module-aggregator")).setGoals(sonarGoal());
+    orchestrator.executeBuild(build);
+
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("edu.marcelo:module-web", "files"));
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+  }
+
+  /**
    * The property sonar.inclusions overrides the property sonar.sources
    */
   @Test
@@ -298,6 +323,37 @@ public class MavenTest extends AbstractMavenTest {
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains(
       "java2' does not exist for Maven module com.sonarsource.it.samples:maven-bad-tests-property:jar:1.0-SNAPSHOT. Please check the property sonar.tests");
+  }
+
+  // MSONAR-83
+  @Test
+  public void shouldPopulateLibraries() throws IOException {
+    assumeTrue(mojoVersion().isGreaterThanOrEquals("2.4"));
+    File outputProps = temp.newFile();
+    File projectPom = ItUtils.locateProjectPom("shared/struts-1.3.9-diet");
+    MavenBuild build = MavenBuild.create(projectPom)
+      .setGoals(cleanPackageSonarGoal())
+      .setProperty("sonarRunner.dumpToFile", outputProps.getAbsolutePath());
+    orchestrator.executeBuild(build);
+
+    assertThat(getProps(outputProps).getProperty("org.apache.struts:struts-core.sonar.libraries"))
+      .contains("antlr-2.7.2.jar");
+  }
+
+  private Properties getProps(File outputProps)
+    throws FileNotFoundException, IOException
+  {
+    FileInputStream fis = null;
+    try
+    {
+      Properties props = new Properties();
+      fis = new FileInputStream(outputProps);
+      props.load(fis);
+      return props;
+    } finally
+    {
+      IOUtils.closeQuietly(fis);
+    }
   }
 
   private void checkBuildHelperFiles() {
