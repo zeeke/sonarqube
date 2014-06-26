@@ -83,26 +83,6 @@ public class UnitTestTest {
     orchestrator.executeSelenese(selenese);
   }
 
-  @Test
-  public void shouldNotHaveTestMeasuresOnStaticAnalysis() {
-    MavenBuild analysis = MavenBuild.create()
-      .setPom(ItUtils.locateProjectPom("test/with-tests"))
-      .withoutDynamicAnalysis()
-      .setProperty("sonar.profile.java", "empty")
-      .addGoal("sonar:sonar");
-    orchestrator.executeBuilds(newBuild("test/with-tests", false), analysis);
-
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:with-tests",
-      "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
-    assertThat(project.getMeasure("tests")).isNull();
-    assertThat(project.getMeasure("coverage")).isNull();
-    assertThat(project.getMeasure("test_failures")).isNull();
-    assertThat(project.getMeasure("test_errors")).isNull();
-    assertThat(project.getMeasure("test_success_density")).isNull();
-    assertThat(project.getMeasure("skipped_tests")).isNull();
-    assertThat(project.getMeasure("test_execution_time")).isNull();
-  }
-
   /**
    * See SONAR-3786
    */
