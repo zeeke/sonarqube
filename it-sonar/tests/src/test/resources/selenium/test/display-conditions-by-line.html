@@ -23,17 +23,37 @@
 	<td>class=component-viewer-header-expanded-bar-section</td>
 	<td></td>
 </tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*Hello*</td>
+</tr>
 <!-- branch coverage -->
 <tr>
 	<td>assertText</td>
-	<td>css=div.component-viewer-header-expanded-bar</td>
-	<td>glob:*Branch coverage*50.0%*</td>
+	<td>css=.component-viewer-header</td>
+	<td>*Branch coverage*50.0%*</td>
 </tr>
 <!-- hits -->
 <tr>
-	<td>assertText</td>
-	<td>css=table.code</td>
-	<td>glob:*1*1*1*0*</td>
+	<td>click</td>
+	<td>css=.js-toggle-coverage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.coverage-green</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>css=.coverage-green</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>css=.coverage-red</td>
+	<td></td>
 </tr>
 <!-- conditions -->
 <tr>
