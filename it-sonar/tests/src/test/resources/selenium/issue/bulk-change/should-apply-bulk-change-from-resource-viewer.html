@@ -43,11 +43,6 @@
 	<td>*Unresolved Issues*</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>link=Unresolved Issues</td>
-	<td></td>
-</tr>
-<tr>
 	<td>waitForText</td>
 	<td>css=.js-filter-MINOR-issues</td>
 	<td>*Minor*13*</td>
@@ -58,7 +53,12 @@
 	<td>*Bulk Change*</td>
 </tr>
 <tr>
-	<td>assertText</td>
+	<td>click</td>
+	<td>link=Unresolved Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
 	<td>css=.component-viewer-source</td>
 	<td>*Open*</td>
 </tr>
@@ -83,8 +83,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>id=bulk-change-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>bulk-change-form</td>
 	<td></td>
 </tr>
 <tr>
