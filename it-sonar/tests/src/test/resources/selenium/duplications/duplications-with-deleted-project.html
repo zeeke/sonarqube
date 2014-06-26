@@ -14,21 +14,26 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/resource/index/com.sonarsource.it.samples.duplications:b:src/main/java/MyClass2.java?tab=duplications</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>class=accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>body</td>
-        <td>*This file contains duplicated blocks with some deleted resources. This project should be reanalyzed to remove these obsolete duplicated blocks.*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/component/index#component=com.sonarsource.it.samples.duplications%3Ab%3Asrc%2Fmain%2Fjava%2FMyClass2.java&settings=duplications&tab=duplications</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>class=component-viewer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>class=component-viewer-header-expanded-bar-section</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>body</td>
+	<td>*This file contains duplicated blocks with some deleted resources. This project should be reanalyzed to remove these obsolete duplicated blocks.*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
