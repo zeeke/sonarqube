@@ -84,6 +84,8 @@ public class TempFolderTest {
 
   private SonarRunner configureRunner(String projectPath, String... props) {
     SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir(projectPath))
+      // SONARPLUGINS-3771
+      .setRunnerVersion("2.3")
       .setProfile("one-issue-per-line")
       .setProperties(props);
     return runner;
