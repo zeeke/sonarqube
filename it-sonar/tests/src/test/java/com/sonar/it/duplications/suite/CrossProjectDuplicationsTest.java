@@ -69,7 +69,7 @@ public class CrossProjectDuplicationsTest {
 
   @Test
   public void testViewer() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("duplications",
+    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("duplications-viewer",
       "/selenium/duplications/cross-project-duplications-viewer.html")
       .build();
     orchestrator.executeSelenese(selenese);
