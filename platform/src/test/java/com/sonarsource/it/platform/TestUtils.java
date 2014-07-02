@@ -33,6 +33,10 @@ public class TestUtils {
     builder.getUpdateCenter().setInstalledSonarVersion(sonarVersion);
     for (Plugin p : builder.getUpdateCenter().findAllCompatiblePlugins()) {
       Release r = p.getLastCompatible(sonarVersion);
+      if (r.getParent() != null) {
+        // The plugin is part of an ecosystem and will be installed transitively when installing parent
+        continue;
+      }
       builder.setOrchestratorProperty(p.getKey() + "Version", r.getVersion().toString());
       builder.addPlugin(p.getKey());
       if ("cobol".equals(p.getKey())) {
