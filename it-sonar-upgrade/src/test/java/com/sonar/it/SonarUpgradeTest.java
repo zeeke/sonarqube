@@ -98,7 +98,7 @@ public class SonarUpgradeTest {
     }
     if (VersionUtils.isGreaterThanOrEqual(version, "4.2")) {
       // SONAR-4596 Java plugins are not installed on upgrades, but only on fresh installs
-      builder.setOrchestratorProperty("javaVersion", "DEV").addPlugin("java");
+      builder.setOrchestratorProperty("javaVersion", "OLDEST_COMPATIBLE").addPlugin("java");
     } else if (VersionUtils.isGreaterThanOrEqual(version, "4.0")) {
       // SONAR-4596 Java plugins are not installed on upgrades, but only on fresh installs
       builder.setOrchestratorProperty("javaVersion", "RELEASE").addPlugin("java");
