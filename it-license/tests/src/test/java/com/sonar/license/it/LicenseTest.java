@@ -8,6 +8,7 @@ package com.sonar.license.it;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
@@ -25,15 +26,15 @@ public class LicenseTest {
 
   @Rule
   public Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(FileLocation.of("../plugins/sonar-faux-sqale-plugin/target/sonar-faux-sqale-plugin-1.0-SNAPSHOT.jar"))
-      .build();
+    .addPlugin(FileLocation.of("../plugins/sonar-faux-sqale-plugin/target/sonar-faux-sqale-plugin-1.0-SNAPSHOT.jar"))
+    .build();
 
   @Test
   public void batch_must_log_error_and_ignore_bad_license() {
     // no license is set
     orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery()
-        .setKey("sonar.sqale.license.secured")
-        .setValue(""));
+      .setKey("sonar.sqale.license.secured")
+      .setValue(""));
 
     // server-side components are not secured when there are no licenses
     // -> they are always up
@@ -55,11 +56,12 @@ public class LicenseTest {
   public void set_valid_license_without_restarting_server() {
     String validLicense = orchestrator.plugins().licenses().get("sqale");
     orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery()
-        .setKey("sonar.sqale.license.secured")
-        .setValue(validLicense));
+      .setKey("sonar.sqale.license.secured")
+      .setValue(validLicense));
 
-    MavenBuild build = MavenBuild.create(new File("projects/java-sample/pom.xml")).setCleanSonarGoals();
-    BuildResult result = orchestrator.executeBuild(build);
+    SonarRunner runner = SonarRunner.create(new File("target"))
+      .setTask("sqale");
+    BuildResult result = orchestrator.executeBuild(runner);
     if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.3")) {
       assertThat(result.getLogs()).excludes("No license for plugin sqale");
     } else {
@@ -74,8 +76,8 @@ public class LicenseTest {
   public void test_expired_license() throws Exception {
     String expiredLicense = IOUtils.toString(this.getClass().getResourceAsStream("/sqale_prod_2013-05-29_allserver.txt"));
     orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery()
-        .setKey("sonar.sqale.license.secured")
-        .setValue(expiredLicense));
+      .setKey("sonar.sqale.license.secured")
+      .setValue(expiredLicense));
 
     // batch-side components are secured
     MavenBuild build = MavenBuild.create(new File("projects/java-sample/pom.xml")).setCleanSonarGoals();
@@ -93,8 +95,8 @@ public class LicenseTest {
   public void test_license_wrong_server_id() throws Exception {
     String wrongLicense = IOUtils.toString(this.getClass().getResourceAsStream("/sqale_prod_2030-01-01_123456789123456.txt"));
     orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery()
-        .setKey("sonar.sqale.license.secured")
-        .setValue(wrongLicense));
+      .setKey("sonar.sqale.license.secured")
+      .setValue(wrongLicense));
 
     // batch-side components are secured
     MavenBuild build = MavenBuild.create(new File("projects/java-sample/pom.xml")).setCleanSonarGoals();
@@ -112,18 +114,18 @@ public class LicenseTest {
   public void test_license_invalid_server_id() throws Exception {
     // Store current value to restore at the end
     Property previousId = orchestrator.getServer().getAdminWsClient().find(new PropertyQuery()
-        .setKey("sonar.server_id"));
+      .setKey("sonar.server_id"));
 
     try {
       // What if user try to modify server ID
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery()
-          .setKey("sonar.server_id")
-          .setValue("123456789123456"));
+        .setKey("sonar.server_id")
+        .setValue("123456789123456"));
 
       String wrongLicense = IOUtils.toString(this.getClass().getResourceAsStream("/sqale_prod_2030-01-01_123456789123456.txt"));
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery()
-          .setKey("sonar.sqale.license.secured")
-          .setValue(wrongLicense));
+        .setKey("sonar.sqale.license.secured")
+        .setValue(wrongLicense));
 
       // batch-side components are secured
       MavenBuild build = MavenBuild.create(new File("projects/java-sample/pom.xml")).setCleanSonarGoals();
@@ -139,8 +141,8 @@ public class LicenseTest {
       // Restore old ID
       if (previousId != null) {
         orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery()
-            .setKey("sonar.server_id")
-            .setValue(previousId.getValue()));
+          .setKey("sonar.server_id")
+          .setValue(previousId.getValue()));
       }
       else {
         orchestrator.getServer().getAdminWsClient().delete(new PropertyDeleteQuery("sonar.server_id"));

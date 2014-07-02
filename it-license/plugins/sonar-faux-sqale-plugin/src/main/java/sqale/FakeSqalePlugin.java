@@ -9,18 +9,16 @@ import org.sonar.api.PropertyType;
 import java.util.Arrays;
 import java.util.List;
 
-@Properties(
-  @Property(name = "License", key = "sonar.sqale.license.secured", type = PropertyType.LICENSE)
-)
+@Properties(@Property(name = "License", key = "sonar.sqale.license.secured", type = PropertyType.LICENSE))
 public final class FakeSqalePlugin extends LicensedPlugin {
 
   @Override
   protected List doGetExtensions() {
-    return Arrays.asList(BatchPrintBip.class, StoreServerProperty.class);
+    return Arrays.asList(TaskPrintBip.DEF, StoreServerProperty.class);
   }
 
   @Override
   protected LicensedPluginMetadata doGetPluginMetadata() {
-    return LicensedPluginMetadata.create("sqale", "sonar.sqale.license.secured");
+    return LicensedPluginMetadata.builder().pluginKey("sqale").licensePropertyKey("sonar.sqale.license.secured").build();
   }
 }

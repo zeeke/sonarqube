@@ -75,7 +75,7 @@ public class LanguagePluginTest {
   public void fail_if_bad_language_license() {
     // no licenses
 
-    MavenBuild build = MavenBuild.create(new File("projects/cobol-sample/pom.xml")).setCleanSonarGoals();
+    SonarRunner build = SonarRunner.create(new File("projects/cobol-sample"));
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
 
@@ -98,7 +98,7 @@ public class LanguagePluginTest {
     // Restart to have empty profile created now that license is valid
     orchestrator.restartSonar();
 
-    MavenBuild build = MavenBuild.create(new File("projects/cobol-sample/pom.xml")).setCleanSonarGoals();
+    SonarRunner build = SonarRunner.create(new File("projects/cobol-sample"));
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getLogs()).contains("cobol").contains("EVALUATION");

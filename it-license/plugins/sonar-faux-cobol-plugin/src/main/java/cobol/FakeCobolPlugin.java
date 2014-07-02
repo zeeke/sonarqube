@@ -9,9 +9,7 @@ import org.sonar.api.PropertyType;
 import java.util.Arrays;
 import java.util.List;
 
-@Properties(
-  @Property(name = "License", key = "sonar.cobol.license.secured", type = PropertyType.LICENSE)
-)
+@Properties(@Property(name = "License", key = "sonar.cobol.license.secured", type = PropertyType.LICENSE))
 public final class FakeCobolPlugin extends LicensedPlugin {
 
   @Override
@@ -21,6 +19,6 @@ public final class FakeCobolPlugin extends LicensedPlugin {
 
   @Override
   protected LicensedPluginMetadata doGetPluginMetadata() {
-    return LicensedPluginMetadata.createLanguage("cobol", "sonar.cobol.license.secured", "cobol");
+    return LicensedPluginMetadata.builder().pluginKey("cobol").licensePropertyKey("sonar.cobol.license.secured").language("cobol").build();
   }
 }
