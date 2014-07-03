@@ -14,7 +14,10 @@ public final class FakeSqalePlugin extends LicensedPlugin {
 
   @Override
   protected List doGetExtensions() {
-    return Arrays.asList(TaskPrintBip.DEF, StoreServerProperty.class);
+    return Arrays.asList(
+      TaskPrintBip.DEF, 
+      TaskPrintBip.class, 
+      StoreServerProperty.class);
   }
 
   @Override
