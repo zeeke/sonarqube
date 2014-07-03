@@ -14,7 +14,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Property;
 import org.sonar.wsclient.services.PropertyDeleteQuery;
@@ -27,7 +26,6 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class LicenseTest {
 
-  @Rule
   public Orchestrator orchestrator;
 
   @Before
