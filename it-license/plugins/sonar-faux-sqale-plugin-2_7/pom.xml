@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.sonarsource.license.it</groupId>
+  <artifactId>sonar-faux-sqale-plugin</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>sonar-plugin</packaging>
+  <name>License :: IT :: Faux SQALE Plugin</name>
+  <description>Faux SQALE Plugin for License Tests</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>3.7</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-core</artifactId>
+      <version>3.7</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sonarsource.plugins.license</groupId>
+      <artifactId>license-api</artifactId>
+      <version>${licenseVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <version>1.4</version>
+        <extensions>true</extensions>
+        <configuration>
+          <pluginClass>sqale.FakeSqalePlugin</pluginClass>
+          <pluginKey>fauxsqale</pluginKey>
+          <addMavenDescriptor>false</addMavenDescriptor>
+          <skipDependenciesPackaging>true</skipDependenciesPackaging>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>jarjar-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jarjar</goal>
+            </goals>
+            <configuration>
+              <overwrite>true</overwrite>
+              <includes>
+                <include>com.sonarsource.plugins.license:license-api</include>
+              </includes>
+              <rules>
+                <keep>
+                  <pattern>*.**</pattern>
+                </keep>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>com.yworks</groupId>
+            <artifactId>yguard</artifactId>
+            <version>2.4</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <configuration>
+              <tasks>
+                <property refid="maven.compile.classpath" name="mvn.classpath"/>
+                <taskdef name="yguard" classname="com.yworks.yguard.YGuardTask"/>
+                <yguard>
+                  <inoutpair in="${project.build.directory}/jarjar/uber-${project.build.finalName}.jar"
+                             out="${project.build.directory}/${project.build.finalName}.jar"/>
+                  <rename logfile="${project.build.directory}/yguard.log.xml" replaceClassNameStrings="true">
+                    <keep>
+                      <class classes="public" methods="protected" fields="public">
+                        <patternset>
+                          <include name="sqale.FakeSqalePlugin"/>
+                        </patternset>
+                      </class>
+                    </keep>
+                    <adjust replaceContent="false" replacePath="false" replaceName="false">
+                      <include name="**/*.xml"/>
+                    </adjust>
+                  </rename>
+                  <externalclasses>
+                    <pathelement path="${mvn.classpath}"/>
+                  </externalclasses>
+                </yguard>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
