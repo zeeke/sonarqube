@@ -14,11 +14,7 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.TimeMachine;
-import org.sonar.wsclient.services.TimeMachineCell;
-import org.sonar.wsclient.services.TimeMachineQuery;
+import org.sonar.wsclient.services.*;
 
 import java.util.Date;
 
@@ -74,7 +70,7 @@ public class HistoryTest {
   @Test
   public void testHistoryOfMeasures() {
     TimeMachineQuery query = TimeMachineQuery.createForMetrics(PROJECT, "lines",// int
-      "violations_density"// double
+      "class_complexity"// double
     );
     TimeMachine timemachine = orchestrator.getServer().getWsClient().find(query);
     assertThat(timemachine.getCells().length).isEqualTo(2);
@@ -83,10 +79,10 @@ public class HistoryTest {
     TimeMachineCell cell2 = timemachine.getCells()[1];
 
     assertThat(cell1.getDate().getMonth()).isEqualTo(9);
-    assertThat(cell1.getValues()).isEqualTo(new Object[] {32L, 38.1});
+    assertThat(cell1.getValues()).isEqualTo(new Object[] {32L, 2.0});
 
     assertThat(cell2.getDate().getMonth()).isEqualTo(10);
-    assertThat(cell2.getValues()).isEqualTo(new Object[] {44L, 34.5});
+    assertThat(cell2.getValues()).isEqualTo(new Object[] {44L, 1.7});
   }
 
   // Specific cases for timemachine web service

@@ -49,14 +49,13 @@ public class IssueTest extends AbstractIssueTestCase2 {
 
     Resource project = orchestrator.getServer().getWsClient()
       .find(ResourceQuery.createForMetrics(projectKey, "violations", "info_violations", "minor_violations", "major_violations",
-        "blocker_violations", "critical_violations", "violations_density"));
+        "blocker_violations", "critical_violations"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(62);
     assertThat(project.getMeasureIntValue("info_violations")).isEqualTo(2);
     assertThat(project.getMeasureIntValue("minor_violations")).isEqualTo(52);
     assertThat(project.getMeasureIntValue("major_violations")).isEqualTo(4);
     assertThat(project.getMeasureIntValue("blocker_violations")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("critical_violations")).isEqualTo(4);
-    assertThat(project.getMeasureIntValue("violations_density")).isEqualTo(0);
   }
 
   /**
@@ -101,10 +100,9 @@ public class IssueTest extends AbstractIssueTestCase2 {
 
     assertThat(searchIssuesByComponent("sample")).isEmpty();
 
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample", "violations", "blocker_violations", "violations_density"));
+    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample", "violations", "blocker_violations"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(0);
     assertThat(project.getMeasureIntValue("blocker_violations")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("violations_density")).isEqualTo(100);
   }
 
   @Test
