@@ -39,6 +39,7 @@ public class LicenseTest {
         .addPlugin(FileLocation.of("../plugins/sonar-faux-sqale-plugin/target/sonar-faux-sqale-plugin-1.0-SNAPSHOT.jar"));
     }
     orchestrator = orchestratorBuilder.build();
+    orchestrator.start();
   }
 
   @After
