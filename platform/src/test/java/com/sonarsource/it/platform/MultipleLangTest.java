@@ -58,6 +58,7 @@ public class MultipleLangTest {
   @BeforeClass
   public static void start() throws Exception {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
+    builder.removeDistributedPlugins();
     configureProfiles(builder);
     TestUtils.addAllCompatiblePlugins(builder);
     TestUtils.activateLicenses(builder);
