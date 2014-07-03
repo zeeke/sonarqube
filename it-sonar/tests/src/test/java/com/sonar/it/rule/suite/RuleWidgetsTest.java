@@ -12,6 +12,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class RuleWidgetsTest {
@@ -29,6 +30,7 @@ public class RuleWidgetsTest {
 
   // SONAR-2071
   @Test
+  @Ignore("Most Violated Components widget cannot work anymore as the weighted_violations metric is out of SonarQube")
   public void test_most_violated_components_widget() throws Exception {
     Selenese selenese = Selenese
       .builder()
