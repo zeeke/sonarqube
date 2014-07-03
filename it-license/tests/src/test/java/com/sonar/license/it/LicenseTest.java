@@ -6,11 +6,14 @@
 package com.sonar.license.it;
 
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.io.IOUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Property;
@@ -25,9 +28,27 @@ import static org.fest.assertions.Assertions.assertThat;
 public class LicenseTest {
 
   @Rule
-  public Orchestrator orchestrator = Orchestrator.builderEnv()
-    .addPlugin(FileLocation.of("../plugins/sonar-faux-sqale-plugin/target/sonar-faux-sqale-plugin-1.0-SNAPSHOT.jar"))
-    .build();
+  public Orchestrator orchestrator;
+
+  @Before
+  public void prepare() {
+    OrchestratorBuilder orchestratorBuilder = Orchestrator.builderEnv();
+    if ("2.7".equals(orchestratorBuilder.getOrchestratorProperty("licenseVersion"))) {
+      orchestratorBuilder
+        .addPlugin(FileLocation.of("../plugins/sonar-faux-sqale-plugin-2_7/target/sonar-faux-sqale-plugin-1.0-SNAPSHOT.jar"));
+    } else {
+      orchestratorBuilder
+        .addPlugin(FileLocation.of("../plugins/sonar-faux-sqale-plugin/target/sonar-faux-sqale-plugin-1.0-SNAPSHOT.jar"));
+    }
+    orchestrator = orchestratorBuilder.build();
+  }
+
+  @After
+  public void stop() {
+    if (orchestrator != null) {
+      orchestrator.stop();
+    }
+  }
 
   @Test
   public void batch_must_log_error_and_ignore_bad_license() {
