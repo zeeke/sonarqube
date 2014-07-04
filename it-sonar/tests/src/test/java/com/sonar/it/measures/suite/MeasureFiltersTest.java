@@ -12,6 +12,7 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
@@ -138,6 +139,7 @@ public class MeasureFiltersTest {
   }
 
   @Test
+  @Ignore("Temporarily disabled because of refactoring to backbone")
   public void measure_filter_treemap_widget() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("measure_filter_treemap_widget",
       "/selenium/measures/measure_filters/treemap_of_components_widget.html",
