@@ -51,9 +51,7 @@ public class DesignUITest extends AbstractMavenTest {
   public void test_design() {
     assumeTrue(orchestrator.getServer().version().isGreaterThanOrEquals("4.2"));
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("design-on-project",
-      "/selenium/design/design_from_tools_menu.html",
-      "/selenium/design/design_from_drilldown.html",
-      "/selenium/design/design_in_popup.html"
+      "/selenium/design/design_from_tools_menu.html"
       ).build();
     orchestrator.executeSelenese(selenese);
   }
