@@ -48,7 +48,6 @@ public final class CreateSubProjects extends ProjectBuilder {
     subProject.setKey("com.sonarsource.it.projects.batch:project-builder-module-b");
     subProject.setVersion(root.getVersion());
     subProject.setName("Module B");
-    subProject.setSourceDirs("src");
     subProject.addSourceFiles("src/HelloB.java");
     root.addSubProject(subProject);
     return subProject;
