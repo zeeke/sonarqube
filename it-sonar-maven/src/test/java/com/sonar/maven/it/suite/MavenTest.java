@@ -10,7 +10,6 @@ import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -63,7 +62,13 @@ public class MavenTest extends AbstractMavenTest {
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.jee:parent", "files"));
-    assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
+
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.5") && mojoVersion().isGreaterThan("2.4")) {
+      // src/main/webapp is analyzed by web plugin
+      assertThat(project.getMeasureIntValue("files")).isEqualTo(3);
+    } else {
+      assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
+    }
 
     List<Resource> modules = orchestrator.getServer().getWsClient().findAll(ResourceQuery.create("com.sonarsource.it.samples.jee:parent").setDepth(-1).setQualifiers("BRC"));
     assertThat(modules).hasSize(4);
@@ -143,22 +148,6 @@ public class MavenTest extends AbstractMavenTest {
       assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_d:src/main/java/HelloD.java")).getName()).isEqualTo("HelloD.java");
       assertThat(sonar.find(new ResourceQuery("org.sonar.tests.modules-declaration:module_e:src/main/java/HelloE.java")).getName()).isEqualTo("HelloE.java");
     }
-  }
-
-  /**
-   * See SONAR-2896:
-   * if Sonar unable to configure cobertura-maven-plugin, then coverage.xml wouldn't be generated
-   */
-  @Test
-  @Ignore("TODO should be migrated as it uses Cobertura")
-  public void testMavenPluginConfiguration() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/maven-plugin-configuration"))
-      .setGoals(cleanSonarGoal())
-      .setProperty("sonar.java.coveragePlugin", "cobertura");
-    orchestrator.executeBuild(build);
-
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-plugin-configuration", "coverage"));
-    assertThat(project.getMeasureIntValue("coverage")).isGreaterThan(0);
   }
 
   @Test
