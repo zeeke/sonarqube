@@ -30,7 +30,6 @@ public class JavaTest extends AbstractMavenTest {
     orchestrator.executeBuild(build);
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("java-japanese-charset",
-      "/selenium/java-japanese-charset/japanese_duplications.html",
       "/selenium/java-japanese-charset/japanese_sources.html").build();
     orchestrator.executeSelenese(selenese);
   }
