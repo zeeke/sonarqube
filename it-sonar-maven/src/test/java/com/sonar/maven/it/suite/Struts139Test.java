@@ -45,14 +45,15 @@ public class Struts139Test extends AbstractMavenTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
-      .setGoals(cleanVerifySonarGoal())
+      .setGoals("clean verify")
       .setProperty("skipTests", "true");
-    orchestrator.executeBuild(build);
 
     MavenBuild analysis = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setGoals(sonarGoal())
       .setProperty("sonar.dynamicAnalysis", "true")
+      .setProperty("sonar.exclusions", "**/package.html")
       .setProperty("sonar.profile.java", "sonar-way-2.7");
+
     orchestrator.executeBuilds(build, analysis);
   }
 

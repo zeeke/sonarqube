@@ -22,7 +22,8 @@ public class DesignUITest extends AbstractMavenTest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setGoals(cleanInstallSonarGoal())
       .setProperty("skipTests", "true")
-      .setProperty("sonar.dynamicAnalysis", "false");
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setProperty("sonar.exclusions", "**/package.html");
     orchestrator.executeBuild(build);
   }
 

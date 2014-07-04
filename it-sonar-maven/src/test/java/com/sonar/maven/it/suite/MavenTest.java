@@ -273,7 +273,7 @@ public class MavenTest extends AbstractMavenTest {
    */
   @Test
   public void override_sources_in_multi_module_aggregator() {
-    assumeTrue(mojoVersion().isGreaterThanOrEquals("2.4"));
+    assumeTrue(mojoVersion().isGreaterThanOrEquals("2.4") && orchestrator.getServer().version().isGreaterThanOrEquals("4.3"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("maven/multi-module-aggregator")).setGoals(sonarGoal());
     orchestrator.executeBuild(build);
@@ -328,7 +328,8 @@ public class MavenTest extends AbstractMavenTest {
   // MSONAR-83
   @Test
   public void shouldPopulateLibraries() throws IOException {
-    assumeTrue(mojoVersion().isGreaterThanOrEquals("2.4"));
+    assumeTrue(mojoVersion().isGreaterThanOrEquals("2.4") && orchestrator.getServer().version().isGreaterThanOrEquals("4.3"));
+
     File outputProps = temp.newFile();
     File projectPom = ItUtils.locateProjectPom("shared/struts-1.3.9-diet");
     MavenBuild build = MavenBuild.create(projectPom)

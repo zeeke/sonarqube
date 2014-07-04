@@ -149,6 +149,7 @@ public class JacocoTest extends AbstractMavenTest {
     return MavenBuild.create(ItUtils.locateProjectPom(projectPath))
       .setProperty("sonar.dynamicAnalysis", "true")
       .setProperty("sonar.java.coveragePlugin", "jacoco")
+      .setProperty("sonar.exclusions", "**/package.html")
       .setGoals(sonarGoal());
   }
 
