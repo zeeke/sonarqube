@@ -63,7 +63,7 @@ public class MavenTest extends AbstractMavenTest {
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.jee:parent", "files"));
 
-    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.5") && mojoVersion().isGreaterThan("2.4")) {
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.5") && mojoVersion().isGreaterThanOrEquals("2.4")) {
       // src/main/webapp is analyzed by web plugin
       assertThat(project.getMeasureIntValue("files")).isEqualTo(3);
     } else {
