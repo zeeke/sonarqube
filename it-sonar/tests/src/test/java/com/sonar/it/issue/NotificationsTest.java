@@ -126,7 +126,7 @@ public class NotificationsTest {
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
     assertThat((String) message.getContent()).contains("sample/Sample.xoo");
     assertThat((String) message.getContent()).contains("Assignee changed to Tester");
-    assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/issue/show/" + issue.key());
+    assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/component/index#component=sample-notifications:src/main/xoo/sample/Sample.xoo&currentIssue=" + issue.key());
 
     assertThat(emails.hasNext()).isFalse();
   }
@@ -171,7 +171,7 @@ public class NotificationsTest {
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
     assertThat((String) message.getContent()).contains("sample/Sample.xoo");
     assertThat((String) message.getContent()).contains("Severity: BLOCKER (was MINOR)");
-    assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/issue/show/" + issue.key());
+    assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/component/index#component=sample-notifications:src/main/xoo/sample/Sample.xoo&currentIssue=" + issue.key());
 
     assertThat(emails.hasNext()).isFalse();
   }
