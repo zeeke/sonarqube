@@ -38,7 +38,11 @@ public class SourceFiltersTest extends AbstractMavenTest {
   @Test
   public void testExclusionProperty() {
     assertThat(getResource(PROJECT + ":sourceFilters.ToBeExcluded"), nullValue());
-    assertThat(getMeasure(PROJECT, "files").getIntValue(), is(1));
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.5") && mojoVersion().isGreaterThanOrEquals("2.4")) {
+      assertThat(getMeasure(PROJECT, "files").getIntValue(), is(2));
+    } else {
+      assertThat(getMeasure(PROJECT, "files").getIntValue(), is(1));
+    }
   }
 
   private Measure getMeasure(String resourceKey, String metricKey) {

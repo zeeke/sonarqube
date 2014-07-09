@@ -46,7 +46,11 @@ public class MavenTest extends AbstractMavenTest {
 
     Resource project = orchestrator.getServer().getWsClient()
       .find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.project-with-module-without-sources:parent", "files"));
-    assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.5") && mojoVersion().isGreaterThanOrEquals("2.4")) {
+      assertThat(project.getMeasureIntValue("files")).isEqualTo(3);
+    } else {
+      assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+    }
 
     Resource subProject = orchestrator.getServer().getWsClient().find(ResourceQuery.create("com.sonarsource.it.samples.project-with-module-without-sources:without-sources"));
     assertThat(subProject).isNotNull();
@@ -64,8 +68,8 @@ public class MavenTest extends AbstractMavenTest {
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples.jee:parent", "files"));
 
     if (orchestrator.getServer().version().isGreaterThanOrEquals("4.5") && mojoVersion().isGreaterThanOrEquals("2.4")) {
-      // src/main/webapp is analyzed by web plugin
-      assertThat(project.getMeasureIntValue("files")).isEqualTo(3);
+      // src/main/webapp is analyzed by web and xml plugin
+      assertThat(project.getMeasureIntValue("files")).isEqualTo(8);
     } else {
       assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
     }
@@ -84,7 +88,11 @@ public class MavenTest extends AbstractMavenTest {
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-extensions", "files"));
-    assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.5") && mojoVersion().isGreaterThanOrEquals("2.4")) {
+      assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
+    } else {
+      assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+    }
   }
 
   /**
@@ -223,7 +231,11 @@ public class MavenTest extends AbstractMavenTest {
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:maven-only-test-dir", "tests", "files"));
     assertThat(project.getMeasureIntValue("tests")).isEqualTo(1);
-    assertThat(project.getMeasure("files")).isNull();
+    if (orchestrator.getServer().version().isGreaterThanOrEquals("4.5") && mojoVersion().isGreaterThanOrEquals("2.4")) {
+      assertThat(project.getMeasure("files").getIntValue()).isEqualTo(1);
+    } else {
+      assertThat(project.getMeasure("files")).isNull();
+    }
   }
 
   /**
@@ -268,7 +280,7 @@ public class MavenTest extends AbstractMavenTest {
     orchestrator.executeBuild(build);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("edu.marcelo:module-web", "files"));
-    assertThat(project.getMeasureIntValue("files")).isEqualTo(1);
+    assertThat(project.getMeasureIntValue("files")).isEqualTo(2);
   }
 
   /**

@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  LinksTest.class, MavenTest.class, DesignUITest.class, DuplicationsTest.class, SourceFiltersTest.class, CoverageExclusionsTest.class,
+  LinksTest.class, MavenTest.class, DesignUITest.class, SourceFiltersTest.class, CoverageExclusionsTest.class,
   JavaTest.class, Struts139Test.class, IntegrationTestTest.class, JacocoTest.class, UnitTestTest.class, OldMultiLanguageTest.class
 })
 public class MavenTestSuite {
@@ -26,6 +26,7 @@ public class MavenTestSuite {
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.5"))
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.0"))
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-web-plugin", "2.2"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.xml", "sonar-xml-plugin", "1.2"))
 
     .build();
 }
