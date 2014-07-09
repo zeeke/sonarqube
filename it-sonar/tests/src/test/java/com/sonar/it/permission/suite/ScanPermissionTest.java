@@ -9,7 +9,6 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
-import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.*;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.permissions.PermissionParameters;
@@ -95,12 +94,8 @@ public class ScanPermissionTest {
     orchestrator.executeBuild(build);
     // No error
 
-    // Remove all groups from project users
-    Selenese selenese = Selenese.builder()
-        .setHtmlTestsInClasspath("remove_project_user_roles",
-          "/selenium/permission/remove-project-user-roles/remove_project_user_roles.html"
-        ).build();
-    orchestrator.executeSelenese(selenese);
+    // Remove browse permission for groups Anyone on the project
+    orchestrator.getServer().adminWsClient().permissionClient().removePermission(PermissionParameters.create().group("Anyone").permission("user").component("sample"));
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
     // No error
