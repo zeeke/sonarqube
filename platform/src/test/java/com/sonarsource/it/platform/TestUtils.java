@@ -37,6 +37,11 @@ public class TestUtils {
         // The plugin is part of an ecosystem and will be installed transitively when installing parent
         continue;
       }
+      if (r.getKey().equals("fbcontrib") || r.getKey().equals("securityrules")) {
+        // Latest version of findbugs is not compatible with SQ-4.X, so fbcontrib cannot be installed
+        // Security Rules should not be installed as findbugs is not installed
+        continue;
+      }
       builder.setOrchestratorProperty(p.getKey() + "Version", r.getVersion().toString());
       builder.addPlugin(p.getKey());
       if ("cobol".equals(p.getKey())) {
