@@ -47,16 +47,16 @@ public class SqaleRatingMeasureTest {
     assertThat(getMeasure(PROJECT, "sqale_rating").getIntValue()).isEqualTo(3);
     assertThat(getMeasure(PROJECT, "sqale_rating").getData()).isEqualTo("C");
 
-    assertThat(getMeasure(MODULE, "sqale_rating").getValue()).isEqualTo(3);
+    assertThat(getMeasure(MODULE, "sqale_rating").getIntValue()).isEqualTo(3);
     assertThat(getMeasure(MODULE, "sqale_rating").getData()).isEqualTo("C");
 
-    assertThat(getMeasure(SUB_MODULE, "sqale_rating").getValue()).isEqualTo(3);
+    assertThat(getMeasure(SUB_MODULE, "sqale_rating").getIntValue()).isEqualTo(3);
     assertThat(getMeasure(SUB_MODULE, "sqale_rating").getData()).isEqualTo("C");
 
-    assertThat(getMeasure(DIRECTORY, "sqale_rating").getValue()).isEqualTo(1);
+    assertThat(getMeasure(DIRECTORY, "sqale_rating").getIntValue()).isEqualTo(1);
     assertThat(getMeasure(DIRECTORY, "sqale_rating").getData()).isEqualTo("A");
 
-    assertThat(getMeasure(FILE, "sqale_rating").getValue()).isEqualTo(1);
+    assertThat(getMeasure(FILE, "sqale_rating").getIntValue()).isEqualTo(1);
     assertThat(getMeasure(FILE, "sqale_rating").getData()).isEqualTo("A");
   }
 
