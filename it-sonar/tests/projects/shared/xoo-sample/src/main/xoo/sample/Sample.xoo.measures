@@ -2,6 +2,7 @@ lines:13
 ncloc:13
 #Used by dashboard/widgets tests
 lcom4:2
+complexity:3
 complexity_in_classes:3
 classes:1
 comment_lines:3
