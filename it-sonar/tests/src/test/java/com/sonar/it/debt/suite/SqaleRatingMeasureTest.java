@@ -61,6 +61,20 @@ public class SqaleRatingMeasureTest {
   }
 
   @Test
+  public void sqale_debt_ratio_measures() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/with-many-rules.xml"));
+    orchestrator.executeBuild(
+      SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
+        .setProfile("with-many-rules"));
+
+    assertThat(getMeasure(PROJECT, "sqale_debt_ratio").getValue()).isEqualTo(30.3d);
+    assertThat(getMeasure(MODULE, "sqale_debt_ratio").getValue()).isEqualTo(30.8d);
+    assertThat(getMeasure(SUB_MODULE, "sqale_debt_ratio").getValue()).isEqualTo(31.4d);
+    assertThat(getMeasure(DIRECTORY, "sqale_debt_ratio").getValue()).isEqualTo(7.8d);
+    assertThat(getMeasure(FILE, "sqale_debt_ratio").getValue()).isEqualTo(7.8d);
+  }
+
+  @Test
   public void use_development_cost_parameter() throws Exception {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/one-issue-per-line.xml"));
     orchestrator.executeBuild(
