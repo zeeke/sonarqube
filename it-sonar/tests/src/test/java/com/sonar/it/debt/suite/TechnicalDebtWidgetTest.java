@@ -57,6 +57,19 @@ public class TechnicalDebtWidgetTest {
       ).build());
   }
 
+  /**
+   * SONAR-5450
+   */
+  @Test
+  public void debt_overview_widget() {
+    orchestrator.executeSelenese(Selenese.builder()
+      .setHtmlTestsInClasspath("debt-overview-widget",
+        "/selenium/debt/widgets/debt-overview/should-have-correct-values.html",
+        "/selenium/debt/widgets/debt-overview/should-open-links-on-drilldown-service.html",
+        "/selenium/debt/widgets/debt-overview/display-differential-values.html"
+      ).build());
+  }
+
   private static void scanProject(String date, String excludes) {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/with-many-rules.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
