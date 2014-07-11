@@ -115,4 +115,28 @@ public class LanguagePluginTest {
     assertThat(result.getLogs()).contains("cpp").contains("EVALUATION");
     assertThat(result.getLogs()).contains("CPP ENABLED");
   }
+
+  /**
+   * LICENSE-40, LICENSE-41
+   */
+  @Test
+  public void mixed_sample() {
+    // no license for COBOL
+    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery()
+      .setKey("sonar.cobol.license.secured")
+      .setValue(""));
+    // but license for CPP
+    orchestrator.getServer().restoreProfile(ResourceLocation.create("/empty-cpp.xml"));
+    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery()
+      .setKey("sonar.cpp.license.secured")
+      .setValue(orchestrator.plugins().licenses().get("cpp")));
+
+    orchestrator.restartSonar();
+
+    SonarRunner build = SonarRunner.create(new File("projects/mixed-sample/"))
+      .setProperty("sonar.language", "cpp");
+    BuildResult result = orchestrator.executeBuildQuietly(build);
+    assertThat(result.getLogs()).contains("CPP ENABLED");
+  }
+
 }
