@@ -8,56 +8,51 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>searchInput</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>searchInput</td>
-        <td>request</td>
-    </tr>
-    <tr>
-        <td>typeKeys</td>
-        <td>searchInput</td>
-        <td>util</td>
-    </tr>
-    <tr>
-        <td>waitForVisible</td>
-        <td>searchResourcesResults</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>searchResourcesResults</td>
-        <td>glob:*RequestUtils*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>css=#searchResourcesResults li.selected</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForVisible</td>
-        <td>css=.accordion-item</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForVisible</td>
-        <td>class=source_tabs</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>css=a.selected</td>
-        <td>Source</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>searchInput</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>searchInput</td>
+	<td>request</td>
+</tr>
+<tr>
+	<td>typeKeys</td>
+	<td>searchInput</td>
+	<td>util</td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>searchResourcesResults</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>searchResourcesResults</td>
+	<td>glob:*RequestUtils*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=#searchResourcesResults li.selected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer</td>
+	<td>*RequestUtils*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.component-viewer-source</td>
+	<td>*RequestUtils*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

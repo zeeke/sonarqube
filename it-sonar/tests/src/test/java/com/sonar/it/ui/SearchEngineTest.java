@@ -12,7 +12,6 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Resource;
@@ -37,7 +36,6 @@ public class SearchEngineTest {
    * into two commands type and typeKeys.
    */
   @Test
-  @Ignore // TODO: enable after resolving SONAR-5209
   public void testSearchEngine() {
     inspect("shared/struts-1.3.9-diet");
 
