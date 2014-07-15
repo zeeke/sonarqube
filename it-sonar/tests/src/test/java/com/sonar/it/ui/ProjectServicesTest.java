@@ -78,7 +78,6 @@ public class ProjectServicesTest {
   public void testHotspots() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-hotspots",
       "/selenium/ui/hotspots/hotspot-metric-widget.html",
-      "/selenium/ui/hotspots/hotspots-dashboard.html",
 
       // SONAR-3384
       "/selenium/ui/hotspots/hide-if-no-measures.html"

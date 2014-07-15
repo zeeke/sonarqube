@@ -8,66 +8,66 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/dashboards/index?resource=sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>dashboards</td>
-        <td>glob:*Hotspots*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=unfollow-Hotspots</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>shared-dashboards</td>
-        <td>glob:*Hotspots*</td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>dashboards</td>
-        <td>glob:*Hotspots*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=follow-Hotspots</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>shared-dashboards</td>
-        <td>glob:*Hotspots*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>dashboards</td>
-        <td>glob:*Hotspots*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/dashboards/index?resource=sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>dashboards</td>
+	<td>glob:*Issues*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=unfollow-Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>shared-dashboards</td>
+	<td>glob:*Issues*</td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>dashboards</td>
+	<td>glob:*Issues*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=follow-Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotText</td>
+	<td>shared-dashboards</td>
+	<td>glob:*Issues*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>dashboards</td>
+	<td>glob:*Issues*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

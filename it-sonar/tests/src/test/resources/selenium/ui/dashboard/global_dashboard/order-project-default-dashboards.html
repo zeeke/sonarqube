@@ -14,141 +14,116 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/login</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/admin_dashboards</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTextPresent</td>
-        <td>Project Dashboards</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.1.0</td>
-        <td>Dashboard</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.2.0</td>
-        <td>Fake<br/> Fake dashboard for integration tests</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.3.0</td>
-        <td>Hotspots</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.4.0</td>
-        <td>Issues</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.5.0</td>
-        <td>Time Machine</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=up-Issues</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=up-Issues</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=up-Issues</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.1.0</td>
-        <td>Issues</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.2.0</td>
-        <td>Dashboard</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.3.0</td>
-        <td>Fake<br/> Fake dashboard for integration tests</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.4.0</td>
-        <td>Hotspots</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.5.0</td>
-        <td>Time Machine</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=down-Issues</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=down-Issues</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=down-Issues</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.1.0</td>
-        <td>Dashboard</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.2.0</td>
-        <td>Fake<br/> Fake dashboard for integration tests</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.3.0</td>
-        <td>Hotspots</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.4.0</td>
-        <td>Issues</td>
-    </tr>
-    <tr>
-        <td>assertTable</td>
-        <td>id=activeProject.5.0</td>
-        <td>Time Machine</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/admin_dashboards</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Project Dashboards</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.1.0</td>
+	<td>Dashboard</td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.2.0</td>
+	<td>Fake<br /> Fake dashboard for integration tests</td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.3.0</td>
+	<td>Issues</td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.4.0</td>
+	<td>Time Machine</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=up-Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=up-Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.1.0</td>
+	<td>Issues</td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.2.0</td>
+	<td>Dashboard</td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.3.0</td>
+	<td>Fake<br /> Fake dashboard for integration tests</td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.4.0</td>
+	<td>Time Machine</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=down-Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=down-Issues</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.1.0</td>
+	<td>Dashboard</td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.2.0</td>
+	<td>Fake<br /> Fake dashboard for integration tests</td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.3.0</td>
+	<td>Issues</td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>id=activeProject.4.0</td>
+	<td>Time Machine</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
