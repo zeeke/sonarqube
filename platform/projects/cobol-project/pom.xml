@@ -11,5 +11,6 @@
   <properties>
     <sonar.language>cobol</sonar.language>
     <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+    <sonar.sources>${project.basedir}/src</sonar.sources>
   </properties>
 </project>
