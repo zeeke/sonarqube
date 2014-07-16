@@ -9,81 +9,81 @@
 <table cellpadding="1" cellspacing="1" border="1">
   <tbody>
   <tr>
-    <td>open</td>
-    <td>/sonar/sessions/logout</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>open</td>
-    <td>/sonar/sessions/new</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>id=login</td>
-    <td>can_share_dashboards</td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>id=password</td>
-    <td>password</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>name=commit</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>open</td>
-    <td>/sonar/dashboard/index/sample</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>css=div#dashboard a[href^="/sonar/dashboards?resource="]</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>create-link-dashboard</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>waitForVisible</td>
-    <td>css=div.modal-body</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>name</td>
-    <td>My shared project dashboard</td>
-  </tr>
-  <tr>
-    <td>storeValue</td>
-    <td>name</td>
-    <td>DASHBOARD_NAME</td>
-  </tr>
-  <tr>
-    <td>click</td>
-    <td>name=shared</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>save-submit</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertTable</td>
-    <td>css=table.data.5.0</td>
-    <td>exact:${DASHBOARD_NAME}</td>
-  </tr>
-  <tr>
-    <td>assertElementPresent</td>
-    <td>dashboard-4-shared</td>
-    <td></td>
-  </tr>
-  </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=login</td>
+	<td>can_share_dashboards</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/dashboard/index/sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=div#dashboard a[href^=&quot;/sonar/dashboards?resource=&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>create-link-dashboard</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=div.modal-body</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>My shared project dashboard</td>
+</tr>
+<tr>
+	<td>storeValue</td>
+	<td>name</td>
+	<td>DASHBOARD_NAME</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>name=shared</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>save-submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>css=table.data.4.0</td>
+	<td>exact:${DASHBOARD_NAME}</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>dashboard-3-shared</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
