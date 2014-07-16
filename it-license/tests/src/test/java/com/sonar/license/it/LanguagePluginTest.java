@@ -56,6 +56,9 @@ public class LanguagePluginTest {
     // no licenses
 
     SonarRunner build = SonarRunner.create(new File("projects/cobol-sample"));
+    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      build.setProperty("sonar.language", "cobol");
+    }
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
 
@@ -79,6 +82,9 @@ public class LanguagePluginTest {
     orchestrator.restartSonar();
 
     SonarRunner build = SonarRunner.create(new File("projects/cobol-sample"));
+    if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
+      build.setProperty("sonar.language", "cobol");
+    }
 
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getLogs()).contains("cobol").contains("EVALUATION");
