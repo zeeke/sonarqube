@@ -101,6 +101,7 @@ public class MultipleLangTest {
     orchestrator.executeBuild(SonarRunner.create()
       .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-server -Xmx512m -XX:MaxPermSize=160m")
       .setProjectDir(basedir.getFile())
+      .setProperty("sonar.sources", "src/main")
       // this name is defined on all languages
       .setProperty("sonar.profile", PROFILE_NAME)
       );
@@ -111,6 +112,7 @@ public class MultipleLangTest {
       .setProperty("sonar.profile", PROFILE_NAME)
       // following property to not have differences between SonarQube Java version
       .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
+      .setProperty("sonar.sources", "src/main/java")
       .setProperty("sonar.dynamicAnalysis", "reuseReports")
       .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
     orchestrator.executeBuild(maven);
