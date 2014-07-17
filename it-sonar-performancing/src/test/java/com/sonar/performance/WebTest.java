@@ -102,8 +102,8 @@ public class WebTest extends PerfTestCase {
   }
 
   @Test
-  public void struts_hotspot() throws Exception {
-    PageStats counters = request("/dashboard/index/org.apache.struts:struts-parent?name=Hotspots");
+  public void struts_issues_dashobard() throws Exception {
+    PageStats counters = request("/dashboard/index/org.apache.struts:struts-parent?name=Issues");
     assertDurationLessThan(counters.durationMs, DEFAULT_PAGE_TIMEOUT_MS);
   }
 
