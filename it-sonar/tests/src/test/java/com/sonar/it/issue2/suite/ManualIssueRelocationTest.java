@@ -8,12 +8,12 @@ package com.sonar.it.issue2.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
-import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.NewIssue;
 
 import java.util.Date;
 import java.util.List;
@@ -132,9 +132,13 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
   }
 
   private void createManualIssue() {
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("manual-issues-relocation",
-      "/selenium/issue/manual-issue/create-manual-issue-on-line.html"
-      ).build());
+    orchestrator.getServer().adminWsClient().issueClient().create(
+      NewIssue.create()
+        .component("sample:src/main/xoo/sample/Sample.xoo")
+        .line(3)
+        .rule("manual:invalidclassname")
+        .message("The name 'Sample' is too generic")
+      );
     this.issueCreationDate = searchIssuesByComponent(COMPONENT_KEY).get(0).creationDate();
   }
 }

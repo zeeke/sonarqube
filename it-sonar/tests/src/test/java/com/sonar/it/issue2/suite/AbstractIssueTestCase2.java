@@ -5,8 +5,8 @@
  */
 package com.sonar.it.issue2.suite;
 
+import com.google.common.collect.ImmutableMap;
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
 import org.sonar.wsclient.base.HttpException;
 import org.sonar.wsclient.issue.*;
@@ -59,9 +59,11 @@ public class AbstractIssueTestCase2 {
   }
 
   protected static void createManualRule(){
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule",
-      "/selenium/issue/manual-issue/create-manual-rule.html"
-    ).build());
+    orchestrator.getServer().adminWsClient().post("/api/rules/create", ImmutableMap.<String, Object>of(
+      "manual_key", "invalidclassname",
+      "name", "InvalidClassName",
+      "markdown_description", "Invalid class name"
+    ));
   }
 
   protected static void deleteManualRules(){

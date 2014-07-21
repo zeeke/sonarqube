@@ -157,9 +157,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     int issues = project.getMeasureIntValue("violations");
 
     // Create the manual rule
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule",
-      "/selenium/issue/manual-issue/create-manual-rule.html"
-      ).build());
+    createManualRule();
 
     // Create a issue on the test source file
     adminIssueClient().create(NewIssue.create().component(testKey)

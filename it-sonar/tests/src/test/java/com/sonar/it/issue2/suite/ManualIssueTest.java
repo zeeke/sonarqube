@@ -5,20 +5,13 @@
  */
 package com.sonar.it.issue2.suite;
 
+import com.google.common.collect.ImmutableMap;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.sonar.wsclient.issue.Issue;
-import org.sonar.wsclient.issue.IssueComment;
-import org.sonar.wsclient.issue.IssueQuery;
-import org.sonar.wsclient.issue.Issues;
-import org.sonar.wsclient.issue.NewIssue;
+import org.junit.*;
+import org.sonar.wsclient.issue.*;
 
 import java.util.List;
 
@@ -128,9 +121,11 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
   @Test
   public void scan_should_close_issues_on_deleted_manual_rules() throws Exception {
     // Create another manual rule
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-manual-rule-to-be-removed",
-      "/selenium/issue/manual-issue/create-manual-rule-to-be-removed.html"
-      ).build());
+    orchestrator.getServer().adminWsClient().post("/api/rules/create", ImmutableMap.<String, Object>of(
+      "manual_key", "ruletoberemoved",
+      "name", "RuleToBeRemoved",
+      "markdown_description", "Rule to be removed"
+    ));
 
     // Create the manual issue
     Issue newIssue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
@@ -141,9 +136,7 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
     assertThat(newIssue.status()).isEqualTo("OPEN");
 
     // Delete the manual rule (will be in fact disabled in the db, not removed)
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("delete-manual-rule",
-      "/selenium/issue/manual-issue/delete-manual-rule.html"
-      ).build());
+    orchestrator.getServer().adminWsClient().post("/api/rules/delete", ImmutableMap.<String, Object>of("key", "manual:ruletoberemoved"));
 
     analyzeProject();
     Issue closedIssue = searchIssueByKey(newIssue.key());
@@ -303,9 +296,14 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
   @Test
   public void fail_if_rule_is_disabled() throws Exception {
     // Create and delete a manual rule
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("create-and-delete-manual-rule",
-      "/selenium/issue/manual-issue/create-and-delete-manual-rule.html"
-      ).build());
+    orchestrator.getServer().adminWsClient().post("/api/rules/create", ImmutableMap.<String, Object>of(
+      "manual_key", "anotherinvalidclassname",
+      "name", "AnotherInvalidClassName",
+      "markdown_description", "Another invalid class name"
+    ));
+    orchestrator.getServer().adminWsClient().post("/api/rules/delete", ImmutableMap.<String, Object>of(
+      "key", "manual:anotherinvalidclassname"
+    ));
 
     try {
       adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)
