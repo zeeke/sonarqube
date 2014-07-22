@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile>
+  <name>issue-tracking</name>
+  <language>java</language>
+  <rules>
+    <rule>
+      <repositoryKey>pmd</repositoryKey>
+      <key>SystemPrintln</key>
+      <priority>MAJOR</priority>
+    </rule>
+  </rules>
+</profile>

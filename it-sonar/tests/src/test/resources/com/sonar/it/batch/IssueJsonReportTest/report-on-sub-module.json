@@ -67,6 +67,11 @@
       "key": "com.sonarsource.it.samples:module_a1"
     },
     {
+      "key": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1",
+      "path": "src/main/java/com/sonar/it/samples/modules/a1",
+      "moduleKey": "com.sonarsource.it.samples:module_a1"
+    },
+    {
       "key": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
       "path": "src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
       "moduleKey": "com.sonarsource.it.samples:module_a1",

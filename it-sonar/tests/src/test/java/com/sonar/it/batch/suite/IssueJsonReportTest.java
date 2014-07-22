@@ -3,14 +3,16 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.issue.suite;
+package com.sonar.it.batch.suite;
 
 import com.sonar.it.ItUtils;
+import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.sonar.wsclient.services.PropertyCreateQuery;
@@ -20,7 +22,10 @@ import java.io.File;
 import static com.sonar.it.ItUtils.sanitizeTimezones;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class IssueJsonReportTest extends AbstractIssueTestCase {
+public class IssueJsonReportTest {
+
+  @ClassRule
+  public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
 
   @Before
   public void resetData() {
@@ -29,7 +34,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
 
   @Test
   public void test_json_report() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTrackingTest/issue-tracking-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/IssueJsonReportTest/issue-tracking-profile.xml"));
 
     File rootPomV1 = ItUtils.locateProjectPom("issue/tracking-v1");
     MavenBuild scan = MavenBuild.create(rootPomV1)
@@ -52,13 +57,13 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
     assertThat(report).isFile().exists();
 
     String json = sanitize(FileUtils.readFileToString(report));
-    String expectedJson = sanitize(IOUtils.toString(getClass().getResource("/com/sonar/it/issue/suite/IssueJsonReportTest/report-on-single-module.json")));
+    String expectedJson = sanitize(IOUtils.toString(getClass().getResource("/com/sonar/it/batch/IssueJsonReportTest/report-on-single-module.json")));
     JSONAssert.assertEquals(expectedJson, json, false);
   }
 
   @Test
   public void test_json_report_on_branch() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTrackingTest/issue-tracking-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/IssueJsonReportTest/issue-tracking-profile.xml"));
 
     File rootPomV1 = ItUtils.locateProjectPom("issue/tracking-v1");
     MavenBuild scan = MavenBuild.create(rootPomV1)
@@ -84,7 +89,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
     assertThat(report).isFile().exists();
 
     String json = sanitize(FileUtils.readFileToString(report));
-    String expectedJson = sanitize(IOUtils.toString(getClass().getResource("/com/sonar/it/issue/suite/IssueJsonReportTest/report-on-single-module-branch.json")));
+    String expectedJson = sanitize(IOUtils.toString(getClass().getResource("/com/sonar/it/batch/IssueJsonReportTest/report-on-single-module-branch.json")));
     JSONAssert.assertEquals(expectedJson, json, false);
   }
 
@@ -93,7 +98,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
    */
   @Test
   public void test_json_report_on_sub_module() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/IssueJsonReportTest/issues.xml"));
 
     File rootPom = ItUtils.locateProjectPom("shared/multi-modules-sample");
     MavenBuild scan = MavenBuild.create(rootPom)
@@ -123,7 +128,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
 
     String json = sanitize(FileUtils.readFileToString(report));
     // SONAR-5218 All issues are updated as their root project id has changed (it's now the sub module)
-    String expectedJson = sanitize(IOUtils.toString(getClass().getResource("/com/sonar/it/issue/suite/IssueJsonReportTest/report-on-sub-module.json")));
+    String expectedJson = sanitize(IOUtils.toString(getClass().getResource("/com/sonar/it/batch/IssueJsonReportTest/report-on-sub-module.json")));
     JSONAssert.assertEquals(expectedJson, json, false);
   }
 
@@ -132,7 +137,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
    */
   @Test
   public void test_json_report_on_root_module() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/IssueJsonReportTest/issues.xml"));
 
     File rootPom = ItUtils.locateProjectPom("shared/multi-modules-sample");
     MavenBuild scan = MavenBuild.create(rootPom)
@@ -157,7 +162,7 @@ public class IssueJsonReportTest extends AbstractIssueTestCase {
     assertThat(report).isFile().exists();
 
     String json = sanitize(FileUtils.readFileToString(report));
-    String expectedJson = sanitize(IOUtils.toString(getClass().getResource("/com/sonar/it/issue/suite/IssueJsonReportTest/report-on-root-module.json")));
+    String expectedJson = sanitize(IOUtils.toString(getClass().getResource("/com/sonar/it/batch/IssueJsonReportTest/report-on-root-module.json")));
     JSONAssert.assertEquals(expectedJson, json, false);
   }
 

@@ -263,10 +263,10 @@ public class PurgeTest {
 
   private int measures(String qualifier, int count) {
     int result = countMeasures(qualifier);
-    if (result != count) {
-      logMeasures("GOT" , qualifier);
-      assertThat(result).isEqualTo(count);
-    }
+    // if (result != count) {
+    logMeasures("GOT", qualifier);
+    assertThat(result).isEqualTo(count);
+    // }
     return result;
   }
 

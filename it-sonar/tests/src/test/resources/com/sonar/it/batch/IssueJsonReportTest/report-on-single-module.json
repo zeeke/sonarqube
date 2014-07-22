@@ -52,6 +52,11 @@
     "key":"com.sonarsource.it.samples:issue-tracking"
   },
   {
+    "key": "com.sonarsource.it.samples:issue-tracking:src",
+    "path": "src",
+    "moduleKey": "com.sonarsource.it.samples:issue-tracking"
+  },
+  {
     "key": "com.sonarsource.it.samples:issue-tracking:src/SystemOut.java",
     "path": "src/SystemOut.java",
     "moduleKey": "com.sonarsource.it.samples:issue-tracking",

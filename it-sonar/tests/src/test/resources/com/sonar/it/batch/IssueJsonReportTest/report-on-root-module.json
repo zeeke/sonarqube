@@ -268,6 +268,26 @@
       "path": "module_b2"
     },
     {
+      "key": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1",
+      "path": "src/main/java/com/sonar/it/samples/modules/a1",
+      "moduleKey": "com.sonarsource.it.samples:module_a1"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_a2:src/main/java/com/sonar/it/samples/modules/a2",
+      "path": "src/main/java/com/sonar/it/samples/modules/a2",
+      "moduleKey": "com.sonarsource.it.samples:module_a2"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_b1:src/main/java/com/sonar/it/samples/modules/b1",
+      "path": "src/main/java/com/sonar/it/samples/modules/b1",
+      "moduleKey": "com.sonarsource.it.samples:module_b1"
+    },
+    {
+      "key": "com.sonarsource.it.samples:module_b2:src/main/java/com/sonar/it/samples/modules/b2",
+      "path": "src/main/java/com/sonar/it/samples/modules/b2",
+      "moduleKey": "com.sonarsource.it.samples:module_b2"
+    },
+    {
       "key": "com.sonarsource.it.samples:module_a1:src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
       "path": "src/main/java/com/sonar/it/samples/modules/a1/HelloA1.java",
       "moduleKey": "com.sonarsource.it.samples:module_a1",

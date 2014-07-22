@@ -52,6 +52,11 @@
     "key":"com.sonarsource.it.samples:issue-tracking:mybranch"
   },
   {
+    "key": "com.sonarsource.it.samples:issue-tracking:mybranch:src",
+    "path": "src",
+    "moduleKey": "com.sonarsource.it.samples:issue-tracking:mybranch"
+  },
+  {
     "key": "com.sonarsource.it.samples:issue-tracking:mybranch:src/SystemOut.java",
     "path": "src/SystemOut.java",
     "moduleKey": "com.sonarsource.it.samples:issue-tracking:mybranch",

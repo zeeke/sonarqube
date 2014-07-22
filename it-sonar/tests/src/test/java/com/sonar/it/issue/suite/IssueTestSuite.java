@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  ActionPlanTest.class, IssueActionTest.class, IssueFilterExtensionTest.class, IssueJsonReportTest.class,
+  ActionPlanTest.class, IssueActionTest.class, IssueFilterExtensionTest.class,
   IssuePurgeTest.class, IssueBulkChangeTest.class, IssueChangelogTest.class
 })
 public class IssueTestSuite {

@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
   BatchTest.class, LinksTest.class, MavenTest.class, ProjectExclusionsTest.class, SqlLogsTest.class, PreviewModeTest.class,
-  IncrementalModeTest.class, TempFolderTest.class, MultiLanguageTest.class
+  IncrementalModeTest.class, TempFolderTest.class, MultiLanguageTest.class, IssueJsonReportTest.class
 })
 public class BatchTestSuite {
 
@@ -36,6 +36,10 @@ public class BatchTestSuite {
 
     // used by MultiLanguageTest
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.php", "sonar-php-plugin", "2.1"))
+
+    // used by IssueJsonReportTest
+    .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-checkstyle-plugin", "2.1"))
+    .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1"))
 
     .build();
 }
