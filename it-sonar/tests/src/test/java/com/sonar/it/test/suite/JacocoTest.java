@@ -84,22 +84,6 @@ public class JacocoTest {
     assertThat(project.getMeasureIntValue("it_lines_to_cover"), is(9));
   }
 
-  /**
-   * SONAR-2501
-   */
-  @Test
-  public void should_display_coverage_per_test() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample-with-tests"))
-      .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
-    orchestrator.executeBuild(build);
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("test-display-coverage-per-test",
-      "/selenium/test/display-covered-lines-per-test-in-tests-viewer.html",
-      "/selenium/test/display-line-coverage-in-coverage-viewer.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
   private MavenBuild newBuild(String projectPath, boolean ignoreTestFailure) {
     return MavenBuild.create(ItUtils.locateProjectPom(projectPath))
       .setProperty("maven.test.failure.ignore", String.valueOf(ignoreTestFailure))
