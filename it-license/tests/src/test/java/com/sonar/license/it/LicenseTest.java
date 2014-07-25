@@ -65,9 +65,9 @@ public class LicenseTest {
     MavenBuild build = MavenBuild.create(new File("projects/java-sample/pom.xml")).setCleanSonarGoals();
     BuildResult result = orchestrator.executeBuild(build);
     if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.9")) {
-      assertThat(result.getLogs()).contains("No license for plugin sqale");
-    } else {
       assertThat(result.getLogs()).contains("No license for sqale");
+    } else {
+      assertThat(result.getLogs()).contains("No license for plugin sqale");
     }
     assertThat(result.getLogs()).excludes("-- BIP BIP --");
   }
