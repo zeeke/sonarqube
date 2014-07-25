@@ -64,10 +64,10 @@ public class LicenseTest {
     // batch-side components are secured
     MavenBuild build = MavenBuild.create(new File("projects/java-sample/pom.xml")).setCleanSonarGoals();
     BuildResult result = orchestrator.executeBuild(build);
-    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.3")) {
+    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.9")) {
       assertThat(result.getLogs()).contains("No license for plugin sqale");
     } else {
-      assertThat(result.getLogs()).contains("No valid license for plugin sqale");
+      assertThat(result.getLogs()).contains("No license for sqale");
     }
     assertThat(result.getLogs()).excludes("-- BIP BIP --");
   }
@@ -82,10 +82,10 @@ public class LicenseTest {
     SonarRunner runner = SonarRunner.create(new File("target"))
       .setTask("sqale");
     BuildResult result = orchestrator.executeBuild(runner);
-    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.3")) {
-      assertThat(result.getLogs()).excludes("No license for plugin sqale");
+    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.9")) {
+      assertThat(result.getLogs()).excludes("No license for sqale");
     } else {
-      assertThat(result.getLogs()).excludes("No valid license for plugin sqale");
+      assertThat(result.getLogs()).excludes("No license for plugin sqale");
     }
     assertThat(result.getLogs()).contains("sqale").contains("EVALUATION");
     assertThat(result.getLogs()).contains("-- BIP BIP --");
@@ -102,10 +102,10 @@ public class LicenseTest {
     // batch-side components are secured
     MavenBuild build = MavenBuild.create(new File("projects/java-sample/pom.xml")).setCleanSonarGoals();
     BuildResult result = orchestrator.executeBuild(build);
-    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.3")) {
-      assertThat(result.getLogs()).contains("License for plugin sqale is expired");
+    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.9")) {
+      assertThat(result.getLogs()).contains("License for sqale is expired");
     } else {
-      assertThat(result.getLogs()).contains("No valid license for plugin sqale");
+      assertThat(result.getLogs()).contains("License for plugin sqale is expired");
     }
     assertThat(result.getLogs()).excludes("-- BIP BIP --");
   }
@@ -121,10 +121,10 @@ public class LicenseTest {
     // batch-side components are secured
     MavenBuild build = MavenBuild.create(new File("projects/java-sample/pom.xml")).setCleanSonarGoals();
     BuildResult result = orchestrator.executeBuild(build);
-    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.3")) {
-      assertThat(result.getLogs()).contains("License for plugin sqale does not match server ID. Please check settings.");
+    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.9")) {
+      assertThat(result.getLogs()).contains("License for sqale does not match server ID. Please check settings.");
     } else {
-      assertThat(result.getLogs()).contains("No valid license for plugin sqale");
+      assertThat(result.getLogs()).contains("License for plugin sqale does not match server ID. Please check settings.");
     }
     assertThat(result.getLogs()).excludes("-- BIP BIP --");
   }
@@ -150,11 +150,7 @@ public class LicenseTest {
       // batch-side components are secured
       MavenBuild build = MavenBuild.create(new File("projects/java-sample/pom.xml")).setCleanSonarGoals();
       BuildResult result = orchestrator.executeBuild(build);
-      if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.3")) {
-        assertThat(result.getLogs()).contains("Server ID is invalid. Please check settings.");
-      } else {
-        assertThat(result.getLogs()).contains("No valid license for plugin sqale");
-      }
+      assertThat(result.getLogs()).contains("Server ID is invalid. Please check settings.");
       assertThat(result.getLogs()).excludes("-- BIP BIP --");
 
     } finally {

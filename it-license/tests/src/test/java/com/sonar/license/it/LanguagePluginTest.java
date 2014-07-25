@@ -62,10 +62,10 @@ public class LanguagePluginTest {
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
 
-    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.3")) {
-      assertThat(result.getLogs()).contains("No license for plugin cobol");
+    if (LicenseVersion.isGreaterThanOrEqualTo(orchestrator, "2.9")) {
+      assertThat(result.getLogs()).contains("No license for cobol");
     } else {
-      assertThat(result.getLogs()).contains("No valid license for plugin cobol");
+      assertThat(result.getLogs()).contains("No license for plugin cobol");
     }
   }
 
