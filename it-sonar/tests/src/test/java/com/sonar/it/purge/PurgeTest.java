@@ -105,7 +105,7 @@ public class PurgeTest {
     assertThat(count("project_measures")).as("Wrong number of measures after second analysis").isEqualTo(expectedMeasures);
 
     assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
-    assertThat(count("project_measures where measure_data is not null")).as("Wrong number of measure data").isEqualTo(56);
+    assertThat(count("project_measures where measure_data is not null")).as("Wrong number of measure data").isEqualTo(57);
     assertThat(count("issues")).as("Wrong number of issues").isEqualTo(expectedIssues);
     assertThat(count("dependencies")).as("Wrong number of dependencies").isEqualTo(expectedDependencies);
   }
