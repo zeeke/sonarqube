@@ -21,6 +21,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -214,6 +215,7 @@ public class ServerTest {
   }
 
   @Test
+  @Ignore
   public void support_install_dir_with_whitespaces() throws Exception {
     String dirName = "target/has space";
     FileUtils.deleteDirectory(new File(dirName));
@@ -265,6 +267,7 @@ public class ServerTest {
    * SONAR-4843
    */
   @Test
+  @Ignore
   public void restart_forbidden_if_not_dev_mode() throws Exception {
     // server classloader locks Jar files on Windows
     if (!SystemUtils.IS_OS_WINDOWS) {
