@@ -69,7 +69,7 @@ public class PurgeTest {
 
     int expectedMeasures = measuresOnTrk + measuresOnBrc + measuresOnDir + measuresOnFil;
     assertThat(count("project_measures")).as("Wrong number of measures").isEqualTo(expectedMeasures);
-    assertThat(count("project_measures where measure_data is not null")).as("Wrong number of measure data").isEqualTo(56);
+    assertThat(count("project_measures where measure_data is not null")).as("Wrong number of measure data").isEqualTo(57);
 
     // count other tables that are constant between 2 scans
     int expectedIssues = 3859;
