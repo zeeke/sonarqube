@@ -52,7 +52,7 @@ public class PurgeTest {
     int measuresOnTrk = 183;
     int measuresOnBrc = 416;
     int measuresOnDir = 2460;
-    int measuresOnFil = 10605;
+    int measuresOnFil = 10668;
 
     // count measures 
     logMeasures("First analysis - TRK measures", "TRK");
