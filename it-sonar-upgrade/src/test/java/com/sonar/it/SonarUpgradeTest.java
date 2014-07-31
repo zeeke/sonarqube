@@ -46,7 +46,7 @@ public class SonarUpgradeTest {
 
   @Test
   public void test_upgrade_from_latest_release() {
-    testDatabaseUpgrade("4.3", Orchestrator.builderEnv().getSonarVersion());
+    testDatabaseUpgrade("4.4", Orchestrator.builderEnv().getSonarVersion());
   }
 
   private void testDatabaseUpgrade(String fromVersion, String toVersion, BeforeUpgrade... tasks) {
