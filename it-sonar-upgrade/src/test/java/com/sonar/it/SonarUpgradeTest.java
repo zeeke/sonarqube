@@ -97,10 +97,10 @@ public class SonarUpgradeTest {
       builder.restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
     }
     if (VersionUtils.isGreaterThanOrEqual(version, "4.2")) {
-      // SONAR-4596 Java plugins are not installed on upgrades, but only on fresh installs
+      builder.removeDistributedPlugins();
       builder.setOrchestratorProperty("javaVersion", "OLDEST_COMPATIBLE").addPlugin("java");
     } else if (VersionUtils.isGreaterThanOrEqual(version, "4.0")) {
-      // SONAR-4596 Java plugins are not installed on upgrades, but only on fresh installs
+      builder.removeDistributedPlugins();
       builder.setOrchestratorProperty("javaVersion", "RELEASE").addPlugin("java");
     }
     orchestrator = builder.build();
