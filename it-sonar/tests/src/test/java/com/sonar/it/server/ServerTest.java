@@ -267,7 +267,6 @@ public class ServerTest {
    * SONAR-4843
    */
   @Test
-  @Ignore
   public void restart_forbidden_if_not_dev_mode() throws Exception {
     // server classloader locks Jar files on Windows
     if (!SystemUtils.IS_OS_WINDOWS) {
@@ -289,7 +288,7 @@ public class ServerTest {
   public void restart_on_dev_mode() throws Exception {
     // server classloader locks Jar files on Windows
     if (!SystemUtils.IS_OS_WINDOWS) {
-      orchestrator = Orchestrator.builderEnv().setServerProperty("sonar.dev", "true").build();
+      orchestrator = Orchestrator.builderEnv().setServerProperty("sonar.web.dev", "true").build();
       orchestrator.start();
 
       orchestrator.getServer().adminWsClient().systemClient().restart();
