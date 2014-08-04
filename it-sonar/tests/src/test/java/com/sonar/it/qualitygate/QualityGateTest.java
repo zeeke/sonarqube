@@ -25,7 +25,7 @@ public class QualityGateTest {
 
   private static final String PROJECT_KEY = "sample";
 
-  private long projectId = -1L;
+  private long provisionnedProjectId = -1L;
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
@@ -35,7 +35,7 @@ public class QualityGateTest {
   @Before
   public void cleanUp() throws Exception {
     orchestrator.getDatabase().truncateInspectionTables();
-    projectId = Long.parseLong(orchestrator.getServer().adminWsClient().projectClient().create(NewProject.create().key(PROJECT_KEY).name("Sample")).id());
+    provisionnedProjectId = Long.parseLong(orchestrator.getServer().adminWsClient().projectClient().create(NewProject.create().key(PROJECT_KEY).name("Sample")).id());
   }
 
   @Test
@@ -132,7 +132,7 @@ public class QualityGateTest {
     qgClient().createCondition(NewCondition.create(error.id()).metricKey("ncloc").operator("GT").errorThreshold("10"));
 
     qgClient().setDefault(alert.id());
-    qgClient().selectProject(error.id(), projectId);
+    qgClient().selectProject(error.id(), provisionnedProjectId);
 
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("qualitygate/xoo-sample"));
     orchestrator.executeBuild(build);
