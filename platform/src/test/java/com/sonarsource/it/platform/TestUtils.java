@@ -37,9 +37,10 @@ public class TestUtils {
         // The plugin is part of an ecosystem and will be installed transitively when installing parent
         continue;
       }
-      if (r.getKey().equals("fbcontrib") || r.getKey().equals("securityrules")) {
+      if (r.getKey().equals("fbcontrib") || r.getKey().equals("securityrules") || r.getKey().equals("findbugs")) {
         // Latest version of findbugs is not compatible with SQ-4.X, so fbcontrib cannot be installed
         // Security Rules should not be installed as findbugs is not installed
+        // Latest version of findbugs requires Java 7, which is not supported (yet) on our build infrastructure
         continue;
       }
       builder.setOrchestratorProperty(p.getKey() + "Version", r.getVersion().toString());
