@@ -7,14 +7,25 @@ package com.sonar.it.debt.suite;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 
 public class TechnicalDebtFrontendTest {
 
   @ClassRule
   public static Orchestrator orchestrator = TechnicalDebtTestSuite.ORCHESTRATOR;
+
+  @Before
+  public void resetData() {
+    orchestrator.getDatabase().truncateInspectionTables();
+
+    // Set hours in day property to default value (should be 8)
+    orchestrator.getServer().getAdminWsClient().delete(
+      new PropertyDeleteQuery("sonar.technicalDebt.hoursInDay"));
+  }
 
   /**
    * SONAR-5413
