@@ -215,7 +215,6 @@ public class ServerTest {
   }
 
   @Test
-  @Ignore
   public void support_install_dir_with_whitespaces() throws Exception {
     String dirName = "target/has space";
     FileUtils.deleteDirectory(new File(dirName));
