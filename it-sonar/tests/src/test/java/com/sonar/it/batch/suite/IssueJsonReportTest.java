@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
-import org.sonar.wsclient.services.PropertyCreateQuery;
 
 import java.io.File;
 
@@ -40,7 +39,7 @@ public class IssueJsonReportTest {
     MavenBuild scan = MavenBuild.create(rootPomV1)
       .setCleanSonarGoals()
       .setProperty("sonar.projectDate", "2013-05-01")
-      .setProperty("sonar.profile.java", "issue-tracking");
+      .setProfile("issue-tracking");
     orchestrator.executeBuild(scan);
 
     // Dry-run scan -> 2 new issues and 2 existing issues
@@ -50,7 +49,7 @@ public class IssueJsonReportTest {
       .setProperty("sonar.dynamicAnalysis", "false")
       .setProperty("sonar.dryRun", "true")
       .setProperty("sonar.projectDate", "2013-05-02")
-      .setProperty("sonar.profile.java", "issue-tracking");
+      .setProfile("issue-tracking");
     orchestrator.executeBuild(dryRunScan);
 
     File report = new File(rootPomV2.getParentFile(), "target/sonar/sonar-report.json");
@@ -70,8 +69,7 @@ public class IssueJsonReportTest {
       .setCleanSonarGoals()
       .setProperty("sonar.projectDate", "2013-05-01")
       .setProperty("sonar.branch", "mybranch")
-      .setProfile("")
-      .setProperty("sonar.profile.java", "issue-tracking");
+      .setProfile("issue-tracking");
     orchestrator.executeBuild(scan);
 
     // Dry-run scan -> 2 new issues and 2 existing issues
@@ -82,7 +80,7 @@ public class IssueJsonReportTest {
       .setProperty("sonar.dryRun", "true")
       .setProperty("sonar.projectDate", "2013-05-02")
       .setProperty("sonar.branch", "mybranch")
-      .setProperty("sonar.profile.java", "issue-tracking");
+      .setProfile("issue-tracking");
     orchestrator.executeBuild(dryRunScan);
 
     File report = new File(rootPomV2.getParentFile(), "target/sonar/sonar-report.json");
@@ -100,17 +98,16 @@ public class IssueJsonReportTest {
   public void test_json_report_on_sub_module() throws Exception {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/IssueJsonReportTest/issues.xml"));
 
+    orchestrator.getServer().provisionProject("com.sonarsource.it.samples:multi-modules-sample", "Multi-module sample");
+    orchestrator.getServer().associateProjectToQualityProfile("com.sonarsource.it.samples:multi-modules-sample", "java", "issues");
+
     File rootPom = ItUtils.locateProjectPom("shared/multi-modules-sample");
     MavenBuild scan = MavenBuild.create(rootPom)
       .setCleanSonarGoals()
       .setProperty("sonar.projectDate", "2013-05-01")
       // Should force locale to have checkstyle/PMD violation messages in english
-      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US")
-      .setProperty("sonar.profile.java", "issues");
+      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US");
     orchestrator.executeBuild(scan);
-
-    // SONAR-4342 Set property in DB on root module
-    orchestrator.getServer().getAdminWsClient().create(new PropertyCreateQuery("sonar.profile.java", "issues", "com.sonarsource.it.samples:multi-modules-sample"));
 
     // Dry-run scan on a module -> no new issues
     File modulePom = ItUtils.locateProjectPom("shared/multi-modules-sample/module_a/module_a1");
@@ -119,8 +116,7 @@ public class IssueJsonReportTest {
       .setProperty("sonar.dryRun", "true")
       .setProperty("sonar.projectDate", "2013-05-02")
       // Should force locale to have checkstyle/PMD violation messages in english
-      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US")
-      .setProfile(""); // Use profile defined in DB
+      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US");
     orchestrator.executeBuild(dryRunScan);
 
     File report = new File(modulePom.getParentFile(), "target/sonar/sonar-report.json");
@@ -145,7 +141,7 @@ public class IssueJsonReportTest {
       .setProperty("sonar.projectDate", "2013-05-01")
       // Checkstyle issues messages are localized
       .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US")
-      .setProperty("sonar.profile.java", "issues");
+      .setProfile("issues");
     orchestrator.executeBuild(scan);
 
     // Dry-run scan -> no new issues
@@ -155,7 +151,7 @@ public class IssueJsonReportTest {
       .setProperty("sonar.projectDate", "2013-05-02")
       // Checkstyle issues messages are localized
       .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US")
-      .setProperty("sonar.profile.java", "issues");
+      .setProfile("issues");
     orchestrator.executeBuild(dryRunScan);
 
     File report = new File(rootPom.getParentFile(), "target/sonar/sonar-report.json");

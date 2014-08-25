@@ -42,9 +42,13 @@ public class MultiLanguageTest {
   public void test_sonar_runner_inspection() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line-xoo2.xml"));
-    SonarRunner build = SonarRunner.create().setProjectDir(ItUtils.locateProjectDir("batch/xoo-multi-languages"))
-      .setProperty("sonar.profile.xoo", "one-issue-per-line")
-      .setProperty("sonar.profile.xoo2", "one-issue-per-line-xoo2");
+
+    orchestrator.getServer().provisionProject("multi-language-sample", "multi-language-sample");
+
+    orchestrator.getServer().associateProjectToQualityProfile("multi-language-sample", "xoo", "one-issue-per-line");
+    orchestrator.getServer().associateProjectToQualityProfile("multi-language-sample", "xoo2", "one-issue-per-line-xoo2");
+
+    SonarRunner build = SonarRunner.create().setProjectDir(ItUtils.locateProjectDir("batch/xoo-multi-languages"));
     BuildResult result = orchestrator.executeBuild(build);
 
     assertThat(result.getLogs()).contains("2 files indexed");

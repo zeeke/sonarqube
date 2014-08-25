@@ -13,12 +13,20 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.Source;
+import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -208,14 +216,6 @@ public class BatchTest {
   @Test
   public void should_display_explicit_message_when_wrong_profile() {
     BuildResult buildResult = scanQuietly("shared/xoo-sample",
-      "sonar.profile", "",
-      "sonar.profile.xoo", "unknow");
-    assertThat(buildResult.getStatus()).isEqualTo(1);
-    assertThat(buildResult.getLogs()).contains(
-      "Quality profile not found : 'unknow' on language 'xoo'");
-
-    // Old property sonar.profile
-    buildResult = scanQuietly("shared/xoo-sample",
       "sonar.profile", "unknow");
     assertThat(buildResult.getStatus()).isEqualTo(1);
     assertThat(buildResult.getLogs()).contains(

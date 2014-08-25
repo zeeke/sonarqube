@@ -16,7 +16,12 @@ import com.sonar.orchestrator.version.Version;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.qualitygate.NewCondition;
@@ -30,7 +35,11 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -246,11 +255,6 @@ public class PreviewModeTest {
     File cachedDb = cacheLocation.listFiles(new ExcludeLockFile())[0];
     long lastModified = cachedDb.lastModified();
 
-    // Remove quality profile using DB query to not invalidate cache to be sure
-    // next analysis will use cached DB that still contain removed profile
-    ItUtils.executeUpdate(orchestrator, "DELETE FROM rules_profiles WHERE name = '" + profileName + "'");
-
-    // Second dry run should not fail event if profile was removed from DB
     runner = configureRunner("shared/xoo-sample",
       "sonar.analysis.mode", "preview")
       .setProfile(profileName);
@@ -284,11 +288,6 @@ public class PreviewModeTest {
     File cachedDb = cacheLocation.listFiles(new ExcludeLockFile())[0];
     long lastModified = cachedDb.lastModified();
 
-    // Remove quality profile using DB query to not invalidate cache to be sure
-    // next analysis will use cached DB that still contain removed profile
-    ItUtils.executeUpdate(orchestrator, "DELETE FROM rules_profiles WHERE name = '" + profileName + "'");
-
-    // Second dry run should not fail event if profile was removed from DB
     runner = configureRunner("shared/xoo-sample",
       "sonar.analysis.mode", "preview")
       .setProfile(profileName);
