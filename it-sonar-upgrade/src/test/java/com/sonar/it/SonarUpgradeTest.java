@@ -73,10 +73,10 @@ public class SonarUpgradeTest {
   private void browseWebapp() {
     testUrl("/");
     testUrl("/issues/index");
+    testUrl("/dependencies/index");
     testUrl("/dashboard/index/org.apache.struts:struts-parent");
     testUrl("/components/index/org.apache.struts:struts-parent");
     testUrl("/drilldown/issues/org.apache.struts:struts-parent");
-    testUrl("/plugins/resource/org.apache.struts:struts-parent?page=org.sonar.plugins.design.ui.page.DesignPage");
     testUrl("/component/index#component=org.apache.struts:struts-core:src/main/java/org/apache/struts/chain/commands/generic/WrappingLookupCommand.java");
     testUrl("/profiles");
   }
