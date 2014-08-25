@@ -73,7 +73,6 @@ public class SonarUpgradeTest {
   private void browseWebapp() {
     testUrl("/");
     testUrl("/issues/index");
-    testUrl("/dependencies/index");
     testUrl("/dashboard/index/org.apache.struts:struts-parent");
     testUrl("/components/index/org.apache.struts:struts-parent");
     testUrl("/drilldown/issues/org.apache.struts:struts-parent");
