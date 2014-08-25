@@ -49,7 +49,7 @@ public class PurgeTest {
     assertThat(count("projects where qualifier in ('FIL')")).as("Wrong number of files").isEqualTo(320);
     assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
 
-    int measuresOnTrk = 183;
+    int measuresOnTrk = 182;
     int measuresOnBrc = 416;
     int measuresOnDir = 2460;
     int measuresOnFil = 10668;
