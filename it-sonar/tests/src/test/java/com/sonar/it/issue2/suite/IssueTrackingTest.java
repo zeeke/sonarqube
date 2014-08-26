@@ -44,13 +44,13 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
     MavenBuild firstScan = MavenBuild.create(ItUtils.locateProjectPom("issue/tracking-v1"))
       .setCleanSonarGoals()
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", OLD_DATE)
-      .setProperty("sonar.profile.java", "issue-tracking");
+      .setProfile("issue-tracking");
 
     // version 2, without import of sources
     MavenBuild secondScan = MavenBuild.create(ItUtils.locateProjectPom("issue/tracking-v2"))
       .setCleanSonarGoals()
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.importSources", "false", "sonar.projectDate", NEW_DATE)
-      .setProperty("sonar.profile.java", "issue-tracking");
+      .setProfile("issue-tracking");
 
     orchestrator.executeBuilds(firstScan, secondScan);
 
@@ -78,13 +78,13 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
     MavenBuild firstScan = MavenBuild.create(ItUtils.locateProjectPom("issue/tracking-v1"))
       .setCleanSonarGoals()
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", OLD_DATE)
-      .setProperty("sonar.profile.java", "issue-tracking");
+      .setProfile("issue-tracking");
 
     // version 2
     MavenBuild secondScan = MavenBuild.create(ItUtils.locateProjectPom("issue/tracking-v2"))
       .setCleanSonarGoals()
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", NEW_DATE)
-      .setProperty("sonar.profile.java", "issue-tracking");
+      .setProfile("issue-tracking");
 
     orchestrator.executeBuilds(firstScan);
     orchestrator.executeBuilds(secondScan);
@@ -108,12 +108,12 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
     // version 1
     SonarRunner firstScan = SonarRunner.create(ItUtils.locateProjectDir("issue/xoo-tracking-v1"))
       .setProperties("sonar.projectDate", OLD_DATE)
-      .setProperty("sonar.profile.xoo", "issue-on-tag-foobar");
+      .setProfile("issue-on-tag-foobar");
 
     // version 2, dry run
     SonarRunner secondScan = SonarRunner.create(ItUtils.locateProjectDir("issue/xoo-tracking-v2"))
       .setProperties("sonar.dryRun", "true", "sonar.projectDate", NEW_DATE)
-      .setProperty("sonar.profile.xoo", "issue-on-tag-foobar");
+      .setProfile("issue-on-tag-foobar");
 
     orchestrator.executeBuilds(firstScan, secondScan);
 
@@ -131,7 +131,7 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTrackingTest/one-issue-per-module-profile.xml"));
 
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperty("sonar.profile.xoo", "one-issue-per-module");
+      .setProfile("one-issue-per-module");
     orchestrator.executeBuild(scan);
 
     // Only one issue is created
@@ -160,7 +160,7 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTrackingTest/one-issue-per-module-profile.xml"));
 
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
-      .setProperty("sonar.profile.xoo", "one-issue-per-module");
+      .setProfile("one-issue-per-module");
     orchestrator.executeBuild(scan);
 
     // One issue by module are created
