@@ -28,26 +28,19 @@ public class DifferentialPeriodsTest {
    */
   @Test
   public void not_display_periods_selection_dropdown_on_first_analysis() {
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).withoutDynamicAnalysis());
+    SonarRunner analysis = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).withoutDynamicAnalysis();
+    orchestrator.executeBuild(analysis);
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("not-display-periods-selection-dropdown-on-first-analysis",
       "/selenium/history/differential-periods/not-display-periods-selection-dropdown-on-dashboard.html",
       "/selenium/history/differential-periods/not-display-periods-selection-dropdown-on-issues-drilldown.html"
-    ).build());
-  }
+      ).build());
 
-  /**
-   * SONAR-4700
-   */
-  @Test
-  public void display_periods_selection_dropdown_after_first_analysis() {
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")).withoutDynamicAnalysis();
-    orchestrator.executeBuilds(scan, scan);
+    orchestrator.executeBuilds(analysis);
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("display-periods-selection-dropdown-after-first-analysis",
       "/selenium/history/differential-periods/display-periods-selection-dropdown-on-dashboard.html",
       "/selenium/history/differential-periods/display-periods-selection-dropdown-on-issues-drilldown.html"
-    ).build());
+      ).build());
   }
-
 }
