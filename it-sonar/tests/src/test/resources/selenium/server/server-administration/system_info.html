@@ -65,8 +65,13 @@
 </tr>
 <tr>
   <td>assertText</td>
-  <td>search_info</td>
-  <td>*Cluster State*JVM Heap Usage*JVM Threads*JVM Uptime*Disk Usage*Open Files*CPU Load Average*Document Count*Last Sync*Optimization*</td>
+  <td>cluster_info</td>
+  <td>*Cluster State*Number of Nodes*Document Count*Last Sync*Optimization*</td>
+</tr>
+<tr>
+  <td>assertText</td>
+  <td>css=#cluster_info + br + table</td>
+  <td>*Node Type*JVM Heap Usage*JVM Threads*JVM Uptime*Disk Usage*Open Files*CPU Load Average*</td>
 </tr>
 </tbody>
 </table>
