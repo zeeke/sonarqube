@@ -11,7 +11,6 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class DesignUITest {
@@ -36,16 +35,6 @@ public class DesignUITest {
       "/selenium/design/pages/dependencies_page/standard_usage.html",
       "/selenium/design/pages/dependencies_page/too_short_search.html",
       "/selenium/design/pages/dependencies_page/should_not_display_project_name_in_breadcrumbs.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  @Ignore("Disabled because of false-positives on Oracle DB (why ?)")
-  @Test
-  public void test_libraries_page() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("design-page-libraries",
-      "/selenium/design/pages/libraries/display_tests.html",
-      "/selenium/design/pages/libraries/keyword_filter.html",
-      "/selenium/design/pages/libraries/module_libraries.html").build();
     orchestrator.executeSelenese(selenese);
   }
 
