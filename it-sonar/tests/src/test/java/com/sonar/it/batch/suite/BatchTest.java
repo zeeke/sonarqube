@@ -435,6 +435,24 @@ public class BatchTest {
     assertThat(xooSample.getCreationDate().getTime()).isGreaterThan(before).isLessThan(after);
   }
 
+  /**
+   * SONAR-4334
+   */
+  @Test
+  public void fail_if_project_date_is_older_than_latest_snapshot() {
+    SonarRunner analysis = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"));
+    analysis.setProperty("sonar.projectDate", "2014-01-01");
+    orchestrator.executeBuild(analysis);
+
+    analysis.setProperty("sonar.projectDate", "2000-10-19");
+    BuildResult result = orchestrator.executeBuildQuietly(analysis);
+
+    assertThat(result.getStatus()).isNotEqualTo(0);
+    assertThat(result.getLogs()).contains("'sonar.projectDate' property cannot be older than the date of the last known quality snapshot on this project. Value: '2000-10-19'. " +
+      "Latest quality snapshot: ");
+    assertThat(result.getLogs()).contains("This property may only be used to rebuild the past in a chronological order.");
+  }
+
   private Resource getResource(String key) {
     return orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics(key, "lines"));
   }
