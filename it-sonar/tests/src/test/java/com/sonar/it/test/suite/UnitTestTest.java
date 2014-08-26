@@ -32,7 +32,6 @@ public class UnitTestTest {
   public void testDynamicAnalysis() {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/with-tests"))
-      .setProperty("sonar.profile.java", "empty")
       .setGoals("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/with-tests", false), analysis);
 
@@ -65,7 +64,6 @@ public class UnitTestTest {
   public void should_not_display_branch_coverage_when_no_branch() {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("exclusions/java-half-covered"))
-      .setProperty("sonar.profile.java", "empty")
       .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
     orchestrator.executeBuilds(analysis);
 
@@ -90,7 +88,6 @@ public class UnitTestTest {
   public void shouldHaveTestFailures() {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/test-failures"))
-      .setProperty("sonar.profile.java", "empty")
       .addGoal("sonar:sonar");
     orchestrator.executeBuilds(newBuild("test/test-failures", true), analysis);
 
@@ -120,8 +117,7 @@ public class UnitTestTest {
 
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
-      .addGoal("sonar:sonar")
-      .setProperty("sonar.profile.java", "empty");
+      .addGoal("sonar:sonar");
     orchestrator.executeBuilds(build, analysis);
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:reuse-surefire-reports",
@@ -142,7 +138,6 @@ public class UnitTestTest {
     MavenBuild build = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
       .addGoal("sonar:sonar")
-      .setProperty("sonar.profile.java", "empty")
       .setProperty("sonar.surefire.reportsPath", "existing-test-and-testsuite-reports");
     orchestrator.executeBuild(build);
 
@@ -164,7 +159,6 @@ public class UnitTestTest {
     MavenBuild build = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
       .addGoal("sonar:sonar")
-      .setProperty("sonar.profile.java", "empty")
       .setProperty("sonar.surefire.reportsPath", "existing-testsuite-report");
     orchestrator.executeBuild(build);
 

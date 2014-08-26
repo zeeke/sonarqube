@@ -40,9 +40,6 @@ public class OldMultiLanguageTest {
   public void test_maven_inspection() {
     MavenBuild build = MavenBuild
       .create(ItUtils.locateProjectPom("batch/multi-languages"))
-      .setProperty("sonar.profile.java", "empty")
-      .setProperty("sonar.profile.js", "empty")
-      .setProperty("sonar.profile.py", "empty")
       .setCleanSonarGoals()
       .setDebugLogs(true);
     BuildResult result = orchestrator.executeBuild(build);
@@ -68,10 +65,7 @@ public class OldMultiLanguageTest {
 
   @Test
   public void test_sonar_runner_inspection() {
-    SonarRunner build = SonarRunner.create().setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"))
-      .setProperty("sonar.profile.java", "empty")
-      .setProperty("sonar.profile.js", "empty")
-      .setProperty("sonar.profile.py", "empty");
+    SonarRunner build = SonarRunner.create().setProjectDir(ItUtils.locateProjectDir("batch/multi-languages"));
     orchestrator.executeBuild(build);
 
     // modules

@@ -249,7 +249,7 @@ public class PurgeTest {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom(path))
       .setGoals("clean package", "sonar:sonar")
       .setProperty("skipTests", "true")
-      .setProperty("sonar.profile.java", "sonar-way-2.7");
+      .setProfile("sonar-way-2.7");
     if (extraProperties != null) {
       build.setProperties(extraProperties);
     }
