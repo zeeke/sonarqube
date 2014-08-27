@@ -45,7 +45,7 @@ public class AntTest {
   public static void startServer() {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
 
-    builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-groovy-plugin", "0.6"))
+    builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-groovy-plugin", "1.0.1"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-groovy.xml"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-classpath.xml"))
       .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/ant/it/profile-java-version.xml"))
