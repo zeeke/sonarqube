@@ -9,6 +9,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildFailureException;
 import com.sonar.orchestrator.build.BuildResult;
+import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -451,6 +452,32 @@ public class BatchTest {
     assertThat(result.getLogs()).contains("'sonar.projectDate' property cannot be older than the date of the last known quality snapshot on this project. Value: '2000-10-19'. " +
       "Latest quality snapshot: ");
     assertThat(result.getLogs()).contains("This property may only be used to rebuild the past in a chronological order.");
+  }
+
+  @Test
+  public void convert_library_into_module() {
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectDir("batch/dependencies/multi-modules-sample"))
+      .setGoals("clean install");
+    orchestrator.executeBuild(build);
+
+    // module_b1 is a dependency of sample so will be created as library into SQ
+    build = MavenBuild.create(ItUtils.locateProjectDir("batch/dependencies/sample"))
+      .setCleanPackageSonarGoals();
+    orchestrator.executeBuild(build);
+
+    Sonar sonar = orchestrator.getServer().getWsClient();
+    assertThat(sonar.findAll(new ResourceQuery().setQualifiers("TRK"))).hasSize(1);
+    // Resource query do not return library
+    assertThat(sonar.find(new ResourceQuery("com.sonarsource.it.samples:module_b1"))).isNull();
+
+    // Now try to analyze multi-modules-sample, and see if module_b1 is converted into a project
+    build = MavenBuild.create(ItUtils.locateProjectDir("batch/dependencies/multi-modules-sample"))
+      .setCleanPackageSonarGoals();
+    orchestrator.executeBuild(build);
+
+    assertThat(sonar.findAll(new ResourceQuery().setQualifiers("TRK"))).hasSize(2);
+
+    assertThat(sonar.find(new ResourceQuery("com.sonarsource.it.samples:module_b1"))).isNotNull();
   }
 
   private Resource getResource(String key) {
