@@ -35,11 +35,7 @@ import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.issue.Issues;
-import org.sonar.wsclient.services.Measure;
-import org.sonar.wsclient.services.PropertyUpdateQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.SourceQuery;
+import org.sonar.wsclient.services.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -143,6 +139,7 @@ public class PlatformTest {
     MavenBuild build = MavenBuild.create(new File(baseDir, "pom.xml"))
       .setEnvironmentVariable("MAVEN_OPTS", TestUtils.BATCH_JVM_OPTS)
       .setProperty("sonar.cpd.engine", "sonar")
+      .setProperty("sonar.language", "java")
       .setProfile("IT")
       // following property to not have differences between SonarQube Java version
       .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
@@ -233,7 +230,7 @@ public class PlatformTest {
       // SONAR-3793 and SONAR-3793
       assertThat(getMeasure(JAVA_VIEWS, "complexity").getIntValue(), is(19379));
       assertThat(getMeasure(JAVA_VIEWS, "function_complexity").getValue(), is(2.4));
-      assertThat(getMeasure(JAVA_VIEWS, "function_complexity_distribution").getData(), is("1=4914;2=1363;4=659;6=250;8=171;10=97;12=195"));
+      assertThat(getMeasure(JAVA_VIEWS, "function_complexity_distribution").getData(), is("1=4913;2=1363;4=659;6=250;8=171;10=97;12=195"));
       assertThat(getMeasure(JAVA_VIEWS, "class_complexity").getValue(), is(20.8));
       assertThat(getMeasure(JAVA_VIEWS, "file_complexity").getValue(), is(25.3));
       assertThat(getMeasure(JAVA_VIEWS, "file_complexity_distribution").getData(), is("0=229;5=129;10=139;20=93;30=93;60=41;90=43"));
