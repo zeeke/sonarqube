@@ -21,10 +21,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.sonar.wsclient.base.HttpException;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Server;
 import org.sonar.wsclient.services.ServerQuery;
 
@@ -162,6 +164,32 @@ public class ServerTest {
 
     } finally {
       httpclient.getConnectionManager().shutdown();
+    }
+  }
+
+  /**
+   * SONAR-5542
+   */
+  @Test
+  public void test_force_authentication_on_java_web_services() throws IOException {
+    orchestrator = Orchestrator.createEnv();
+    orchestrator.start();
+
+    try {
+      orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
+
+      // /batch/index should never need authentication
+      assertThat(orchestrator.getServer().wsClient().get("/batch/index")).isNotEmpty();
+
+      // but other java web services should need authentication
+      try {
+        orchestrator.getServer().wsClient().get("/api");
+      } catch (HttpException e) {
+        assertThat(e.getMessage()).contains("401");
+      }
+
+    } finally {
+      orchestrator.getServer().getAdminWsClient().delete(new PropertyDeleteQuery("sonar.forceAuthentication"));
     }
   }
 
