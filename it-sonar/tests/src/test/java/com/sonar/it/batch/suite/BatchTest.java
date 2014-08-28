@@ -456,12 +456,12 @@ public class BatchTest {
 
   @Test
   public void convert_library_into_module() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectDir("batch/dependencies/multi-modules-sample"))
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/dependencies/multi-modules-sample"))
       .setGoals("clean install");
     orchestrator.executeBuild(build);
 
     // module_b1 is a dependency of sample so will be created as library into SQ
-    build = MavenBuild.create(ItUtils.locateProjectDir("batch/dependencies/sample"))
+    build = MavenBuild.create(ItUtils.locateProjectPom("batch/dependencies/sample"))
       .setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
 
@@ -471,7 +471,7 @@ public class BatchTest {
     assertThat(sonar.find(new ResourceQuery("com.sonarsource.it.samples:module_b1"))).isNull();
 
     // Now try to analyze multi-modules-sample, and see if module_b1 is converted into a project
-    build = MavenBuild.create(ItUtils.locateProjectDir("batch/dependencies/multi-modules-sample"))
+    build = MavenBuild.create(ItUtils.locateProjectPom("batch/dependencies/multi-modules-sample"))
       .setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
 
