@@ -138,7 +138,6 @@ public class PlatformTest {
     MavenBuild build = MavenBuild.create(new File(baseDir, "pom.xml"))
       .setEnvironmentVariable("MAVEN_OPTS", TestUtils.BATCH_JVM_OPTS)
       .setProperty("sonar.cpd.engine", "sonar")
-      .setProperty("sonar.language", "java")
       .setProfile("IT")
       // following property to not have differences between SonarQube Java version
       .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
