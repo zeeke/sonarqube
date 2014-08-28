@@ -58,7 +58,6 @@ public class TestUtils {
       .activateLicense("cpp")
       .activateLicense("devcockpit")
       .activateLicense("natural")
-      .activateLicense("objc")
       .activateLicense("pacbase")
       .activateLicense("pli")
       .activateLicense("plsql")
