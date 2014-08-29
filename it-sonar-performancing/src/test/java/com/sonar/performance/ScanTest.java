@@ -55,7 +55,7 @@ public class ScanTest extends PerfTestCase {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 10000L);
+    assertDurationAround(duration, 9500L);
   }
 
   @Test
@@ -121,7 +121,7 @@ public class ScanTest extends PerfTestCase {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 35000L);
+    assertDurationAround(duration, 43000L);
   }
 
   private static SonarRunner newSonarRunner(String sonarRunnerOpts, String... props) {
