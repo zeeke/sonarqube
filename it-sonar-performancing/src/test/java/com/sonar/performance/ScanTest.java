@@ -9,12 +9,21 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ScanTest extends PerfTestCase {
+
+  @Rule
+  public TemporaryFolder temp = new TemporaryFolder();
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
@@ -42,11 +51,11 @@ public class ScanTest extends PerfTestCase {
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true"
-    );
+      );
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationLessThan(duration, 12000L);
+    assertDurationAround(duration, 10000L);
   }
 
   @Test
@@ -56,7 +65,7 @@ public class ScanTest extends PerfTestCase {
       "sonar.profile", "one-xoo-issue-per-line",
       "sonar.dryRun", "true",
       "sonar.showProfiling", "true"
-    );
+      );
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long firstDuration = System.currentTimeMillis() - start;
@@ -68,14 +77,51 @@ public class ScanTest extends PerfTestCase {
     long secondDuration = System.currentTimeMillis() - start;
     System.out.println("Second preview analysis: " + secondDuration + "ms");
 
-    assertDurationLessThan(secondDuration, 12000L);
+    assertDurationAround(secondDuration, 9800L);
   }
 
   @Test
   public void should_not_fail_with_limited_xmx_memory_and_no_coverage_per_test() {
     orchestrator.executeBuild(
       newSonarRunner("-Xmx80m -server -XX:-HeapDumpOnOutOfMemoryError")
-    );
+      );
+  }
+
+  @Test
+  public void computeSyntaxHighlightingOnBigFiles() throws IOException {
+
+    File baseDir = temp.newFolder();
+    File srcDir = new File(baseDir, "src");
+    srcDir.mkdir();
+
+    int nbFiles = 100;
+    int chunkSize = 100000;
+    for (int nb = 1; nb <= nbFiles; nb++) {
+      File xooFile = new File(srcDir, "sample" + nb + ".xoo");
+      File xoohighlightingFile = new File(srcDir, "sample" + nb + ".xoo.highlighting");
+      FileUtils.write(xooFile, "Sample xoo\ncontent");
+      StringBuilder sb = new StringBuilder(16 * chunkSize);
+      for (int i = 0; i < chunkSize; i++) {
+        sb.append(i).append(":").append(i + 1).append(":s\n");
+      }
+      FileUtils.write(xoohighlightingFile, sb.toString());
+    }
+
+    SonarRunner runner = SonarRunner.create()
+      .setProperties(
+        "sonar.projectKey", "highlighting",
+        "sonar.projectName", "highlighting",
+        "sonar.projectVersion", "1.0",
+        "sonar.sources", "src",
+        "sonar.showProfiling", "true")
+      .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-Xmx512m -server -XX:MaxPermSize=64m")
+      .setRunnerVersion("2.4")
+      .setProjectDir(baseDir);
+
+    long start = System.currentTimeMillis();
+    orchestrator.executeBuild(runner);
+    long duration = System.currentTimeMillis() - start;
+    assertDurationAround(duration, 35000L);
   }
 
   private static SonarRunner newSonarRunner(String sonarRunnerOpts, String... props) {
