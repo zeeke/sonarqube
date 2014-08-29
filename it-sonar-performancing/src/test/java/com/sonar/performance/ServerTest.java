@@ -29,7 +29,7 @@ public class ServerTest extends PerfTestCase {
     try {
       long startupDuration = start(orchestrator);
       System.out.printf("Server started in %d ms\n", startupDuration);
-      //assertDurationAround(startupDuration, 22000);
+      assertDurationAround(startupDuration, 22000);
 
       long shutdownDuration = stop(orchestrator);
       // can't use percent margins because logs are second-grained but not milliseconds
