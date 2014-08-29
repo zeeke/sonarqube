@@ -111,7 +111,7 @@ public class ServerTest {
 
       // SONAR-3127 - hide passwords
       "/selenium/server/settings/hide-passwords.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -133,7 +133,7 @@ public class ServerTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("property_relocation",
       "/selenium/server/settings/property_relocation.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -171,7 +171,7 @@ public class ServerTest {
    * SONAR-5542
    */
   @Test
-  public void test_force_authentication_on_java_web_services() throws IOException {
+  public void force_authentication_should_be_used_on_java_web_services_but_not_on_batch_index_and_file() throws IOException {
     orchestrator = Orchestrator.createEnv();
     orchestrator.start();
 
@@ -179,7 +179,28 @@ public class ServerTest {
       orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.forceAuthentication", "true"));
 
       // /batch/index should never need authentication
-      assertThat(orchestrator.getServer().wsClient().get("/batch/index")).isNotEmpty();
+      String batchIndex = orchestrator.getServer().wsClient().get("/batch/index");
+      assertThat(batchIndex).isNotEmpty();
+
+      String jar = batchIndex.split("\\|")[0];
+
+      // /batch/file should never need authentication
+      HttpClient httpclient = new DefaultHttpClient();
+      try {
+        HttpGet get = new HttpGet(orchestrator.getServer().getUrl() + "/batch/file?name=" + jar);
+        HttpResponse response = httpclient.execute(get);
+        assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+        EntityUtils.consume(response.getEntity());
+
+        // As Sonar runner is still using /batch/key, we have to also verify it
+        get = new HttpGet(orchestrator.getServer().getUrl() + "/batch/" + jar);
+        response = httpclient.execute(get);
+        assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+        EntityUtils.consume(response.getEntity());
+
+      } finally {
+        httpclient.getConnectionManager().shutdown();
+      }
 
       // but other java web services should need authentication
       try {
@@ -190,6 +211,28 @@ public class ServerTest {
 
     } finally {
       orchestrator.getServer().getAdminWsClient().delete(new PropertyDeleteQuery("sonar.forceAuthentication"));
+    }
+  }
+
+  @Test
+  public void http_response_should_be_gzipped() throws IOException {
+    HttpClient httpclient = new DefaultHttpClient();
+    try {
+      HttpGet get = new HttpGet(orchestrator.getServer().getUrl());
+      HttpResponse response = httpclient.execute(get);
+
+      assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+      assertThat(response.getLastHeader("Content-Encoding")).isNull();
+      EntityUtils.consume(response.getEntity());
+
+      get = new HttpGet(orchestrator.getServer().getUrl());
+      get.addHeader("Accept-Encoding", "gzip, deflate");
+      response = httpclient.execute(get);
+      assertThat(response.getLastHeader("Content-Encoding").getValue()).isEqualTo("gzip");
+      EntityUtils.consume(response.getEntity());
+
+    } finally {
+      httpclient.getConnectionManager().shutdown();
     }
   }
 
