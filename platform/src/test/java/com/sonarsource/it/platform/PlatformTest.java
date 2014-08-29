@@ -255,7 +255,7 @@ public class PlatformTest {
     }
     if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
       // RFC removed from 4.2
-      assertThat(getMeasure(JAVA_VIEWS, "rfc").getValue()).isGreaterThan(18.7);
+      assertThat(getMeasure(JAVA_VIEWS, "rfc").getValue()).isEqualTo(18.7);
     }
   }
 
