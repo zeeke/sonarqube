@@ -25,7 +25,6 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.version.Version;
-import org.fest.assertions.Delta;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -41,8 +40,6 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 
 public class PlatformTest {
 
@@ -152,29 +149,29 @@ public class PlatformTest {
 
   @Test
   public void cobolProjectInfo() {
-    assertThat(wsClient.find(new ResourceQuery(COBOL_PROJECT)).getName(), is("Test Custom Check"));
+    assertThat(wsClient.find(new ResourceQuery(COBOL_PROJECT)).getName()).isEqualTo("Test Custom Check");
   }
 
   @Test
   public void cobolProjectMeasures() {
-    assertThat(getMeasure(COBOL_PROJECT, "files").getIntValue(), is(1));
+    assertThat(getMeasure(COBOL_PROJECT, "files").getIntValue()).isEqualTo(1);
   }
 
   @Test
   public void cobolFileMeasures() {
-    assertThat(getMeasure(cobolFileKey(), "violations").getIntValue(), is(1));
+    assertThat(getMeasure(cobolFileKey(), "violations").getIntValue()).isEqualTo(1);
   }
 
   @Test
   public void cobolFileIssues() {
     Issues issues = orchestrator.getServer().wsClient().issueClient().find(IssueQuery.create().components(cobolFileKey()));
-    assertThat(issues.list().size(), is(1));
+    assertThat(issues.list().size()).isEqualTo(1);
 
     Issue issue = issues.list().get(0);
-    assertThat(issue.ruleKey(), is("cobol:com.mycompany.cobol.sample.checks.SampleCheck"));
-    assertThat(issue.line(), is(3));
-    assertThat(issue.severity(), is("INFO"));
-    assertThat(issues.rule(issue).name(), is("Sample check"));
+    assertThat(issue.ruleKey()).isEqualTo("cobol:com.mycompany.cobol.sample.checks.SampleCheck");
+    assertThat(issue.line()).isEqualTo(3);
+    assertThat(issue.severity()).isEqualTo("INFO");
+    assertThat(issues.rule(issue).name()).isEqualTo("Sample check");
   }
 
   private String cobolFileKey() {
@@ -187,17 +184,17 @@ public class PlatformTest {
 
   @Test
   public void viewsInfo() {
-    assertThat(wsClient.find(new ResourceQuery(JAVA_STRUTS)).getName(), is("Struts"));
-    assertThat(wsClient.find(new ResourceQuery(JAVA_COLLECTIONS)).getName(), is("Commons Collections"));
-    assertThat(wsClient.find(new ResourceQuery(JAVA_VIEWS)).getName(), is("Java"));
-    assertThat(wsClient.find(new ResourceQuery(JAVA_COBOL_VIEWS)).getName(), is("Java+Cobol"));
+    assertThat(wsClient.find(new ResourceQuery(JAVA_STRUTS)).getName()).isEqualTo("Struts");
+    assertThat(wsClient.find(new ResourceQuery(JAVA_COLLECTIONS)).getName()).isEqualTo("Commons Collections");
+    assertThat(wsClient.find(new ResourceQuery(JAVA_VIEWS)).getName()).isEqualTo("Java");
+    assertThat(wsClient.find(new ResourceQuery(JAVA_COBOL_VIEWS)).getName()).isEqualTo("Java+Cobol");
   }
 
   @Test
   public void viewsLOC() {
-    assertThat(wsClient.find(ResourceQuery.createForMetrics(JAVA_STRUTS, "ncloc")).getMeasure("ncloc").getIntValue(), is(50080));
-    assertThat(wsClient.find(ResourceQuery.createForMetrics(JAVA_COLLECTIONS, "ncloc")).getMeasure("ncloc").getIntValue(), is(26558));
-    assertThat(wsClient.find(ResourceQuery.createForMetrics(JAVA_VIEWS, "ncloc")).getMeasure("ncloc").getIntValue(), is(76638));
+    assertThat(wsClient.find(ResourceQuery.createForMetrics(JAVA_STRUTS, "ncloc")).getMeasure("ncloc").getIntValue()).isEqualTo(50080);
+    assertThat(wsClient.find(ResourceQuery.createForMetrics(JAVA_COLLECTIONS, "ncloc")).getMeasure("ncloc").getIntValue()).isEqualTo(26558);
+    assertThat(wsClient.find(ResourceQuery.createForMetrics(JAVA_VIEWS, "ncloc")).getMeasure("ncloc").getIntValue()).isEqualTo(76638);
   }
 
   /**
@@ -205,40 +202,40 @@ public class PlatformTest {
    */
   @Test
   public void viewsMeasures() {
-    assertThat(getMeasure(JAVA_VIEWS, "ncloc").getIntValue(), is(76638));
+    assertThat(getMeasure(JAVA_VIEWS, "ncloc").getIntValue()).isGreaterThan(70000).isLessThan(80000);
     assertThat(getMeasure(JAVA_VIEWS, "lines").getIntValue()).isGreaterThan(179000);
-    assertThat(getMeasure(JAVA_VIEWS, "files").getIntValue(), is(767));
+    assertThat(getMeasure(JAVA_VIEWS, "files").getIntValue()).isGreaterThan(700).isLessThan(800);
     assertThat(getMeasure(JAVA_VIEWS, "statements").getIntValue()).isGreaterThan(33000);
-    assertThat(getMeasure(JAVA_VIEWS, "classes").getIntValue(), is(930));
+    assertThat(getMeasure(JAVA_VIEWS, "classes").getIntValue()).isGreaterThan(900);
     if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
       // metric "packages" removed from 4.2
-      assertThat(getMeasure(JAVA_VIEWS, "packages").getIntValue(), is(61));
+      assertThat(getMeasure(JAVA_VIEWS, "packages").getIntValue()).isGreaterThan(60);
     }
-    assertThat(getMeasure(JAVA_VIEWS, "comment_lines_density").getValue()).isEqualTo(34.7, Delta.delta(0.05));
+    assertThat(getMeasure(JAVA_VIEWS, "comment_lines_density").getValue()).isGreaterThan(30);
     assertThat(getMeasure(JAVA_VIEWS, "comment_lines").getIntValue()).isGreaterThan(40000);
-    assertThat(getMeasure(JAVA_VIEWS, "public_api").getIntValue(), is(7480));
-    assertThat(getMeasure(JAVA_VIEWS, "public_undocumented_api").getIntValue(), is(2296));
-    assertThat(getMeasure(JAVA_VIEWS, "public_documented_api_density").getValue(), is(69.3));
-    assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines").getIntValue(), is(31312));
-    assertThat(getMeasure(JAVA_VIEWS, "duplicated_blocks").getIntValue(), is(1572));
-    assertThat(getMeasure(JAVA_VIEWS, "duplicated_files").getIntValue(), is(201));
-    assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines_density").getValue()).isEqualTo(17.5, Delta.delta(0.2));
+    assertThat(getMeasure(JAVA_VIEWS, "public_api").getIntValue()).isGreaterThan(7000).isLessThan(10000);
+    assertThat(getMeasure(JAVA_VIEWS, "public_undocumented_api").getIntValue()).isGreaterThan(2000);
+    assertThat(getMeasure(JAVA_VIEWS, "public_documented_api_density").getValue()).isGreaterThan(60);
+    assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines").getIntValue()).isGreaterThan(30000);
+    assertThat(getMeasure(JAVA_VIEWS, "duplicated_blocks").getIntValue()).isGreaterThan(1500);
+    assertThat(getMeasure(JAVA_VIEWS, "duplicated_files").getIntValue()).isGreaterThan(200);
+    assertThat(getMeasure(JAVA_VIEWS, "duplicated_lines_density").getValue()).isGreaterThan(15).isLessThan(20);
 
     if (orchestrator.getServer().version().isGreaterThanOrEquals("3.3")) {
       // SONAR-3793 and SONAR-3793
-      assertThat(getMeasure(JAVA_VIEWS, "complexity").getIntValue(), is(19379));
-      assertThat(getMeasure(JAVA_VIEWS, "function_complexity").getValue(), is(2.4));
-      assertThat(getMeasure(JAVA_VIEWS, "function_complexity_distribution").getData(), notNullValue());
-      assertThat(getMeasure(JAVA_VIEWS, "class_complexity").getValue(), is(20.8));
-      assertThat(getMeasure(JAVA_VIEWS, "file_complexity").getValue(), is(25.3));
-      assertThat(getMeasure(JAVA_VIEWS, "file_complexity_distribution").getData(), notNullValue());
+      assertThat(getMeasure(JAVA_VIEWS, "complexity").getIntValue()).isGreaterThan(19000);
+      assertThat(getMeasure(JAVA_VIEWS, "function_complexity").getValue()).isGreaterThan(2);
+      assertThat(getMeasure(JAVA_VIEWS, "function_complexity_distribution").getData()).isNotNull();
+      assertThat(getMeasure(JAVA_VIEWS, "class_complexity").getValue()).isGreaterThan(20);
+      assertThat(getMeasure(JAVA_VIEWS, "file_complexity").getValue()).isGreaterThan(25);
+      assertThat(getMeasure(JAVA_VIEWS, "file_complexity_distribution").getData()).isNotNull();
     } else {
-      assertThat(getMeasure(JAVA_VIEWS, "complexity").getIntValue(), is(19688));
-      assertThat(getMeasure(JAVA_VIEWS, "function_complexity").getValue(), is(2.5));
-      assertThat(getMeasure(JAVA_VIEWS, "function_complexity_distribution").getData(),notNullValue());
-      assertThat(getMeasure(JAVA_VIEWS, "class_complexity").getValue(), is(21.2));
-      assertThat(getMeasure(JAVA_VIEWS, "file_complexity").getValue(), is(25.7));
-      assertThat(getMeasure(JAVA_VIEWS, "file_complexity_distribution").getData(), notNullValue());
+      assertThat(getMeasure(JAVA_VIEWS, "complexity").getIntValue()).isGreaterThan(19000);
+      assertThat(getMeasure(JAVA_VIEWS, "function_complexity").getValue()).isGreaterThan(2.0);
+      assertThat(getMeasure(JAVA_VIEWS, "function_complexity_distribution").getData()).isNotNull();
+      assertThat(getMeasure(JAVA_VIEWS, "class_complexity").getValue()).isGreaterThan(20);
+      assertThat(getMeasure(JAVA_VIEWS, "file_complexity").getValue()).isGreaterThan(25);
+      assertThat(getMeasure(JAVA_VIEWS, "file_complexity_distribution").getData()).isNotNull();
     }
 
     assertThat(getMeasure(JAVA_VIEWS, "violations").getIntValue()).isGreaterThan(9000);
@@ -246,19 +243,19 @@ public class PlatformTest {
     assertThat(getMeasure(JAVA_VIEWS, "violations_density").getValue()).isGreaterThan(80.0);
 
     assertThat(getMeasure(JAVA_VIEWS, "coverage").getValue()).isGreaterThan(30);
-    assertThat(getMeasure(JAVA_VIEWS, "tests").getIntValue(), is(13346));
-    assertThat(getMeasure(JAVA_VIEWS, "test_success_density").getValue(), is(100.0));
-    assertThat(getMeasure(JAVA_VIEWS, "test_errors").getIntValue(), is(0));
+    assertThat(getMeasure(JAVA_VIEWS, "tests").getIntValue()).isGreaterThan(13000);
+    assertThat(getMeasure(JAVA_VIEWS, "test_success_density").getValue()).isEqualTo(100.0);
+    assertThat(getMeasure(JAVA_VIEWS, "test_errors").getIntValue()).isEqualTo(0);
 
-    assertThat(getMeasure(JAVA_VIEWS, "package_tangle_index").getValue(), is(30.8));
-    assertThat(getMeasure(JAVA_VIEWS, "package_feedback_edges").getIntValue(), is(23));
+    assertThat(getMeasure(JAVA_VIEWS, "package_tangle_index").getValue()).isGreaterThan(30);
+    assertThat(getMeasure(JAVA_VIEWS, "package_feedback_edges").getIntValue()).isGreaterThan(20);
     if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.1")) {
       // SONAR-4853 LCOM4 is no more computed on SQ 4.1
-      assertThat(getMeasure(JAVA_VIEWS, "lcom4").getValue(), is(1.0));
+      assertThat(getMeasure(JAVA_VIEWS, "lcom4").getValue()).isEqualTo(1.0);
     }
     if (!orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
       // RFC removed from 4.2
-      assertThat(getMeasure(JAVA_VIEWS, "rfc").getValue(), is(18.7));
+      assertThat(getMeasure(JAVA_VIEWS, "rfc").getValue()).isGreaterThan(18.7);
     }
   }
 
@@ -267,8 +264,8 @@ public class PlatformTest {
    */
   @Test
   public void viewsShouldNotAggregateComplexityDistributionForDifferentLanguages() {
-    assertThat(getMeasure(JAVA_COBOL_VIEWS, "function_complexity_distribution"), is(nullValue()));
-    assertThat(getMeasure(JAVA_COBOL_VIEWS, "file_complexity_distribution"), is(nullValue()));
+    assertThat(getMeasure(JAVA_COBOL_VIEWS, "function_complexity_distribution")).isNull();
+    assertThat(getMeasure(JAVA_COBOL_VIEWS, "file_complexity_distribution")).isNull();
   }
 
   // -------------------------------------------------------------------------------------
@@ -277,12 +274,12 @@ public class PlatformTest {
 
   @Test
   public void flexProjectInfo() {
-    assertThat(wsClient.find(new ResourceQuery(FLEX_PROJECT)).getName(), is("as3corelib"));
+    assertThat(wsClient.find(new ResourceQuery(FLEX_PROJECT)).getName()).isEqualTo("as3corelib");
   }
 
   @Test
   public void flexFileSource() {
-    assertThat(wsClient.find(new SourceQuery(is_sonar_4_2_or_more ? FLEX_FILE : FLEX_FILE_DEPRECATED_KEY)).size(), is(239));
+    assertThat(wsClient.find(new SourceQuery(is_sonar_4_2_or_more ? FLEX_FILE : FLEX_FILE_DEPRECATED_KEY)).size()).isEqualTo(239);
   }
 
   private Measure getMeasure(String resourceKey, String metricKey) {
