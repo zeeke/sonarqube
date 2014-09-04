@@ -17,7 +17,7 @@ import org.junit.Test;
 public class DifferentialMetricsTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv()
+  public static final Orchestrator orchestrator = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
     .restoreProfileAtStartup(FileLocation.ofClasspath("/com/sonar/it/history/DifferentialMetricsTest/one-issue-per-line-profile.xml"))
     .build();
