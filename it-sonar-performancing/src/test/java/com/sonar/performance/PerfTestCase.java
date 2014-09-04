@@ -18,12 +18,12 @@ public abstract class PerfTestCase {
 
   void assertDurationAround(long duration, long expectedDuration) {
     double variation = 100.0 * (0.0 + duration - expectedDuration) / expectedDuration;
-    assertThat(Math.abs(variation)).as(String.format("Expected %d ms, got %d ms", expectedDuration, duration)).isLessThan(ACCEPTED_DURATION_VARIATION_IN_PERCENTS);
     System.out.printf("Test %s : executed in %d ms (%.2f %% from target)\n", testName.getMethodName(), duration, variation);
+    assertThat(Math.abs(variation)).as(String.format("Expected %d ms, got %d ms", expectedDuration, duration)).isLessThan(ACCEPTED_DURATION_VARIATION_IN_PERCENTS);
   }
 
   void assertDurationLessThan(long duration, long maxDuration) {
-    assertThat(duration).as(String.format("Expected less than %d ms, got %d ms", maxDuration, duration)).isLessThanOrEqualTo(maxDuration);
     System.out.printf("Test %s : %d ms (max allowed is %d)\n", testName.getMethodName(), duration, maxDuration);
+    assertThat(duration).as(String.format("Expected less than %d ms, got %d ms", maxDuration, duration)).isLessThanOrEqualTo(maxDuration);
   }
 }
