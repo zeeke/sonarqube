@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -41,6 +42,7 @@ public class HttpsTest {
     }
   }
 
+  @Ignore("CRITICAL - too slow - waiting for fix of process monitoring")
   @Test
   public void fail_to_start_if_bad_keystore_credentials() throws Exception {
     try {
