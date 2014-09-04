@@ -37,7 +37,7 @@ public class ServerAdministrationTest {
   @Test
   public void get_sonar_version() {
     String version = orchestrator.getServer().getWsClient().find(new ServerQuery()).getVersion();
-    if (!StringUtils.startsWithAny(version, new String[]{"3.7", "4."})) {
+    if (!StringUtils.startsWithAny(version, new String[]{"5.", "6."})) {
       fail("Bad version: " + version);
     }
   }
