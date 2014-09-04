@@ -27,9 +27,17 @@ public class ServerTest extends PerfTestCase {
       .addServerJvmArgument("-server")
       .build();
     try {
+      long expectedDuration = 39000;
       long startupDuration = start(orchestrator);
       System.out.printf("Server started in %d ms\n", startupDuration);
-      assertDurationAround(startupDuration, 39000);
+      String logs = FileUtils.readFileToString(orchestrator.getServer().getLogs());
+      if (logs.contains("Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took")) {
+        // see http://wiki.apache.org/tomcat/HowTo/FasterStartUp#Entropy_Source
+        System.out.println("Warning - creation of Java SecureRandom instances was slow. Increasing expected startup duration");
+        // when occurs, seems to be always 17 seconds on the performance machine
+        expectedDuration -= 17500;
+      }
+      assertDurationAround(startupDuration, expectedDuration);
 
       long shutdownDuration = stop(orchestrator);
       // can't use percent margins because logs are second-grained but not milliseconds
