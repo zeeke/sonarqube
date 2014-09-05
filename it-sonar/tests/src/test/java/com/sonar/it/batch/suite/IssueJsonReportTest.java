@@ -7,7 +7,7 @@ package com.sonar.it.batch.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.build.MavenBuild;
+import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -33,26 +33,22 @@ public class IssueJsonReportTest {
 
   @Test
   public void test_json_report() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/IssueJsonReportTest/issue-tracking-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
 
-    File rootPomV1 = ItUtils.locateProjectPom("issue/tracking-v1");
-    MavenBuild scan = MavenBuild.create(rootPomV1)
-      .setCleanSonarGoals()
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("batch/tracking/v1"))
       .setProperty("sonar.projectDate", "2013-05-01")
-      .setProfile("issue-tracking");
+      .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
-    // Dry-run scan -> 2 new issues and 2 existing issues
-    File rootPomV2 = ItUtils.locateProjectPom("issue/tracking-v2");
-    MavenBuild dryRunScan = MavenBuild.create(rootPomV2)
-      .setCleanSonarGoals()
-      .setProperty("sonar.dynamicAnalysis", "false")
+    // Dry-run scan -> 2 new issues and 13 existing issues
+    File projectDir = ItUtils.locateProjectDir("batch/tracking/v2");
+    SonarRunner dryRunScan = SonarRunner.create(projectDir)
       .setProperty("sonar.dryRun", "true")
       .setProperty("sonar.projectDate", "2013-05-02")
-      .setProfile("issue-tracking");
+      .setProfile("one-issue-per-line");
     orchestrator.executeBuild(dryRunScan);
 
-    File report = new File(rootPomV2.getParentFile(), "target/sonar/sonar-report.json");
+    File report = new File(projectDir, ".sonar/sonar-report.json");
     assertThat(report).isFile().exists();
 
     String json = sanitize(FileUtils.readFileToString(report));
@@ -62,28 +58,24 @@ public class IssueJsonReportTest {
 
   @Test
   public void test_json_report_on_branch() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/IssueJsonReportTest/issue-tracking-profile.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
 
-    File rootPomV1 = ItUtils.locateProjectPom("issue/tracking-v1");
-    MavenBuild scan = MavenBuild.create(rootPomV1)
-      .setCleanSonarGoals()
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("batch/tracking/v1"))
       .setProperty("sonar.projectDate", "2013-05-01")
       .setProperty("sonar.branch", "mybranch")
-      .setProfile("issue-tracking");
+      .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
-    // Dry-run scan -> 2 new issues and 2 existing issues
-    File rootPomV2 = ItUtils.locateProjectPom("issue/tracking-v2");
-    MavenBuild dryRunScan = MavenBuild.create(rootPomV2)
-      .setCleanSonarGoals()
-      .setProperty("sonar.dynamicAnalysis", "false")
+    // Dry-run scan -> 2 new issues and 13 existing issues
+    File projectDir = ItUtils.locateProjectDir("batch/tracking/v2");
+    SonarRunner dryRunScan = SonarRunner.create(projectDir)
       .setProperty("sonar.dryRun", "true")
       .setProperty("sonar.projectDate", "2013-05-02")
       .setProperty("sonar.branch", "mybranch")
-      .setProfile("issue-tracking");
+      .setProfile("one-issue-per-line");
     orchestrator.executeBuild(dryRunScan);
 
-    File report = new File(rootPomV2.getParentFile(), "target/sonar/sonar-report.json");
+    File report = new File(projectDir, ".sonar/sonar-report.json");
     assertThat(report).isFile().exists();
 
     String json = sanitize(FileUtils.readFileToString(report));
@@ -96,30 +88,29 @@ public class IssueJsonReportTest {
    */
   @Test
   public void test_json_report_on_sub_module() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/IssueJsonReportTest/issues.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
 
     orchestrator.getServer().provisionProject("com.sonarsource.it.samples:multi-modules-sample", "Multi-module sample");
-    orchestrator.getServer().associateProjectToQualityProfile("com.sonarsource.it.samples:multi-modules-sample", "java", "issues");
+    orchestrator.getServer().associateProjectToQualityProfile("com.sonarsource.it.samples:multi-modules-sample", "xoo", "one-issue-per-line");
 
-    File rootPom = ItUtils.locateProjectPom("shared/multi-modules-sample");
-    MavenBuild scan = MavenBuild.create(rootPom)
-      .setCleanSonarGoals()
-      .setProperty("sonar.projectDate", "2013-05-01")
-      // Should force locale to have checkstyle/PMD violation messages in english
-      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US");
+    File rootDir = ItUtils.locateProjectDir("shared/xoo-multi-modules-sample");
+    SonarRunner scan = SonarRunner.create(rootDir)
+      .setProperty("sonar.projectDate", "2013-05-01");
     orchestrator.executeBuild(scan);
 
     // Dry-run scan on a module -> no new issues
-    File modulePom = ItUtils.locateProjectPom("shared/multi-modules-sample/module_a/module_a1");
-    MavenBuild dryRunScan = MavenBuild.create(modulePom)
-      .setCleanSonarGoals()
+    File moduleDir = ItUtils.locateProjectDir("shared/xoo-multi-modules-sample/module_a/module_a1");
+    SonarRunner dryRunScan = SonarRunner.create(moduleDir)
+      .setProperty("sonar.projectKey", "com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1")
+      .setProperty("sonar.projectVersion", "1.0-SNAPSHOT")
+      .setProperty("sonar.projectName", "ModuleA1")
+      .setProperty("sonar.sources", "src/main/xoo")
+      .setProperty("sonar.language", "xoo")
       .setProperty("sonar.dryRun", "true")
-      .setProperty("sonar.projectDate", "2013-05-02")
-      // Should force locale to have checkstyle/PMD violation messages in english
-      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US");
+      .setProperty("sonar.projectDate", "2013-05-02");
     orchestrator.executeBuild(dryRunScan);
 
-    File report = new File(modulePom.getParentFile(), "target/sonar/sonar-report.json");
+    File report = new File(moduleDir, ".sonar/sonar-report.json");
     assertThat(report).isFile().exists();
 
     String json = sanitize(FileUtils.readFileToString(report));
@@ -133,28 +124,22 @@ public class IssueJsonReportTest {
    */
   @Test
   public void test_json_report_on_root_module() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/batch/IssueJsonReportTest/issues.xml"));
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
 
-    File rootPom = ItUtils.locateProjectPom("shared/multi-modules-sample");
-    MavenBuild scan = MavenBuild.create(rootPom)
-      .setCleanSonarGoals()
+    File rootDir = ItUtils.locateProjectDir("shared/xoo-multi-modules-sample");
+    SonarRunner scan = SonarRunner.create(rootDir)
       .setProperty("sonar.projectDate", "2013-05-01")
-      // Checkstyle issues messages are localized
-      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US")
-      .setProfile("issues");
+      .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
     // Dry-run scan -> no new issues
-    MavenBuild dryRunScan = MavenBuild.create(rootPom)
-      .setCleanSonarGoals()
+    SonarRunner dryRunScan = SonarRunner.create(rootDir)
       .setProperty("sonar.dryRun", "true")
       .setProperty("sonar.projectDate", "2013-05-02")
-      // Checkstyle issues messages are localized
-      .setEnvironmentVariable("MAVEN_OPTS", "-Duser.language=en -Duser.region=US")
-      .setProfile("issues");
+      .setProfile("one-issue-per-line");
     orchestrator.executeBuild(dryRunScan);
 
-    File report = new File(rootPom.getParentFile(), "target/sonar/sonar-report.json");
+    File report = new File(rootDir, ".sonar/sonar-report.json");
     assertThat(report).isFile().exists();
 
     String json = sanitize(FileUtils.readFileToString(report));

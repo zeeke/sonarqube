@@ -37,9 +37,5 @@ public class BatchTestSuite {
     // used by MultiLanguageTest
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.php", "sonar-php-plugin", "2.1"))
 
-    // used by IssueJsonReportTest
-    .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-checkstyle-plugin", "2.1"))
-    .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1"))
-
     .build();
 }
