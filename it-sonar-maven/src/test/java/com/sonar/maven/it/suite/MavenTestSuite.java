@@ -23,8 +23,8 @@ public class MavenTestSuite {
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
 
-    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.5"))
-    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.0"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "2.0"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.3"))
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-web-plugin", "2.2"))
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.xml", "sonar-xml-plugin", "1.2"))
 

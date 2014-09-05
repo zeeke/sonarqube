@@ -9,7 +9,6 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.MavenLocation;
-import com.sonar.orchestrator.version.Version;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -36,7 +35,7 @@ public abstract class RunnerTestCase {
   public static void startServer() {
     OrchestratorBuilder builder = Orchestrator.builderEnv();
 
-    builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "1.4"));
+    builder.addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "2.0"));
 
     orchestrator = builder.build();
     orchestrator.start();
