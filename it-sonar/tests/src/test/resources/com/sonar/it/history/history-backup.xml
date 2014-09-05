@@ -4,14 +4,9 @@
   <language>java</language>
   <rules>
     <rule>
-      <repositoryKey>pmd</repositoryKey>
-      <key>UnusedLocalVariable</key>
+      <repositoryKey>squid</repositoryKey>
+      <key>S1481</key>
       <priority>MAJOR</priority>
-    </rule>
-    <rule>
-      <repositoryKey>checkstyle</repositoryKey>
-      <key>com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck</key>
-      <priority>MINOR</priority>
     </rule>
   </rules>
 </profile>
