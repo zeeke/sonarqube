@@ -63,6 +63,23 @@ public class DependencyTest {
         jsonDeps, false);
   }
 
+  // SONAR-1587
+  @Test
+  public void multi_module_deps_with_branch() throws JSONException {
+    // Module B depends on Module A
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/dependencies/multi-modules-with-deps"))
+      .setCleanPackageSonarGoals()
+      .setProperty("sonar.branch", "myBranch");
+    orchestrator.executeBuild(build);
+
+    String jsonDeps = orchestrator.getServer().adminWsClient().post("/api/dependency_tree", "resource", "com.sonarsource.it.samples:module_b:myBranch", "format", "json");
+    JSONAssert
+      .assertEquals(
+        "[{\"w\":1,\"u\":\"compile\",\"s\":\"PRJ\",\"q\":\"BRC\",\"v\":\"1.0-SNAPSHOT\",\"k\":\"com.sonarsource.it.samples:module_a:myBranch\",\"n\":\"Module A myBranch\"},"
+          + "{\"w\":1,\"u\":\"test\",\"s\":\"PRJ\",\"q\":\"LIB\",\"v\":\"3.8.1\",\"k\":\"junit:junit\",\"n\":\"junit:junit\"}]",
+        jsonDeps, false);
+  }
+
   // SONAR-5604
   @Test
   public void inject_project_libraries_using_property() throws JSONException {
