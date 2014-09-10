@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.sonarsource.it.samples</groupId>
+  <artifactId>simple-sample</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>Sonar :: Integration Tests :: Simple Sample</name>
+
+  <url>http://www.simplesample.org</url>
+
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/SIMPLESAMPLE</url>
+  </issueManagement>
+
+  <scm>
+    <connection>scm:git:git@github.com:SonarSource/simplesample.git</connection>
+    <developerConnection>scm:git:git@github.com:SonarSource/simplesample.git</developerConnection>
+    <url>https://github.com/SonarSource/simplesample</url>
+  </scm>
+
+  <ciManagement>
+    <system>bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SIMPLESAMPLE</url>
+  </ciManagement>
+
+  <properties>
+    <sonar.language>java</sonar.language>
+    <sonar.maven.projectDependencies>[{"k":"antlr:antlr","v":"2.7.2","s":"compile","d":[]},
+    {"k":"commons-fileupload:commons-fileupload","v":"1.1.1","s":"compile","d":[{"k":"commons-io:commons-io","v":"1.1","s":"compile","d":[]}]},
+    {"k":"junit:junit","v":"3.8.1","s":"test","d":[]}]</sonar.maven.projectDependencies>
+  </properties>
+
+</project>
