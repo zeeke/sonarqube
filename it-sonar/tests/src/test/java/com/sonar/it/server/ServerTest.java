@@ -21,7 +21,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -235,7 +234,6 @@ public class ServerTest {
    * SONAR-3516
    */
   @Test
-  @Ignore("CRITICAL - too slow - waiting for fix of process monitoring")
   public void check_minimal_sonar_version_at_startup() throws Exception {
     try {
       orchestrator = Orchestrator.builderEnv()

@@ -11,12 +11,19 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import javax.net.ssl.*;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +49,6 @@ public class HttpsTest {
     }
   }
 
-  @Ignore("CRITICAL - too slow - waiting for fix of process monitoring")
   @Test
   public void fail_to_start_if_bad_keystore_credentials() throws Exception {
     try {
@@ -97,7 +103,7 @@ public class HttpsTest {
 
   private void connectUntrusted() throws Exception {
     // Create a trust manager that does not validate certificate chains
-    TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+    TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
       public X509Certificate[] getAcceptedIssuers() {
         return null;
       }
