@@ -16,6 +16,7 @@ import java.util.List;
 
 public class ServerTest extends PerfTestCase {
 
+  // ES + TOMCAT
   @Test
   public void server_startup_and_shutdown() throws Exception {
     String defaultWebJavaOptions = "-Xmx768m -XX:MaxPermSize=160m -XX:+HeapDumpOnOutOfMemoryError -Djava.awt.headless=true -Dfile.encoding=UTF-8 -Djruby.management.enabled=false";
@@ -28,7 +29,7 @@ public class ServerTest extends PerfTestCase {
       .build();
     try {
       long startupDuration = start(orchestrator);
-      assertDurationAround(startupDuration, 22000);
+      assertDurationAround(startupDuration, 27000);
 
       long shutdownDuration = stop(orchestrator);
       // can't use percent margins because logs are second-grained but not milliseconds
