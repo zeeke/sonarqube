@@ -13,7 +13,6 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -61,7 +60,6 @@ public class UpdateCenterDependenciesTest {
   }
 
   @Test
-  @Ignore("CRITICAL - too slow - waiting for fix of process monitoring")
   public void should_not_start_when_dependency_is_missing() throws IOException {
     orchestrator = Orchestrator
       .builderEnv()
@@ -80,7 +78,6 @@ public class UpdateCenterDependenciesTest {
   }
 
   @Test
-  @Ignore("CRITICAL - too slow - waiting for fix of process monitoring")
   public void should_not_start_when_dependency_version_is_wrong() throws IOException {
     orchestrator = Orchestrator
       .builderEnv()
@@ -100,7 +97,6 @@ public class UpdateCenterDependenciesTest {
   }
 
   @Test
-  @Ignore("CRITICAL - too slow - waiting for fix of process monitoring")
   public void should_not_start_when_parent_is_missing() throws IOException {
     orchestrator = Orchestrator
       .builderEnv()
@@ -119,7 +115,6 @@ public class UpdateCenterDependenciesTest {
   }
 
   @Test
-  @Ignore("CRITICAL - too slow - waiting for fix of process monitoring")
   public void should_not_start_when_parent_version_is_different() throws IOException {
     orchestrator = Orchestrator
       .builderEnv()
