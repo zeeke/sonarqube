@@ -10,7 +10,9 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.sonar.wsclient.issue.*;
 
 import java.util.List;
@@ -25,24 +27,15 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
 
   private final static String COMPONENT_KEY = "sample:src/main/xoo/sample/Sample.xoo";
 
-  @BeforeClass
-  public static void initManualRule() {
+  @Before
+  public void before() {
+    orchestrator.resetData();
+    analyzeProject();
     createManualRule();
   }
 
-  @AfterClass
-  public static void purgeManualRules() {
-    deleteManualRules();
-  }
-
-  @Before
-  public void before() {
-    orchestrator.getDatabase().truncateInspectionTables();
-    analyzeProject();
-  }
-
   @Test
-  public void create_manual_issue_on_line() {
+  public void create_manual_issue_though_ui() {
     // Create the manual issue
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("manual-issues-on-line",
       "/selenium/issue/manual-issue/create-manual-issue-on-line.html"

@@ -9,14 +9,10 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
-import com.sonar.orchestrator.locator.MavenLocation;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -24,13 +20,14 @@ public class SemaphoreTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.xooPlugin())
-      .addPlugin(ItUtils.locateTestPlugin("crash-plugin"))
-      .build();
+    .addPlugin(ItUtils.xooPlugin())
+    .addPlugin(ItUtils.locateTestPlugin("crash-plugin"))
+    .build();
 
   @After
   public void cleanDatabase() {
     orchestrator.getDatabase().truncateInspectionTables();
+    // TODO remove it
     orchestrator.getDatabase().truncate("semaphores");
   }
 
@@ -68,7 +65,7 @@ public class SemaphoreTest {
 
   private SonarRunner buildSampleProject(boolean crash) {
     return SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperty("crash", Boolean.toString(crash));
+      .setProperty("crash", Boolean.toString(crash));
   }
 
   private void createSemaphore(String name) {

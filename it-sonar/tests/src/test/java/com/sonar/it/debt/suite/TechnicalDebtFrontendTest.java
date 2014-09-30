@@ -20,7 +20,7 @@ public class TechnicalDebtFrontendTest {
 
   @Before
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
 
     // Set hours in day property to default value (should be 8)
     orchestrator.getServer().getAdminWsClient().delete(

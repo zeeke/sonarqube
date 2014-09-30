@@ -32,7 +32,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
 
   @BeforeClass
   public static void analyzeProject() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.cpd.skip", "true")
@@ -42,6 +42,7 @@ public class ActionPlanTest extends AbstractIssueTestCase {
 
   @Before
   public void resetData() {
+    // TODO should be done by a WS
     orchestrator.getDatabase().truncate("action_plans");
     assertThat(adminActionPlanClient().find(PROJECT_KEY)).isEmpty();
   }

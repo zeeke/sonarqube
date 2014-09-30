@@ -8,9 +8,7 @@ package com.sonar.it.issue2.suite;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.NewIssue;
@@ -28,20 +26,11 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
 
   private Date issueCreationDate;
 
-  @BeforeClass
-  public static void initManualRule() {
-    createManualRule();
-  }
-
-  @AfterClass
-  public static void purgeManualRules() {
-    deleteManualRules();
-  }
-
   @Before
   public void before() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     analyzeInitialProject();
+    createManualRule();
     createManualIssue();
   }
 
@@ -134,7 +123,7 @@ public class ManualIssueRelocationTest extends AbstractIssueTestCase2 {
   private void createManualIssue() {
     orchestrator.getServer().adminWsClient().issueClient().create(
       NewIssue.create()
-        .component("sample:src/main/xoo/sample/Sample.xoo")
+        .component(COMPONENT_KEY)
         .line(3)
         .rule("manual:invalidclassname")
         .message("The name 'Sample' is too generic")

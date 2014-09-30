@@ -31,7 +31,7 @@ public class TechnicalDebtTest {
 
   @Before
   public void deleteAnalysisData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
 
     // Set hours in day property to 8
     orchestrator.getServer().getAdminWsClient().update(

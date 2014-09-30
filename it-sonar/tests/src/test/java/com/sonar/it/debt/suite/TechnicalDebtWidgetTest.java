@@ -21,7 +21,7 @@ public class TechnicalDebtWidgetTest {
 
   @BeforeClass
   public static void init() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
 
     // need to execute the build twice in order to have history widgets
     // we made some exclusions to have variations in diff mode

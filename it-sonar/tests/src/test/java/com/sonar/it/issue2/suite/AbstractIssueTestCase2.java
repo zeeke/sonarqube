@@ -11,8 +11,6 @@ import org.junit.ClassRule;
 import org.sonar.wsclient.base.HttpException;
 import org.sonar.wsclient.issue.*;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -29,11 +27,15 @@ public class AbstractIssueTestCase2 {
   }
 
   protected List<Issue> searchIssuesByComponent(String componentKey) {
-    return search(IssueQuery.create().componentRoots(componentKey)).list();
+    return search(IssueQuery.create().components(componentKey)).list();
+  }
+
+  protected List<Issue> searchIssuesByProject(String projectKey) {
+    return search(IssueQuery.create().componentRoots(projectKey)).list();
   }
 
   protected List<Issue> searchUnresolvedIssuesByComponent(String componentKey) {
-    return search(IssueQuery.create().componentRoots(componentKey).resolved(false)).list();
+    return search(IssueQuery.create().components(componentKey).resolved(false)).list();
   }
 
   protected static Issue searchRandomIssue() {
@@ -64,15 +66,6 @@ public class AbstractIssueTestCase2 {
       "name", "InvalidClassName",
       "markdown_description", "Invalid class name"
     ));
-  }
-
-  protected static void deleteManualRules(){
-    try {
-      Connection connection = orchestrator.getDatabase().openConnection();
-      connection.prepareStatement("DELETE FROM rules WHERE rules.plugin_name='manual'").execute();
-    } catch (SQLException e) {
-      throw new IllegalStateException("Fail to remove manual rules", e);
-    }
   }
 
   protected void verifyHttpException(Exception e, int expectedCode){

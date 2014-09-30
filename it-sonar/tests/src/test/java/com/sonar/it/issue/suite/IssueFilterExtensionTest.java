@@ -26,7 +26,7 @@ public class IssueFilterExtensionTest extends AbstractIssueTestCase {
 
   @Before
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

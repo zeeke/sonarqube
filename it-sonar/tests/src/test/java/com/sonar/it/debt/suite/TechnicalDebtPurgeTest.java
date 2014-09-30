@@ -27,7 +27,7 @@ public class TechnicalDebtPurgeTest {
 
   @Before
   public void resetData() throws Exception {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   /**

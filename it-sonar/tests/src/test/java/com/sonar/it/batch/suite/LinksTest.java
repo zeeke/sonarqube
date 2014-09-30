@@ -38,6 +38,7 @@ public class LinksTest {
   @Before
   @After
   public void cleanProjectLinksTable() {
+    // TODO should not do this and find another way without using direct db connection
     orchestrator.getDatabase().truncate("project_links");
   }
 

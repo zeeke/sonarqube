@@ -37,7 +37,7 @@ public class IssueWithRestartToRemoveRulePluginTest {
   public void scan_should_close_issue_on_more_existing_rule() throws Exception {
     IssueClient issueClient = orchestrator.getServer().wsClient().issueClient();
 
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-deprecated-rule-profile.xml"));
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("with-deprecated-rule");

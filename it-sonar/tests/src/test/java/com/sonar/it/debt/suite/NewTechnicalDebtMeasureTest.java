@@ -30,7 +30,7 @@ public class NewTechnicalDebtMeasureTest {
 
   @Before
   public void cleanUpAnalysisData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

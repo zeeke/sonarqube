@@ -27,7 +27,7 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
 
   @Before
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

@@ -11,8 +11,8 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.lang.time.DateUtils;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
 import org.sonar.wsclient.component.Component;
@@ -29,11 +29,11 @@ import static org.fest.assertions.Fail.fail;
 public class IssueSearchTest extends AbstractIssueTestCase2 {
 
   private static int DEFAULT_PAGINATED_RESULTS = 100;
+  private static int TOTAL_NB_ISSUES = 125;
 
   @BeforeClass
   public static void prepareData() {
-    orchestrator.getDatabase().truncateInspectionTables();
-    deleteManualRules();
+    orchestrator.resetData();
 
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
     // Launch 2 analysis to have more than 100 issues in total
@@ -58,16 +58,6 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
         .line(3)
         .severity("CRITICAL")
         .message("The name of the class is invalid"));
-  }
-
-  @AfterClass
-  public static void purgeManualRules() {
-    try {
-      deleteManualRules();
-    } catch (Exception e) {
-      // do not fail in test finalizers
-      e.printStackTrace();
-    }
   }
 
   @Test
@@ -111,7 +101,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     assertThat(search(IssueQuery.create().resolutions("FIXED")).list()).hasSize(1);
     assertThat(search(IssueQuery.create().resolutions("FALSE-POSITIVE")).list()).isEmpty();
     assertThat(search(IssueQuery.create().resolved(true)).list()).hasSize(1);
-    assertThat(search(IssueQuery.create().resolved(false)).list()).hasSize(DEFAULT_PAGINATED_RESULTS);
+    assertThat(search(IssueQuery.create().resolved(false)).paging().total()).isEqualTo(TOTAL_NB_ISSUES - 1);
   }
 
   @Test
@@ -119,7 +109,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
     assertThat(search(IssueQuery.create().assignees("admin")).list()).hasSize(1);
     assertThat(search(IssueQuery.create().assignees("unknown")).list()).isEmpty();
     assertThat(search(IssueQuery.create().assigned(true)).list()).hasSize(1);
-    assertThat(search(IssueQuery.create().assigned(false)).list()).hasSize(DEFAULT_PAGINATED_RESULTS);
+    assertThat(search(IssueQuery.create().assigned(false)).paging().total()).isEqualTo(TOTAL_NB_ISSUES - 1);
   }
 
   @Test
@@ -214,6 +204,7 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   }
 
   @Test
+  @Ignore("Will be fixed by SONAR-5658")
   public void sort_results() {
     // 9 issue in CRITICAL (including the manual one), following ones are in MAJOR
     List<Issue> issues = search(IssueQuery.create().sort("SEVERITY").asc(false)).list();

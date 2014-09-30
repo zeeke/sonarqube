@@ -31,7 +31,7 @@ public class NewIssuesMeasureTest {
 
   @Before
   public void cleanUpAnalysisData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

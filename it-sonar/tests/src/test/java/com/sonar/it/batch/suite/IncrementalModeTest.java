@@ -39,7 +39,7 @@ public class IncrementalModeTest {
 
   @Before
   public void deleteData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     dryRunCacheLocation = new File(new File(orchestrator.getServer().getHome(), "temp"), "dryRun");
     FileUtils.deleteQuietly(dryRunCacheLocation);
   }

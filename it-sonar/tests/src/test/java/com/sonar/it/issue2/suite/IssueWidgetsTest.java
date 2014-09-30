@@ -27,7 +27,7 @@ public class IssueWidgetsTest extends AbstractIssueTestCase2 {
 
   @Before
   public void before() throws Exception {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
     analyzeProject();
   }
@@ -104,7 +104,7 @@ public class IssueWidgetsTest extends AbstractIssueTestCase2 {
    */
   @Test
   public void test_unresolved_issue_statuses_widget() throws Exception {
-    List<Issue> issues = searchIssuesByComponent(PROJECT_KEY);
+    List<Issue> issues = searchIssuesByProject(PROJECT_KEY);
     assertThat(issues).hasSize(13);
 
     // 1 is a false-positive, 2 are confirmed, 1 is reopened

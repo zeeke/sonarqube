@@ -9,6 +9,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
@@ -21,13 +22,14 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
 
   @Before
   public void deleteAnalysisData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   /**
    * SONAR-4308
    */
   @Test
+  @Ignore("Will be fixed by SONAR-5628")
   public void delete_all_closed_issues() throws Exception {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
 

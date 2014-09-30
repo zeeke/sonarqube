@@ -9,7 +9,6 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
@@ -28,12 +27,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
 
   @Before
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
-  }
-
-  @AfterClass
-  public static void purgeManualRules() {
-    deleteManualRules();
+    orchestrator.resetData();
   }
 
   @Test
@@ -45,7 +39,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeBuild(scan);
 
     String projectKey = "com.sonarsource.it.samples:multi-modules-sample";
-    assertThat(searchIssuesByComponent(projectKey)).hasSize(62);
+    assertThat(searchIssuesByProject(projectKey)).hasSize(62);
 
     Resource project = orchestrator.getServer().getWsClient()
       .find(ResourceQuery.createForMetrics(projectKey, "violations", "info_violations", "minor_violations", "major_violations",
@@ -69,8 +63,8 @@ public class IssueTest extends AbstractIssueTestCase2 {
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
 
-    String componentKey = "sample";
-    List<Issue> issues = searchIssuesByComponent(componentKey);
+    String projectKey = "sample";
+    List<Issue> issues = searchIssuesByProject(projectKey);
     assertThat(issues).hasSize(13);
 
     // 1 is a false-positive, 1 is confirmed, 1 is reopened, and the remaining ones stays open
@@ -83,7 +77,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeBuild(scan);
 
     Resource project = orchestrator.getServer().getWsClient().find(
-      ResourceQuery.createForMetrics(componentKey, "false_positive_issues", "open_issues", "reopened_issues", "confirmed_issues"));
+      ResourceQuery.createForMetrics(projectKey, "false_positive_issues", "open_issues", "reopened_issues", "confirmed_issues"));
     assertThat(project.getMeasureIntValue("false_positive_issues")).isEqualTo(1);
     assertThat(project.getMeasureIntValue("open_issues")).isEqualTo(10);
     assertThat(project.getMeasureIntValue("reopened_issues")).isEqualTo(1);
@@ -98,7 +92,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
       .setProfile("empty");
     orchestrator.executeBuild(scan);
 
-    assertThat(searchIssuesByComponent("sample")).isEmpty();
+    assertThat(searchIssuesByProject("sample")).isEmpty();
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("sample", "violations", "blocker_violations"));
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(0);
@@ -114,7 +108,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeBuild(scan);
 
     String projectKey = "sample";
-    List<Issue> issues = searchIssuesByComponent(projectKey);
+    List<Issue> issues = searchIssuesByProject(projectKey);
     assertThat(issues).hasSize(13);
     for (Issue issue : issues) {
       assertThat(issue.status()).isEqualTo("OPEN");
@@ -126,7 +120,7 @@ public class IssueTest extends AbstractIssueTestCase2 {
     // Empty profile -> no issue
     orchestrator.executeBuild(scan.setProfile("empty"));
 
-    issues = searchIssuesByComponent(projectKey);
+    issues = searchIssuesByProject(projectKey);
     assertThat(issues).hasSize(13);
     for (Issue issue : issues) {
       assertThat(issue.status()).isEqualTo("CLOSED");
@@ -245,11 +239,11 @@ public class IssueTest extends AbstractIssueTestCase2 {
     orchestrator.executeBuild(scan);
 
     // Resolve an issue
-    Issue issue = search(IssueQuery.create().componentRoots("sample:src/main/java/sample/Sample.java").rules("pmd:UnusedLocalVariable")).list().get(0);
+    Issue issue = search(IssueQuery.create().components("sample:src/main/java/sample/Sample.java").rules("pmd:UnusedLocalVariable")).list().get(0);
     adminIssueClient().doTransition(issue.key(), "resolve");
 
     // Mark an issue as false positive
-    issue = search(IssueQuery.create().componentRoots("sample:src/main/java/sample/Sample.java")
+    issue = search(IssueQuery.create().components("sample:src/main/java/sample/Sample.java")
       .rules("checkstyle:com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck")).list().get(0);
     adminIssueClient().doTransition(issue.key(), "falsepositive");
 

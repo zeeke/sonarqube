@@ -32,7 +32,7 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
 
   @Before
   public void deleteAnalysisData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

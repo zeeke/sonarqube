@@ -17,7 +17,7 @@ public class IssueRuleWidgetsTest extends AbstractIssueTestCase2 {
 
   @Before
   public void before() throws Exception {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
     analyzeProject();
   }

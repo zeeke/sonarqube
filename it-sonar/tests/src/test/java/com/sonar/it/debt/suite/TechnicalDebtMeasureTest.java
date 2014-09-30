@@ -37,7 +37,7 @@ public class TechnicalDebtMeasureTest {
 
   @BeforeClass
   public static void init() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/debt/with-many-rules.xml"));
     orchestrator.executeBuild(
       SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))

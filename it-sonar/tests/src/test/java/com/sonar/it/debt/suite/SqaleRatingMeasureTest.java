@@ -34,7 +34,7 @@ public class SqaleRatingMeasureTest {
 
   @Before
   public void init() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

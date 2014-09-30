@@ -6,7 +6,6 @@
 package com.sonar.it.issue2.suite;
 
 import com.sonar.it.ItUtils;
-import com.sonar.it.issue.suite.AbstractIssueTestCase;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
@@ -22,7 +21,7 @@ public class IssueWorkflowTest extends AbstractIssueTestCase2 {
 
   @Before
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.cpd.skip", "true")

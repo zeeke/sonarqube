@@ -86,7 +86,7 @@ public class NotificationsTest {
 
   @Before
   public void prepare() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     smtpServer.getMessages().clear();
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("issue/notifications"))
       .setProperty("sonar.projectDate", "2011-12-15")
