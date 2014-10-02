@@ -11,6 +11,7 @@ classes:1
 comment_lines:3
 public_api:5
 public_undocumented_api:2
-duplicated_files:1
-duplicated_blocks:2
-duplicated_lines:3
+# since SQ 5.0 these measures are internal and can not be computed by a plugin
+#duplicated_files:1
+#duplicated_blocks:2
+#duplicated_lines:3

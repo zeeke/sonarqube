@@ -152,7 +152,9 @@ public class QualityGateTest {
     qgClient().createCondition(NewCondition.create(allTypes.id()).metricKey("duplicated_lines_density").operator("GT").warningThreshold("20"));
     qgClient().setDefault(allTypes.id());
 
-    SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("qualitygate/xoo-sample"));
+    SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("qualitygate/xoo-sample"))
+      .setProperty("sonar.cpd.xoo.minimumLines", "2")
+      .setProperty("sonar.cpd.xoo.minimumTokens", "5");
     orchestrator.executeBuild(build);
 
     Measure alertStatus = fetchAlertStatus();
