@@ -12,7 +12,6 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
 import org.sonar.wsclient.component.Component;
@@ -204,7 +203,6 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
   }
 
   @Test
-  @Ignore("Will be fixed by SONAR-5658")
   public void sort_results() {
     // 9 issue in CRITICAL (including the manual one), following ones are in MAJOR
     List<Issue> issues = search(IssueQuery.create().sort("SEVERITY").asc(false)).list();
