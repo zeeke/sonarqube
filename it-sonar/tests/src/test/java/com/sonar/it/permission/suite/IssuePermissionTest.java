@@ -31,7 +31,7 @@ public class IssuePermissionTest {
 
   @Before
   public void init() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
 
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/permission/one-issue-per-line-profile.xml"));
     SonarRunner sampleProject = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))

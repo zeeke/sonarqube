@@ -13,11 +13,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.TimeMachine;
-import org.sonar.wsclient.services.TimeMachineCell;
-import org.sonar.wsclient.services.TimeMachineQuery;
+import org.sonar.wsclient.services.*;
 
 import java.util.Date;
 
@@ -31,7 +27,7 @@ public class TimeMachineTest {
 
   @BeforeClass
   public static void initialize() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/DifferentialMetricsTest/one-issue-per-line-profile.xml"));
     analyzeProject("shared/xoo-history-v1", "2010-10-19");
     analyzeProject("shared/xoo-history-v2", "2010-11-13");

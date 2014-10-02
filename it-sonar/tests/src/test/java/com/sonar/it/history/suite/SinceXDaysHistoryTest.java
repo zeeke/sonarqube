@@ -33,7 +33,7 @@ public class SinceXDaysHistoryTest {
   public static void analyseProjectWithHistory() {
     // This test assumes that period 1 is "since previous analysis" and 2 is "over 30 days"
 
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/one-issue-per-line-profile.xml"));
 
     // Execute a analysis in the past before since 30 days period -> 0 issue, 0 file

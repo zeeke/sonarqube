@@ -30,7 +30,7 @@ public class DependencyTest {
 
   @Before
   public void deleteData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

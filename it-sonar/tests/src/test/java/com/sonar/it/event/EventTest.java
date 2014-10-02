@@ -29,7 +29,7 @@ public class EventTest {
 
   @After
   public void clean() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

@@ -22,7 +22,7 @@ public class ManualRulesTest {
 
   @BeforeClass
   public static void setup() throws Exception {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     deleteManualRules();
   }
 

@@ -29,7 +29,7 @@ public class DuplicationsTest {
 
   @BeforeClass
   public static void init() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/file-duplications"))
       .setCleanPackageSonarGoals()

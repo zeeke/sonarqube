@@ -31,7 +31,7 @@ public class MultiLanguageTest {
 
   @After
   public void cleanDatabase() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   /**

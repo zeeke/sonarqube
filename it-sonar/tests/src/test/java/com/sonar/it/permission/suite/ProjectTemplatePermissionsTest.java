@@ -31,7 +31,7 @@ public class ProjectTemplatePermissionsTest {
 
   @Before
   public void cleanUpAnalysisData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   /**

@@ -24,7 +24,7 @@ public class CoverageExclusionsTest {
 
   @Before
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   /**

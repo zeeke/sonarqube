@@ -28,7 +28,7 @@ public class SonarCommonRulesTest {
 
   @BeforeClass
   public static void init() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/rule/SonarCommonRulesTest/sonar_common_rules_profile.xml"));
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("rule/sonar-common-rules-project"))
       .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar")

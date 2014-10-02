@@ -32,7 +32,7 @@ public class TaskTest {
 
   @After
   public void deleteData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

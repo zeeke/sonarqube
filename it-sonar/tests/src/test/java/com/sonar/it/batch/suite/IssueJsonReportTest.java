@@ -28,7 +28,7 @@ public class IssueJsonReportTest {
 
   @Before
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

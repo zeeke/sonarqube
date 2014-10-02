@@ -21,7 +21,7 @@ public class HistoryTest {
 
   @BeforeClass
   public static void initialize() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/history/history-backup.xml"));
     analyzeProject("history/history-v1", "2010-10-19");
     analyzeProject("history/history-v2", "2010-11-13");

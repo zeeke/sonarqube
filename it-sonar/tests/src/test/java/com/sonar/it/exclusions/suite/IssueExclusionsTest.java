@@ -28,7 +28,7 @@ public class IssueExclusionsTest {
 
   @Before
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

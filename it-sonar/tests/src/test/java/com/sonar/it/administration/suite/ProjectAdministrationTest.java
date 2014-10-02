@@ -38,7 +38,7 @@ public class ProjectAdministrationTest {
 
   @Before
   public void deleteAnalysisData() throws SQLException {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

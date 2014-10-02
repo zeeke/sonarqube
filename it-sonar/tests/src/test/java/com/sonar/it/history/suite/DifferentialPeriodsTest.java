@@ -20,7 +20,7 @@ public class DifferentialPeriodsTest {
 
   @Before
   public void cleanUpAnalysisData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   /**

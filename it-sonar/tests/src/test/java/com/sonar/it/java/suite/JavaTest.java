@@ -22,7 +22,7 @@ public class JavaTest {
 
   @Before
   public void deleteData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

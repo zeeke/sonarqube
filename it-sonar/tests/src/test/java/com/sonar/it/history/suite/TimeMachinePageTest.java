@@ -21,7 +21,7 @@ public class TimeMachinePageTest {
   // SONAR-3006
   @Test
   public void test_time_machine_dashboard() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     analyzeProject("2012-09-01", "0.7");
     analyzeProject("2012-10-15", "0.8");
     analyzeProject("2012-11-30", "0.9");

@@ -25,7 +25,7 @@ public class I18nTest {
 
   @After
   public void cleanDatabase() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   /**

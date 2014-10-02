@@ -33,7 +33,7 @@ public class PurgeTest {
 
   @Before
   public void deleteProjectData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

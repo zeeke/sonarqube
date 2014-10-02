@@ -24,7 +24,7 @@ public class SystemAdminPermissionTest {
 
   @BeforeClass
   public static void setUpUsers() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
     client.userClient().create(UserParameters.create().login("can_share").name("can_share")

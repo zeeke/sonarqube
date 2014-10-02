@@ -9,11 +9,7 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.project.NewProject;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
@@ -27,7 +23,7 @@ public class ProjectProvisioningTest {
 
   @BeforeClass
   public static void init() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.executeBuild(
       SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       );

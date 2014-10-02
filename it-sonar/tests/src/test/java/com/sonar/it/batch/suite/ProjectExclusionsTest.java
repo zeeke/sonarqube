@@ -23,7 +23,7 @@ public class ProjectExclusionsTest {
 
   @Before
   public void deleteProjectData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   /**

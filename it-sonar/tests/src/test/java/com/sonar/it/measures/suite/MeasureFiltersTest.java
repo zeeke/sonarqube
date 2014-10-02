@@ -24,7 +24,7 @@ public class MeasureFiltersTest {
 
   @BeforeClass
   public static void scanStruts() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "true");

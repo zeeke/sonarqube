@@ -27,7 +27,7 @@ public class SearchEngineTest {
 
   @Before
   public void clean() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   /**

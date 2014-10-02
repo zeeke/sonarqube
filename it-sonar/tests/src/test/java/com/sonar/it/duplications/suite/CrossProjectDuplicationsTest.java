@@ -29,7 +29,7 @@ public class CrossProjectDuplicationsTest {
 
   @Before
   public void analyzeProjects() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/cross-project/a"))
       .setCleanSonarGoals()

@@ -37,7 +37,7 @@ public class DryRunScanPermissionTest {
 
   @Before
   public void cleanup() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @After

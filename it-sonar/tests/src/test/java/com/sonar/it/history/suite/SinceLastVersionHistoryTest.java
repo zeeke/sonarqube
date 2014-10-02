@@ -28,7 +28,7 @@ public class SinceLastVersionHistoryTest {
    */
   @Test
   public void test_since_last_version_period() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     analyzeProject("0.9", "**/*2.java");
     analyzeProject("1.0-SNAPSHOT", null);
     analyzeProject("1.0-SNAPSHOT", null);

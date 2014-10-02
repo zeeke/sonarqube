@@ -26,7 +26,7 @@ public class SemaphoreTest {
 
   @After
   public void cleanDatabase() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     // TODO remove it
     orchestrator.getDatabase().truncate("semaphores");
   }

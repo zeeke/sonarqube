@@ -28,7 +28,7 @@ public class FileExclusionsTest {
 
   @Before
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

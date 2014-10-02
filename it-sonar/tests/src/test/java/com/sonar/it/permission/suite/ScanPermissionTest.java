@@ -40,7 +40,7 @@ public class ScanPermissionTest {
 
   @Before
   public void cleanup() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @After

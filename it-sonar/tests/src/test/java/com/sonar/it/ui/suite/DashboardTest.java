@@ -20,7 +20,7 @@ public class DashboardTest {
 
   @BeforeClass
   public static void scanProject() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     SonarRunner build = SonarRunner.create((ItUtils.locateProjectDir("shared/xoo-sample")));
     orchestrator.executeBuild(build);
   }

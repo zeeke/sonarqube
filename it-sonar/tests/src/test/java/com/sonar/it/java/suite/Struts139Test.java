@@ -15,14 +15,7 @@ import org.hamcrest.Description;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.sonar.wsclient.services.Dependency;
-import org.sonar.wsclient.services.DependencyQuery;
-import org.sonar.wsclient.services.DependencyTree;
-import org.sonar.wsclient.services.DependencyTreeQuery;
-import org.sonar.wsclient.services.Event;
-import org.sonar.wsclient.services.EventQuery;
-import org.sonar.wsclient.services.Measure;
-import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.*;
 
 import java.util.List;
 
@@ -44,7 +37,7 @@ public class Struts139Test {
 
   @BeforeClass
   public static void analyzeProject() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))

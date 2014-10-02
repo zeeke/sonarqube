@@ -13,16 +13,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.connectors.ConnectionException;
-import org.sonar.wsclient.services.ManualMeasureCreateQuery;
-import org.sonar.wsclient.services.ManualMeasureDeleteQuery;
-import org.sonar.wsclient.services.Measure;
-import org.sonar.wsclient.services.Metric;
-import org.sonar.wsclient.services.MetricCreateQuery;
-import org.sonar.wsclient.services.MetricDeleteQuery;
-import org.sonar.wsclient.services.MetricQuery;
-import org.sonar.wsclient.services.MetricUpdateQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.*;
 
 import java.util.List;
 
@@ -37,7 +28,7 @@ public class ManualMeasuresTest {
 
   @Before
   public void deleteProjects() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

@@ -19,7 +19,7 @@ public class IntegrationTestTest {
 
   @BeforeClass
   public static void inspectProject() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("test/jacoco-integration-tests")).setGoals("clean", "install", "sonar:sonar");
     orchestrator.executeBuilds(build);
   }

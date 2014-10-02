@@ -27,7 +27,7 @@ public class SourceFiltersTest {
 
   @BeforeClass
   public static void scanProject() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/source-filters"))
       .setProperty("sonar.exclusions", "src/main/java/sourceFilters/**/*BeExcluded.java")
       .setCleanSonarGoals()

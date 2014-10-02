@@ -21,7 +21,7 @@ public class DashboardSharingPermissionTest {
 
   @BeforeClass
   public static void setUpUsers() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
 
     SonarClient client = ItUtils.newWsClientForAdmin(orchestrator);
 

@@ -27,7 +27,7 @@ public class SourceCodePermissionTest {
 
   @BeforeClass
   public static void init() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.executeBuild(
       SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
     );

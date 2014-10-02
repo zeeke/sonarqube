@@ -45,7 +45,7 @@ public class UiTest {
 
   @After
   public void cleanDatabase() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

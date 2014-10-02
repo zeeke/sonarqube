@@ -33,7 +33,7 @@ public class OldMultiLanguageTest {
 
   @After
   public void cleanDatabase() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test
