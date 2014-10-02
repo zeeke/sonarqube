@@ -21,7 +21,9 @@ public class DashboardTest {
   @BeforeClass
   public static void scanProject() {
     orchestrator.resetData();
-    SonarRunner build = SonarRunner.create((ItUtils.locateProjectDir("shared/xoo-sample")));
+    SonarRunner build = SonarRunner.create((ItUtils.locateProjectDir("shared/xoo-sample")))
+      .setProperty("sonar.cpd.xoo.minimumLines", "3")
+      .setProperty("sonar.cpd.xoo.minimumTokens", "6");
     orchestrator.executeBuild(build);
   }
 
@@ -36,8 +38,7 @@ public class DashboardTest {
       "/selenium/ui/dashboard/dashboard_extension/test-name-l10n.html",
 
       // SSF-19
-      "/selenium/ui/dashboard/dashboard_extension/xss.html"
-    );
+      "/selenium/ui/dashboard/dashboard_extension/xss.html");
   }
 
   /**
@@ -63,7 +64,6 @@ public class DashboardTest {
     seleniumSuite("configure_widget",
       "/selenium/ui/dashboard/configure_widget/add_project_widget_with_mandatory_properties.html");
   }
-
 
   @Test
   public void global_dashboard() {
