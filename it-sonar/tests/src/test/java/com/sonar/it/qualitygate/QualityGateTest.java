@@ -64,7 +64,7 @@ public class QualityGateTest {
   public void compute_alert_status_ok_when_threshold_not_met() {
     QualityGate simple = qgClient().create("SimpleWithHighThreshold");
     qgClient().setDefault(simple.id());
-    qgClient().createCondition(NewCondition.create(simple.id()).metricKey("ncloc").operator("GT").warningThreshold("20"));
+    qgClient().createCondition(NewCondition.create(simple.id()).metricKey("ncloc").operator("GT").warningThreshold("40"));
 
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("qualitygate/xoo-sample"));
     orchestrator.executeBuild(build);
