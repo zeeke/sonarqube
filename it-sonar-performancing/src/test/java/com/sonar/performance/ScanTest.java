@@ -50,7 +50,8 @@ public class ScanTest extends PerfTestCase {
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.profile", "one-xoo-issue-per-line",
-      "sonar.showProfiling", "true"
+      "sonar.showProfiling", "true",
+      "sonar.scm.disabled", "true"
       );
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);

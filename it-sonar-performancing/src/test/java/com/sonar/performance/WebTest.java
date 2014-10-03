@@ -30,6 +30,7 @@ public class WebTest extends PerfTestCase {
     MavenBuild scan = MavenBuild.create(strutsHome.getFile());
     scan.setGoals("sonar:sonar -V");
     scan.setEnvironmentVariable("MAVEN_OPTS", "-Xmx512m -server");
+    scan.setProperty("sonar.scm.disabled", "true");
     orchestrator.executeBuild(scan);
   }
 
