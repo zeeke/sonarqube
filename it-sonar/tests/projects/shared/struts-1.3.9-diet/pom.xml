@@ -42,6 +42,10 @@
        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/struts/struts1/trunk</developerConnection>
        <url>http://svn.apache.org/viewcvs.cgi/struts/struts1/trunk</url>
     </scm>
+    
+    <properties>
+      <sonar.scm.disabled>true</sonar.scm.disabled>
+    </properties>
 
     <issueManagement>
         <system>JIRA</system>

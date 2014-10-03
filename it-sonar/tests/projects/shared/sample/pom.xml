@@ -26,6 +26,7 @@
 
   <properties>
     <sonar.language>java</sonar.language>
+    <sonar.scm.disabled>true</sonar.scm.disabled>
   </properties>
 
 </project>
