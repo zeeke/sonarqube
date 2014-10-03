@@ -29,6 +29,7 @@
     <sonar.maven.projectDependencies>[{"k":"antlr:antlr","v":"2.7.2","s":"compile","d":[]},
     {"k":"commons-fileupload:commons-fileupload","v":"1.1.1","s":"compile","d":[{"k":"commons-io:commons-io","v":"1.1","s":"compile","d":[]}]},
     {"k":"junit:junit","v":"3.8.1","s":"test","d":[]}]</sonar.maven.projectDependencies>
+    <sonar.scm.disabled>true</sonar.scm.disabled>
   </properties>
 
 </project>
