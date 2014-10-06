@@ -51,6 +51,7 @@ public class Struts139Test extends AbstractMavenTest {
     MavenBuild analysis = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))
       .setGoals(sonarGoal())
       .setProperty("sonar.dynamicAnalysis", "true")
+      .setProperty("sonar.scm.disabled", "true")
       .setProperty("sonar.exclusions", "**/package.html")
       .setProperty("sonar.profile.java", "sonar-way-2.7");
 
