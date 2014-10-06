@@ -113,9 +113,10 @@ public class SonarUpgradeTest {
 
   private void scanProject() {
     MavenBuild build = MavenBuild.create(new File("projects/struts-1.3.9-diet/pom.xml"))
-        .setCleanSonarGoals()
-        .setProperty("sonar.dynamicAnalysis", "false")
-        .setProperty("sonar.profile", "sonar-way-2.7");
+      .setCleanSonarGoals()
+      .setProperty("sonar.dynamicAnalysis", "false")
+      .setProperty("sonar.scm.disabled", "true")
+      .setProperty("sonar.profile", "sonar-way-2.7");
     // SONAR-3960 Cross project duplication is not supported on pgsql 8.3 before Sonar 3.3.2
     if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.3.2")
       || !orchestrator.getDatabase().getSonarProperties().get("sonar.jdbc.dialect").equals("postgresql")) {
