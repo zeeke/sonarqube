@@ -34,7 +34,11 @@ import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
 import org.sonar.wsclient.issue.Issues;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -139,6 +143,7 @@ public class PlatformTest {
       // following property to not have differences between SonarQube Java version
       .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
       .setProperty("sonar.dynamicAnalysis", "reuseReports")
+      .setProperty("sonar.scm.disabled", "true")
       .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
     orchestrator.executeBuild(build);
   }

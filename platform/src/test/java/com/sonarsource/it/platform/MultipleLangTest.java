@@ -113,6 +113,7 @@ public class MultipleLangTest {
       // following property to not have differences between SonarQube Java version
       .setProperty("sonar.core.codeCoveragePlugin", "jacoco")
       .setProperty("sonar.sources", "src/main/java")
+      .setProperty("sonar.scm.disabled", "true")
       .setProperty("sonar.dynamicAnalysis", "reuseReports")
       .setGoals("clean org.jacoco:jacoco-maven-plugin:prepare-agent package", "sonar:sonar");
     orchestrator.executeBuild(maven);
