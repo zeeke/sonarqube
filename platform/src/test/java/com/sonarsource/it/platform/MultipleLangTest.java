@@ -102,6 +102,7 @@ public class MultipleLangTest {
       .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-server -Xmx512m -XX:MaxPermSize=160m")
       .setProjectDir(basedir.getFile())
       .setProperty("sonar.sources", "src/main")
+      .setProperty("sonar.scm.provider", "git")
       // this name is defined on all languages
       .setProperty("sonar.profile", PROFILE_NAME)
       );
