@@ -76,6 +76,24 @@ public class PreviewModeTest {
     assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL");
   }
 
+  // SONAR-5715
+  @Test
+  public void test_preview_mode_on_project_with_space_in_filename() {
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
+    scanWithProfile("batch/xoo-sample-with-spaces/v1", "with-many-rules");
+
+    assertThat(getResource("sample:my sources/main/xoo/sample/My Sample.xoo")).isNotNull();
+
+    BuildResult result = scanWithProfile("batch/xoo-sample-with-spaces/v2", "with-many-rules",
+      "sonar.analysis.mode", "preview");
+
+    // Analysis is not persisted in database
+    Resource project = getResource("com.sonarsource.it.samples:simple-sample");
+    assertThat(project).isNull();
+    assertThat(result.getLogs()).contains("Preview");
+    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL");
+  }
+
   @Test
   public void should_not_fail_on_resources_that_have_existed_before() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTest/with-many-rules.xml"));
