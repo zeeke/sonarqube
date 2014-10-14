@@ -103,8 +103,6 @@ public class MultipleLangTest {
       .setProjectDir(basedir.getFile())
       .setProperty("sonar.sources", "src/main")
       .setProperty("sonar.scm.provider", "git")
-      // Try git exe to see if it fix issue to blame files
-      .setProperty("sonar.git.implementation", "exe")
       // this name is defined on all languages
       .setProperty("sonar.profile", PROFILE_NAME)
       );
