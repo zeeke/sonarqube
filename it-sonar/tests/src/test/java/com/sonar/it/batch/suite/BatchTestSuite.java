@@ -35,7 +35,7 @@ public class BatchTestSuite {
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-build-breaker-plugin", "1.1"))
 
     // used by MultiLanguageTest
-    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.php", "sonar-php-plugin", "2.1"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.php", "sonar-php-plugin", "2.3"))
 
     .build();
 }
