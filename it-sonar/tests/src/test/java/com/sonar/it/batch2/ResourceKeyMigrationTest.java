@@ -133,6 +133,7 @@ public class ResourceKeyMigrationTest {
   private void startServer(String version, boolean keepDatabase) {
     OrchestratorBuilder builder = Orchestrator.builderEnv().setSonarVersion(version);
     builder.setOrchestratorProperty("orchestrator.keepDatabase", String.valueOf(keepDatabase))
+      .removeDistributedPlugins()
       .addPlugin(ItUtils.xooPlugin());
     orchestrator = builder.build();
     orchestrator.start();

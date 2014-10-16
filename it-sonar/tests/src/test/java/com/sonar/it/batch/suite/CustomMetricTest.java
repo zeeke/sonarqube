@@ -3,11 +3,12 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.batch2;
+package com.sonar.it.batch.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
@@ -18,9 +19,12 @@ import static org.fest.assertions.Assertions.assertThat;
 public class CustomMetricTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .addPlugin(ItUtils.locateTestPlugin("custom-metric-plugin"))
-    .build();
+  public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
+
+  @Before
+  public void cleanup() {
+    orchestrator.resetData();
+  }
 
   @Test
   public void custom_formula_should_be_executed() {

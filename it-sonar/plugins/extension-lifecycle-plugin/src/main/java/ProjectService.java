@@ -1,4 +1,5 @@
 import org.sonar.api.BatchExtension;
+import org.sonar.api.config.Settings;
 
 /**
  * As many instances as projects (maven modules)
@@ -6,12 +7,17 @@ import org.sonar.api.BatchExtension;
 public class ProjectService implements BatchExtension {
 
   private BatchService batchService;
+  private Settings settings;
 
-  public ProjectService(BatchService batchService) {
+  public ProjectService(BatchService batchService, Settings settings) {
     this.batchService = batchService;
+    this.settings = settings;
   }
 
   public void start() {
+    if (!settings.getBoolean("extension.lifecycle")) {
+      return;
+    }
     System.out.println("Start ProjectService");
 
     if (!batchService.isStarted()) {
@@ -21,6 +27,9 @@ public class ProjectService implements BatchExtension {
   }
 
   public void stop() {
+    if (!settings.getBoolean("extension.lifecycle")) {
+      return;
+    }
     System.out.println("Stop ProjectService");
     if (!batchService.isStarted()) {
       System.out.println("ProjectService must be stopped before BatchService");

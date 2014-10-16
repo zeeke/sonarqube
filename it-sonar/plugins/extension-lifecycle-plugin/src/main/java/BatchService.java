@@ -1,12 +1,21 @@
 import org.sonar.api.BatchExtension;
 import org.sonar.api.batch.InstantiationStrategy;
+import org.sonar.api.config.Settings;
 
 @InstantiationStrategy(InstantiationStrategy.PER_BATCH)
 public class BatchService implements BatchExtension {
   private boolean started=false;
   private int projectServices=0;
+  private Settings settings;
+  
+  public BatchService(Settings settings) {
+    this.settings = settings;
+  }
 
   public void start() {
+    if (!settings.getBoolean("extension.lifecycle")) {
+      return;
+    }
     System.out.println("Start BatchService");
     if (started) {
       throw new IllegalStateException("Already started");
@@ -22,6 +31,9 @@ public class BatchService implements BatchExtension {
   }
 
   public void stop() {
+    if (!settings.getBoolean("extension.lifecycle")) {
+      return;
+    }
     System.out.println("Stop BatchService");
     if (!started) {
       System.out.println("BatchService is not started !");

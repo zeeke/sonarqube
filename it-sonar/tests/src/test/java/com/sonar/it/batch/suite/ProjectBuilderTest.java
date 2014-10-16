@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.batch2;
+package com.sonar.it.batch.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -26,14 +26,13 @@ import static org.fest.assertions.Assertions.assertThat;
 public class ProjectBuilderTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .addPlugin(ItUtils.locateTestPlugin("project-builder-plugin"))
-    .build();
+  public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
 
   @Test
   public void shouldDefineProjectFromPlugin() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/project-builder"))
       .setCleanSonarGoals()
+      .setProperty("sonar.enableProjectBuilder", "true")
       .setProperty("sonar.dynamicAnalysis", "false");
     orchestrator.executeBuild(build);
 

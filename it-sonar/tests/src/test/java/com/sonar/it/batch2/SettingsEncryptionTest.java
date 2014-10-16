@@ -21,9 +21,10 @@ import static org.fest.assertions.Assertions.assertThat;
 public class SettingsEncryptionTest {
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.locateTestPlugin("settings-encryption-plugin"))
-      .addPlugin(ItUtils.xooPlugin())
-      .build();
+    .removeDistributedPlugins()
+    .addPlugin(ItUtils.locateTestPlugin("settings-encryption-plugin"))
+    .addPlugin(ItUtils.xooPlugin())
+    .build();
 
   /**
    * SONAR-2084
@@ -32,23 +33,23 @@ public class SettingsEncryptionTest {
   @Test
   public void testEncryptedProperty() throws Exception {
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperty("sonar.secretKeyPath", pathToValidSecretKey())
-        .setProperty("sonar.login", "admin")
-        // wrong password
-        .setProperty("sonar.password", "{aes}wrongencryption==")// wrong password
-        // "this is a secret" encrypted with the above secret key
-        .setProperty("encryptedProperty", "{aes}9mx5Zq4JVyjeChTcVjEide4kWCwusFl7P2dSVXtg9IY=");
+      .setProperty("sonar.secretKeyPath", pathToValidSecretKey())
+      .setProperty("sonar.login", "admin")
+      // wrong password
+      .setProperty("sonar.password", "{aes}wrongencryption==")// wrong password
+      // "this is a secret" encrypted with the above secret key
+      .setProperty("encryptedProperty", "{aes}9mx5Zq4JVyjeChTcVjEide4kWCwusFl7P2dSVXtg9IY=");
     BuildResult result = orchestrator.executeBuildQuietly(build);
     assertThat(result.getStatus()).isNotEqualTo(0);
     assertThat(result.getLogs()).contains("Fail to decrypt the property sonar.password. Please check your secret key");
 
     build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperty("sonar.secretKeyPath", pathToValidSecretKey())
-        // "admin" encrypted with the above secret key
-        .setProperty("sonar.login", "{aes}evRHXHsEyPr5RjEuxUJcHA==")
-        .setProperty("sonar.password", "{aes}evRHXHsEyPr5RjEuxUJcHA==")
-        // "this is a secret" encrypted with the above secret key
-        .setProperty("encryptedProperty", "{aes}9mx5Zq4JVyjeChTcVjEide4kWCwusFl7P2dSVXtg9IY=");
+      .setProperty("sonar.secretKeyPath", pathToValidSecretKey())
+      // "admin" encrypted with the above secret key
+      .setProperty("sonar.login", "{aes}evRHXHsEyPr5RjEuxUJcHA==")
+      .setProperty("sonar.password", "{aes}evRHXHsEyPr5RjEuxUJcHA==")
+      // "this is a secret" encrypted with the above secret key
+      .setProperty("encryptedProperty", "{aes}9mx5Zq4JVyjeChTcVjEide4kWCwusFl7P2dSVXtg9IY=");
     // no error
     orchestrator.executeBuild(build);
   }
@@ -60,7 +61,7 @@ public class SettingsEncryptionTest {
   public void failIfEncryptedPropertyButNoSecretKey() throws Exception {
     // path to secret key is missing
     SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-        .setProperty("encryptedProperty", "{aes}9mx5Zq4JVyjeChTcVjEide4kWCwusFl7P2dSVXtg9IY=");
+      .setProperty("encryptedProperty", "{aes}9mx5Zq4JVyjeChTcVjEide4kWCwusFl7P2dSVXtg9IY=");
     orchestrator.executeBuild(build);
   }
 

@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.batch.suite;
+package com.sonar.it.preview;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -12,11 +12,17 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.build.SonarRunnerInstaller;
 import com.sonar.orchestrator.config.FileSystem;
 import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.version.Version;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.qualitygate.NewCondition;
@@ -30,14 +36,25 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 public class PreviewModeTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = Orchestrator.builderEnv()
+    .addPlugin(ItUtils.xooPlugin())
+    .setContext("/")
+
+    .addPlugin(ItUtils.locateTestPlugin("access-secured-props-plugin"))
+    .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-build-breaker-plugin", "1.1"))
+
+    .build();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();

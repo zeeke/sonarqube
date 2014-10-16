@@ -21,6 +21,9 @@ public final class CreateSubProjects extends ProjectBuilder {
 
   @Override
   protected void build(ProjectReactor reactor) {
+    if (!settings.getBoolean("sonar.enableProjectBuilder")) {
+      return;
+    }
     System.out.println("---> Creating sub-projects");
     ProjectDefinition root = reactor.getRoot();
 

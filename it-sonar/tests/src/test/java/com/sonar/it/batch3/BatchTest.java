@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.batch.suite;
+package com.sonar.it.batch3;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -38,7 +38,13 @@ import static org.fest.assertions.Assertions.assertThat;
 public class BatchTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = BatchTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = Orchestrator.builderEnv()
+    .addPlugin(ItUtils.xooPlugin())
+    .setContext("/")
+
+    .addPlugin(ItUtils.locateTestPlugin("batch-plugin"))
+
+    .build();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -50,17 +56,6 @@ public class BatchTest {
   public void deleteData() {
     orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
-  }
-
-  @Test
-  public void sanity_check() {
-    scan("shared/xoo-sample");
-
-    Sonar sonar = orchestrator.getServer().getWsClient();
-    assertThat(sonar.findAll(new ResourceQuery().setQualifiers("TRK"))).hasSize(1);
-
-    Resource master = sonar.find(new ResourceQuery("sample"));
-    assertThat(master.getName()).isEqualTo("Sample");
   }
 
   @Test
