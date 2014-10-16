@@ -14,11 +14,20 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.Source;
+import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +50,17 @@ public class BatchTest {
   public void deleteData() {
     orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
+  }
+
+  @Test
+  public void sanity_check() {
+    scan("shared/xoo-sample");
+
+    Sonar sonar = orchestrator.getServer().getWsClient();
+    assertThat(sonar.findAll(new ResourceQuery().setQualifiers("TRK"))).hasSize(1);
+
+    Resource master = sonar.find(new ResourceQuery("sample"));
+    assertThat(master.getName()).isEqualTo("Sample");
   }
 
   @Test
