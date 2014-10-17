@@ -31,7 +31,7 @@ public class LinksTest extends AbstractMavenTest {
 
   @Before
   public void deleteData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Before

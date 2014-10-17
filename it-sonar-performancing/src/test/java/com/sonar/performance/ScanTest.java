@@ -34,7 +34,7 @@ public class ScanTest extends PerfTestCase {
   @BeforeClass
   public static void setUp() {
     // Execute this query in order for next analysis to not freeze (FIXME why does it freeze?)
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
 
     // Execute a first analysis to prevent any side effects with cache of plugin JAR files
     orchestrator.executeBuild(newSonarRunner("-Xmx512m -server", "sonar.profile", "one-xoo-issue-per-line"));
@@ -42,7 +42,7 @@ public class ScanTest extends PerfTestCase {
 
   @Before
   public void cleanDatabase() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

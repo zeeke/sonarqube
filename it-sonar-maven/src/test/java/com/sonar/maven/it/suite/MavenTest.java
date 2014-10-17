@@ -35,7 +35,7 @@ public class MavenTest extends AbstractMavenTest {
 
   @Before
   public void deleteData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

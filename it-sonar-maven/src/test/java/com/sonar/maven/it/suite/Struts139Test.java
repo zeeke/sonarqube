@@ -41,7 +41,7 @@ public class Struts139Test extends AbstractMavenTest {
 
   @BeforeClass
   public static void analyzeProject() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
 
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/struts-1.3.9-diet"))

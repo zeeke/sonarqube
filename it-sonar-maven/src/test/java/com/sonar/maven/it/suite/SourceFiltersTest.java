@@ -23,7 +23,7 @@ public class SourceFiltersTest extends AbstractMavenTest {
 
   @BeforeClass
   public static void scanProject() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/source-filters"));
     if (orchestrator.getServer().version().isGreaterThanOrEquals("4.2")) {
       build.setProperty("sonar.exclusions", "src/main/java/sourceFilters/**/*BeExcluded.java");

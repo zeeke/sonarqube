@@ -83,7 +83,7 @@ public class AntTest {
 
   @After
   public void resetData() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   private void buildJava(String project, String target, String profile) {

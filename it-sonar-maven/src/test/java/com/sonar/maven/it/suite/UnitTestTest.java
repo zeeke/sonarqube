@@ -24,7 +24,7 @@ public class UnitTestTest extends AbstractMavenTest {
     // Since 4.4 only reuse report mode is supported so no dependency on Maven
     assumeTrue(!orchestrator.getServer().version().isGreaterThanOrEquals("4.4"));
 
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

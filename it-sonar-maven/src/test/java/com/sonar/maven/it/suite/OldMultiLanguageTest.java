@@ -23,7 +23,7 @@ public class OldMultiLanguageTest extends AbstractMavenTest {
 
   @Before
   public void cleanDatabase() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
   }
 
   @Test

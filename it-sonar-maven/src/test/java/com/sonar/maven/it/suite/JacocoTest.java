@@ -23,7 +23,7 @@ public class JacocoTest extends AbstractMavenTest {
 
   @Before
   public void delete_data() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     // Since 4.4 only reuse report mode is supported so no dependency on Maven
     assumeTrue(!orchestrator.getServer().version().isGreaterThanOrEquals("4.4"));
   }

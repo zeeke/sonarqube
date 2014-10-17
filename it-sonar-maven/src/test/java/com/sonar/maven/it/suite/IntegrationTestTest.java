@@ -15,7 +15,7 @@ public class IntegrationTestTest extends AbstractMavenTest {
 
   @BeforeClass
   public static void inspectProject() {
-    orchestrator.getDatabase().truncateInspectionTables();
+    orchestrator.resetData();
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("test/jacoco-integration-tests")).setGoals(cleanInstallSonarGoal());
     orchestrator.executeBuilds(build);
   }
