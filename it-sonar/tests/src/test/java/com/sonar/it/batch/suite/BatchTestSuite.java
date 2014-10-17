@@ -24,6 +24,9 @@ public class BatchTestSuite {
     .addPlugin(ItUtils.xooPlugin())
     .setContext("/")
 
+    // used by TempFolderTest
+    .addPlugin(ItUtils.locateTestPlugin("batch-plugin"))
+
     // used by MavenTest
     .addPlugin(ItUtils.locateTestPlugin("maven-execution-plugin"))
 
