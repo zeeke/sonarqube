@@ -45,6 +45,9 @@ public class DuplicationsTest {
     assertThat(file.getMeasureValue("duplicated_lines"), is(27.0 * 2)); // 2 blocks with 27 lines
     assertThat(file.getMeasureValue("duplicated_files"), is(1.0));
     assertThat(file.getMeasureValue("duplicated_lines_density"), is(60.0));
+
+    // SONAR-5765
+    assertThat(file.getMeasureValue("useless-duplicated-lines"), is(27.0));
   }
 
   @Test
@@ -165,7 +168,8 @@ public class DuplicationsTest {
   }
 
   @Test
-  @Ignore // TODO: enable after resolving SONAR-5209
+  @Ignore
+  // TODO: enable after resolving SONAR-5209
   public void testDuplicationsViewer() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("duplications-viewer",
       "/selenium/duplications/duplications-viewer/display-six-lines-in-snippet-by-default.html",
@@ -198,7 +202,7 @@ public class DuplicationsTest {
 
   private Resource getResource(String key) {
     return orchestrator.getServer().getWsClient()
-      .find(ResourceQuery.createForMetrics(key, "duplicated_lines", "duplicated_blocks", "duplicated_files", "duplicated_lines_density"));
+      .find(ResourceQuery.createForMetrics(key, "duplicated_lines", "duplicated_blocks", "duplicated_files", "duplicated_lines_density", "useless-duplicated-lines"));
   }
 
 }
