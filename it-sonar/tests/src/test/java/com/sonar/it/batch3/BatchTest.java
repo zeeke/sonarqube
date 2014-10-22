@@ -14,20 +14,11 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.FileUtils;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.PropertyDeleteQuery;
-import org.sonar.wsclient.services.PropertyUpdateQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.Source;
-import org.sonar.wsclient.services.SourceQuery;
+import org.sonar.wsclient.services.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -322,21 +313,18 @@ public class BatchTest {
 
     BuildResult result = scan("shared/xoo-multi-modules-sample");
 
-    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL, you can browse "
-      + orchestrator.getServer().getUrl() + "/dashboard/index/com.sonarsource.it.samples:multi-modules-sample");
+    assertThat(result.getLogs()).contains("/dashboard/index/com.sonarsource.it.samples:multi-modules-sample");
 
     result = scan("shared/xoo-multi-modules-sample",
       "sonar.branch", "mybranch");
 
-    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL, you can browse "
-      + orchestrator.getServer().getUrl() + "/dashboard/index/com.sonarsource.it.samples:multi-modules-sample:mybranch");
+    assertThat(result.getLogs()).contains("/dashboard/index/com.sonarsource.it.samples:multi-modules-sample:mybranch");
 
     orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.core.serverBaseURL", "http://foo:123/sonar"));
 
     result = scan("shared/xoo-multi-modules-sample");
 
-    assertThat(result.getLogs()).contains("ANALYSIS SUCCESSFUL, you can browse "
-      + "http://foo:123/sonar/dashboard/index/com.sonarsource.it.samples:multi-modules-sample");
+    assertThat(result.getLogs()).contains("http://foo:123/sonar/dashboard/index/com.sonarsource.it.samples:multi-modules-sample");
   }
 
   /**
