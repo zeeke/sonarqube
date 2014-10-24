@@ -13,7 +13,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  CustomMetricTest.class, ExtensionLifecycleTest.class, LinksTest.class, MavenTest.class, ProjectBuilderTest.class, ProjectExclusionsTest.class,
+  CustomMetricTest.class, ExtensionLifecycleTest.class, FileDependencyTest.class, LinksTest.class, MavenTest.class, ProjectBuilderTest.class, ProjectExclusionsTest.class,
   SemaphoreTest.class, SqlLogsTest.class,
   IncrementalModeTest.class, TempFolderTest.class, MultiLanguageTest.class, IssueJsonReportTest.class, ProjectProvisioningTest.class, DependencyTest.class
 })
