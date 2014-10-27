@@ -12,13 +12,21 @@ import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
-import com.sonar.orchestrator.selenium.Selenese;
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.Source;
+import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -130,33 +138,6 @@ public class BatchTest {
     Source source = orchestrator.getServer().getWsClient().find(query);
     assertThat(source.getLines()).hasSize(13); // SONAR-3896
     assertThat(source.getLine(3)).isEqualTo("public class Sample {");
-  }
-
-  @Test
-  public void should_not_import_sources() {
-    scan("batch/do-not-import-sources",
-      "sonar.importSources", "true");
-
-    Source source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:src/main/xoo/org/sonar/tests/Hello.xoo"));
-    assertThat(source).isNotNull();
-    Source testSource = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:src/test/xoo/org/sonar/tests/HelloTest.xoo"));
-    assertThat(testSource).isNotNull();
-
-    scan("batch/do-not-import-sources",
-      "sonar.importSources", "false");
-
-    source = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:src/main/xoo/org/sonar/tests/Hello.xoo"));
-    assertThat(source).isNull();
-    testSource = orchestrator.getServer().getWsClient().find(new SourceQuery("do-not-import-sources:src/test/xoo/org/sonar/tests/HelloTest.xoo"));
-    assertThat(testSource).isNull();
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("do-not-import-sources",
-      "/selenium/batch/do-not-import-sources/display-issues-but-not-source.html",
-      "/selenium/batch/do-not-import-sources/do-not-display-sources.html",
-
-      // SONAR-2403
-      "/selenium/batch/do-not-import-sources/source-of-unit-test.html").build();
-    orchestrator.executeSelenese(selenese);
   }
 
   /**

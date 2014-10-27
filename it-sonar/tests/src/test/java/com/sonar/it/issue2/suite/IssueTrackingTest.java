@@ -35,37 +35,6 @@ public class IssueTrackingTest extends AbstractIssueTestCase2 {
     orchestrator.resetData();
   }
 
-  @Test
-  public void disable_block_recognition_if_source_is_not_available() throws Exception {
-    // The PMD rule System.out is enabled
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/IssueTrackingTest/issue-tracking-profile.xml"));
-
-    // version 1
-    MavenBuild firstScan = MavenBuild.create(ItUtils.locateProjectPom("issue/tracking-v1"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", OLD_DATE)
-      .setProfile("issue-tracking");
-
-    // version 2, without import of sources
-    MavenBuild secondScan = MavenBuild.create(ItUtils.locateProjectPom("issue/tracking-v2"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.importSources", "false", "sonar.projectDate", NEW_DATE)
-      .setProfile("issue-tracking");
-
-    orchestrator.executeBuilds(firstScan, secondScan);
-
-    List<Issue> issues = searchUnresolvedIssuesByComponent("com.sonarsource.it.samples:issue-tracking:src/SystemOut.java");
-    assertThat(issues).hasSize(4);
-
-    // issues created during the first scan but not tracked -> NEW_DATE
-    assertSameDate(getIssueOnLine(18, "pmd", "SystemPrintln", issues).creationDate(), NEW_DATE);
-    assertSameDate(getIssueOnLine(22, "pmd", "SystemPrintln", issues).creationDate(), NEW_DATE);
-
-    // issues created during the second scan
-    assertSameDate(getIssueOnLine(10, "pmd", "SystemPrintln", issues).creationDate(), NEW_DATE);
-    assertSameDate(getIssueOnLine(14, "pmd", "SystemPrintln", issues).creationDate(), NEW_DATE);
-  }
-
   /**
    * SONAR-3072
    */
