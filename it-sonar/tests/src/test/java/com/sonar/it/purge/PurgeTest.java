@@ -208,12 +208,13 @@ public class PurgeTest {
     String select = "snapshots where scope='DIR'";
     int directorySnapshots = count(select);
 
+    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.dbcleaner.cleanDirectory", "false"));
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false")
       .setProfile("sonar-way-2.7")
-      .setProperty("sonar.projectDate", "2012-02-02")
-      .setProperty("sonar.dbcleaner.cleanDirectory", "false");
+      .setProperty("sonar.projectDate", "2012-02-02");
+
     orchestrator.executeBuild(build);
 
     assertThat(count(select)).isEqualTo(2 * directorySnapshots);
