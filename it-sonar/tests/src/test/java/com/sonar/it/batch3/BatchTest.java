@@ -344,8 +344,6 @@ public class BatchTest {
     assertThat(buildResult.getLogs()).contains("Sensors execution time breakdown");
     assertThat(buildResult.getLogs()).contains("Decorators execution time breakdown");
     assertThat(buildResult.getLogs()).contains("Post-Jobs execution time breakdown");
-    // Purge
-    assertThat(buildResult.getLogs()).contains("Profiling for purge:");
   }
 
   /**
