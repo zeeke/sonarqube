@@ -23,6 +23,8 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
   @Before
   public void deleteAnalysisData() {
     orchestrator.resetData();
+    // reset settings before test
+    ItUtils.setServerProperty(orchestrator, "sonar.dbcleaner.daysBeforeDeletingClosedIssues", null);
   }
 
   /**
@@ -45,8 +47,9 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     }
 
     // Second scan with empty profile -> all issues are resolve and closed -> deleted by purge because property value is zero
+    ItUtils.setServerProperty(orchestrator, "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "0");
     orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "0"));
+      .setProperties("sonar.dynamicAnalysis", "false"));
     issues = search(IssueQuery.create()).list();
     assertThat(issues).isEmpty();
   }
@@ -57,10 +60,11 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
   @Test
   public void purge_old_closed_issues() throws Exception {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
+    ItUtils.setServerProperty(orchestrator, "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "5000");
 
     // Generate some issues
     orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2010-01-01")
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2014-10-01")
       .setProfile("with-many-rules"));
 
     // All the issues are open
@@ -69,19 +73,20 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
       assertThat(issue.resolution()).isNull();
     }
 
-    // Second scan with empty profile -> all issues are resolve and closed
-    // -> Not delete because less than 30 days long
+    // Second scan with empty profile -> all issues are resolved and closed
+    // -> Not deleted because less than 5000 days long
     orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2010-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30"));
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2014-10-15"));
     issues = search(IssueQuery.create()).list();
     for (Issue issue : issues) {
       assertThat(issue.resolution()).isNotNull();
       assertThat(issue.status()).isEqualTo("CLOSED");
     }
 
-    // Third scan much later -> closed issues are deleted
+    // Third scan -> closed issues are deleted
+    ItUtils.setServerProperty(orchestrator, "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "5");
     orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2013-01-10", "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "30"));
+      .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2014-10-20"));
     issues = search(IssueQuery.create()).list();
     assertThat(issues.isEmpty());
   }

@@ -16,9 +16,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -197,5 +200,13 @@ public final class ItUtils {
 
   public static boolean isUpgradableDatabase(Orchestrator orchestrator) {
     return !"h2".equals(orchestrator.getDatabase().getClient().getDialect());
+  }
+
+  public static void setServerProperty(Orchestrator orch, String key, @Nullable String value) {
+    if (value == null) {
+      orch.getServer().getAdminWsClient().delete(new PropertyDeleteQuery(key));
+    } else {
+      orch.getServer().getAdminWsClient().update(new PropertyUpdateQuery().setKey(key).setValue(value));
+    }
   }
 }
