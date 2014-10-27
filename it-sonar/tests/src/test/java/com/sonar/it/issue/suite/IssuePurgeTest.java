@@ -9,7 +9,6 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueQuery;
@@ -25,33 +24,6 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     orchestrator.resetData();
     // reset settings before test
     ItUtils.setServerProperty(orchestrator, "sonar.dbcleaner.daysBeforeDeletingClosedIssues", null);
-  }
-
-  /**
-   * SONAR-4308
-   */
-  @Test
-  @Ignore("Will be fixed by SONAR-5628")
-  public void delete_all_closed_issues() throws Exception {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/with-many-rules.xml"));
-
-    // Generate some issues
-    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProfile("with-many-rules"));
-
-    // All the issues are open
-    List<Issue> issues = search(IssueQuery.create()).list();
-    for (Issue issue : issues) {
-      assertThat(issue.resolution()).isNull();
-    }
-
-    // Second scan with empty profile -> all issues are resolve and closed -> deleted by purge because property value is zero
-    ItUtils.setServerProperty(orchestrator, "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "0");
-    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperties("sonar.dynamicAnalysis", "false"));
-    issues = search(IssueQuery.create()).list();
-    assertThat(issues).isEmpty();
   }
 
   /**
@@ -84,7 +56,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     }
 
     // Third scan -> closed issues are deleted
-    ItUtils.setServerProperty(orchestrator, "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "5");
+    ItUtils.setServerProperty(orchestrator, "sonar.dbcleaner.daysBeforeDeletingClosedIssues", "1");
     orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2014-10-20"));
     issues = search(IssueQuery.create()).list();
