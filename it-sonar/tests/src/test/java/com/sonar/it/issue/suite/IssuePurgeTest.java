@@ -103,8 +103,10 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     for (Issue issue : issues) {
       assertThat(issue.resolution()).isNull();
     }
+    Issue issue = issues.get(0);
 
     int issuesOnModuleB = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample:module_b")).list().size();
+    assertThat(issuesOnModuleB).isEqualTo(28);
 
     // Second scan without module B -> issues on module B are resolved as removed and closed
     orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample"))
@@ -112,13 +114,16 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
       .setProfile("with-many-rules"));
 
     // Resolved should should all be mark as REMOVED and affect to module b
-    issues = search(IssueQuery.create().resolved(true)).list();
-    for (Issue issue : issues) {
-      assertThat(issue.resolution()).isEqualTo("REMOVED");
-      assertThat(issue.status()).isEqualTo("CLOSED");
-      assertThat(issue.componentKey()).contains("com.sonarsource.it.samples:multi-modules-sample:module_b");
+    List<Issue> reloadedIssues = search(IssueQuery.create().resolved(true)).list();
+    assertThat(reloadedIssues.size()).isGreaterThan(0);
+    assertThat(reloadedIssues).hasSize(issuesOnModuleB);
+    for (Issue reloadedIssue : reloadedIssues) {
+      assertThat(reloadedIssue.resolution()).isEqualTo("REMOVED");
+      assertThat(reloadedIssue.status()).isEqualTo("CLOSED");
+      assertThat(reloadedIssue.componentKey()).contains("com.sonarsource.it.samples:multi-modules-sample:module_b");
+      assertThat(reloadedIssue.updateDate().before(issue.updateDate())).isFalse();
+      assertThat(reloadedIssue.closeDate()).isNotNull();
+      assertThat(reloadedIssue.closeDate().before(reloadedIssue.creationDate())).isFalse();
     }
-
-    assertThat(issues).hasSize(issuesOnModuleB);
   }
 }
