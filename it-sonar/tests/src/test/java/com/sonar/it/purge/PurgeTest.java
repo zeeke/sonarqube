@@ -15,6 +15,8 @@ import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
 
 import java.util.Date;
 import java.util.List;
@@ -34,6 +36,9 @@ public class PurgeTest {
   @Before
   public void deleteProjectData() {
     orchestrator.resetData();
+
+    orchestrator.getServer().getAdminWsClient().delete(
+      new PropertyDeleteQuery("sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay"));
   }
 
   @Test
@@ -136,7 +141,8 @@ public class PurgeTest {
     int measuresCount = count("project_measures");
     // Using the "sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay" property set to '0' is the way
     // to keep only 1 snapshot per day
-    scan("shared/struts-1.3.9-diet", "sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay", "0");
+    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay", "0"));
+    scan("shared/struts-1.3.9-diet");
     assertThat(count("snapshots where qualifier<>'LIB'")).as("Different number of snapshots").isEqualTo(snapshotsCount);
 
     int measureOnNewMetrics = count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'");
@@ -155,7 +161,8 @@ public class PurgeTest {
     assertSingleSnapshot("com.sonarsource.it.samples.purge:module_b1");
 
     // we want the previous snapshot to be purged
-    scan("purge/modules/after", "sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay", "0");
+    orchestrator.getServer().getAdminWsClient().update(new PropertyUpdateQuery("sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay", "0"));
+    scan("purge/modules/after");
     assertDeleted("com.sonarsource.it.samples.purge:module_b");
     assertDeleted("com.sonarsource.it.samples.purge:module_b1");
     assertSingleSnapshot("com.sonarsource.it.samples.purge:module_c");
