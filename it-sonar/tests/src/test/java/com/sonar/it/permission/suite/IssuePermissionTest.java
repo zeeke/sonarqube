@@ -68,7 +68,7 @@ public class IssuePermissionTest {
       assertThat(orchestrator.getServer().wsClient(withoutBrowsePermission, "password").issueClient().find(
         IssueQuery.create().componentRoots("sample")).list()).isEmpty();
 
-      // Without user permission, a user cannot see issues on the project
+      // With user permission, a user can see issues on the project
       assertThat(orchestrator.getServer().wsClient(withBrowsePermission, "password").issueClient().find(
         IssueQuery.create().componentRoots("sample")).list()).isNotEmpty();
 

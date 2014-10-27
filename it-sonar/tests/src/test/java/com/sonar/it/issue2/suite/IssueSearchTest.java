@@ -66,8 +66,10 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
 
   @Test
   public void search_issues_by_component_roots() {
-    Issues issues = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample"));
-    assertThat(issues.list()).hasSize(63);
+    assertThat(search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample")).list()).hasSize(63);
+    assertThat(search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample:module_a")).list()).hasSize(34);
+    assertThat(search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1")).list()).hasSize(19);
+
     assertThat(search(IssueQuery.create().componentRoots("unknown")).list()).isEmpty();
   }
 
