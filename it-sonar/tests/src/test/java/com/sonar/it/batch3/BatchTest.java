@@ -57,10 +57,13 @@ public class BatchTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
   }
 
+  /** 
+   * SONAR-3718
+   */
   @Test
-  public void should_scan_branch() {
+  public void should_scan_branch_with_forward_slash() {
     scan("shared/xoo-multi-modules-sample");
-    scan("shared/xoo-multi-modules-sample", "sonar.branch", "0.x");
+    scan("shared/xoo-multi-modules-sample", "sonar.branch", "branch/0.x");
 
     Sonar sonar = orchestrator.getServer().getWsClient();
     assertThat(sonar.findAll(new ResourceQuery().setQualifiers("TRK"))).hasSize(2);
@@ -68,8 +71,8 @@ public class BatchTest {
     Resource master = sonar.find(new ResourceQuery("com.sonarsource.it.samples:multi-modules-sample"));
     assertThat(master.getName()).isEqualTo("Sonar :: Integration Tests :: Multi-modules Sample");
 
-    Resource branch = sonar.find(new ResourceQuery("com.sonarsource.it.samples:multi-modules-sample:0.x"));
-    assertThat(branch.getName()).isEqualTo("Sonar :: Integration Tests :: Multi-modules Sample 0.x");
+    Resource branch = sonar.find(new ResourceQuery("com.sonarsource.it.samples:multi-modules-sample:branch/0.x"));
+    assertThat(branch.getName()).isEqualTo("Sonar :: Integration Tests :: Multi-modules Sample branch/0.x");
   }
 
   /**
