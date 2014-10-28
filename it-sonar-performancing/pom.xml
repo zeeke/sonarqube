@@ -18,6 +18,7 @@
 
   <properties>
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
+    <category>*</category>
   </properties>
   
   <build>
