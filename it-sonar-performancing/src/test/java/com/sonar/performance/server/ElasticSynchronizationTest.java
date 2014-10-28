@@ -3,7 +3,10 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.performance;
+package com.sonar.performance.server;
+
+import com.sonar.performance.PerfTestCase;
+import com.sonar.performance.ServerLogs;
 
 import com.sonar.orchestrator.Orchestrator;
 import org.apache.commons.io.FileUtils;

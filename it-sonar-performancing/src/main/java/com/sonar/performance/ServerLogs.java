@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-class ServerLogs {
+public class ServerLogs {
 
   static Date extractDate(String line) {
     String pattern = "yyyy.MM.dd HH:mm:ss";
@@ -28,7 +28,7 @@ class ServerLogs {
     return null;
   }
 
-  static Date extractFirstDate(List<String> lines) {
+  public static Date extractFirstDate(List<String> lines) {
     for (String line : lines) {
       Date d = ServerLogs.extractDate(line);
       if (d != null) {
@@ -38,12 +38,10 @@ class ServerLogs {
     return null;
   }
 
-  static void clear(Orchestrator orch) throws IOException {
+  public static void clear(Orchestrator orch) throws IOException {
     if (orch.getServer() != null && orch.getServer().getLogs() != null) {
       FileUtils.write(orch.getServer().getLogs(), "", false);
     }
   }
 
-
 }
-

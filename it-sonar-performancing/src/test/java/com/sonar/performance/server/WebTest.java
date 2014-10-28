@@ -3,7 +3,9 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.performance;
+package com.sonar.performance.server;
+
+import com.sonar.performance.PerfTestCase;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.sonar.orchestrator.Orchestrator;
@@ -12,7 +14,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
-
 import static org.junit.Assert.fail;
 
 public class WebTest extends PerfTestCase {

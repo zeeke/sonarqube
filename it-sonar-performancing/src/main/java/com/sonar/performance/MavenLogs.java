@@ -10,13 +10,13 @@ import org.apache.commons.lang.StringUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class MavenLogs {
+public class MavenLogs {
 
   /**
    * Total time: 6.015s
    * Total time: 3:14.025s
    */
-  static Long extractTotalTime(String logs) {
+  public static Long extractTotalTime(String logs) {
     Pattern pattern = Pattern.compile(".*Total time: (\\d*:)?(\\d+).(\\d+)s.*");
     Matcher matcher = pattern.matcher(logs);
     if (matcher.matches()) {
@@ -32,11 +32,11 @@ class MavenLogs {
   /**
    * Final Memory: 68M/190M
    */
-  static Long extractEndMemory(String logs) {
+  public static Long extractEndMemory(String logs) {
     return extractLong(logs, ".*Final Memory: (\\d+)M/[\\d]+M.*");
   }
 
-  static Long extractMaxMemory(String logs) {
+  public static Long extractMaxMemory(String logs) {
     return extractLong(logs, ".*Final Memory: [\\d]+M/(\\d+)M.*");
   }
 
