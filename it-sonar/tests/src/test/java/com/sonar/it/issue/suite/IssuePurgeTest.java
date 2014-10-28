@@ -50,6 +50,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2014-10-15"));
     issues = search(IssueQuery.create()).list();
+    assertThat(issues).isNotEmpty();
     for (Issue issue : issues) {
       assertThat(issue.resolution()).isNotNull();
       assertThat(issue.status()).isEqualTo("CLOSED");
@@ -60,7 +61,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2014-10-20"));
     issues = search(IssueQuery.create()).list();
-    assertThat(issues.isEmpty());
+    assertThat(issues).isEmpty();
   }
 
   /**

@@ -134,7 +134,7 @@ public class BatchTest {
   }
 
   @Test
-  public void should_import_sources_by_default() {
+  public void should_import_sources() {
     scan("shared/xoo-sample");
 
     SourceQuery query = new SourceQuery("sample:src/main/xoo/sample/Sample.xoo");
