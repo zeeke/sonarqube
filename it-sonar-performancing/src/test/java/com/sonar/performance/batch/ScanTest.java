@@ -34,10 +34,6 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class ScanTest extends PerfTestCase {
 
-  private static final int NB_LINES_PER_FILE_BIG_PROJECT = 1000;
-
-  private static final int NB_FILES_BIG_PROJECT = 100;
-
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
 
@@ -76,8 +72,32 @@ public class ScanTest extends PerfTestCase {
   }
 
   @Test
-  public void scan_100000_issues_tracking() throws InvalidPropertiesFormatException, IOException {
-    File projectBaseDir = createBigXooProject(NB_FILES_BIG_PROJECT, NB_LINES_PER_FILE_BIG_PROJECT);
+  public void scan_100_files_1000_issues_tracking() throws InvalidPropertiesFormatException, IOException {
+    File projectBaseDir = createBigXooProject(100, 1000);
+    SonarRunner runner = newSonarRunner(
+      "-Xmx512m -server -XX:MaxPermSize=64m",
+      "sonar.profile", "one-xoo-issue-per-line",
+      "sonar.showProfiling", "true",
+      "sonar.scm.disabled", "true",
+      "sonar.projectKey", "foo",
+      "sonar.projectName", "Foo",
+      "sonar.projectVersion", "1.0",
+      "sonar.sources", "src"
+      ).setProjectDir(projectBaseDir);
+    orchestrator.executeBuild(runner);
+    Properties prof = readProfiling(projectBaseDir, "foo");
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2900L);
+
+    // Second run
+    orchestrator.executeBuild(runner);
+    prof = readProfiling(projectBaseDir, "foo");
+    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 12133L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 6900L);
+  }
+
+  @Test
+  public void scan_1_files_100000_issues_tracking() throws InvalidPropertiesFormatException, IOException {
+    File projectBaseDir = createBigXooProject(1, 100000);
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.profile", "one-xoo-issue-per-line",
