@@ -90,7 +90,7 @@ public class ScanTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2795L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 3000L);
 
     // Second run
     orchestrator.executeBuild(runner);
@@ -149,7 +149,7 @@ public class ScanTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 24000L);
+    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 2089L);
   }
 
   private Properties readProfiling(File baseDir, String moduleKey) throws FileNotFoundException, IOException, InvalidPropertiesFormatException {
