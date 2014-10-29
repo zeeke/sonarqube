@@ -91,8 +91,26 @@ public class ScanTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 12133L);
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 6900L);
+    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 12000L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 5000L);
+  }
+
+  @Test
+  public void scan_1000_files_no_issues_tracking() throws InvalidPropertiesFormatException, IOException {
+    File projectBaseDir = createBigXooProject(1000, 1000);
+    // Use empty profile
+    SonarRunner runner = newSonarRunner(
+      "-Xmx512m -server -XX:MaxPermSize=64m",
+      "sonar.showProfiling", "true",
+      "sonar.scm.disabled", "true",
+      "sonar.projectKey", "foo",
+      "sonar.projectName", "Foo",
+      "sonar.projectVersion", "1.0",
+      "sonar.sources", "src"
+      ).setProjectDir(projectBaseDir);
+    orchestrator.executeBuild(runner);
+    Properties prof = readProfiling(projectBaseDir, "foo");
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 0L);
   }
 
   @Test
@@ -115,8 +133,8 @@ public class ScanTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 47000L);
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 6900L);
+    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 12000L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 9000L);
   }
 
   @Test
