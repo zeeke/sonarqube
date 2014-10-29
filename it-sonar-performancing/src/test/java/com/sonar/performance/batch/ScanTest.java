@@ -90,7 +90,7 @@ public class ScanTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1645L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2795L);
 
     // Second run
     orchestrator.executeBuild(runner);
@@ -130,7 +130,7 @@ public class ScanTest extends PerfTestCase {
 
     long start = System.currentTimeMillis();
     // Create some changelog per issue
-    for (int i = 1; i <= 2; i++) {
+    for (int i = 1; i <= 5; i++) {
       orchestrator.getServer().adminWsClient().issueClient().bulkChange(BulkChangeQuery.create()
         .issues(issueKeys.toArray(new String[pageSize]))
         .actions("assign", "set_severity", "do_transition")
