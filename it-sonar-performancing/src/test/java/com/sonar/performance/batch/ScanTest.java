@@ -86,7 +86,7 @@ public class ScanTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2900L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2800L);
 
     // Second run
     orchestrator.executeBuild(runner);
@@ -110,7 +110,7 @@ public class ScanTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 0L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1000L);
   }
 
   @Test
@@ -282,7 +282,7 @@ public class ScanTest extends PerfTestCase {
     File src = new File(baseDir, "src");
     for (int i = 1; i <= nbFiles; i++) {
       File xooFile = new File(src, "file" + i + ".xoo");
-      FileUtils.write(xooFile, "Sample content");
+      FileUtils.write(xooFile, "Sample content\nfoo\nbar");
       File xooMeasureFile = new File(src, "file" + i + ".xoo.measures");
       FileUtils.write(xooMeasureFile, "lines:" + nbIssuesPerFile);
     }
