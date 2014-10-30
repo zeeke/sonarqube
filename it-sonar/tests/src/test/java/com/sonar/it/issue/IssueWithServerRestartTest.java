@@ -21,7 +21,7 @@ import java.io.File;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class IssueWithRestartToRemoveRulePluginTest {
+public class IssueWithServerRestartTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
@@ -73,6 +73,28 @@ public class IssueWithRestartToRemoveRulePluginTest {
     );
     File logs = orchestrator.getServer().getLogs();
     assertThat(FileUtils.readFileToString(logs)).doesNotContain("nil:NilClass");
+  }
+
+  @Test
+  public void scanning_a_second_project_should_not_remove_issues_of_first_project() throws Exception {
+    IssueClient issueClient = orchestrator.getServer().wsClient().issueClient();
+
+    orchestrator.resetData();
+    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
+
+    // Scan the first project and count number of issues
+    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProfile("one-issue-per-line");
+    orchestrator.executeBuild(scan);
+    int issues = issueClient.find(IssueQuery.create().componentRoots("sample")).list().size();
+    assertThat(issues).isGreaterThan(0);
+
+    // Scan another project
+    orchestrator.executeBuilds(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-multi-modules-sample")).setProfile("one-issue-per-line"));
+
+    // Re scan first project, number of its issues should be the same
+    orchestrator.executeBuild(scan);
+    assertThat(issueClient.find(IssueQuery.create().componentRoots("sample")).list().size()).isEqualTo(issues);
   }
 
 }
