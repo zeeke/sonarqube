@@ -23,19 +23,19 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForVisible</td>
-	<td>css=.navigator-actions-total</td>
-	<td>*Found: 12*</td>
+	<td>waitForText</td>
+	<td>id=issues-total</td>
+	<td>12</td>
 </tr>
 <tr>
-	<td>waitForSelectedLabel</td>
-	<td>resolutions</td>
-	<td>Unresolved</td>
+	<td>waitForElementPresent</td>
+	<td>css=.facet.active[data-unresolved]</td>
+	<td></td>
 </tr>
 <tr>
-	<td>assertValue</td>
-	<td>componentRoots</td>
-	<td>sample</td>
+	<td>waitForText</td>
+	<td>css=.issues-facets</td>
+	<td>*Sample*</td>
 </tr>
 </tbody>
 </table>
