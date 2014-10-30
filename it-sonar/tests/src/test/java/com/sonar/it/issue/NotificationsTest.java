@@ -118,8 +118,8 @@ public class NotificationsTest {
     assertThat((String) message.getContent()).contains("Sample project for notifications");
     assertThat((String) message.getContent()).contains("13 new issues");
     assertThat((String) message.getContent()).contains("Blocker: 0   Critical: 0   Major: 13   Minor: 0   Info: 0");
-    assertThat((String) message.getContent()).contains(
-      "See it in SonarQube: http://localhost:9000/issues/search#componentRoots=sample-notifications|createdAt=2011-12-15T00%3A00%3A00%2B0100");
+    assertThat((String) message.getContent()).matches(
+      "See it in SonarQube: http://localhost:9000/issues/search#componentRootUuids=.*|createdAt=2011-12-15T00%3A00%3A00%2B0100");
 
     assertThat(emails.hasNext()).isTrue();
     message = emails.next().getMimeMessage();
