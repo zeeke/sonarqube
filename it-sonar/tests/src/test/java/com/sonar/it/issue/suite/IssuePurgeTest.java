@@ -62,8 +62,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
       .setProperties("sonar.dynamicAnalysis", "false", "sonar.projectDate", "2014-10-20"));
     issues = search(IssueQuery.create()).list();
 
-    // TODO temporarily disabled as long as issues index is not purged by compute engine
-    //assertThat(issues).isEmpty();
+    assertThat(issues).isEmpty();
   }
 
   /**
