@@ -92,7 +92,7 @@ public class ScanTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
     assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 12000L);
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 5000L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 4100L);
   }
 
   @Test
@@ -134,7 +134,7 @@ public class ScanTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
     assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 12000L);
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 9000L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 8000L);
   }
 
   @Test
