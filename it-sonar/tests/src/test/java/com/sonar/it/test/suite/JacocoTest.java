@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.number.OrderingComparisons.greaterThan;
@@ -53,11 +54,11 @@ public class JacocoTest {
 
     Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.apache.struts:struts-parent",
       "coverage"));
-    assertThat(project.getMeasureValue("coverage"), closeTo(25.5, 0.1));
+    assertThat(project.getMeasureValue("coverage")).isIn(25.5, 25.1/* Java8 */);
 
     Resource module = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.apache.struts:struts-core",
       "coverage"));
-    assertThat(module.getMeasureValue("coverage"), closeTo(37.1, 0.1));
+    assertThat(module.getMeasureValue("coverage")).isIn(37.1, 36.8 /* Java8 */);
 
     module = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("org.apache.struts:struts-core",
       "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time"));
