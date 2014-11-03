@@ -11,6 +11,7 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class IntegrationTestTest {
@@ -32,6 +33,7 @@ public class IntegrationTestTest {
   }
 
   @Test
+  @Ignore
   public void testIntegrationTestViewer() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("integration-test-viewer",
         "/selenium/test/header-of-integration-tests-viewer.html",
