@@ -11,7 +11,6 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -167,32 +166,20 @@ public class DuplicationsTest {
     assertThat(file.getMeasureValue("duplicated_lines"), greaterThan(50000.0));
   }
 
-  @Test
-  @Ignore
-  // TODO: enable after resolving SONAR-5209
-  public void testDuplicationsViewer() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("duplications-viewer",
-      "/selenium/duplications/duplications-viewer/display-six-lines-in-snippet-by-default.html",
-      "/selenium/duplications/duplications-viewer/display-all-duplicated-lines-in-snippet.html",// SONAR-3101
-      "/selenium/duplications/duplications-viewer/drilldown-to-duplications-viewer.html",
-      "/selenium/duplications/duplications-viewer/test-duplications-viewer.html"
-      )
-      .build();
-    orchestrator.executeSelenese(selenese);
-  }
-
   /**
    * SONAR-3108
    */
   @Test
   public void use_duplication_exclusions() {
+    // Use a new project key to avoid conflict woth other tests
+    String projectKey = "com.sonarsource.it.samples:duplications-with-exclusions";
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("duplications/file-duplications"))
       .setCleanPackageSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false")
-      .setProperties("sonar.cpd.exclusions", "**/Class*");
+      .setProperties("sonar.projectKey", projectKey,
+        "sonar.cpd.exclusions", "**/Class*");
     orchestrator.executeBuild(build);
 
-    Resource project = getResource("com.sonarsource.it.samples:duplications");
+    Resource project = getResource(projectKey);
     assertThat(project, not(nullValue()));
     assertThat(project.getMeasureValue("duplicated_blocks"), is(11.0));
     assertThat(project.getMeasureValue("duplicated_lines"), is(256.0));
