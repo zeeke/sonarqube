@@ -14,7 +14,9 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
   DashboardTest.class,
-  CrossProjectDuplicationsTest.class
+  CrossProjectDuplicationsTest.class,
+  UnitTestTest.class,
+  IntegrationTestTest.class
 })
 public class UiTestSuite {
 

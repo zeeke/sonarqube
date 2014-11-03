@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.test.suite;
+package com.sonar.it.ui.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class IntegrationTestTest {
   @ClassRule
-  public static Orchestrator orchestrator = TestTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = UiTestSuite.ORCHESTRATOR;
 
   @BeforeClass
   public static void inspectProject() {
@@ -28,7 +28,7 @@ public class IntegrationTestTest {
   @Test
   public void testIntegrationTestWidget() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("it-widget",
-        "/selenium/test/integration-test-widget.html").build();
+      "/selenium/test/integration-test-widget.html").build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -36,8 +36,8 @@ public class IntegrationTestTest {
   @Ignore
   public void testIntegrationTestViewer() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("integration-test-viewer",
-        "/selenium/test/header-of-integration-tests-viewer.html",
-        "/selenium/test/filter-integration-test-lines.html").build();
+      "/selenium/test/header-of-integration-tests-viewer.html",
+      "/selenium/test/filter-integration-test-lines.html").build();
     orchestrator.executeSelenese(selenese);
   }
 }

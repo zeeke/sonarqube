@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:contact AT sonarsource DOT com
  */
-package com.sonar.it.test.suite;
+package com.sonar.it.ui.suite;
 
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
@@ -21,7 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class UnitTestTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = TestTestSuite.ORCHESTRATOR;
+  public static Orchestrator orchestrator = UiTestSuite.ORCHESTRATOR;
 
   @Before
   public void deleteData() {
@@ -29,7 +29,7 @@ public class UnitTestTest {
   }
 
   @Test
-  public void testDynamicAnalysis() {
+  public void testConditionsByLine() {
     MavenBuild analysis = MavenBuild.create()
       .setPom(ItUtils.locateProjectPom("test/with-tests"))
       .setGoals("sonar:sonar");
@@ -107,69 +107,6 @@ public class UnitTestTest {
       "/selenium/test-failures/tests-viewer-with-skipped-test.html" // SONAR-3786
     ).build();
     orchestrator.executeSelenese(selenese);
-  }
-
-  @Test
-  public void shouldReuseSurefireReports() {
-    MavenBuild build = MavenBuild.create()
-      .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
-      .setGoals("clean", "install"); // surefire are executed during build
-
-    MavenBuild analysis = MavenBuild.create()
-      .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
-      .addGoal("sonar:sonar");
-    orchestrator.executeBuilds(build, analysis);
-
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:reuse-surefire-reports",
-      "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
-    assertThat(project.getMeasureIntValue("tests")).isEqualTo(2);
-    assertThat(project.getMeasureIntValue("test_failures")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("test_errors")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("coverage")).isNull();
-    assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
-  }
-
-  /**
-   * SONAR-2841
-   */
-  @Test
-  public void shouldNotReuseTestSuiteReportFileIfNotAlone() {
-    MavenBuild build = MavenBuild.create()
-      .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
-      .addGoal("sonar:sonar")
-      .setProperty("sonar.surefire.reportsPath", "existing-test-and-testsuite-reports");
-    orchestrator.executeBuild(build);
-
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:reuse-surefire-reports",
-      "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
-    assertThat(project.getMeasureIntValue("tests")).isEqualTo(2);
-    assertThat(project.getMeasureIntValue("test_failures")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("test_errors")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("coverage")).isNull();
-    assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
-  }
-
-  /**
-   * SONAR-2841
-   */
-  @Test
-  public void shouldReuseTestSuiteReportFileIfAlone() {
-    MavenBuild build = MavenBuild.create()
-      .setPom(ItUtils.locateProjectPom("test/reuse-surefire-reports"))
-      .addGoal("sonar:sonar")
-      .setProperty("sonar.surefire.reportsPath", "existing-testsuite-report");
-    orchestrator.executeBuild(build);
-
-    Resource project = orchestrator.getServer().getWsClient().find(ResourceQuery.createForMetrics("com.sonarsource.it.samples:reuse-surefire-reports",
-      "test_success_density", "test_failures", "test_errors", "tests", "skipped_tests", "test_execution_time", "coverage"));
-    assertThat(project.getMeasureIntValue("tests")).isEqualTo(2);
-    assertThat(project.getMeasureIntValue("test_failures")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("test_errors")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("coverage")).isNull();
-    assertThat(project.getMeasureIntValue("skipped_tests")).isEqualTo(0);
-    assertThat(project.getMeasureIntValue("test_execution_time")).isGreaterThan(0);
   }
 
 }
