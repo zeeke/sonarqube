@@ -16,7 +16,9 @@ import org.junit.runners.Suite;
   DashboardTest.class,
   CrossProjectDuplicationsTest.class,
   UnitTestTest.class,
-  IntegrationTestTest.class
+  IntegrationTestTest.class,
+  HighlightingTest.class,
+  EncodingTest.class
 })
 public class UiTestSuite {
 
