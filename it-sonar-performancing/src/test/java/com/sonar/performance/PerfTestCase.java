@@ -7,14 +7,14 @@ package com.sonar.performance;
 
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -36,14 +36,14 @@ public abstract class PerfTestCase {
     assertThat(duration).as(String.format("Expected less than %d ms, got %d ms", maxDuration, duration)).isLessThanOrEqualTo(maxDuration);
   }
 
-  protected Properties readProfiling(File baseDir, String moduleKey) throws FileNotFoundException, IOException, InvalidPropertiesFormatException {
-    File profiling = new File(baseDir, ".sonar/profiling/" + moduleKey + "-profiler.xml");
+  protected Properties readProfiling(File baseDir, String moduleKey) throws IOException {
+    File profilingFile = new File(baseDir, ".sonar/profiling/" + moduleKey + "-profiler.properties");
     Properties props = new Properties();
-    FileInputStream in = new FileInputStream(profiling);
+    FileInputStream in = FileUtils.openInputStream(profilingFile);
     try {
-      props.loadFromXML(in);
+      props.load(in);
     } finally {
-      in.close();
+      IOUtils.closeQuietly(in);
     }
     return props;
   }
