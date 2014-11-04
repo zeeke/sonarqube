@@ -28,8 +28,14 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <includes>
+            <include>com/sonar/performance/${category}/suite/*TestSuite.java</include>
+            <!-- not included in suites -->
             <include>com/sonar/performance/${category}/*Test.java</include>
           </includes>
+          <excludes>
+            <!-- included into suites -->
+            <exclude>com/sonar/performance/*/suite/*Test.java</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>

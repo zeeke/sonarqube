@@ -5,8 +5,17 @@
  */
 package com.sonar.performance;
 
+import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.orchestrator.locator.FileLocation;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.InvalidPropertiesFormatException;
+import java.util.Properties;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -25,5 +34,25 @@ public abstract class PerfTestCase {
   protected void assertDurationLessThan(long duration, long maxDuration) {
     System.out.printf("Test %s : %d ms (max allowed is %d)\n", testName.getMethodName(), duration, maxDuration);
     assertThat(duration).as(String.format("Expected less than %d ms, got %d ms", maxDuration, duration)).isLessThanOrEqualTo(maxDuration);
+  }
+
+  protected Properties readProfiling(File baseDir, String moduleKey) throws FileNotFoundException, IOException, InvalidPropertiesFormatException {
+    File profiling = new File(baseDir, ".sonar/profiling/" + moduleKey + "-profiler.xml");
+    Properties props = new Properties();
+    FileInputStream in = new FileInputStream(profiling);
+    try {
+      props.loadFromXML(in);
+    } finally {
+      in.close();
+    }
+    return props;
+  }
+
+  public static SonarRunner newSonarRunner(String sonarRunnerOpts, String... props) {
+    return SonarRunner.create()
+      .setProperties(props)
+      .setEnvironmentVariable("SONAR_RUNNER_OPTS", sonarRunnerOpts)
+      .setRunnerVersion("2.3")
+      .setProjectDir(FileLocation.of("projects/xoo-sample").getFile());
   }
 }
