@@ -18,7 +18,11 @@ import java.io.IOException;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  IssuesTest.class
+  BootstrappingTest.class,
+  HighlightingTest.class,
+  IssuesTest.class,
+  MemoryTest.class,
+  PreviewModeTest.class
 })
 public class BatchPerfTestSuite {
 
