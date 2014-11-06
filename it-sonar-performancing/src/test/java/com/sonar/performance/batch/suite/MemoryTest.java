@@ -12,6 +12,7 @@ import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.services.PropertyCreateQuery;
@@ -42,6 +43,7 @@ public class MemoryTest extends PerfTestCase {
   int DEPTH = 6;
 
   @Test
+  @Ignore("Assertion are not correctly definded")
   public void analyzeProjectWithManyModulesAndBigProperties() throws IOException {
 
     File baseDir = temp.newFolder();
