@@ -21,8 +21,6 @@ import org.sonar.wsclient.services.ResourceQuery;
 import java.io.File;
 import java.io.IOException;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 @RunWith(Suite.class)
 @Suite.SuiteClasses({SvnTest.class, GitTest.class})
 public class ScmTestSuite {
@@ -55,19 +53,9 @@ public class ScmTestSuite {
     ORCHESTRATOR.executeBuilds(install, sonar);
   }
 
-  public static void checkMeasures(String key) {
-    assertThat(measure(key, "last_commit_datetimes_by_line")).contains("=");
-    assertThat(measure(key, "revisions_by_line")).contains("=");
-    assertThat(measure(key, "authors_by_line")).contains("=");
-    if (!ORCHESTRATOR.getServer().version().isGreaterThanOrEquals("4.2")) {
-      assertThat(measure(key, "scm.hash")).isNotEmpty();
-    }
-  }
-
-  private static String measure(String key, String metricKey) {
+  public static Measure measure(String key, String metricKey) {
     Resource resource = ORCHESTRATOR.getServer().getWsClient().find(ResourceQuery.createForMetrics(key, metricKey).setIncludeTrends(true));
-    Measure m = (resource != null ? resource.getMeasure(metricKey) : null);
-    return m != null ? m.getData() : null;
+    return resource != null ? resource.getMeasure(metricKey) : null;
   }
 
   public static File project(String name) {
