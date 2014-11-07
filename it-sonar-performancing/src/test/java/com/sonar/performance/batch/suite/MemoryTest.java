@@ -39,7 +39,7 @@ public class MemoryTest extends PerfTestCase {
       );
   }
 
-  int DEPTH = 5;
+  int DEPTH = 4;
 
   // Property on root module is duplicated in each module so it may be big
   @Test
