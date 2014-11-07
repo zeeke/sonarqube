@@ -12,7 +12,6 @@ import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.services.PropertyCreateQuery;
@@ -42,8 +41,8 @@ public class MemoryTest extends PerfTestCase {
 
   int DEPTH = 6;
 
+  // Property on root module is duplicated in each module so it may be big
   @Test
-  @Ignore("Assertion are not correctly definded")
   public void analyzeProjectWithManyModulesAndBigProperties() throws IOException {
 
     File baseDir = temp.newFolder();
@@ -69,7 +68,7 @@ public class MemoryTest extends PerfTestCase {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    // assertDurationAround(duration, 4000L);
+    assertDurationAround(duration, 4000L);
 
     // Second execution with a property on server side
     orchestrator.getServer().getAdminWsClient().create(new PropertyCreateQuery("sonar.anotherBigProp", Strings.repeat("B", 1000), "big-module-tree"));
