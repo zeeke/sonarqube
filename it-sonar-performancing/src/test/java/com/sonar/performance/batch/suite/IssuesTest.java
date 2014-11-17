@@ -74,8 +74,8 @@ public class IssuesTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 12000L);
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 4100L);
+    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10300L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 3000L);
   }
 
   @Test
@@ -116,8 +116,8 @@ public class IssuesTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 12000L);
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 8000L);
+    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10700L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 6000L);
   }
 
   @Test
@@ -170,7 +170,7 @@ public class IssuesTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 2089L);
+    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1916L);
   }
 
   private static File createBigXooProject(int nbFiles, int nbIssuesPerFile) throws IOException {
