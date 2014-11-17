@@ -74,13 +74,13 @@ public class BootstrappingTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
     // First analysis
-    assertDurationAround(duration, 55000L);
+    assertDurationAround(duration, 49000L);
 
     start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     duration = System.currentTimeMillis() - start;
     // Second analysis
-    assertDurationAround(duration, 68000L);
+    assertDurationAround(duration, 65000L);
   }
 
   @Test
@@ -117,13 +117,13 @@ public class BootstrappingTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
     // First analysis
-    assertDurationAround(duration, 27000L);
+    assertDurationAround(duration, 24000L);
 
     start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     duration = System.currentTimeMillis() - start;
     // Second analysis
-    assertDurationAround(duration, 31000L);
+    assertDurationAround(duration, 28000L);
   }
 
 }

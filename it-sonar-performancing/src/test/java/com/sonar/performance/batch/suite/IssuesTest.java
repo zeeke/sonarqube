@@ -51,7 +51,7 @@ public class IssuesTest extends PerfTestCase {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 9700L);
+    assertDurationAround(duration, 8100L);
   }
 
   @Test
@@ -69,7 +69,7 @@ public class IssuesTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1650L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1500L);
 
     // Second run
     orchestrator.executeBuild(runner);
@@ -111,7 +111,7 @@ public class IssuesTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2100L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1900L);
 
     // Second run
     orchestrator.executeBuild(runner);

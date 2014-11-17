@@ -71,7 +71,7 @@ public class HighlightingTest extends PerfTestCase {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 43000L);
+    assertDurationAround(duration, 40000L);
   }
 
 }
