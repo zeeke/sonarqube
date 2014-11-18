@@ -55,7 +55,7 @@ public class IssuesTest extends PerfTestCase {
   }
 
   @Test
-  public void scan_100_files_1000_issues_tracking() throws InvalidPropertiesFormatException, IOException {
+  public void scan_100_files_1000_issues_tracking() throws IOException {
     File projectBaseDir = createBigXooProject(100, 1000);
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
@@ -69,7 +69,7 @@ public class IssuesTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1500L);
+    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1360L);
 
     // Second run
     orchestrator.executeBuild(runner);
@@ -79,7 +79,7 @@ public class IssuesTest extends PerfTestCase {
   }
 
   @Test
-  public void scan_1000_files_no_issues_tracking() throws InvalidPropertiesFormatException, IOException {
+  public void scan_1000_files_no_issues_tracking() throws IOException {
     File projectBaseDir = createBigXooProject(1000, 1000);
     // Use empty profile
     SonarRunner runner = newSonarRunner(
@@ -97,7 +97,7 @@ public class IssuesTest extends PerfTestCase {
   }
 
   @Test
-  public void scan_1_files_100000_issues_tracking() throws InvalidPropertiesFormatException, IOException {
+  public void scan_1_files_100000_issues_tracking() throws IOException {
     File projectBaseDir = createBigXooProject(1, 100000);
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
