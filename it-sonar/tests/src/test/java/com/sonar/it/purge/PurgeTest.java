@@ -14,7 +14,9 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.sonar.wsclient.services.PropertyDeleteQuery;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 
@@ -23,8 +25,12 @@ import java.util.List;
 import java.util.Map;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class PurgeTest {
+
+  @Rule
+  public ErrorCollector collector = new ErrorCollector();
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
@@ -49,10 +55,10 @@ public class PurgeTest {
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(yesterday));
 
     // count components
-    assertThat(count("projects where qualifier in ('TRK','BRC')")).as("Wrong number of projects").isEqualTo(4);
-    assertThat(count("projects where qualifier in ('DIR')")).as("Wrong number of directories").isEqualTo(40);
-    assertThat(count("projects where qualifier in ('FIL')")).as("Wrong number of files").isEqualTo(320);
-    assertThat(count("projects where qualifier in ('UTS')")).as("Wrong number of unit test files").isEqualTo(28);
+    collector.checkThat("Wrong number of projects", count("projects where qualifier in ('TRK','BRC')"), equalTo(4));
+    collector.checkThat("Wrong number of directories", count("projects where qualifier in ('DIR')"), equalTo(40));
+    collector.checkThat("Wrong number of files", count("projects where qualifier in ('FIL')"), equalTo(320));
+    collector.checkThat("Wrong number of unit test files", count("projects where qualifier in ('UTS')"), equalTo(28));
 
     int measuresOnTrk = 182;
     int measuresOnBrc = 413;
@@ -62,28 +68,29 @@ public class PurgeTest {
     // count measures 
     logMeasures("First analysis - TRK measures", "TRK");
     logMeasures("First analysis - BRC measures", "BRC");
-    measures("TRK", measuresOnTrk);
-    measures("BRC", measuresOnBrc);
-    measures("DIR", measuresOnDir);
-    measures("FIL", measuresOnFil);
+    assertMeasuresCountForQualifier("TRK", measuresOnTrk);
+    assertMeasuresCountForQualifier("BRC", measuresOnBrc);
+    assertMeasuresCountForQualifier("DIR", measuresOnDir);
+    assertMeasuresCountForQualifier("FIL", measuresOnFil);
 
     // No new_* metrics measure should be recorded the first time
-    assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
-      .as("Wrong number of measure of new_ metrics")
-      .isEqualTo(0);
+    collector.checkThat(
+      "Wrong number of measure of new_ metrics",
+      count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"),
+      equalTo(0));
 
     int expectedMeasures = measuresOnTrk + measuresOnBrc + measuresOnDir + measuresOnFil;
-    assertThat(count("project_measures")).as("Wrong number of measures").isEqualTo(expectedMeasures);
-    assertThat(count("project_measures where measure_data is not null")).as("Wrong number of measure data").isEqualTo(56);
+    collector.checkThat("Wrong number of measures", count("project_measures"), equalTo(expectedMeasures));
+    collector.checkThat("Wrong number of measure data", count("project_measures where measure_data is not null"), equalTo(56));
 
     // count other tables that are constant between 2 scans
     int expectedIssues = 3859;
     int expectedSources = 348;
     int expectedDependencies = 977;
-    assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
+    collector.checkThat("Wrong number of snapshot_sources", count("snapshot_sources"), equalTo(expectedSources));
 
-    assertThat(count("issues")).as("Wrong number of issues").isEqualTo(expectedIssues);
-    assertThat(count("dependencies")).as("Wrong number of dependencies").isEqualTo(expectedDependencies);
+    collector.checkThat("Wrong number of issues", count("issues"), equalTo(expectedIssues));
+    collector.checkThat("Wrong number of dependencies", count("dependencies"), equalTo(expectedDependencies));
 
     // must be a different date, else a single snapshot is kept per day
     scan("shared/struts-1.3.9-diet", DateFormatUtils.ISO_DATE_FORMAT.format(today));
@@ -95,24 +102,24 @@ public class PurgeTest {
 
     logMeasures("Second analysis - TRK measures", "TRK");
     logMeasures("Second analysis - BRC measures", "BRC");
-    measures("TRK", measuresOnTrk + newMeasuresOnTrk);
-    measures("BRC", measuresOnBrc + newMeasuresOnBrc);
-    measures("DIR", measuresOnDir + newMeasuresOnDir);
-    measures("FIL", measuresOnFil + newMeasuresOnFil);
+    assertMeasuresCountForQualifier("TRK", measuresOnTrk + newMeasuresOnTrk);
+    assertMeasuresCountForQualifier("BRC", measuresOnBrc + newMeasuresOnBrc);
+    assertMeasuresCountForQualifier("DIR", measuresOnDir + newMeasuresOnDir);
+    assertMeasuresCountForQualifier("FIL", measuresOnFil + newMeasuresOnFil);
 
     // Measures on new_* metrics should be recorded
-    assertThat(count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"))
-      .as("Wrong number of measure of new_ metrics")
-      .isEqualTo(769);
+    collector.checkThat(
+      "Wrong number of measure of new_ metrics",
+      count("project_measures, metrics where metrics.id = project_measures.metric_id and metrics.name like 'new_%'"),
+      equalTo(769));
 
     // added measures relate to project and new_* metrics
     expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnDir + newMeasuresOnFil;
-    assertThat(count("project_measures")).as("Wrong number of measures after second analysis").isEqualTo(expectedMeasures);
-
-    assertThat(count("snapshot_sources")).as("Wrong number of snapshot_sources").isEqualTo(expectedSources);
-    assertThat(count("project_measures where measure_data is not null")).as("Wrong number of measure data").isEqualTo(56);
-    assertThat(count("issues")).as("Wrong number of issues").isEqualTo(expectedIssues);
-    assertThat(count("dependencies")).as("Wrong number of dependencies").isEqualTo(expectedDependencies);
+    collector.checkThat("Wrong number of measures after second analysis", count("project_measures"), equalTo(expectedMeasures));
+    collector.checkThat("Wrong number of snapshot_sources", count("snapshot_sources"), equalTo(expectedSources));
+    collector.checkThat("Wrong number of measure data", count("project_measures where measure_data is not null"), equalTo(56));
+    collector.checkThat("Wrong number of issues", count("issues"), equalTo(expectedIssues));
+    collector.checkThat("Wrong number of dependencies", count("dependencies"), equalTo(expectedDependencies));
   }
 
   /**
@@ -269,13 +276,10 @@ public class PurgeTest {
     return orchestrator.getDatabase().countSql("select count(*) from " + condition);
   }
 
-  private int measures(String qualifier, int count) {
+  private void assertMeasuresCountForQualifier(String qualifier, int count) {
     int result = countMeasures(qualifier);
-    // if (result != count) {
     logMeasures("GOT", qualifier);
-    assertThat(result).isEqualTo(count);
-    // }
-    return result;
+    collector.checkThat("Wrong number of measures for qualifier " + qualifier, result, equalTo(count));
   }
 
   private int countMeasures(String qualifier) {
