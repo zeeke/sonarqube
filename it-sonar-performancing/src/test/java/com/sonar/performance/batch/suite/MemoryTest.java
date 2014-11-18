@@ -75,7 +75,7 @@ public class MemoryTest extends PerfTestCase {
     start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 31000L);
+    assertDurationAround(duration, 29000L);
   }
 
   private void prepareModule(File parentDir, String moduleName, int depth) throws IOException {

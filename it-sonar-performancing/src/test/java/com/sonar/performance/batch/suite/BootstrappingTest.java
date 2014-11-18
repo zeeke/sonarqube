@@ -80,7 +80,7 @@ public class BootstrappingTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     duration = System.currentTimeMillis() - start;
     // Second analysis
-    assertDurationAround(duration, 65000L);
+    assertDurationAround(duration, 60000L);
   }
 
   @Test
