@@ -117,7 +117,8 @@ public class HttpsTest {
     };
 
     // Install the all-trusting trust manager
-    SSLContext sc = SSLContext.getInstance("SSL");
+    // SSLv3 is disabled since SQ 4.5.2 : https://jira.codehaus.org/browse/SONAR-5860
+    SSLContext sc = SSLContext.getInstance("TLSv1");
     sc.init(null, trustAllCerts, new java.security.SecureRandom());
     SSLSocketFactory untrustedSocketFactory = sc.getSocketFactory();
 
