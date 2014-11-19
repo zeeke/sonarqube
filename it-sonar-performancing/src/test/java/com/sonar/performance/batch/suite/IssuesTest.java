@@ -51,7 +51,7 @@ public class IssuesTest extends PerfTestCase {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 8100L);
+    assertDurationAround(duration, 8500L);
   }
 
   @Test
