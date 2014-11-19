@@ -51,7 +51,7 @@ public class HttpsTest {
     // enabled by Tomcat.
     // The problem is that java 1.6 supports only TLSv1 but not v1.1 nor 1.2,
     // so version to be used must be explicitly set on JVM.
-    initialHttpsProtocols = System.getProperty(HTTPS_PROTOCOLS);
+    initialHttpsProtocols = StringUtils.defaultString(System.getProperty(HTTPS_PROTOCOLS), "");
     System.setProperty(HTTPS_PROTOCOLS, "TLSv1");
   }
 
