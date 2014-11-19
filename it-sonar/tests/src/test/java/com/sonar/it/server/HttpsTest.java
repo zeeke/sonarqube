@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -36,17 +37,30 @@ import static org.fest.assertions.Fail.fail;
 
 public class HttpsTest {
 
+  public static final String HTTPS_PROTOCOLS = "https.protocols";
   Orchestrator orchestrator;
   int httpsPort = NetworkUtils.getNextAvailablePort();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
+  String initialHttpsProtocols = null;
+
+  @Before
+  public void setUp() throws Exception {
+    // SSLv3 is not supported since SQ 4.5.2. Only TLS v1, v1.1 and v1.2 are
+    // enabled by Tomcat.
+    // The problem is that java 1.6 supports only TLSv1 but not v1.1 nor 1.2,
+    // so version to be used must be explicitly set on JVM.
+    initialHttpsProtocols = System.getProperty(HTTPS_PROTOCOLS);
+    System.setProperty(HTTPS_PROTOCOLS, "TLSv1");
+  }
 
   @After
-  public void stop() {
+  public void tearDown() {
     if (orchestrator != null) {
       orchestrator.stop();
     }
+    System.setProperty(HTTPS_PROTOCOLS, initialHttpsProtocols);
   }
 
   @Test
@@ -118,9 +132,11 @@ public class HttpsTest {
 
     // Install the all-trusting trust manager
     // SSLv3 is disabled since SQ 4.5.2 : https://jira.codehaus.org/browse/SONAR-5860
-    SSLContext sc = SSLContext.getInstance("TLSv1");
+    SSLContext sc = SSLContext.getInstance("TLS");
     sc.init(null, trustAllCerts, new java.security.SecureRandom());
+
     SSLSocketFactory untrustedSocketFactory = sc.getSocketFactory();
+
 
     // Create all-trusting host name verifier
     HostnameVerifier allHostsValid = new HostnameVerifier() {
