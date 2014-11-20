@@ -9,6 +9,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -45,13 +46,13 @@ public class HighlightingTest extends PerfTestCase {
     srcDir.mkdir();
 
     int nbFiles = 100;
-    int chunkSize = 100000;
+    int ruleCount = 100000;
     for (int nb = 1; nb <= nbFiles; nb++) {
       File xooFile = new File(srcDir, "sample" + nb + ".xoo");
       File xoohighlightingFile = new File(srcDir, "sample" + nb + ".xoo.highlighting");
-      FileUtils.write(xooFile, "Sample xoo\ncontent");
-      StringBuilder sb = new StringBuilder(16 * chunkSize);
-      for (int i = 0; i < chunkSize; i++) {
+      FileUtils.write(xooFile, StringUtils.repeat("foo\n", ruleCount));
+      StringBuilder sb = new StringBuilder(16 * ruleCount);
+      for (int i = 0; i < ruleCount; i++) {
         sb.append(i).append(":").append(i + 1).append(":s\n");
       }
       FileUtils.write(xoohighlightingFile, sb.toString());
