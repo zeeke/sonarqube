@@ -45,8 +45,7 @@ public class IssuesTest extends PerfTestCase {
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.profile", "one-xoo-issue-per-line",
-      "sonar.showProfiling", "true",
-      "sonar.scm.disabled", "true"
+      "sonar.showProfiling", "true"
       );
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
@@ -61,7 +60,6 @@ public class IssuesTest extends PerfTestCase {
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true",
-      "sonar.scm.disabled", "true",
       "sonar.projectKey", "foo",
       "sonar.projectName", "Foo",
       "sonar.projectVersion", "1.0",
@@ -85,7 +83,6 @@ public class IssuesTest extends PerfTestCase {
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.showProfiling", "true",
-      "sonar.scm.disabled", "true",
       "sonar.projectKey", "foo",
       "sonar.projectName", "Foo",
       "sonar.projectVersion", "1.0",
@@ -103,7 +100,6 @@ public class IssuesTest extends PerfTestCase {
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true",
-      "sonar.scm.disabled", "true",
       "sonar.projectKey", "foo",
       "sonar.projectName", "Foo",
       "sonar.projectVersion", "1.0",
@@ -129,7 +125,6 @@ public class IssuesTest extends PerfTestCase {
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true",
-      "sonar.scm.disabled", "true",
       "sonar.projectKey", "foo",
       "sonar.projectName", "Foo",
       "sonar.projectVersion", "1.0",

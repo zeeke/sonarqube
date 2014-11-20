@@ -13,13 +13,19 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 
 public class HighlightingTest extends PerfTestCase {
+
+  @Rule
+  public ErrorCollector collector = new ErrorCollector();
 
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
@@ -72,7 +78,12 @@ public class HighlightingTest extends PerfTestCase {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 40000L);
+
+    assertDurationAround(collector, duration, 40000L);
+
+    Properties prof = readProfiling(baseDir, "highlighting");
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("SourcePersister")), 18000L);
+
   }
 
 }
