@@ -79,7 +79,7 @@ public class HighlightingTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
 
-    assertDurationAround(collector, duration, 40000L);
+    assertDurationAround(collector, duration, 68000L);
 
     Properties prof = readProfiling(baseDir, "highlighting");
     assertDurationAround(collector, Long.valueOf(prof.getProperty("SourcePersister")), 18000L);
