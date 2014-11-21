@@ -134,7 +134,8 @@ public class ResourceKeyMigrationTest {
     OrchestratorBuilder builder = Orchestrator.builderEnv().setSonarVersion(version);
     builder.setOrchestratorProperty("orchestrator.keepDatabase", String.valueOf(keepDatabase))
       .removeDistributedPlugins()
-      .addPlugin(ItUtils.xooPlugin());
+      // Latest xoo only supports SQ 4.5.1+ so we need to use an old version for version 4.1
+      .addPlugin("4.1".equals(version) ? FileLocation.of(this.getClass().getResource("/sonar-xoo-plugin-0.3_7.jar")) : ItUtils.xooPlugin());
     orchestrator = builder.build();
     orchestrator.start();
   }
