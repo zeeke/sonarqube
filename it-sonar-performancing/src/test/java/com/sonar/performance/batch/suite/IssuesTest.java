@@ -11,7 +11,9 @@ import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.issue.BulkChangeQuery;
 import org.sonar.wsclient.issue.Issue;
@@ -28,6 +30,9 @@ import java.util.Set;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class IssuesTest extends PerfTestCase {
+
+  @Rule
+  public ErrorCollector collector = new ErrorCollector();
 
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
@@ -67,13 +72,13 @@ public class IssuesTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1360L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1400L);
 
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10300L);
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 3400L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10300L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 3400L);
   }
 
   @Test
@@ -107,13 +112,13 @@ public class IssuesTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1900L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1900L);
 
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10700L);
-    assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 7000L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10700L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 7000L);
   }
 
   @Test

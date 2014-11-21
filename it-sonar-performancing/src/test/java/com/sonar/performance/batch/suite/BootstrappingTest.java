@@ -12,13 +12,18 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
 
 public class BootstrappingTest extends PerfTestCase {
+
+  @Rule
+  public ErrorCollector collector = new ErrorCollector();
 
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
@@ -74,13 +79,13 @@ public class BootstrappingTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
     // First analysis
-    assertDurationAround(duration, 49000L);
+    assertDurationAround(collector, duration, 49000L);
 
     start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     duration = System.currentTimeMillis() - start;
     // Second analysis
-    assertDurationAround(duration, 60000L);
+    assertDurationAround(collector, duration, 60000L);
   }
 
   @Test
@@ -117,13 +122,13 @@ public class BootstrappingTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
     // First analysis
-    assertDurationAround(duration, 24000L);
+    assertDurationAround(collector, duration, 24000L);
 
     start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     duration = System.currentTimeMillis() - start;
     // Second analysis
-    assertDurationAround(duration, 28000L);
+    assertDurationAround(collector, duration, 28000L);
   }
 
 }

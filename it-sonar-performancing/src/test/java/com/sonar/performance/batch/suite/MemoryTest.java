@@ -12,7 +12,9 @@ import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.services.PropertyCreateQuery;
 
@@ -20,6 +22,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class MemoryTest extends PerfTestCase {
+
+  @Rule
+  public ErrorCollector collector = new ErrorCollector();
 
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
@@ -68,14 +73,14 @@ public class MemoryTest extends PerfTestCase {
     long start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 25000L);
+    assertDurationAround(collector, duration, 25000L);
 
     // Second execution with a property on server side
     orchestrator.getServer().getAdminWsClient().create(new PropertyCreateQuery("sonar.anotherBigProp", Strings.repeat("B", 1000), "big-module-tree"));
     start = System.currentTimeMillis();
     orchestrator.executeBuild(runner);
     duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 29000L);
+    assertDurationAround(collector, duration, 29000L);
   }
 
   private void prepareModule(File parentDir, String moduleName, int depth) throws IOException {
