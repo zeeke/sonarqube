@@ -72,7 +72,7 @@ public class IssuesTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1400L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1415L);
 
     // Second run
     orchestrator.executeBuild(runner);
