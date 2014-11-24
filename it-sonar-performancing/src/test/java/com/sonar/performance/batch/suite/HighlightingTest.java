@@ -56,7 +56,7 @@ public class HighlightingTest extends PerfTestCase {
     for (int nb = 1; nb <= nbFiles; nb++) {
       File xooFile = new File(srcDir, "sample" + nb + ".xoo");
       File xoohighlightingFile = new File(srcDir, "sample" + nb + ".xoo.highlighting");
-      FileUtils.write(xooFile, StringUtils.repeat("foo\n", ruleCount));
+      FileUtils.write(xooFile, StringUtils.repeat(StringUtils.repeat("a", 100) + "\n", ruleCount / 1000));
       StringBuilder sb = new StringBuilder(16 * ruleCount);
       for (int i = 0; i < ruleCount; i++) {
         sb.append(i).append(":").append(i + 1).append(":s\n");
@@ -82,7 +82,7 @@ public class HighlightingTest extends PerfTestCase {
     assertDurationAround(collector, duration, 68000L);
 
     Properties prof = readProfiling(baseDir, "highlighting");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("SourcePersister")), 18000L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("SourcePersister")), 9000L);
 
   }
 
