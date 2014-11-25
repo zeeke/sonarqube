@@ -82,7 +82,7 @@ public class HighlightingTest extends PerfTestCase {
     assertDurationAround(collector, duration, 68000L);
 
     Properties prof = readProfiling(baseDir, "highlighting");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("SourcePersister")), 9000L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("SourcePersister")), 13300L);
 
   }
 
