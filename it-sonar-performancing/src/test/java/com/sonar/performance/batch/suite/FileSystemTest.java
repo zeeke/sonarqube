@@ -46,12 +46,12 @@ public class FileSystemTest extends PerfTestCase {
 
   @Test
   public void indexProjectWith100BigFilesXmx512() throws IOException {
-    run(512, 18000L);
+    run(256, 7000L);
   }
 
   @Test
   public void indexProjectWith100BigFilesXmx1024() throws IOException {
-    run(1024, 18000L);
+    run(512, 7000L);
   }
 
   private void run(int xmx, long expectedDuration) throws IOException {
@@ -60,7 +60,7 @@ public class FileSystemTest extends PerfTestCase {
     srcDir.mkdir();
 
     int nbFiles = 100;
-    int lines = 100;
+    int lines = 1000;
     for (int nb = 1; nb <= nbFiles; nb++) {
       File xooFile = new File(srcDir, "sample" + nb + ".xoo");
       FileUtils.write(xooFile, StringUtils.repeat(StringUtils.repeat("a", 100) + "\n", lines));
