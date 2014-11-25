@@ -19,6 +19,7 @@ import java.io.IOException;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
   BootstrappingTest.class,
+  FileSystemTest.class,
   HighlightingTest.class,
   IssuesTest.class,
   MemoryTest.class,
