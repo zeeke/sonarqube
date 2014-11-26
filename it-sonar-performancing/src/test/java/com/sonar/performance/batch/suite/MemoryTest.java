@@ -7,7 +7,9 @@ package com.sonar.performance.batch.suite;
 
 import com.google.common.base.Strings;
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.performance.MavenLogs;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -70,17 +72,13 @@ public class MemoryTest extends PerfTestCase {
       .setRunnerVersion("2.4")
       .setProjectDir(baseDir);
 
-    long start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    long duration = System.currentTimeMillis() - start;
-    assertDurationAround(collector, duration, 25000L);
+    BuildResult result = orchestrator.executeBuild(runner);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 25000L);
 
     // Second execution with a property on server side
     orchestrator.getServer().getAdminWsClient().create(new PropertyCreateQuery("sonar.anotherBigProp", Strings.repeat("B", 1000), "big-module-tree"));
-    start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    duration = System.currentTimeMillis() - start;
-    assertDurationAround(collector, duration, 29000L);
+    result = orchestrator.executeBuild(runner);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 29000L);
   }
 
   private void prepareModule(File parentDir, String moduleName, int depth) throws IOException {

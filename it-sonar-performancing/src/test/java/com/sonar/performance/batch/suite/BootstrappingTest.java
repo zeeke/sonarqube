@@ -6,7 +6,9 @@
 package com.sonar.performance.batch.suite;
 
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.performance.MavenLogs;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -75,17 +77,13 @@ public class BootstrappingTest extends PerfTestCase {
       .setRunnerVersion("2.4")
       .setProjectDir(baseDir);
 
-    long start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    long duration = System.currentTimeMillis() - start;
+    BuildResult result = orchestrator.executeBuild(runner);
     // First analysis
-    assertDurationAround(collector, duration, 49000L);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 49000L);
 
-    start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    duration = System.currentTimeMillis() - start;
-    // Second analysis
-    assertDurationAround(collector, duration, 60000L);
+    result = orchestrator.executeBuild(runner);
+    // Second analysis is longer since we load project referential
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 60000L);
   }
 
   @Test
@@ -118,17 +116,13 @@ public class BootstrappingTest extends PerfTestCase {
       .setRunnerVersion("2.4")
       .setProjectDir(baseDir);
 
-    long start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    long duration = System.currentTimeMillis() - start;
+    BuildResult result = orchestrator.executeBuild(runner);
     // First analysis
-    assertDurationAround(collector, duration, 24000L);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 24000L);
 
-    start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    duration = System.currentTimeMillis() - start;
+    result = orchestrator.executeBuild(runner);
     // Second analysis
-    assertDurationAround(collector, duration, 28000L);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 28000L);
   }
 
 }

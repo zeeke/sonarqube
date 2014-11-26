@@ -9,6 +9,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -179,7 +180,7 @@ public class IssuesTest extends PerfTestCase {
     File src = new File(baseDir, "src");
     for (int i = 1; i <= nbFiles; i++) {
       File xooFile = new File(src, "file" + i + ".xoo");
-      FileUtils.write(xooFile, "Sample content\nfoo\nbar");
+      FileUtils.write(xooFile, StringUtils.repeat("a\n", nbIssuesPerFile));
       File xooMeasureFile = new File(src, "file" + i + ".xoo.measures");
       FileUtils.write(xooMeasureFile, "lines:" + nbIssuesPerFile);
     }

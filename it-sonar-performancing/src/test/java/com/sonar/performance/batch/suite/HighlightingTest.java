@@ -6,7 +6,9 @@
 package com.sonar.performance.batch.suite;
 
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.performance.MavenLogs;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -75,15 +77,11 @@ public class HighlightingTest extends PerfTestCase {
       .setRunnerVersion("2.4")
       .setProjectDir(baseDir);
 
-    long start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    long duration = System.currentTimeMillis() - start;
-
-    assertDurationAround(collector, duration, 51000L);
+    BuildResult result = orchestrator.executeBuild(runner);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 51000L);
 
     Properties prof = readProfiling(baseDir, "highlighting");
     assertDurationAround(collector, Long.valueOf(prof.getProperty("SourcePersister")), 13300L);
 
   }
-
 }
