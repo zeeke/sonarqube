@@ -6,7 +6,9 @@
 package com.sonar.performance.batch.suite;
 
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.performance.MavenLogs;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -53,10 +55,8 @@ public class IssuesTest extends PerfTestCase {
       "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true"
       );
-    long start = System.currentTimeMillis();
-    orchestrator.executeBuild(runner);
-    long duration = System.currentTimeMillis() - start;
-    assertDurationAround(duration, 8500L);
+    BuildResult result = orchestrator.executeBuild(runner);
+    assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 8500L);
   }
 
   @Test
@@ -67,19 +67,22 @@ public class IssuesTest extends PerfTestCase {
       "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true",
       "sonar.projectKey", "foo",
-      "sonar.projectName", "Foo",
+      "sonar.projectName", "100 Files 1000 Issues",
       "sonar.projectVersion", "1.0",
       "sonar.sources", "src"
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1L);
     assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1415L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 31000L);
 
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
     assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10300L);
     assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 3400L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 424L);
   }
 
   @Test
@@ -90,13 +93,15 @@ public class IssuesTest extends PerfTestCase {
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.showProfiling", "true",
       "sonar.projectKey", "foo",
-      "sonar.projectName", "Foo",
+      "sonar.projectName", "1000 Files no issue",
       "sonar.projectVersion", "1.0",
       "sonar.sources", "src"
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1L);
     assertDurationLessThan(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 150L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 1L);
   }
 
   @Test
@@ -107,19 +112,22 @@ public class IssuesTest extends PerfTestCase {
       "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true",
       "sonar.projectKey", "foo",
-      "sonar.projectName", "Foo",
+      "sonar.projectName", "1 File 100000 Issues",
       "sonar.projectVersion", "1.0",
       "sonar.sources", "src"
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1900L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 12000L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 30000L);
 
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
     assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10700L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 7000L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 17000L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 430L);
   }
 
   @Test
@@ -132,7 +140,7 @@ public class IssuesTest extends PerfTestCase {
       "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true",
       "sonar.projectKey", "foo",
-      "sonar.projectName", "Foo",
+      "sonar.projectName", "500 Issues with changelog",
       "sonar.projectVersion", "1.0",
       "sonar.sources", "src"
       ).setProjectDir(projectBaseDir);
@@ -171,7 +179,9 @@ public class IssuesTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1916L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1916L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1916L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 1916L);
   }
 
   private static File createBigXooProject(int nbFiles, int nbIssuesPerFile) throws IOException {
