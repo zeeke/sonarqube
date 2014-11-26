@@ -80,7 +80,7 @@ public class FileSystemTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
 
     Properties prof = readProfiling(baseDir, "filesystem");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("Index filesystem and store sources")), 18000L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("Index filesystem and store sources")), expectedDuration);
   }
 
 }
