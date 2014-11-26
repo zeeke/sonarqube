@@ -338,7 +338,16 @@ public class MavenTest extends AbstractMavenTest {
       .setProperty("sonarRunner.dumpToFile", outputProps.getAbsolutePath());
     orchestrator.executeBuild(build);
 
-    assertThat(getProps(outputProps).getProperty("org.apache.struts:struts-core.sonar.libraries"))
+    String[] moduleIds = getProps(outputProps).getProperty("sonar.modules").split(",");
+    String strutsCoreModuleId = null;
+    for (String moduleId : moduleIds) {
+      if (getProps(outputProps).getProperty(moduleId + ".sonar.moduleKey").equals("org.apache.struts:struts-core")) {
+        strutsCoreModuleId = moduleId;
+        break;
+      }
+    }
+    assertThat(strutsCoreModuleId).isNotNull();
+    assertThat(getProps(outputProps).getProperty(strutsCoreModuleId + ".sonar.libraries"))
       .contains("antlr-2.7.2.jar");
   }
 
