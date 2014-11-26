@@ -19,7 +19,6 @@
  */
 package org.sonar.api.component;
 
-import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.resources.Resource;
 
 import javax.annotation.CheckForNull;
@@ -28,9 +27,7 @@ import javax.annotation.CheckForNull;
  * Only on batch-side.
  *
  * @since 3.5
- * @deprecated since 5.0 everything you need is available in {@link SensorContext}
  */
-@Deprecated
 public interface ResourcePerspectives extends Perspectives {
 
   @CheckForNull
