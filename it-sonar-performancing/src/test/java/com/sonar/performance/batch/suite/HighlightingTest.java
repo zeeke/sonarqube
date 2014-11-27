@@ -78,7 +78,7 @@ public class HighlightingTest extends PerfTestCase {
       .setProjectDir(baseDir);
 
     BuildResult result = orchestrator.executeBuild(runner);
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 46100L);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 46117L);
 
     Properties prof = readProfiling(baseDir, "highlighting");
     assertDurationAround(collector, Long.valueOf(prof.getProperty("SourcePersister")), 13300L);
