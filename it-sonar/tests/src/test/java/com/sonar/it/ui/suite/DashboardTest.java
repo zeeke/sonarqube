@@ -93,9 +93,6 @@ public class DashboardTest {
       "/selenium/ui/dashboard/global_dashboard/filter-widget-anonymous.html",
 
       // SONAR-3460
-      "/selenium/ui/dashboard/global_dashboard/global-anonymous-dashboards.html",
-
-      // SONAR-3460
       "/selenium/ui/dashboard/global_dashboard/global-admin-dashboards.html",
 
       // SONAR-3461
