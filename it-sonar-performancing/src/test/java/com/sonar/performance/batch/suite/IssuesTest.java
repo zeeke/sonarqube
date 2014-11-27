@@ -80,7 +80,7 @@ public class IssuesTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10300L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10290L);
     assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 3789L);
     assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 424L);
   }
@@ -119,14 +119,14 @@ public class IssuesTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
     assertDurationLessThan(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 12000L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2900L);
     assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 30000L);
 
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10700L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 17000L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 9400L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 7200L);
     assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 427L);
   }
 
@@ -180,7 +180,7 @@ public class IssuesTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
     assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1916L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1228L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 852L);
     assertDurationLessThan(collector, Long.valueOf(prof.getProperty("IssuePersister")), 200L);
   }
 
