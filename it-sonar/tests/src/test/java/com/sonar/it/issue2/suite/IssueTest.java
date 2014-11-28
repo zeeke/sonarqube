@@ -268,17 +268,4 @@ public class IssueTest extends AbstractIssueTestCase2 {
       assertThat(issue.severity()).isEqualTo("BLOCKER");
     }
   }
-
-  @Test
-  public void test_file_with_thousands_issues() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
-    SonarRunner runner = SonarRunner.create(ItUtils.locateProjectDir("issue/file-with-thousands-issues"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("one-issue-per-line");
-    orchestrator.executeBuild(runner);
-
-    IssueQuery query = IssueQuery.create().components("file-with-thousands-issues:src/long_file.xoo");
-    assertThat(search(query).list().size()).isGreaterThan(3000);
-  }
-
 }
