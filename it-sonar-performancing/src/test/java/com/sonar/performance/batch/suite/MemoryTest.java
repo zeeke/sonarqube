@@ -73,12 +73,12 @@ public class MemoryTest extends PerfTestCase {
       .setProjectDir(baseDir);
 
     BuildResult result = orchestrator.executeBuild(runner);
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 25000L);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 15000L);
 
     // Second execution with a property on server side
     orchestrator.getServer().getAdminWsClient().create(new PropertyCreateQuery("sonar.anotherBigProp", Strings.repeat("B", 1000), "big-module-tree"));
     result = orchestrator.executeBuild(runner);
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 29000L);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 16500L);
   }
 
   private void prepareModule(File parentDir, String moduleName, int depth) throws IOException {

@@ -118,11 +118,11 @@ public class BootstrappingTest extends PerfTestCase {
 
     BuildResult result = orchestrator.executeBuild(runner);
     // First analysis
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 24000L);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 8300L);
 
     result = orchestrator.executeBuild(runner);
     // Second analysis
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 28000L);
+    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 9400L);
   }
 
 }
