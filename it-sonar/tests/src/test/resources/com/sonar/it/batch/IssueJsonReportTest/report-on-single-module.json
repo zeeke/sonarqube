@@ -129,9 +129,9 @@
             "severity": "MAJOR",
             "rule": "xoo:OneIssuePerLine",
             "status": "OPEN",
-            "isNew": false,
-            "creationDate": "2013-05-01T00:00:00+0200",
-            "updateDate": "2013-05-01T00:00:00+0200"
+            "isNew": true,
+            "creationDate": "2013-05-02T00:00:00+0200",
+            "updateDate": "2013-05-02T00:00:00+0200"
         },
         {
             "key": "ccf5a264-bbe0-4459-97dc-acc0e323c4bb",
@@ -177,9 +177,9 @@
             "severity": "MAJOR",
             "rule": "xoo:OneIssuePerLine",
             "status": "OPEN",
-            "isNew": true,
-            "creationDate": "2013-05-02T00:00:00+0200",
-            "updateDate": "2013-05-02T00:00:00+0200"
+            "isNew": false,
+            "creationDate": "2013-05-01T00:00:00+0200",
+            "updateDate": "2013-05-01T00:00:00+0200"
         }
     ],
     "components": [

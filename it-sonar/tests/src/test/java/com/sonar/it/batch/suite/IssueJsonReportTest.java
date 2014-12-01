@@ -147,12 +147,17 @@ public class IssueJsonReportTest {
     JSONAssert.assertEquals(expectedJson, json, false);
   }
 
+  @Test
+  public void sanityCheck() {
+    assertThat(sanitize("5.0.0+0000-SILVER-SNAPSHOT")).isEqualTo("<SONAR_VERSION>");
+  }
+
   private static String sanitize(String s) {
     // sanitize issue uuid keys
     s = s.replaceAll("\\w\\w\\w\\w\\w\\w\\w\\w\\-\\w\\w\\w\\w\\-\\w\\w\\w\\w\\-\\w\\w\\w\\w\\-\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w", "abcde");
 
     // sanitize sonar version. Note that "-SILVER-SNAPSHOT" is used by Goldeneye jobs
-    s = s.replaceAll("\\d\\.\\d(.\\d)?(\\-SILVER)?\\-SNAPSHOT", "<SONAR_VERSION>");
+    s = s.replaceAll("\\d\\.\\d(.\\d)?(\\+\\d\\d\\d\\d)?(\\-SILVER)?\\-SNAPSHOT", "<SONAR_VERSION>");
 
     return sanitizeTimezones(s);
   }
