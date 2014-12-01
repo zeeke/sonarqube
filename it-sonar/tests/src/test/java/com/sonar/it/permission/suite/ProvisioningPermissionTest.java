@@ -10,9 +10,7 @@ import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.base.HttpException;
 import org.sonar.wsclient.permissions.PermissionParameters;
@@ -21,6 +19,7 @@ import org.sonar.wsclient.project.Project;
 import org.sonar.wsclient.user.UserParameters;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
 
 public class ProvisioningPermissionTest {
 
@@ -28,9 +27,6 @@ public class ProvisioningPermissionTest {
 
   @ClassRule
   public static Orchestrator orchestrator = PermissionTestSuite.ORCHESTRATOR;
-
-  @Rule
-  public static final ExpectedException thrown = ExpectedException.none();
 
   private static final String ADMIN_WITH_PROVISIONING = "admin-with-provisioning";
   private static final String ADMIN_WITHOUT_PROVISIONING = "admin-without-provisioning";
@@ -77,7 +73,7 @@ public class ProvisioningPermissionTest {
   public void should_not_see_provisioning_section() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-not-see-provisioning-section",
       "/selenium/permission/provisioning/provisioning-page-hidden.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -89,7 +85,7 @@ public class ProvisioningPermissionTest {
   public void should_see_provisioning_section() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("should-see-provisioning-section",
       "/selenium/permission/provisioning/provisioning-page-allowed.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -119,8 +115,11 @@ public class ProvisioningPermissionTest {
   public void should_not_be_allowed_on_ws_without_permission() {
     SonarClient client = orchestrator.getServer().wsClient(USER_WITHOUT_PROVISIONING, PASSWORD);
 
-    thrown.expect(HttpException.class);
-    thrown.expectMessage("Error 401");
-    client.projectClient().create(NewProject.create().key("new-project").name("New Project"));
+    try {
+      client.projectClient().create(NewProject.create().key("new-project").name("New Project"));
+      fail();
+    } catch (HttpException e) {
+      assertThat(e.getMessage()).contains("401");
+    }
   }
 }
