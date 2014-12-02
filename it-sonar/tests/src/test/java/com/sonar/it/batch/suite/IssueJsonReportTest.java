@@ -149,7 +149,7 @@ public class IssueJsonReportTest {
 
   @Test
   public void sanityCheck() {
-    assertThat(sanitize("5.0.0+0000-SILVER-SNAPSHOT")).isEqualTo("<SONAR_VERSION>");
+    assertThat(sanitize("5.0.0-5868-SILVER-SNAPSHOT")).isEqualTo("<SONAR_VERSION>");
   }
 
   private static String sanitize(String s) {
@@ -157,7 +157,7 @@ public class IssueJsonReportTest {
     s = s.replaceAll("\\w\\w\\w\\w\\w\\w\\w\\w\\-\\w\\w\\w\\w\\-\\w\\w\\w\\w\\-\\w\\w\\w\\w\\-\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w", "abcde");
 
     // sanitize sonar version. Note that "-SILVER-SNAPSHOT" is used by Goldeneye jobs
-    s = s.replaceAll("\\d\\.\\d(.\\d)?(\\+\\d\\d\\d\\d)?(\\-SILVER)?\\-SNAPSHOT", "<SONAR_VERSION>");
+    s = s.replaceAll("\\d\\.\\d(.\\d)?(\\-.*)?\\-SNAPSHOT", "<SONAR_VERSION>");
 
     return sanitizeTimezones(s);
   }
