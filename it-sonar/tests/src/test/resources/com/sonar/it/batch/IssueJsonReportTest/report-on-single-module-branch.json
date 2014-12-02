@@ -45,9 +45,9 @@
             "severity": "MAJOR",
             "rule": "xoo:OneIssuePerLine",
             "status": "OPEN",
-            "isNew": true,
-            "creationDate": "2013-05-02T00:00:00+0200",
-            "updateDate": "2013-05-02T00:00:00+0200"
+            "isNew": false,
+            "creationDate": "2013-05-01T00:00:00+0200",
+            "updateDate": "2013-05-01T00:00:00+0200"
         },
         {
             "key": "55799ca7-85f0-4003-a657-361532b9ad9e",
@@ -93,9 +93,9 @@
             "severity": "MAJOR",
             "rule": "xoo:OneIssuePerLine",
             "status": "OPEN",
-            "isNew": false,
-            "creationDate": "2013-05-01T00:00:00+0200",
-            "updateDate": "2013-05-01T00:00:00+0200"
+            "isNew": true,
+            "creationDate": "2013-05-02T00:00:00+0200",
+            "updateDate": "2013-05-02T00:00:00+0200"
         },
         {
             "key": "81669e04-75ae-4eb6-8a13-90b7ea0adcf0",
