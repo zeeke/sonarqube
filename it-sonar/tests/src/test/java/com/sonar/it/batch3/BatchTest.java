@@ -25,8 +25,6 @@ import org.sonar.wsclient.services.PropertyDeleteQuery;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.Source;
-import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -131,16 +129,6 @@ public class BatchTest {
 
     assertThat(result.getLogs()).contains(rootModuleKey + ":" + propKey + " = project");
     assertThat(result.getLogs()).contains(moduleBKey + ":" + propKey + " = moduleB");
-  }
-
-  @Test
-  public void should_import_sources() {
-    scan("shared/xoo-sample");
-
-    SourceQuery query = new SourceQuery("sample:src/main/xoo/sample/Sample.xoo");
-    Source source = orchestrator.getServer().getWsClient().find(query);
-    assertThat(source.getLines()).hasSize(13); // SONAR-3896
-    assertThat(source.getLine(3)).isEqualTo("public class Sample {");
   }
 
   /**
