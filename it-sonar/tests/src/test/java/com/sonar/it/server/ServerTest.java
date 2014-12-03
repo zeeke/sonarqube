@@ -29,8 +29,6 @@ import org.sonar.wsclient.services.PropertyDeleteQuery;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Server;
 import org.sonar.wsclient.services.ServerQuery;
-import org.sonar.wsclient.services.Source;
-import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -346,15 +344,5 @@ public class ServerTest {
         .contains("Restart server")
         .contains("Server restarted");
     }
-  }
-
-  @Test
-  public void get_source_using_ws_client() {
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample")));
-
-    SourceQuery query = new SourceQuery("sample:src/main/xoo/sample/Sample.xoo");
-    Source source = orchestrator.getServer().getWsClient().find(query);
-    assertThat(source.getLines()).hasSize(13); // SONAR-3896
-    assertThat(source.getLine(3)).isEqualTo("public class Sample {");
   }
 }
