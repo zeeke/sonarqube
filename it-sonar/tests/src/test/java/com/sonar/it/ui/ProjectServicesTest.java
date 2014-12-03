@@ -90,7 +90,6 @@ public class ProjectServicesTest {
       "/selenium/ui/source-viewers/do-not-display-commits-option.html",
       "/selenium/ui/source-viewers/filter-violations-by-rule.html",
       "/selenium/ui/source-viewers/filter-violations-by-severity.html",
-      "/selenium/ui/source-viewers/link-to-raw.html",
       "/selenium/ui/source-viewers/rule-severity-filter-is-not-set-by-default.html",
       "/selenium/ui/source-viewers/select-tab-by-metric.html",
       "/selenium/ui/source-viewers/SONAR-517-violations-drilldown-opens-violations-tab.html",
