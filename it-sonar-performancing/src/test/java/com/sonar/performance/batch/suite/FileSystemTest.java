@@ -45,13 +45,18 @@ public class FileSystemTest extends PerfTestCase {
   }
 
   @Test
-  public void indexProjectWith100BigFilesXmx512() throws IOException {
-    run(256, 4676L);
+  public void indexProjectWith100BigFilesXmx128() throws IOException {
+    run(128, 3600L);
   }
 
   @Test
-  public void indexProjectWith100BigFilesXmx1024() throws IOException {
-    run(512, 4563L);
+  public void indexProjectWith100BigFilesXmx256() throws IOException {
+    run(256, 3600L);
+  }
+
+  @Test
+  public void indexProjectWith100BigFilesXmx512() throws IOException {
+    run(512, 3600L);
   }
 
   private void run(int xmx, long expectedDuration) throws IOException {

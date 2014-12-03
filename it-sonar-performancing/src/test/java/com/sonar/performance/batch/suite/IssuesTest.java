@@ -74,7 +74,7 @@ public class IssuesTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
     assertDurationLessThan(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2131L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1500L);
     assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 31000L);
 
     // Second run
@@ -100,7 +100,7 @@ public class IssuesTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
     assertDurationLessThan(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
-    assertDurationLessThan(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 150L);
+    assertDurationLessThan(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 300L);
     assertDurationLessThan(collector, Long.valueOf(prof.getProperty("IssuePersister")), 10L);
   }
 
@@ -119,7 +119,7 @@ public class IssuesTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
     assertDurationLessThan(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2900L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2050L);
     assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 30000L);
 
     // Second run
@@ -180,7 +180,7 @@ public class IssuesTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
     assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1916L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 852L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 780L);
     assertDurationLessThan(collector, Long.valueOf(prof.getProperty("IssuePersister")), 200L);
   }
 

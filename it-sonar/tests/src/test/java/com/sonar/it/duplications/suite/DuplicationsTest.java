@@ -159,8 +159,9 @@ public class DuplicationsTest {
   @Test
   public void hugeFile() {
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("huge-file"))
-      .setCleanPackageSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false");
+      // Fail with OOM during SourcePersister
+      .setEnvironmentVariable("MAVEN_OPTS", "-Xmx600m")
+      .setCleanPackageSonarGoals();
     orchestrator.executeBuild(build);
     Resource file = getResource("com.sonarsource.it.samples:huge-file:src/main/java/huge/HugeFile.java");
     assertThat(file.getMeasureValue("duplicated_lines"), greaterThan(50000.0));
