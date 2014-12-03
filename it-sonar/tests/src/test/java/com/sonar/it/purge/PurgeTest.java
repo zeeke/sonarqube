@@ -85,9 +85,7 @@ public class PurgeTest {
 
     // count other tables that are constant between 2 scans
     int expectedIssues = 3859;
-    int expectedSources = 348;
     int expectedDependencies = 977;
-    collector.checkThat("Wrong number of snapshot_sources", count("snapshot_sources"), equalTo(expectedSources));
 
     collector.checkThat("Wrong number of issues", count("issues"), equalTo(expectedIssues));
     collector.checkThat("Wrong number of dependencies", count("dependencies"), equalTo(expectedDependencies));
@@ -116,7 +114,6 @@ public class PurgeTest {
     // added measures relate to project and new_* metrics
     expectedMeasures += newMeasuresOnTrk + newMeasuresOnBrc + newMeasuresOnDir + newMeasuresOnFil;
     collector.checkThat("Wrong number of measures after second analysis", count("project_measures"), equalTo(expectedMeasures));
-    collector.checkThat("Wrong number of snapshot_sources", count("snapshot_sources"), equalTo(expectedSources));
     collector.checkThat("Wrong number of measure data", count("project_measures where measure_data is not null"), equalTo(56));
     collector.checkThat("Wrong number of issues", count("issues"), equalTo(expectedIssues));
     collector.checkThat("Wrong number of dependencies", count("dependencies"), equalTo(expectedDependencies));
