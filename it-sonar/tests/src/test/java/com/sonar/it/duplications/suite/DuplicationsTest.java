@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -151,20 +150,6 @@ public class DuplicationsTest {
       "/selenium/duplications/drilldown-without-ratio.html")
       .build();
     orchestrator.executeSelenese(selenese);
-  }
-
-  /**
-   * SONAR-3060
-   */
-  @Test
-  public void hugeFile() {
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("huge-file"))
-      // Fail with OOM during SourcePersister
-      .setEnvironmentVariable("MAVEN_OPTS", "-Xmx600m")
-      .setCleanPackageSonarGoals();
-    orchestrator.executeBuild(build);
-    Resource file = getResource("com.sonarsource.it.samples:huge-file:src/main/java/huge/HugeFile.java");
-    assertThat(file.getMeasureValue("duplicated_lines"), greaterThan(50000.0));
   }
 
   /**
