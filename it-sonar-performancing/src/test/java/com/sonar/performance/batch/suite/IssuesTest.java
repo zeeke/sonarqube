@@ -56,7 +56,7 @@ public class IssuesTest extends PerfTestCase {
       "sonar.showProfiling", "true"
       );
     BuildResult result = orchestrator.executeBuild(runner);
-    assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 7800L);
+    assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 9200L);
   }
 
   @Test
@@ -125,8 +125,8 @@ public class IssuesTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 9400L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 7200L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 9450L);
+    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 6400L);
     assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 428L);
   }
 
