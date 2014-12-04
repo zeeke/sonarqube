@@ -101,6 +101,7 @@ public class PurgeTest {
 
     logMeasures("Second analysis - TRK measures", "TRK");
     logMeasures("Second analysis - BRC measures", "BRC");
+    logMeasures("Second analysis – DIR measures", "DIR");
     assertMeasuresCountForQualifier("TRK", measuresOnTrk + newMeasuresOnTrk);
     assertMeasuresCountForQualifier("BRC", measuresOnBrc + newMeasuresOnBrc);
     assertMeasuresCountForQualifier("DIR", measuresOnDir + newMeasuresOnDir);
