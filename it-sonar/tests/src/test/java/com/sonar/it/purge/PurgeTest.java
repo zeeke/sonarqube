@@ -44,8 +44,8 @@ public class PurgeTest {
     orchestrator.resetData();
 
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/xoo/one-issue-per-line.xml"));
-    orchestrator.getServer().getAdminWsClient().delete(
-      new PropertyDeleteQuery("sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay"));
+    orchestrator.getServer().getAdminWsClient().delete(new PropertyDeleteQuery("sonar.dbcleaner.hoursBeforeKeepingOnlyOneSnapshotByDay"));
+    orchestrator.getServer().getAdminWsClient().delete(new PropertyDeleteQuery("sonar.dbcleaner.cleanDirectory"));
   }
 
   @Test
