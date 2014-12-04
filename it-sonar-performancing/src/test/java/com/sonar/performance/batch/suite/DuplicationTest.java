@@ -51,6 +51,7 @@ public class DuplicationTest extends PerfTestCase {
   @Test
   public void hugeJavaFile() {
     MavenBuild build = MavenBuild.create(FileLocation.of("projects/huge-file/pom.xml").getFile())
+      .setEnvironmentVariable("MAVEN_OPTS", "-Xmx1024m")
       .setCleanSonarGoals();
     orchestrator.executeBuild(build);
     Resource file = getResource("com.sonarsource.it.samples:huge-file:src/main/java/huge/HugeFile.java");
