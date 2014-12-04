@@ -12,6 +12,7 @@ import com.sonar.performance.PerfTestCase;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -49,9 +50,11 @@ public class DuplicationTest extends PerfTestCase {
    * SONAR-3060
    */
   @Test
+  @Ignore("It produces OOM on H2 DB during insertion")
   public void hugeJavaFile() {
     MavenBuild build = MavenBuild.create(FileLocation.of("projects/huge-file/pom.xml").getFile())
       // Fail with OOM during SourcePersister
+      .setEnvironmentVariable("MAVEN_OPTS", "-Xmx1024m")
       .setCleanSonarGoals();
     orchestrator.executeBuild(build);
     Resource file = getResource("com.sonarsource.it.samples:huge-file:src/main/java/huge/HugeFile.java");

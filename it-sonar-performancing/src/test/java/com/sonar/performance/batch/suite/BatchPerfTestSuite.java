@@ -29,7 +29,8 @@ import java.io.IOException;
 public class BatchPerfTestSuite {
 
   @ClassRule
-  public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
+  public static final Orchestrator ORCHESTRATOR = Orchestrator
+    .builderEnv()
     .addPlugin(MavenLocation.create("com.sonarsource.xoo", "sonar-xoo-plugin", "1.0-SNAPSHOT"))
     .restoreProfileAtStartup(FileLocation.ofClasspath("/one-xoo-issue-per-line.xml"))
     .build();
