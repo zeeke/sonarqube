@@ -263,7 +263,6 @@ public class PurgeTest {
   }
 
   private int count(String condition) {
-    System.out.print(orchestrator.getDatabase().executeSql("select * from " + condition));
     return orchestrator.getDatabase().countSql("select count(*) from " + condition);
   }
 
