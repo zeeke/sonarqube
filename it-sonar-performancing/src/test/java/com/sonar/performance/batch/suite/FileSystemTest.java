@@ -46,12 +46,12 @@ public class FileSystemTest extends PerfTestCase {
 
   @Test
   public void indexProjectWith100BigFilesXmx128() throws IOException {
-    run(128, 3600L);
+    run(128, 3800L);
   }
 
   @Test
   public void indexProjectWith100BigFilesXmx256() throws IOException {
-    run(256, 3600L);
+    run(256, 3650L);
   }
 
   @Test
@@ -74,7 +74,7 @@ public class FileSystemTest extends PerfTestCase {
     SonarRunner runner = SonarRunner.create()
       .setProperties(
         "sonar.projectKey", "filesystem",
-        "sonar.projectName", "filesystem",
+        "sonar.projectName", "filesystem xmx" + xmx,
         "sonar.projectVersion", "1.0",
         "sonar.sources", "src",
         "sonar.showProfiling", "true")
