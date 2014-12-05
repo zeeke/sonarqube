@@ -85,20 +85,6 @@ public class ProjectServicesTest {
   }
 
   @Test
-  public void test_source_viewers() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-source-viewers",
-      "/selenium/ui/source-viewers/do-not-display-commits-option.html",
-      "/selenium/ui/source-viewers/filter-violations-by-rule.html",
-      "/selenium/ui/source-viewers/filter-violations-by-severity.html",
-      "/selenium/ui/source-viewers/rule-severity-filter-is-not-set-by-default.html",
-      "/selenium/ui/source-viewers/select-tab-by-metric.html",
-      "/selenium/ui/source-viewers/SONAR-517-violations-drilldown-opens-violations-tab.html",
-      "/selenium/ui/source-viewers/flag-resource-as-favourite.html" // SONAR-1650
-    ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  @Test
   public void testComplexityWidget() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-complexity-widget",
       "/selenium/ui/widgets/complexity-widget.html").build();

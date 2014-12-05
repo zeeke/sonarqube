@@ -241,18 +241,6 @@ public class IssueBulkChangeTest extends AbstractIssueTestCase {
     assertThat(nbIssuesWithComment).isEqualTo(1);
   }
 
-  /**
-   * SONAR-4418
-   */
-  @Test
-  public void should_apply_bulk_change_from_resource_viewer() {
-    analyzeSampleProjectWillSmallNumberOfIssues();
-
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("should_apply_bulk_change_from_resource_viewer",
-      "/selenium/issue/bulk-change/should-apply-bulk-change-from-resource-viewer.html"
-      ).build());
-  }
-
   private void analyzeSampleProjectWillSmallNumberOfIssues() {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-line-profile.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))

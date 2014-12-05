@@ -134,7 +134,6 @@ public class UiTest {
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("ui-ruby-extensions",
       "/selenium/ui/ruby-extensions/ruby-api-tester.html",
-      "/selenium/ui/ruby-extensions/ruby-tab.html",
       "/selenium/ui/ruby-extensions/ruby-rails-app.html",
       "/selenium/ui/ruby-extensions/ruby-rails-app-advanced.html"
     ).build();

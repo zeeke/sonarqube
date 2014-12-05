@@ -15,22 +15,22 @@
     <tbody>
     <tr>
 	<td>open</td>
-	<td>/sonar/resource/index/com.sonarsource.it.samples:japanese-charset:src/main/java/com/test/AppDuplication.java</td>
+	<td>/sonar/component/index?id=com.sonarsource.it.samples%3Ajapanese-charset%3Asrc%2Fmain%2Fjava%2Fcom%2Ftest%2FAppDuplication.java</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>class=component-viewer</td>
+	<td>css=.source-viewer</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>css=table.source-table</td>
+	<td>css=.source-table</td>
 	<td>glob:*public class AppDuplication*</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=table.source-table</td>
+	<td>css=.source-table</td>
 	<td>glob:*証明書パス構築に失敗しました。*</td>
 </tr>
 </tbody>

@@ -2,43 +2,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>duplications-with-deleted-project</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>duplications-with-deleted-project</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
-    <thead>
-    <tr>
-        <td rowspan="1" colspan="3">duplications-with-deleted-project</td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-	<td>open</td>
-	<td>/sonar/component/index#component=com.sonarsource.it.samples.duplications%3Ab%3Asrc%2Fmain%2Fjava%2FMyClass2.java&amp;settings=duplications&amp;tab=duplications</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>css=.component-viewer</td>
-	<td>*src/main/java/MyClass2.java*</td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>css=.component-viewer-header</td>
-	<td>*Duplications*</td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>css=.component-viewer-source</td>
-	<td>*MyClass2*</td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>css=.component-viewer-source</td>
-	<td>*This file contains duplicated blocks with some deleted resources. This project should be reanalyzed to remove these obsolete duplicated blocks.*</td>
-</tr>
-</tbody>
+  <thead>
+  <tr>
+    <td rowspan="1" colspan="3">duplications-with-deleted-project</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>open</td>
+    <td>/sonar/component/index?id=com.sonarsource.it.samples.duplications%3Ab%3Asrc%2Fmain%2Fjava%2FMyClass2.java</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>waitForText</td>
+    <td>css=.source-viewer</td>
+    <td>*src/main/java/MyClass2.java*</td>
+  </tr>
+  <tr>
+    <td>waitForText</td>
+    <td>css=.source-viewer</td>
+    <td>*MyClass2*</td>
+  </tr>
+  <tr>
+    <td>waitForText</td>
+    <td>css=.source-viewer</td>
+    <td>*This file contains duplicated blocks with some deleted resources. This project should be reanalyzed to remove
+      these obsolete duplicated blocks.*
+    </td>
+  </tr>
+  </tbody>
 </table>
 </body>
 </html>

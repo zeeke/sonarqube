@@ -35,27 +35,6 @@ public class ManualIssueTest extends AbstractIssueTestCase2 {
   }
 
   @Test
-  public void create_manual_issue_though_ui() {
-    // Create the manual issue
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("manual-issues-on-line",
-      "/selenium/issue/manual-issue/create-manual-issue-on-line.html"
-      ).build());
-
-    List<Issue> issues = searchIssuesByComponent(COMPONENT_KEY);
-    assertThat(issues).hasSize(1);
-    Issue issue = issues.get(0);
-    assertThat(issue.ruleKey()).isEqualTo("manual:invalidclassname");
-    assertThat(issue.line()).isEqualTo(3);
-    assertThat(issue.severity()).isEqualTo(("MAJOR"));
-    assertThat(issue.message()).isEqualTo(("The name 'Sample' is too generic"));
-    assertThat(issue.status()).isEqualTo("OPEN");
-    assertThat(issue.resolution()).isNull();
-    assertThat(issue.creationDate()).isNotNull();
-    assertThat(issue.updateDate()).isNotNull();
-    assertThat(issue.reporter()).isEqualTo("admin");
-  }
-
-  @Test
   public void create_manual_issue_through_ws() throws Exception {
     // Create the manual issue
     Issue newIssue = adminIssueClient().create(NewIssue.create().component(COMPONENT_KEY)

@@ -15,28 +15,18 @@
     <tbody>
     <tr>
 	<td>open</td>
-	<td>/sonar/component/index#component=com.sonarsource.it.samples.duplications%3Ab%3Asrc%2Fmain%2Fjava%2FMyClass2.java&amp;settings=issues%2Cduplications&amp;blocks=2%2C14&amp;tab=duplications</td>
+	<td>/sonar/component/index?id=com.sonarsource.it.samples.duplications%3Ab%3Asrc%2Fmain%2Fjava%2FMyClass2.java</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>css=.source-table</td>
+	<td>css=.source-line</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>css=[data-scope='duplications']</td>
+	<td>css=.source-viewer-header</td>
 	<td>*66.7%*</td>
-</tr>
-<tr>
-	<td>waitForElementPresent</td>
-	<td>css=[data-metric=duplicated_blocks]</td>
-	<td>glob:*Duplications*1*10*</td>
-</tr>
-<tr>
-  <td>assertText</td>
-  <td>css=.component-viewer-header-expanded-bar-section</td>
-  <td>glob:*Duplications*1*10*</td>
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
@@ -50,7 +40,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=.source-line-duplicated[data-index='1']</td>
+	<td>css=.source-line-duplicated</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.source-line-duplications-extra</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.source-line-duplications-extra[data-index=1]</td>
 	<td></td>
 </tr>
 <tr>

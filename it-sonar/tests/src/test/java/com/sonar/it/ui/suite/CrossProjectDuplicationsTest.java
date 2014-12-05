@@ -11,6 +11,7 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.ProjectDeleteQuery;
@@ -59,6 +60,7 @@ public class CrossProjectDuplicationsTest {
 
   // SONAR-3277
   @Test
+  @Ignore
   public void shouldDisplayMessageInViewerWhenDuplicationsWithDeletedProjectAreFound() throws Exception {
     Sonar adminClient = orchestrator.getServer().getAdminWsClient();
     adminClient.delete(ProjectDeleteQuery.create("com.sonarsource.it.samples.duplications:a"));

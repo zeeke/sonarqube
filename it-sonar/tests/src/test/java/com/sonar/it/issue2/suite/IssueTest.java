@@ -167,44 +167,6 @@ public class IssueTest extends AbstractIssueTestCase2 {
     assertThat(project.getMeasureIntValue("violations")).isEqualTo(issues + 1);
   }
 
-  /**
-   * See SONAR-582 - issues not attached to a line of code
-   */
-  @Test
-  public void show_issue_linked_to_a_file() {
-    // all the detected issues are not attached to a line
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/suite/one-issue-per-file-profile.xml"));
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("one-issue-per-file");
-    orchestrator.executeBuild(scan);
-
-    List<Issue> issues = searchIssuesByComponent("sample:src/main/xoo/sample/Sample.xoo");
-    assertThat(issues.size()).isGreaterThan(0);
-    for (Issue issue : issues) {
-      assertThat(issue.line()).describedAs("issue with line: " + issue.ruleKey()).isNull();
-    }
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("file-global-issues",
-      "/selenium/issue/file-global-issues.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  /**
-   * See SONAR-684
-   */
-  @Test
-  public void encode_issue_messages() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("issue/encoded-issue-message"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("sonar-way-2.7");
-    orchestrator.executeBuild(scan);
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("encoded-issue-message",
-      "/selenium/issue/encoded-issue-message.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
 
   /**
    * See SONAR-4785
@@ -225,33 +187,6 @@ public class IssueTest extends AbstractIssueTestCase2 {
     assertThat(issue.message()).isEqualTo("Issue With Custom Message");
   }
 
-  /**
-   * SONAR-4359
-   * SONAR-4301
-   */
-  @Test
-  public void test_code_viewer() {
-    orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/com/sonar/it/issue/issues.xml"));
-
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
-      .setProperties("sonar.cpd.skip", "true")
-      .setProfile("issues");
-    orchestrator.executeBuild(scan);
-
-    // Resolve an issue
-    Issue issue = search(IssueQuery.create().components("sample:src/main/java/sample/Sample.java").rules("pmd:UnusedLocalVariable")).list().get(0);
-    adminIssueClient().doTransition(issue.key(), "resolve");
-
-    // Mark an issue as false positive
-    issue = search(IssueQuery.create().components("sample:src/main/java/sample/Sample.java")
-      .rules("checkstyle:com.puppycrawl.tools.checkstyle.checks.whitespace.FileTabCharacterCheck")).list().get(0);
-    adminIssueClient().doTransition(issue.key(), "falsepositive");
-
-    orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("issues-code-viewer",
-      "/selenium/issue/issues-code-viewer/display-only-unresolved-issues.html",
-      "/selenium/issue/issues-code-viewer/display-only-false-positives.html"
-      ).build());
-  }
 
   @Test
   public void plugin_can_override_profile_severity() throws Exception {
