@@ -38,7 +38,6 @@ import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
-import org.sonar.wsclient.services.SourceQuery;
 
 import java.io.File;
 import java.io.IOException;
@@ -284,7 +283,7 @@ public class PlatformTest {
 
   @Test
   public void flexFileSource() {
-    assertThat(wsClient.find(new SourceQuery(is_sonar_4_2_or_more ? FLEX_FILE : FLEX_FILE_DEPRECATED_KEY)).size()).isEqualTo(239);
+    assertThat(wsClient.find(new ResourceQuery(is_sonar_4_2_or_more ? FLEX_FILE : FLEX_FILE_DEPRECATED_KEY))).isNotNull();
   }
 
   private Measure getMeasure(String resourceKey, String metricKey) {
