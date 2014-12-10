@@ -32,15 +32,13 @@ public class DifferentialPeriodsTest {
     orchestrator.executeBuild(analysis);
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("not-display-periods-selection-dropdown-on-first-analysis",
-      "/selenium/history/differential-periods/not-display-periods-selection-dropdown-on-dashboard.html",
-      "/selenium/history/differential-periods/not-display-periods-selection-dropdown-on-issues-drilldown.html"
+      "/selenium/history/differential-periods/not-display-periods-selection-dropdown-on-dashboard.html"
       ).build());
 
     orchestrator.executeBuilds(analysis);
 
     orchestrator.executeSelenese(Selenese.builder().setHtmlTestsInClasspath("display-periods-selection-dropdown-after-first-analysis",
-      "/selenium/history/differential-periods/display-periods-selection-dropdown-on-dashboard.html",
-      "/selenium/history/differential-periods/display-periods-selection-dropdown-on-issues-drilldown.html"
+      "/selenium/history/differential-periods/display-periods-selection-dropdown-on-dashboard.html"
       ).build());
   }
 }

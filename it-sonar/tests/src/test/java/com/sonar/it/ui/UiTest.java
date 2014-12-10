@@ -94,19 +94,6 @@ public class UiTest {
   }
 
   @Test
-  public void keep_period_select_between_pages() {
-    scanXooSample();
-    // Execute the scan a second times in order to be able to select the "previous analysis" period
-    scanXooSample();
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("keep-period-between-pages",
-      // SONAR-3088
-      "/selenium/ui/sidebar/keep-period-between-pages.html"
-    ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  @Test
   public void http_response_should_be_gzipped() throws IOException {
     HttpClient httpclient = new DefaultHttpClient();
     try {

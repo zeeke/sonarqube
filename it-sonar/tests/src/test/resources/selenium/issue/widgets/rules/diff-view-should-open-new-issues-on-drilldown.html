@@ -14,31 +14,21 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/widget?id=rules&amp;resource=rule-widgets&amp;period=1</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=2</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertValue</td>
-        <td>select-comparison</td>
-        <td>1</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>content</td>
-        <td>*Blocker 0*Critical 0*Major +2*Minor 0*Info 0*sample +2*FewViolations.java +2*</td>
-    </tr>
-    <tr>
-        <td>assertNotText</td>
-        <td>content</td>
-        <td>*ManyViolations*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/widget?id=rules&amp;resource=rule-widgets&amp;period=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>body</td>
+	<td>*Major 2*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

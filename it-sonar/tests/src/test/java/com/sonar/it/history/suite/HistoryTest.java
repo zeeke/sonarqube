@@ -57,19 +57,6 @@ public class HistoryTest {
   }
 
   /**
-   * SONAR-3046
-   */
-  @Test
-  public void testPeriodInWidgetMostViolatedRules() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("history-widget-most-violated-rules",
-      "/selenium/history/history-widget-most-violated-rules/display-variation.html",
-      "/selenium/history/history-widget-most-violated-rules/select-rule-with-period.html",
-      "/selenium/history/history-widget-most-violated-rules/open-drilldown-with-period.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  /**
    * SONAR-2911
    */
   @Test

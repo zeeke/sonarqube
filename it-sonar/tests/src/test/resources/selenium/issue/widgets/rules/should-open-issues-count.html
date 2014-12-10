@@ -23,16 +23,21 @@
 	<td>id=m_violations</td>
 	<td></td>
 </tr>
-    <!-- Issues are no more displayed for the moment --->
-    <!--<tr>-->
-	<!--<td>waitForText</td>-->
-	<!--<td>css=.issues-content</td>-->
-	<!--<td>*results*</td>-->
+<!-- Issues are no more displayed for the moment --->
+<!--<tr>-->
+<!--<td>waitForText</td>-->
+<!--<td>css=.issues-content</td>-->
+<!--<td>*results*</td>-->
 <!--</tr>-->
 <tr>
-	<td>assertText</td>
-	<td>content</td>
-	<td>*Blocker 0*Critical 1*Major 8*Minor 0*Info 0*ManyViolations*FewViolations*</td>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Critical 1*</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>body</td>
+	<td>*Major 8*</td>
 </tr>
 </tbody>
 </table>
