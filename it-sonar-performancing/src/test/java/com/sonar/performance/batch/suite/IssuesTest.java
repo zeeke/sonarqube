@@ -9,14 +9,14 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.performance.MavenLogs;
+import com.sonar.performance.PerfRule;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ErrorCollector;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.issue.BulkChangeQuery;
 import org.sonar.wsclient.issue.Issue;
@@ -35,7 +35,12 @@ import static org.fest.assertions.Assertions.assertThat;
 public class IssuesTest extends PerfTestCase {
 
   @Rule
-  public ErrorCollector collector = new ErrorCollector();
+  public PerfRule perfRule = new PerfRule(4) {
+    @Override
+    protected void beforeEachRun() {
+      orchestrator.resetData();
+    }
+  };
 
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
@@ -43,9 +48,11 @@ public class IssuesTest extends PerfTestCase {
   @ClassRule
   public static Orchestrator orchestrator = BatchPerfTestSuite.ORCHESTRATOR;
 
-  @Before
-  public void cleanDatabase() {
-    orchestrator.resetData();
+  private static SonarRunner runnerForBigProjectWithManyChangelog;
+
+  @BeforeClass
+  public static void prepare() throws IOException {
+    runnerForBigProjectWithManyChangelog = prepareBigProjectWithManyIssuesAndManyChangelog();
   }
 
   @Test
@@ -64,49 +71,38 @@ public class IssuesTest extends PerfTestCase {
     File projectBaseDir = createBigXooProject(100, 1000);
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
-      "sonar.profile", "one-xoo-issue-per-line",
       "sonar.showProfiling", "true",
       "sonar.projectKey", "foo",
       "sonar.projectName", "100 Files 1000 Issues",
       "sonar.projectVersion", "1.0",
       "sonar.sources", "src"
       ).setProjectDir(projectBaseDir);
+    // First run with no issues
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationLessThan(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1500L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 28000L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1500L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 28000L);
 
-    // Second run
+    // Second run with new issues
+    runner.setProperty("sonar.profile", "one-xoo-issue-per-line");
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 8800L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 3794L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 424L);
-  }
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1500L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 28000L);
 
-  @Test
-  public void scan_1000_files_no_issues_tracking() throws IOException {
-    File projectBaseDir = createBigXooProject(1000, 1000);
-    // Use empty profile
-    SonarRunner runner = newSonarRunner(
-      "-Xmx512m -server -XX:MaxPermSize=64m",
-      "sonar.showProfiling", "true",
-      "sonar.projectKey", "foo",
-      "sonar.projectName", "1000 Files no issue",
-      "sonar.projectVersion", "1.0",
-      "sonar.sources", "src"
-      ).setProjectDir(projectBaseDir);
+    // Third run with issue tracking
     orchestrator.executeBuild(runner);
-    Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationLessThan(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
-    assertDurationLessThan(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 300L);
-    assertDurationLessThan(collector, Long.valueOf(prof.getProperty("IssuePersister")), 10L);
+    prof = readProfiling(projectBaseDir, "foo");
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 8800L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 3794L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 424L);
   }
 
   @Test
-  public void scan_1_files_100000_issues_tracking() throws IOException {
-    File projectBaseDir = createBigXooProject(1, 100000);
+  public void scan_1_files_10000_issues_tracking() throws IOException {
+    File projectBaseDir = createBigXooProject(1, 10000);
     SonarRunner runner = newSonarRunner(
       "-Xmx512m -server -XX:MaxPermSize=64m",
       "sonar.profile", "one-xoo-issue-per-line",
@@ -118,20 +114,29 @@ public class IssuesTest extends PerfTestCase {
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
-    assertDurationLessThan(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2010L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 26500L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2010L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 26500L);
 
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 8750L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 6800L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssuePersister")), 428L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 8750L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 6800L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 428L);
   }
 
   @Test
   public void scan_500_issues_with_changelog_tracking() throws InvalidPropertiesFormatException, IOException {
+    // Second run
+    orchestrator.executeBuild(runnerForBigProjectWithManyChangelog);
+    Properties prof = readProfiling(runnerForBigProjectWithManyChangelog.getProjectDir(), "foo");
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1916L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 780L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssuePersister")), 200L);
+  }
+
+  private static SonarRunner prepareBigProjectWithManyIssuesAndManyChangelog() throws IOException {
     int nbFiles = 10;
     int nbIssuesPerFile = 50;
     File projectBaseDir = createBigXooProject(nbFiles, nbIssuesPerFile);
@@ -145,12 +150,11 @@ public class IssuesTest extends PerfTestCase {
       "sonar.sources", "src"
       ).setProjectDir(projectBaseDir);
     orchestrator.executeBuild(runner);
-    Properties prof = readProfiling(projectBaseDir, "foo");
 
     Set<String> issueKeys = new HashSet<String>();
     int count = nbFiles * nbIssuesPerFile;
     int pageSize = 500;
-    for (int i = 1; i <= count / pageSize; i++) {
+    for (int i = 1; i <= (count / pageSize) + 1; i++) {
       Issues issues = orchestrator.getServer().adminWsClient().issueClient().find(IssueQuery.create().componentRoots("foo").pageSize(pageSize).pageIndex(i));
       for (Issue issue : issues.list()) {
         issueKeys.add(issue.key());
@@ -160,28 +164,22 @@ public class IssuesTest extends PerfTestCase {
 
     long start = System.currentTimeMillis();
     // Create some changelog per issue
-    for (int i = 1; i <= 5; i++) {
+    for (int i = 1; i <= 2; i++) {
       orchestrator.getServer().adminWsClient().issueClient().bulkChange(BulkChangeQuery.create()
-        .issues(issueKeys.toArray(new String[pageSize]))
+        .issues(issueKeys.toArray(new String[0]))
         .actions("assign", "set_severity", "do_transition")
         .actionParameter("assign", "assignee", "admin")
         .actionParameter("do_transition", "transition", "confirm")
         .actionParameter("set_severity", "severity", "MINOR"));
       orchestrator.getServer().adminWsClient().issueClient().bulkChange(BulkChangeQuery.create()
-        .issues(issueKeys.toArray(new String[pageSize]))
+        .issues(issueKeys.toArray(new String[0]))
         .actions("assign", "set_severity", "do_transition")
         .actionParameter("assign", "assignee", "")
         .actionParameter("do_transition", "transition", "unconfirm")
         .actionParameter("set_severity", "severity", "BLOCKER"));
     }
     System.out.println("Creating changelog took: " + (System.currentTimeMillis() - start) + " ms");
-
-    // Second run
-    orchestrator.executeBuild(runner);
-    prof = readProfiling(projectBaseDir, "foo");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1916L);
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 780L);
-    assertDurationLessThan(collector, Long.valueOf(prof.getProperty("IssuePersister")), 200L);
+    return runner;
   }
 
   private static File createBigXooProject(int nbFiles, int nbIssuesPerFile) throws IOException {

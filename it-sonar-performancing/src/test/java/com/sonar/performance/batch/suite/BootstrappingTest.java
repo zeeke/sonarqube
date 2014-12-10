@@ -9,14 +9,13 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.performance.MavenLogs;
+import com.sonar.performance.PerfRule;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ErrorCollector;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
@@ -25,7 +24,12 @@ import java.io.IOException;
 public class BootstrappingTest extends PerfTestCase {
 
   @Rule
-  public ErrorCollector collector = new ErrorCollector();
+  public PerfRule perfRule = new PerfRule(4) {
+    @Override
+    protected void beforeEachRun() {
+      orchestrator.resetData();
+    }
+  };
 
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
@@ -33,21 +37,42 @@ public class BootstrappingTest extends PerfTestCase {
   @ClassRule
   public static Orchestrator orchestrator = BatchPerfTestSuite.ORCHESTRATOR;
 
+  private static File manyFlatModulesBaseDir;
+  private static File manyNestedModulesBaseDir;
+
   @BeforeClass
   public static void setUp() throws IOException {
     // Execute a first analysis to prevent any side effects with cache of plugin JAR files
     orchestrator.executeBuild(newSonarRunner("-Xmx512m -server", "sonar.profile", "one-xoo-issue-per-line"));
-  }
 
-  @Before
-  public void cleanDatabase() {
-    orchestrator.resetData();
+    manyFlatModulesBaseDir = prepareProjectWithManyFlatModules(100);
+    manyNestedModulesBaseDir = prepareProjectWithManyNestedModules(50);
   }
 
   @Test
-  public void analyzeProjectWith400FlatModules() throws IOException {
-    int SIZE = 400;
+  public void analyzeProjectWith100FlatModules() throws IOException {
 
+    SonarRunner runner = SonarRunner.create()
+      .setProperties(
+        "sonar.projectKey", "many-flat-modules",
+        "sonar.projectName", "Many Flat Modules",
+        "sonar.projectVersion", "1.0",
+        "sonar.sources", "",
+        "sonar.showProfiling", "true")
+      .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-Xmx512m -server -XX:MaxPermSize=64m")
+      .setRunnerVersion("2.4")
+      .setProjectDir(manyFlatModulesBaseDir);
+
+    BuildResult result = orchestrator.executeBuild(runner);
+    // First analysis
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 49000L);
+
+    result = orchestrator.executeBuild(runner);
+    // Second analysis is longer since we load project referential
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 60000L);
+  }
+
+  private static File prepareProjectWithManyFlatModules(int SIZE) throws IOException {
     File baseDir = temp.newFolder();
     File projectProps = new File(baseDir, "sonar-project.properties");
 
@@ -65,31 +90,32 @@ public class BootstrappingTest extends PerfTestCase {
     FileUtils.write(projectProps, "sonar.modules=", true);
     FileUtils.write(projectProps, moduleListBuilder.toString(), true);
     FileUtils.write(projectProps, "\n", true);
+    return baseDir;
+  }
 
+  @Test
+  public void analyzeProjectWith50NestedModules() throws IOException {
     SonarRunner runner = SonarRunner.create()
       .setProperties(
-        "sonar.projectKey", "many-flat-modules",
-        "sonar.projectName", "Many Flat Modules",
+        "sonar.projectKey", "many-nested-modules",
+        "sonar.projectName", "Many Nested Modules",
         "sonar.projectVersion", "1.0",
         "sonar.sources", "",
         "sonar.showProfiling", "true")
       .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-Xmx512m -server -XX:MaxPermSize=64m")
       .setRunnerVersion("2.4")
-      .setProjectDir(baseDir);
+      .setProjectDir(manyNestedModulesBaseDir);
 
     BuildResult result = orchestrator.executeBuild(runner);
     // First analysis
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 49000L);
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 8354L);
 
     result = orchestrator.executeBuild(runner);
-    // Second analysis is longer since we load project referential
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 60000L);
+    // Second analysis
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 9400L);
   }
 
-  @Test
-  public void analyzeProjectWith100NestedModules() throws IOException {
-    int SIZE = 100;
-
+  private static File prepareProjectWithManyNestedModules(int SIZE) throws IOException {
     File baseDir = temp.newFolder();
     File currentDir = baseDir;
 
@@ -104,25 +130,7 @@ public class BootstrappingTest extends PerfTestCase {
       currentDir = moduleDir;
     }
     FileUtils.write(new File(currentDir, "sonar-project.properties"), "sonar.moduleKey=module" + SIZE, true);
-
-    SonarRunner runner = SonarRunner.create()
-      .setProperties(
-        "sonar.projectKey", "many-nested-modules",
-        "sonar.projectName", "Many Nested Modules",
-        "sonar.projectVersion", "1.0",
-        "sonar.sources", "",
-        "sonar.showProfiling", "true")
-      .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-Xmx512m -server -XX:MaxPermSize=64m")
-      .setRunnerVersion("2.4")
-      .setProjectDir(baseDir);
-
-    BuildResult result = orchestrator.executeBuild(runner);
-    // First analysis
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 8354L);
-
-    result = orchestrator.executeBuild(runner);
-    // Second analysis
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 9400L);
+    return baseDir;
   }
 
 }

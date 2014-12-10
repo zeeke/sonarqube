@@ -22,7 +22,7 @@ import java.util.Properties;
 import static org.fest.assertions.Assertions.assertThat;
 
 public abstract class PerfTestCase {
-  private static final double ACCEPTED_DURATION_VARIATION_IN_PERCENTS = 8.0;
+  static final double ACCEPTED_DURATION_VARIATION_IN_PERCENTS = 8.0;
 
   @Rule
   public TestName testName = new TestName();
@@ -52,7 +52,6 @@ public abstract class PerfTestCase {
 
   protected void assertDurationLessThan(ErrorCollector collector, long duration, final long maxDuration) {
     System.out.printf("Test %s : %d ms (max allowed is %d)\n", testName.getMethodName(), duration, maxDuration);
-    assertThat(duration).as(String.format("Expected less than %d ms, got %d ms", maxDuration, duration)).isLessThanOrEqualTo(maxDuration);
     collector.checkThat(String.format("Expected less than %d ms, got %d ms", maxDuration, duration), duration, new CustomMatcher<Long>("a value less than "
       + maxDuration) {
       @Override
