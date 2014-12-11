@@ -11,6 +11,7 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class IssueRuleWidgetsTest extends AbstractIssueTestCase2 {
@@ -41,6 +42,7 @@ public class IssueRuleWidgetsTest extends AbstractIssueTestCase2 {
    * SONAR-4341
    */
   @Test
+  @Ignore
   public void test_rules_widgets_on_differential_view() throws Exception {
     // let's exclude 1 file to have cleared issues
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("rule/rule-widgets"))
