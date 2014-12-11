@@ -133,7 +133,7 @@ public class IssuesTest extends PerfTestCase {
     Properties prof = readProfiling(runnerForBigProjectWithManyChangelog.getProjectDir(), "foo");
     perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 100L);
     perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 300L);
-    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssuePersister")), 460L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssuePersister")), 500L);
   }
 
   private static SonarRunner prepareBigProjectWithManyIssuesAndManyChangelog() throws IOException {
