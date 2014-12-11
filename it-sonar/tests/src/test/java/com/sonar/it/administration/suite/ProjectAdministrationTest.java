@@ -14,11 +14,14 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.sonar.wsclient.SonarClient;
 import org.sonar.wsclient.connectors.ConnectionException;
+import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.qualitygate.*;
 import org.sonar.wsclient.services.ProjectDeleteQuery;
 import org.sonar.wsclient.services.PropertyQuery;
 import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.user.UserParameters;
 
 import javax.annotation.Nullable;
 
@@ -76,19 +79,28 @@ public class ProjectAdministrationTest {
   }
 
   /**
-   * Test updated for SONAR-3570
+   * Test updated for SONAR-3570 and SONAR-5923
    */
   @Test
   public void project_deletion() throws Exception {
-    // For an unknown reason, this test fails if the analysis id one with SonarRunner...
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperty("sonar.dynamicAnalysis", "false");
-    orchestrator.executeBuild(build.setProperty("sonar.projectDate", "2012-01-01"));
+    String projectAdminUser = "project-deletion-with-admin-permission-on-project";
+    SonarClient adminClient = orchestrator.getServer().adminWsClient();
+    try {
+      SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"));
+      orchestrator.executeBuild(scan);
 
-    orchestrator.executeSelenese(
-      Selenese.builder().setHtmlTestsInClasspath("project-deletion", "/selenium/administration/project-deletion/project-deletion.html").build()
-    );
+      // Create user having admin permission on previously analysed project
+      adminClient.userClient().create(
+        UserParameters.create().login(projectAdminUser).name(projectAdminUser).password("password").passwordConfirmation("password"));
+      adminClient.permissionClient().addPermission(
+        PermissionParameters.create().user(projectAdminUser).component("sample").permission("admin"));
+
+      orchestrator.executeSelenese(
+        Selenese.builder().setHtmlTestsInClasspath("project-deletion", "/selenium/administration/project-deletion/project-deletion.html").build()
+        );
+    } finally {
+      adminClient.userClient().deactivate(projectAdminUser);
+    }
   }
 
   @Test
