@@ -81,8 +81,8 @@ public class IssuesTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
     perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
-    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1500L);
-    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 28000L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 200L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssuePersister")), 10L);
 
     // Second run with new issues
     runner.setProperty("sonar.profile", "one-xoo-issue-per-line");
@@ -116,14 +116,14 @@ public class IssuesTest extends PerfTestCase {
     Properties prof = readProfiling(projectBaseDir, "foo");
     perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 10L);
     perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2010L);
-    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 26500L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 3900L);
 
     // Second run
     orchestrator.executeBuild(runner);
     prof = readProfiling(projectBaseDir, "foo");
-    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 8750L);
-    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 6800L);
-    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 428L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 2290L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1850L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssuePersister")), 100L);
   }
 
   @Test
@@ -131,9 +131,9 @@ public class IssuesTest extends PerfTestCase {
     // Second run
     orchestrator.executeBuild(runnerForBigProjectWithManyChangelog);
     Properties prof = readProfiling(runnerForBigProjectWithManyChangelog.getProjectDir(), "foo");
-    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 1916L);
-    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 780L);
-    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssuePersister")), 200L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 100L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 300L);
+    perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("IssuePersister")), 460L);
   }
 
   private static SonarRunner prepareBigProjectWithManyIssuesAndManyChangelog() throws IOException {
