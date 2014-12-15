@@ -347,7 +347,7 @@ public class MavenTest extends AbstractMavenTest {
       }
     }
     assertThat(strutsCoreModuleId).isNotNull();
-    assertThat(getProps(outputProps).getProperty(strutsCoreModuleId + ".sonar.libraries"))
+    assertThat(getProps(outputProps).getProperty(strutsCoreModuleId + ".sonar.java.libraries"))
       .contains("antlr-2.7.2.jar");
   }
 
