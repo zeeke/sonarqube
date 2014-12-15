@@ -9,6 +9,7 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.performance.MavenLogs;
+import com.sonar.performance.PerfRule;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -17,7 +18,6 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ErrorCollector;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
@@ -27,7 +27,12 @@ import java.util.Properties;
 public class HighlightingTest extends PerfTestCase {
 
   @Rule
-  public ErrorCollector collector = new ErrorCollector();
+  public PerfRule perfRule = new PerfRule(4) {
+    @Override
+    protected void beforeEachRun() {
+      orchestrator.resetData();
+    }
+  };
 
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
@@ -78,10 +83,10 @@ public class HighlightingTest extends PerfTestCase {
       .setProjectDir(baseDir);
 
     BuildResult result = orchestrator.executeBuild(runner);
-    assertDurationAround(collector, MavenLogs.extractTotalTime(result.getLogs()), 33200L);
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 33200L);
 
     Properties prof = readProfiling(baseDir, "highlighting");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("SourcePersister")), 12900L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("SourcePersister")), 12900L);
 
   }
 }

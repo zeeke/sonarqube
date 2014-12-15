@@ -63,7 +63,7 @@ public class IssuesTest extends PerfTestCase {
       "sonar.showProfiling", "true"
       );
     BuildResult result = orchestrator.executeBuild(runner);
-    assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 8200L);
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 8200L);
   }
 
   @Test
