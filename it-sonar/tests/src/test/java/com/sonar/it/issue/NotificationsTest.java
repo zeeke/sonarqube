@@ -11,9 +11,17 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import com.sonar.orchestrator.util.NetworkUtils;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.sonar.wsclient.Sonar;
-import org.sonar.wsclient.issue.*;
+import org.sonar.wsclient.issue.BulkChangeQuery;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueClient;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
 import org.sonar.wsclient.permissions.PermissionParameters;
 import org.sonar.wsclient.services.PropertyUpdateQuery;
 import org.sonar.wsclient.user.UserParameters;
@@ -126,7 +134,7 @@ public class NotificationsTest {
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
     assertThat((String) message.getContent()).contains("sample/Sample.xoo");
     assertThat((String) message.getContent()).contains("Assignee changed to Tester");
-    assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/component/index#component=sample-notifications:src/main/xoo/sample/Sample.xoo&currentIssue=" + issue.key());
+    assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/issues/search#issues=" + issue.key());
 
     assertThat(emails.hasNext()).isFalse();
   }
@@ -171,7 +179,8 @@ public class NotificationsTest {
     assertThat(message.getHeader("To", null)).isEqualTo("<tester@example.org>");
     assertThat((String) message.getContent()).contains("sample/Sample.xoo");
     assertThat((String) message.getContent()).contains("Severity: BLOCKER (was MINOR)");
-    assertThat((String) message.getContent()).contains("See it in SonarQube: http://localhost:9000/component/index#component=sample-notifications:src/main/xoo/sample/Sample.xoo&currentIssue=" + issue.key());
+    assertThat((String) message.getContent()).contains(
+      "See it in SonarQube: http://localhost:9000/issues/search#issues=" + issue.key());
 
     assertThat(emails.hasNext()).isFalse();
   }
