@@ -7,6 +7,7 @@ package com.sonar.performance.batch.suite;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
+import com.sonar.performance.PerfRule;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -15,7 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ErrorCollector;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
@@ -25,7 +25,12 @@ import java.util.Properties;
 public class FileSystemTest extends PerfTestCase {
 
   @Rule
-  public ErrorCollector collector = new ErrorCollector();
+  public PerfRule perfRule = new PerfRule(4) {
+    @Override
+    protected void beforeEachRun() {
+      orchestrator.resetData();
+    }
+  };
 
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
@@ -85,7 +90,7 @@ public class FileSystemTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
 
     Properties prof = readProfiling(baseDir, "filesystem");
-    assertDurationAround(collector, Long.valueOf(prof.getProperty("Index filesystem and store sources")), expectedDuration);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("Index filesystem and store sources")), expectedDuration);
   }
 
 }
