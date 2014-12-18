@@ -22,4 +22,9 @@
     <module>tests</module>
   </modules>
 
+  <properties>
+    <jdk.source.version>1.7</jdk.source.version>
+    <jdk.target.version>1.7</jdk.target.version>
+  </properties>
+
 </project>
