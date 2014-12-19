@@ -86,7 +86,7 @@
 <tr>
 	<td>waitForText</td>
 	<td>confirm-form</td>
-	<td>*Delete user: ${userId}*arning : are you sure to delete the user "Name of ${userId}"?*</td>
+	<td>*Delete user: ${userId}*arning : are you sure to delete the user &quot;Name of ${userId}&quot;?*</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -134,24 +134,14 @@
 	<td>password</td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
 	<td>commit</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>user_form</td>
-	<td>*Reactivate user?*A user with login &quot;${userId}&quot; already exists in the database but is deactivated.*Do you really want to reactivate this user?*</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>name=commit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
 	<td>content</td>
-	<td>*User was successfully reactivated*${userId}*Name of ${userId}*sonar-users*</td>
+	<td>The user '*${userId}*' has been reactivated.*Name of ${userId}*sonar-users*</td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>
