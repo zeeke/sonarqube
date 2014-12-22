@@ -7,10 +7,7 @@ package com.sonar.it.rule.suite;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -32,6 +29,8 @@ public class ManualRulesTest {
   }
 
   @Test
+  @Ignore
+  // TODO Enable for new coding rules page
   public void testManualRules() {
     Selenese selenese = Selenese
       .builder()

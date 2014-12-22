@@ -8,6 +8,7 @@ package com.sonar.it.rule.suite;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class RulesTest {
@@ -20,6 +21,8 @@ public class RulesTest {
    * SONAR-4193
    */
   @Test
+  @Ignore
+  // TODO Enable for new coding rules page
   public void display_link_to_to_another_rule_in_description_rule() {
     orchestrator.executeSelenese(Selenese
       .builder()
