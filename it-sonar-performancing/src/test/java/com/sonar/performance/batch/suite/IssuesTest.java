@@ -115,7 +115,7 @@ public class IssuesTest extends PerfTestCase {
     orchestrator.executeBuild(runner);
     Properties prof = readProfiling(projectBaseDir, "foo");
     perfRule.assertDurationLessThan(Long.valueOf(prof.getProperty("InitialOpenIssuesSensor")), 100L);
-    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 2010L);
+    perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssueTrackingDecorator")), 1800L);
     perfRule.assertDurationAround(Long.valueOf(prof.getProperty("IssuePersister")), 3900L);
 
     // Second run
