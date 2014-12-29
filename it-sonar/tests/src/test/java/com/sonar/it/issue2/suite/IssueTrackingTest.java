@@ -27,8 +27,8 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class IssueTrackingTest extends AbstractIssueTestCase2 {
 
-  private static final String OLD_DATE = "2010-01-01";
-  private static final String NEW_DATE = "2013-05-18";
+  private static final String OLD_DATE = "2012-01-01";
+  private static final String NEW_DATE = "2014-05-18";
 
   @Before
   public void deleteAnalysisData() {
