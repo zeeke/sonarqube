@@ -27,6 +27,10 @@ public class PropertySetsTest {
       "/selenium/administration/property-sets/all_types.html"
     ).build();
     orchestrator.executeSelenese(selenese);
+
+    // SSF-25 Check that the password has well be setted as now it does not appears in the html source code
+    String sonarDemoValue = getProperty("sonar.demo");
+    assertThat(getProperty("sonar.demo." + sonarDemoValue + ".password")).isEqualTo("abcde");
   }
 
   @Test
