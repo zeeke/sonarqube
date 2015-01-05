@@ -12,6 +12,7 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class PerfRule extends ErrorCollector {
@@ -72,8 +73,10 @@ public abstract class PerfRule extends ErrorCollector {
 
   private long computeAverageDurationOfCurrentStep() {
     Long[] result = getAllResultsOfCurrentStep();
+    // Compute a truncated mean by ignoring greater value
+    Arrays.sort(result);
     long meanDuration = 0;
-    for (int i = 0; i < runCount; i++) {
+    for (int i = 0; i < (runCount - 1); i++) {
       meanDuration += result[i];
     }
     meanDuration /= runCount;
