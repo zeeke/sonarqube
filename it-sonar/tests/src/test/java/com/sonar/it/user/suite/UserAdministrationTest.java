@@ -8,6 +8,7 @@ package com.sonar.it.user.suite;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class UserAdministrationTest {
@@ -42,6 +43,7 @@ public class UserAdministrationTest {
    * SONAR-4827
    */
   @Test
+  @Ignore("Ignored because of too many F/P on jenkins")
   public void manage_groups() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("manage-groups",
       "/selenium/user/manage-groups/admin-has-default-groups.html",
