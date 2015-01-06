@@ -66,11 +66,11 @@ public class IssuePermissionTest {
 
       // Without user permission, a user cannot see issues on the project
       assertThat(orchestrator.getServer().wsClient(withoutBrowsePermission, "password").issueClient().find(
-        IssueQuery.create().componentRoots("sample")).list()).isEmpty();
+        IssueQuery.create().components("sample")).list()).isEmpty();
 
       // With user permission, a user can see issues on the project
       assertThat(orchestrator.getServer().wsClient(withBrowsePermission, "password").issueClient().find(
-        IssueQuery.create().componentRoots("sample")).list()).isNotEmpty();
+        IssueQuery.create().components("sample")).list()).isNotEmpty();
 
     } finally {
       client.userClient().deactivate(withBrowsePermission);
@@ -84,7 +84,7 @@ public class IssuePermissionTest {
   @Test
   public void need_user_permission_on_project_to_see_issue_changelog() {
     SonarClient client = orchestrator.getServer().adminWsClient();
-    Issue issue = client.issueClient().find(IssueQuery.create().componentRoots("sample")).list().get(0);
+    Issue issue = client.issueClient().find(IssueQuery.create().components("sample")).list().get(0);
     client.issueClient().assign(issue.key(), "admin");
 
     String withBrowsePermission = "with-browse-permission";
@@ -123,8 +123,8 @@ public class IssuePermissionTest {
   @Test
   public void need_administer_issue_permission_on_project_to_set_severity() {
     SonarClient client = orchestrator.getServer().adminWsClient();
-    Issue issueOnSample = client.issueClient().find(IssueQuery.create().componentRoots("sample")).list().get(0);
-    Issue issueOnSample2 = client.issueClient().find(IssueQuery.create().componentRoots("sample2")).list().get(0);
+    Issue issueOnSample = client.issueClient().find(IssueQuery.create().components("sample")).list().get(0);
+    Issue issueOnSample2 = client.issueClient().find(IssueQuery.create().components("sample2")).list().get(0);
 
     String user = "user";
 
@@ -154,8 +154,8 @@ public class IssuePermissionTest {
   @Test
   public void need_administer_issue_permission_on_project_to_flag_as_false_positive() {
     SonarClient client = orchestrator.getServer().adminWsClient();
-    Issue issueOnSample = client.issueClient().find(IssueQuery.create().componentRoots("sample")).list().get(0);
-    Issue issueOnSample2 = client.issueClient().find(IssueQuery.create().componentRoots("sample2")).list().get(0);
+    Issue issueOnSample = client.issueClient().find(IssueQuery.create().components("sample")).list().get(0);
+    Issue issueOnSample2 = client.issueClient().find(IssueQuery.create().components("sample2")).list().get(0);
 
     String user = "user";
 
@@ -185,8 +185,8 @@ public class IssuePermissionTest {
   @Test
   public void need_administer_issue_permission_on_project_to_bulk_change_severity_and_false_positive() {
     SonarClient client = orchestrator.getServer().adminWsClient();
-    Issue issueOnSample = client.issueClient().find(IssueQuery.create().componentRoots("sample")).list().get(0);
-    Issue issueOnSample2 = client.issueClient().find(IssueQuery.create().componentRoots("sample2")).list().get(0);
+    Issue issueOnSample = client.issueClient().find(IssueQuery.create().components("sample")).list().get(0);
+    Issue issueOnSample2 = client.issueClient().find(IssueQuery.create().components("sample2")).list().get(0);
 
     String user = "user";
 

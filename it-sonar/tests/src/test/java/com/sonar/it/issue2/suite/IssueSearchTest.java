@@ -15,7 +15,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.base.Paging;
 import org.sonar.wsclient.component.Component;
-import org.sonar.wsclient.issue.*;
+import org.sonar.wsclient.issue.ActionPlan;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
+import org.sonar.wsclient.issue.NewActionPlan;
+import org.sonar.wsclient.issue.NewIssue;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -66,11 +71,11 @@ public class IssueSearchTest extends AbstractIssueTestCase2 {
 
   @Test
   public void search_issues_by_component_roots() {
-    assertThat(search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample")).list()).hasSize(63);
-    assertThat(search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample:module_a")).list()).hasSize(35);
-    assertThat(search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1")).list()).hasSize(19);
+    assertThat(search(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample")).list()).hasSize(63);
+    assertThat(search(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample:module_a")).list()).hasSize(35);
+    assertThat(search(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample:module_a:module_a1")).list()).hasSize(20);
 
-    assertThat(search(IssueQuery.create().componentRoots("unknown")).list()).isEmpty();
+    assertThat(search(IssueQuery.create().components("unknown")).list()).isEmpty();
   }
 
   @Test

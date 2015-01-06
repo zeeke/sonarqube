@@ -84,7 +84,7 @@ public class IssuePurgeTest extends AbstractIssueTestCase {
     }
     Issue issue = issues.get(0);
 
-    int issuesOnModuleB = search(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample:module_b")).list().size();
+    int issuesOnModuleB = search(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample:module_b")).list().size();
     assertThat(issuesOnModuleB).isEqualTo(28);
 
     // Second scan without module B -> issues on module B are resolved as removed and closed

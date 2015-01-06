@@ -65,7 +65,7 @@ public class IssueFilterExtensionTest extends AbstractIssueTestCase {
     // Issue filter removes issues on lines < 5
     // Deprecated violation filter removes issues detected by PMD
     IssueClient issueClient = ItUtils.newWsClientForAnonymous(orchestrator).issueClient();
-    Issues unresolvedIssues = issueClient.find(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample").resolved(false));
+    Issues unresolvedIssues = issueClient.find(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample").resolved(false));
     int issuesBeforeLine5 = countIssuesBeforeLine5(unresolvedIssues.list());
     int pmdIssues = countPmdIssues(unresolvedIssues.list());
     assertThat(issuesBeforeLine5).isGreaterThan(0);
@@ -78,8 +78,8 @@ public class IssueFilterExtensionTest extends AbstractIssueTestCase {
       .setProfile("issues");
     orchestrator.executeBuild(scan);
 
-    unresolvedIssues = issueClient.find(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample").resolved(false));
-    Issues resolvedIssues = issueClient.find(IssueQuery.create().componentRoots("com.sonarsource.it.samples:multi-modules-sample").resolved(true));
+    unresolvedIssues = issueClient.find(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample").resolved(false));
+    Issues resolvedIssues = issueClient.find(IssueQuery.create().components("com.sonarsource.it.samples:multi-modules-sample").resolved(true));
     assertThat(countIssuesBeforeLine5(unresolvedIssues.list())).isZero();
     assertThat(countPmdIssues(unresolvedIssues.list())).isZero();
     assertThat(countIssuesBeforeLine5(resolvedIssues.list())).isGreaterThan(0);

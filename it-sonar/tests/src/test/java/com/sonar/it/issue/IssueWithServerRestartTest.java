@@ -86,7 +86,7 @@ public class IssueWithServerRestartTest {
     SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProfile("one-issue-per-line");
     orchestrator.executeBuild(scan);
-    int issues = issueClient.find(IssueQuery.create().componentRoots("sample")).list().size();
+    int issues = issueClient.find(IssueQuery.create().components("sample")).list().size();
     assertThat(issues).isGreaterThan(0);
 
     // Scan another project
@@ -94,7 +94,7 @@ public class IssueWithServerRestartTest {
 
     // Re scan first project, number of its issues should be the same
     orchestrator.executeBuild(scan);
-    assertThat(issueClient.find(IssueQuery.create().componentRoots("sample")).list().size()).isEqualTo(issues);
+    assertThat(issueClient.find(IssueQuery.create().components("sample")).list().size()).isEqualTo(issues);
   }
 
 }

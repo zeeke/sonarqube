@@ -111,7 +111,7 @@ public class NotificationsTest {
   @Test
   public void notifications_for_new_issues_and_issue_changes() throws Exception {
     // change assignee
-    Issues issues = issueClient.find(IssueQuery.create().componentRoots("sample-notifications"));
+    Issues issues = issueClient.find(IssueQuery.create().components("sample-notifications"));
     Issue issue = issues.list().get(0);
     issueClient.assign(issue.key(), "tester");
 
@@ -145,7 +145,7 @@ public class NotificationsTest {
   @Test
   public void notifications_for_bulk_change_ws() throws Exception {
 
-    Issues issues = issueClient.find(IssueQuery.create().componentRoots("sample-notifications"));
+    Issues issues = issueClient.find(IssueQuery.create().components("sample-notifications"));
     Issue issue = issues.list().get(0);
 
     // bulk change without notification by default

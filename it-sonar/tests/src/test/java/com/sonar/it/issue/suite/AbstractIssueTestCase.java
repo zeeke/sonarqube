@@ -8,7 +8,12 @@ package com.sonar.it.issue.suite;
 import com.sonar.orchestrator.Orchestrator;
 import org.junit.ClassRule;
 import org.sonar.wsclient.base.HttpException;
-import org.sonar.wsclient.issue.*;
+import org.sonar.wsclient.issue.ActionPlan;
+import org.sonar.wsclient.issue.ActionPlanClient;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueClient;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
 
 import java.util.List;
 
@@ -26,7 +31,7 @@ public abstract class AbstractIssueTestCase {
   }
 
   protected List<Issue> searchIssuesBySeverities(String componentKey, String... severities) {
-    return search(IssueQuery.create().componentRoots(componentKey).severities(severities)).list();
+    return search(IssueQuery.create().components(componentKey).severities(severities)).list();
   }
 
   protected static Issue searchRandomIssue() {

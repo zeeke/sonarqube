@@ -9,7 +9,11 @@ import com.google.common.collect.ImmutableMap;
 import com.sonar.orchestrator.Orchestrator;
 import org.junit.ClassRule;
 import org.sonar.wsclient.base.HttpException;
-import org.sonar.wsclient.issue.*;
+import org.sonar.wsclient.issue.ActionPlanClient;
+import org.sonar.wsclient.issue.Issue;
+import org.sonar.wsclient.issue.IssueClient;
+import org.sonar.wsclient.issue.IssueQuery;
+import org.sonar.wsclient.issue.Issues;
 
 import java.util.List;
 
@@ -31,7 +35,7 @@ public class AbstractIssueTestCase2 {
   }
 
   protected List<Issue> searchIssuesByProject(String projectKey) {
-    return search(IssueQuery.create().componentRoots(projectKey)).list();
+    return search(IssueQuery.create().components(projectKey)).list();
   }
 
   protected List<Issue> searchUnresolvedIssuesByComponent(String componentKey) {

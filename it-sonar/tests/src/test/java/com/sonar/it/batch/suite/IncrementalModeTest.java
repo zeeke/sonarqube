@@ -54,7 +54,7 @@ public class IncrementalModeTest {
       .setProfile(profileName);
     orchestrator.executeBuild(runner);
 
-    Issues issues = orchestrator.getServer().adminWsClient().issueClient().find(IssueQuery.create().componentRoots("incremental"));
+    Issues issues = orchestrator.getServer().adminWsClient().issueClient().find(IssueQuery.create().components("incremental"));
     assertThat(issues.size()).isEqualTo(13 + 20);
 
     runner = configureRunner("batch/incremental/xoo-sample-v1",
@@ -86,7 +86,7 @@ public class IncrementalModeTest {
       .setProfile(profileName);
     orchestrator.executeBuild(runner);
 
-    Issues issues = orchestrator.getServer().adminWsClient().issueClient().find(IssueQuery.create().componentRoots("incremental:my-branch/1.0"));
+    Issues issues = orchestrator.getServer().adminWsClient().issueClient().find(IssueQuery.create().components("incremental:my-branch/1.0"));
     assertThat(issues.size()).isEqualTo(13 + 20);
 
     runner = configureRunner("batch/incremental/xoo-sample-v1",
