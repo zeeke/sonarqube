@@ -79,7 +79,7 @@ public abstract class PerfRule extends ErrorCollector {
     for (int i = 0; i < (runCount - 1); i++) {
       meanDuration += result[i];
     }
-    meanDuration /= runCount;
+    meanDuration /= (runCount - 1);
     return meanDuration;
   }
 
