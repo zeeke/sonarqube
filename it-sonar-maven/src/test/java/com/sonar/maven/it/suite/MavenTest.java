@@ -353,6 +353,22 @@ public class MavenTest extends AbstractMavenTest {
     assertThat(getProps(outputProps).getProperty(strutsCoreModuleId + ".sonar.libraries")).contains("antlr-2.7.2.jar");
   }
 
+  // MSONAR-91
+  @Test
+  public void shouldSkipModules() {
+    assumeTrue(mojoVersion().isGreaterThanOrEquals("2.5"));
+    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("exclusions/skip-one-module"))
+      .setGoals(cleanSonarGoal());
+    orchestrator.executeBuild(build);
+
+    Sonar sonar = orchestrator.getServer().getWsClient();
+
+    assertThat(sonar.find(new ResourceQuery("com.sonarsource.it.samples:module_a1"))).isNull();
+    assertThat(sonar.find(new ResourceQuery("com.sonarsource.it.samples:module_a2")).getName()).isEqualTo("Sub-module A2");
+    assertThat(sonar.find(new ResourceQuery("com.sonarsource.it.samples:module_b")).getName()).isEqualTo("Module B");
+
+  }
+
   private Properties getProps(File outputProps)
     throws FileNotFoundException, IOException
   {
