@@ -11,7 +11,9 @@
     <nav class="navbar">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="<%= ApplicationController.root_context -%>/">SonarQube</a>
+          <a class="navbar-brand navbar-logo" href="<%= ApplicationController.root_context -%>/">
+            <%= render 'layouts/logo' -%>
+          </a>
         </div>
 
         <ul class="nav navbar-nav">
@@ -103,8 +105,8 @@
       <div class="container">
         <ul class="nav navbar-nav">
           <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="icon-list"></i>
+            <a class="dropdown-toggle navbar-logo" data-toggle="dropdown" href="#">
+              <%= render 'layouts/small_logo' -%>
             </a>
             <ul class="dropdown-menu">
               <li>
