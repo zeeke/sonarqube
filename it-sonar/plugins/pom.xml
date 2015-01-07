@@ -65,7 +65,6 @@
     <module>resource-configuration-extension-plugin</module>
     <module>ruby-api-tester-plugin</module>
     <module>ruby-rails-app-plugin</module>
-    <module>ruby-tab-plugin</module>
     <module>security-plugin</module>
     <module>self-l10ned-plugin</module>
     <module>server-plugin</module>

@@ -35,7 +35,6 @@ public class UiTest {
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
       .addPlugin(ItUtils.locateTestPlugin("static-files-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("ruby-api-tester-plugin"))
-      .addPlugin(ItUtils.locateTestPlugin("ruby-tab-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("required-measures-widgets-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("ruby-rails-app-plugin"))
       .addPlugin(ItUtils.locateTestPlugin("page-decoration-plugin"))
