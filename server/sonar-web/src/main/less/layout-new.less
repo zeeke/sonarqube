@@ -1,0 +1,95 @@
+@import (reference) "mixins";
+@import (reference) "variables";
+@import (reference) "ui";
+
+@navbarHeight: 36px;
+@navbarLineHeight: 20px;
+@navbarTopPadding: (@navbarHeight - @navbarLineHeight) / 2;
+
+
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  padding: 0 10px;
+  .box-sizing(border-box);
+}
+
+.navbar, [class^="navbar-"], [class*=" navbar-"] {
+  .box-sizing(border-box);
+}
+
+.navbar {
+  .clearfix;
+  background-color: @darkColor;
+}
+
+.navbar-primary {
+  background-color: @darkBlue;
+}
+
+.navbar a {
+  .link-no-underline;
+}
+
+.navbar-header {
+  float: left;
+}
+
+.navbar-brand {
+  float: left;
+  height: @navbarHeight;
+  padding: @navbarTopPadding 15px;
+  font-size: 19px;
+  line-height: @navbarLineHeight;
+  color: @lightColor;
+}
+
+.navbar-nav {
+  float: left;
+}
+
+.navbar-nav > li {
+  float: left;
+}
+
+.navbar-nav > li > a {
+  padding: @navbarTopPadding 10px;
+  line-height: @navbarLineHeight;
+  color: @lightColor;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+
+  &:hover, &:focus  {
+    background-color: #090909;
+    color: @lightColor;
+  }
+}
+
+.navbar-primary .navbar-nav > li > a {
+  &:hover, &:focus  {
+    background-color: darken(@darkBlue, 10%);
+  }
+}
+
+.navbar-nav > .active > a {
+  background-color: #090909;
+  color: @lightColor;
+}
+
+.navbar-primary .navbar-nav > .active > a {
+  background-color: darken(@darkBlue, 10%);
+}
+
+.navbar-form {
+  @topPadding: (@navbarHeight - @formControlHeight) / 2;
+  padding: @topPadding 10px;
+}
+
+.navbar-icon:before {
+  font-size: @iconFontSize;
+}
+
+.navbar-right {
+  float: right;
+}
