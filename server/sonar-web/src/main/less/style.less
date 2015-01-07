@@ -2357,7 +2357,7 @@ div.rule-title {
 
 .sonar-d3 .plot .arc:hover,
 .sonar-d3 .plot .arc.hover {
-  opacity: 1;
+  fill: #4f9ed3;
 }
 
 .sonar-d3 .plot .line {
@@ -2522,10 +2522,10 @@ text.max-results-reached-message {
   top: 5px; right: 5px;
   line-height: @iconSmallFontSize;
   color: #fff;
-  opacity: 0.5;
+  fill: #fff;
   .link-no-underline;
 
-  &:hover { opacity: 1; }
+  &:hover { fill: #4f9ed3; }
 }
 
 .sonar-d3 .treemap-link i,
@@ -2711,3 +2711,69 @@ text.max-results-reached-message {
   }
 }
 
+
+
+.sq-logo {
+  .sq-logo-arc {
+    fill: @blue;
+  }
+
+  .sq-logo-letter {
+    fill: #fff;
+  }
+
+  &:not(.sq-logo-small):hover {
+    .sq-logo-arc1 {
+      .animation(sq-logo-arc1-animation 0.75s infinite);
+    }
+    .sq-logo-arc2 {
+      .animation(sq-logo-arc2-animation 0.75s infinite);
+    }
+    .sq-logo-arc3 {
+      .animation(sq-logo-arc3-animation 0.75s infinite);
+    }
+  }
+}
+
+.sq-logo-small {
+  .sq-logo-arc {
+    fill: #fff;
+  }
+}
+
+@-webkit-keyframes sq-logo-arc1-animation {
+  0%   { fill: #4f9ed3; }
+  33%   { fill: #b5c8d3; }
+  67%   { fill: #4f9ed3; }
+  100%   { fill: #4f9ed3; }
+}
+@-webkit-keyframes sq-logo-arc2-animation {
+  0%   { fill: #4f9ed3; }
+  33%   { fill: #4f9ed3; }
+  67%   { fill: #b5c8d3; }
+  100%   { fill: #4f9ed3; }
+}
+@-webkit-keyframes sq-logo-arc3-animation {
+  0%   { fill: #4f9ed3; }
+  33%   { fill: #4f9ed3; }
+  67%   { fill: #4f9ed3; }
+  100%   { fill: #b5c8d3; }
+}
+@keyframes sq-logo-arc1-animation {
+  0%   { fill: #4f9ed3; }
+  33%   { fill: #b5c8d3; }
+  67%   { fill: #4f9ed3; }
+  100%   { fill: #4f9ed3; }
+}
+@keyframes sq-logo-arc2-animation {
+  0%   { fill: #4f9ed3; }
+  33%   { fill: #4f9ed3; }
+  67%   { fill: #b5c8d3; }
+  100%   { fill: #4f9ed3; }
+}
+@keyframes sq-logo-arc3-animation {
+  0%   { fill: #4f9ed3; }
+  33%   { fill: #4f9ed3; }
+  67%   { fill: #4f9ed3; }
+  100%   { fill: #b5c8d3; }
+}
