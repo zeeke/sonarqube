@@ -16,6 +16,6 @@ import java.util.List;
 )
 public class IssueFilterPlugin extends SonarPlugin {
   public List getExtensions() {
-    return Arrays.asList(IssueFilterBeforeLine5.class, ViolationFilterOnPmd.class);
+    return Arrays.asList(IssueFilterBeforeLine5.class, IssueFilterOnPmd.class);
   }
 }

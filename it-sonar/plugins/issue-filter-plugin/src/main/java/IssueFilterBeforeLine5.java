@@ -17,10 +17,10 @@ public class IssueFilterBeforeLine5 implements IssueFilter {
 
   @Override
   public boolean accept(Issue issue) {
-    if (issue.componentKey()==null) {
+    if (issue.componentKey() == null) {
       throw new IllegalStateException("Issue component is not set");
     }
-    if (issue.ruleKey()==null) {
+    if (issue.ruleKey() == null) {
       throw new IllegalStateException("Issue rule is not set");
     }
 
