@@ -10,6 +10,7 @@
 
   <packaging>sonar-plugin</packaging>
   <name>Plugins :: Issue Filter</name>
+  <description>Issue Filter plugin</description>
 
   <dependencies>
     <dependency>
