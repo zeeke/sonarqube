@@ -31,7 +31,7 @@ public class ProjectProvisioningTest {
         "/selenium/administration/provisioning/provisioned-project-is-not-a-ghost.html",
         "/selenium/administration/provisioning/provisioned-project-appears-in-search.html",
         "/selenium/administration/provisioning/provisioning-form-validates-fields.html",
-        "/selenium/administration/provisioning/provisioned-project-can-be-edited-and-deleted.html"
+        "/selenium/administration/provisioning/provisioned-project-can-be-deleted.html"
         ).build());
   }
 
