@@ -20,6 +20,7 @@ public class ProjectProvisioningTest {
    * SONAR-4711
    * SONAR-4724
    * SONAR-4712
+   * SONAR-3718
    */
   @Test
   public void should_allow_provisioning_from_admin_ui() {
@@ -31,7 +32,8 @@ public class ProjectProvisioningTest {
         "/selenium/administration/provisioning/provisioned-project-is-not-a-ghost.html",
         "/selenium/administration/provisioning/provisioned-project-appears-in-search.html",
         "/selenium/administration/provisioning/provisioning-form-validates-fields.html",
-        "/selenium/administration/provisioning/provisioned-project-can-be-deleted.html"
+        "/selenium/administration/provisioning/provisioned-project-can-be-deleted.html",
+        "/selenium/administration/provisioning/provision-project-with-branch.html"
         ).build());
   }
 
