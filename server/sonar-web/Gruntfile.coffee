@@ -237,6 +237,10 @@ module.exports = (grunt) ->
         name: 'analysis-reports/app'
         out: '<%= pkg.assets %>build/js/analysis-reports/app.js'
 
+      nav: options:
+        name: 'nav/app'
+        out: '<%= pkg.assets %>build/js/nav/app.js'
+
 
     handlebars:
       options:
@@ -286,6 +290,9 @@ module.exports = (grunt) ->
           ]
           '<%= pkg.assets %>js/templates/analysis-reports.js': [
             '<%= pkg.sources %>hbs/analysis-reports/**/*.hbs'
+          ]
+          '<%= pkg.assets %>js/templates/nav.js': [
+            '<%= pkg.sources %>hbs/nav/**/*.hbs'
           ]
 
 

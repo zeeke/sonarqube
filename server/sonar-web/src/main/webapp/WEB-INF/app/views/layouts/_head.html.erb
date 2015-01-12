@@ -28,6 +28,7 @@
     window.SS.hoursInDay = <%= configuration('sonar.technicalDebt.hoursInDay', 8) %>;
     window.SS.user = '<%= current_user.login if current_user -%>';
     window.SS.userName = '<%= current_user.name if current_user -%>';
+    window.SS.isUserAdmin = <%= is_admin? ? 'true' : 'false' -%>;
   </script>
   <script src="<%= ApplicationController.root_context -%>/js/sonar.js"></script>
   <script>
@@ -40,6 +41,10 @@
   <script src="<%= ApplicationController.root_context -%>/js/require.js"></script>
   <script>
     requirejs.config({ baseUrl: baseUrl + '/js' });
+  </script>
+  <%= render 'layouts/navbar_conf' -%>
+  <script>
+    require(['nav/app']);
   </script>
   <%= yield :script -%>
 </head>
