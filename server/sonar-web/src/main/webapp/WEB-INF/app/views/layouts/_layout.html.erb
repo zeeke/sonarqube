@@ -14,7 +14,7 @@
           <%= render 'layouts/logo' -%>
         </a>
         <% if selected_section==Navigation::SECTION_RESOURCE %>
-          <div class="navbar-brand"><%= @project.name -%></div>
+          <div class="navbar-brand"><%= @project.root_project().name -%></div>
         <% end %>
       </div>
     </div>
