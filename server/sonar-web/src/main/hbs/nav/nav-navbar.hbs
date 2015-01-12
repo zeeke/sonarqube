@@ -43,10 +43,11 @@
   </ul>
 
   <ul class="nav navbar-nav navbar-right">
-    <li class="dropdown">
-      <a href="#">
+    <li class="dropdown js-search-dropdown">
+      <a class="dropdown-toggle js-search-dropdown-toggle" data-toggle="dropdown" href="#">
         <i class="icon-search navbar-icon"></i>&nbsp;<span class="icon-dropdown"></span>
       </a>
+      <div class="js-search-region dropdown-menu dropdown-menu-right"></div>
     </li>
     {{#if user}}
       <li class="dropdown">

@@ -11,6 +11,11 @@
 %>
 
 <script>
+  var navbarQualifiers = [
+    <% Project.root_qualifiers.sort.each do |qualifier| %>
+    '<%= qualifier -%>',
+    <% end %>
+  ];
   <% unless selected_section==Navigation::SECTION_RESOURCE %>
   var navbarItems = [
     {

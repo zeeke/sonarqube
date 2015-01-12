@@ -1,16 +1,23 @@
 define([
+  'nav/search-view',
   'templates/nav'
-], function () {
+], function (SearchView) {
 
   var $ = jQuery;
 
-  return Marionette.ItemView.extend({
+  return Marionette.Layout.extend({
     className: 'navbar',
     tagName: 'nav',
     template: Templates['nav-navbar'],
 
+    regions: {
+      searchRegion: '.js-search-region'
+    },
+
     events: {
-      'click .js-favorite': 'onFavoriteClick'
+      'click .js-favorite': 'onFavoriteClick',
+      'show.bs.dropdown .js-search-dropdown': 'onSearchDropdownShow',
+      'hidden.bs.dropdown .js-search-dropdown': 'onSearchDropdownHidden'
     },
 
     initialize: function () {
@@ -46,8 +53,20 @@ define([
       });
     },
 
+    onSearchDropdownShow: function () {
+      var that = this;
+      this.searchRegion.show(new SearchView({
+        hide: function () {
+          that.$('.js-search-dropdown-toggle').dropdown('toggle');
+        }
+      }));
+    },
+
+    onSearchDropdownHidden: function () {
+      this.searchRegion.reset();
+    },
+
     serializeData: function () {
-      console.log(this.projectName);
       return _.extend(Marionette.Layout.prototype.serializeData.apply(this, arguments), {
         user: window.SS.user,
         userName: window.SS.userName,

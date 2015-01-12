@@ -138,3 +138,38 @@ html {
 .navbar-right {
   float: right;
 }
+
+.navbar-search {
+  position: relative;
+  width: 240px;
+  .box-sizing(border-box);
+  .trans(width);
+
+  &.open {
+    width: 40vw;
+  }
+}
+
+.navbar-search-input {
+  width: 100%;
+  padding: 0 20px 0 40px !important;
+  border: none !important;
+}
+
+.navbar-search-icon {
+  position: absolute;
+  top: 4px;
+  left: 20px;
+  color: @secondFontColor;
+
+  &:before {
+    font-size: @iconSmallFontSize;
+  }
+}
+
+.navbar-search-extra {
+  display: inline-block;
+  width: 90px;
+  margin-right: 10px;
+  text-align: right;
+}
