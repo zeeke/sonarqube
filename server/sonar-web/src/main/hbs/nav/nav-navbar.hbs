@@ -6,9 +6,8 @@
     {{#if projectName}}
       <div class="navbar-brand" title="{{projectName}}">
         {{#if navbarCanFavoriteProject}}
-          <a class="js-favorite source-viewer-header-favorite"
+          <a class="js-favorite navbar-favorite {{#if projectFavorite}}icon-favorite{{else}}icon-not-favorite{{/if}}"
              title="{{#if projectFavorite}}{{t 'click_to_remove_from_favorites'}}{{else}}{{t 'click_to_add_to_favorites'}}{{/if}}">
-            <i class="{{#if projectFavorite}}icon-favorite{{else}}icon-not-favorite{{/if}}"></i>
           </a>
         {{/if}}
         {{projectName}}

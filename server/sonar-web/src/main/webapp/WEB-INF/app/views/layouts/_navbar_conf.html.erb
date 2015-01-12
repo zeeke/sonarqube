@@ -80,6 +80,7 @@
   ];
   <% else %>
   var navbarProject = '<%= @project.root_project().name -%>',
+      navbarProjectId = '<%= @project.root_project().id -%>',
       navbarCanFavoriteProject = <%= logged_in? && displayed_resource && !display_only_root ? 'true' : 'false' -%>,
       navbarProjectFavorite = <%= logged_in? && current_user.favourite?(resource_id) ? 'true' : 'false' -%>,
       navbarItems = [
