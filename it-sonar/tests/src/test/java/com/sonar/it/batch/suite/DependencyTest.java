@@ -9,7 +9,10 @@ import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
 import org.json.JSONException;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -62,7 +65,6 @@ public class DependencyTest {
 
   // SONAR-1587
   @Test
-  @Ignore
   public void multi_module_deps_with_branch() throws JSONException {
     // Module B depends on Module A
     MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("batch/dependencies/multi-modules-with-deps"))
