@@ -110,7 +110,7 @@
         <% if (has_role?(:admin, displayed_resource) || profiles_administrator?) && !displayed_resource.entity? %>
         <% is_admin = has_role?(:admin, @project) %>
         {
-          labelLocalized: '<%= message('qualifier.configuration.' + @project.qualifier) -%>',
+          labelLocalized: 'Settings',
           active: false,
           menu: [
             <% if (is_admin && controller.java_facade.getResourceTypeBooleanProperty(@project.qualifier, 'configurable')) %>
