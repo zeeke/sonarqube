@@ -2,39 +2,38 @@
 @import (reference) "../mixins";
 @import (reference) "../ui";
 
-@sideWidth: 300px;
+@sideWidth: 180px;
 
 .search-navigator {
 
-  &.sticky {
-
-    .search-navigator-workspace-header {
-      position: fixed;
-      z-index: 4;
-      top: 0;
-      left: @sideWidth;
-      right: 0;
-    }
-
-    .search-navigator-workspace-list,
-    .search-navigator-workspace-details {
-      padding-top: 22px + 5px + 5px + 1px + 10px;
-    }
-
-    .search-navigator-side {
-      position: fixed;
-      z-index: 4;
-      top: 0;
-      bottom: 0;
-      overflow-y: auto;
-    }
-
-  }
+//  &.sticky {
+//
+//    .search-navigator-workspace-header {
+//      position: fixed;
+//      z-index: 4;
+//      top: 0;
+//      left: @sideWidth;
+//      right: 0;
+//    }
+//
+//    .search-navigator-workspace-list,
+//    .search-navigator-workspace-details {
+//      padding-top: 22px + 5px + 5px + 1px + 10px;
+//    }
+//
+//    .search-navigator-side {
+//      position: fixed;
+//      z-index: 4;
+//      top: 0;
+//      bottom: 0;
+//      overflow-y: auto;
+//    }
+//
+//  }
 }
 
 .search-navigator-side {
-  position: fixed;
-  z-index: 100;
+  float: left;
   width: @sideWidth;
   top: 30px; left: 0; bottom: 0;
   .box-sizing(border-box);
@@ -117,11 +116,6 @@
 }
 
 .search-navigator-facet-half {
-  width: 45%;
-
-  &:nth-child(odd) {
-    margin-right: 10%;
-  }
 }
 
 .search-navigator-facet-header {
@@ -258,7 +252,8 @@
 }
 
 .search-navigator-workspace {
-  padding-left: @sideWidth;
+  float: left;
+  width: 960px - @sideWidth;
 }
 
 .search-navigator-workspace-header {
