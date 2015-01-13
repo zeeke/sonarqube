@@ -22,10 +22,16 @@ define([
         }
       }),
 
+      SearchEmptyView = Marionette.ItemView.extend({
+        tagName: 'li',
+        template: Templates['nav-search-empty']
+      }),
+
       SearchResultsView = SelectableCollectionView.extend({
         className: 'menu',
         tagName: 'ul',
-        itemView: SearchItemView
+        itemView: SearchItemView,
+        emptyView: SearchEmptyView
       });
 
   return Marionette.Layout.extend({
@@ -125,7 +131,8 @@ define([
       }
       var that = this,
           url = baseUrl + '/api/components/suggestions',
-          options = { s: q };
+          options = { s: q },
+          p = window.process.addBackgroundProcess();
       this.open();
       return $.get(url, options).done(function (r) {
         var collection = [];
@@ -139,6 +146,9 @@ define([
           });
         });
         that.results.reset(collection);
+        window.process.finishBackgroundProcess(p);
+      }).fail(function() {
+        window.process.failBackgroundProcess(p);
       });
     }
   });

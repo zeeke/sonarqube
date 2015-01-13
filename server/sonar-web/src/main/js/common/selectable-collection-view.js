@@ -43,9 +43,11 @@ define(function () {
     },
 
     selectItem: function (index) {
-      var view = this.children.findByIndex(index);
-      if (view != null) {
-        view.select();
+      if (index >= 0 && index < this.collection.length) {
+        var view = this.children.findByIndex(index);
+        if (view != null) {
+          view.select();
+        }
       }
     },
 
