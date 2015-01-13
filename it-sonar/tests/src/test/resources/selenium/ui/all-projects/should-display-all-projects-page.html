@@ -9,56 +9,66 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>Link=Projects</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>Link=All Projects</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>content</td>
-        <td>*All Projects*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>content</td>
-        <td>*Name*</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>content</td>
-        <td>*Struts*Apache Struts*</td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>Link=Struts</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>//a[@href='http://struts.apache.org/']</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>//a[@href='http://issues.apache.org/struts/']</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertElementPresent</td>
-        <td>//a[@href='http://svn.apache.org/viewcvs.cgi/struts/struts1/trunk']</td>
-        <td></td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>css=.js-search-dropdown-toggle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.js-search-dropdown-toggle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=All Projects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>Link=All Projects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>content</td>
+	<td>*All Projects*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>content</td>
+	<td>*Name*</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>content</td>
+	<td>*Struts*Apache Struts*</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>Link=Struts</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//a[@href='http://struts.apache.org/']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//a[@href='http://issues.apache.org/struts/']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//a[@href='http://svn.apache.org/viewcvs.cgi/struts/struts1/trunk']</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

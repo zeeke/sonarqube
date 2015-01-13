@@ -9,61 +9,56 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/new</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=login</td>
-        <td>admin-with-provisioning</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=password</td>
-        <td>password</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>name=commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/settings</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForVisible</td>
-        <td>css=ul.blue-sidebar</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=ul.blue-sidebar</td>
-        <td>glob:*Provisioning*</td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/provisioning</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForVisible</td>
-        <td>css=div.admin_page</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=h1</td>
-        <td>glob:*Provisioning*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=login</td>
+	<td>admin-with-provisioning</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>password</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/settings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.navbar</td>
+	<td>glob:*Provisioning*</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/provisioning</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=div.admin_page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=h1</td>
+	<td>glob:*Provisioning*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

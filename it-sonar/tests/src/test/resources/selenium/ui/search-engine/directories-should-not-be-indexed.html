@@ -14,36 +14,36 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>searchInput</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>searchInput</td>
-        <td>org.apache.stru</td>
-    </tr>
-    <tr>
-        <td>typeKeys</td>
-        <td>searchInput</td>
-        <td>ts</td>
-    </tr>
-    <tr>
-        <td>waitForVisible</td>
-        <td>searchResourcesResults</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>searchResourcesResults</td>
-        <td>glob:*No results*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.js-search-dropdown-toggle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=.js-search-input</td>
+	<td>org.apache.stru</td>
+</tr>
+<tr>
+	<td>sendKeys</td>
+	<td>css=.js-search-input</td>
+	<td>ts</td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=.js-search-results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.js-search-results</td>
+	<td>glob:*No results*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

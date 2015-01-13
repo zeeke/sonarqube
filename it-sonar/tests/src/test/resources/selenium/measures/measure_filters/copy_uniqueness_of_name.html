@@ -14,18 +14,13 @@
 	<td>FILTER_NAME</td>
 </tr>
 <tr>
-    <td>open</td>
-    <td>/sonar/sessions/logout</td>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
 	<td></td>
 </tr>
 <tr>
 	<td>open</td>
-	<td>/sonar/measures</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Log in</td>
+	<td>/sonar/sessions/new</td>
 	<td></td>
 </tr>
 <tr>
@@ -44,9 +39,14 @@
 	<td></td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>name=qualifiers[]</td>
-  <td></td>
+	<td>open</td>
+	<td>/sonar/measures</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>name=qualifiers[]</td>
+	<td></td>
 </tr>
 <tr>
 	<td>select</td>

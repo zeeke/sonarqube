@@ -13,26 +13,26 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/dashboard/index/com.sonarsource.it.samples:simple-sample:src/main/java/sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>sidebar</td>
-        <td>*RequiredMeasuresWidgetsDashboard*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=RequiredMeasuresWidgetsDashboard</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>dashboard</td>
-        <td>*WidgetMandatoryAndOneOfSatisfied*WidgetMandatorySatisfied*WidgetNoConstraints*WidgetOneOfSatisfied*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/dashboard/index/com.sonarsource.it.samples:simple-sample:src/main/java/sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.navbar</td>
+	<td>*RequiredMeasuresWidgetsDashboard*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=RequiredMeasuresWidgetsDashboard</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>dashboard</td>
+	<td>*WidgetMandatoryAndOneOfSatisfied*WidgetMandatorySatisfied*WidgetNoConstraints*WidgetOneOfSatisfied*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

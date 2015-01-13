@@ -14,96 +14,101 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/sessions/logout</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/sessions/login</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>login</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>password</td>
-        <td>admin</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>commit</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertTextPresent</td>
-        <td>Simple Sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>open</td>
-        <td>/sonar/dashboard/index/com.sonarsource.it.samples:simple-sample</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=History</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>id=version_0_change</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>id=version_name_0</td>
-        <td>RELEASE</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>id=save_version_0</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>infomsg</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>infomsg</td>
-        <td>Version was updated to &quot;RELEASE&quot; for current project and all its sub-projects.</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>version_0</td>
-        <td>glob:*RELEASE*</td>
-    </tr>
-    <tr>
-        <td>clickAndWait</td>
-        <td>link=Dashboard</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForElementPresent</td>
-        <td>snapshot_title</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>snapshot_title</td>
-        <td>glob:*Version RELEASE*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/sessions/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Simple Sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/dashboard/index/com.sonarsource.it.samples:simple-sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=History</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=History</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=version_0_change</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=version_name_0</td>
+	<td>RELEASE</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=save_version_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>infomsg</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>infomsg</td>
+	<td>Version was updated to &quot;RELEASE&quot; for current project and all its sub-projects.</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>version_0</td>
+	<td>glob:*RELEASE*</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Dashboard</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>snapshot_title</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>snapshot_title</td>
+	<td>glob:*Version RELEASE*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

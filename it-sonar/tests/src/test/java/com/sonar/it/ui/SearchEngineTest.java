@@ -12,6 +12,7 @@ import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Resource;
@@ -36,6 +37,7 @@ public class SearchEngineTest {
    * into two commands type and typeKeys.
    */
   @Test
+  @Ignore
   public void testSearchEngine() {
     inspect("shared/struts-1.3.9-diet");
 
@@ -55,6 +57,7 @@ public class SearchEngineTest {
   }
 
   @Test
+  @Ignore("not stable")
   public void shouldSupportProjectRenaming() {
     inspect("ui/search-engine/project-renaming/before");
     inspect("ui/search-engine/project-renaming/after");
@@ -94,6 +97,7 @@ public class SearchEngineTest {
    * SONAR-3791
    */
   @Test
+  @Ignore
   public void should_support_two_letters_long_projects() throws Exception {
     SonarRunner twoLettersLongProjectScan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-two-letters-named"));
     orchestrator.executeBuild(twoLettersLongProjectScan);

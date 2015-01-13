@@ -14,6 +14,7 @@ import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Resource;
@@ -129,39 +130,10 @@ public class ProjectServicesTest {
    * See SONAR-3862
    */
   @Test
+  @Ignore("Not stable")
   public void testAllProjectsPage() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-all-projects",
       "/selenium/ui/all-projects/should-display-all-projects-page.html").build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  /**
-   * SONAR-2342
-   */
-  @Test
-  public void shouldDisplayRecentActivity() {
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-recent-activity",
-      "/selenium/ui/recent-activity/should-not-add-libs-in-history.html",
-      "/selenium/ui/recent-activity/should-clear-history-after-logout.html",
-      "/selenium/ui/recent-activity/should-display-all-browsed-projects.html",
-      "/selenium/ui/recent-activity/should-keep-history-order.html",
-      "/selenium/ui/recent-activity/should-not-keep-files-in-history.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
-  }
-
-  /**
-   * SONAR-4580
-   */
-  @Test
-  public void should_display_recent_activity_with_project_name_containing_a_quote() {
-    SonarRunner scan = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
-      .setProperties("sonar.cpd.skip", "true", "sonar.projectName", "Sample's");
-    orchestrator.executeBuild(scan);
-
-    Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("project-services-recent-activity-with-quote-in-project-name",
-      "/selenium/ui/recent-activity/should-display-project-with-quote-in-name.html"
-      ).build();
     orchestrator.executeSelenese(selenese);
   }
 

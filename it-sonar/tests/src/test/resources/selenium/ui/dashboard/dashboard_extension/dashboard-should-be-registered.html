@@ -14,21 +14,16 @@
     </thead>
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/dashboard/index/sample?name=Fake</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=#sidebar li.active</td>
-        <td>Fake</td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>crumbs</td>
-        <td>glob:*Sample*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/dashboard/index/sample?name=Fake</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=Fake</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

@@ -14,82 +14,76 @@
   </thead>
   <tbody>
   <tr>
-    <td>open</td>
-    <td>/sonar/sessions/new</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>id=login</td>
-    <td>admin</td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>id=password</td>
-    <td>admin</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>name=commit</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>open</td>
-    <td>/sonar/dashboard/index/sample</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>link=Configure widgets</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>id=add-widget-widget-with-mandatory-properties</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>dashboard-column-1</td>
-    <td>*Widget with Mandatory Properties*</td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>id=mandatoryString</td>
-    <td>hello</td>
-  </tr>
-  <tr>
-    <td>type</td>
-    <td>id=mandatoryInt</td>
-    <td>123</td>
-  </tr>
-  <tr>
-    <td>clickAndWait</td>
-    <td>name=commit</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>crumbs</td>
-    <td>*Sample*</td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>dashboard-column-1</td>
-    <td>*Widget with Mandatory Properties*</td>
-  </tr>
-  <tr>
-    <td>assertNotVisible</td>
-    <td>name=commit</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>assertText</td>
-    <td>dashboard-column-1</td>
-    <td>*mandatoryString*hello*mandatoryInt*123*</td>
-  </tr>
-
-  </tbody>
+	<td>open</td>
+	<td>/sonar/sessions/new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=login</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/sonar/dashboard/index/sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Configure widgets</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=add-widget-widget-with-mandatory-properties</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>dashboard-column-1</td>
+	<td>*Widget with Mandatory Properties*</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=mandatoryString</td>
+	<td>hello</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=mandatoryInt</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>dashboard-column-1</td>
+	<td>*Widget with Mandatory Properties*</td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>name=commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>dashboard-column-1</td>
+	<td>*mandatoryString*hello*mandatoryInt*123*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

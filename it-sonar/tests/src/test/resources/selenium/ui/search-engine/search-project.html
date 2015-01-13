@@ -8,36 +8,31 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>click</td>
-        <td>searchInput</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td>searchInput</td>
-        <td>str</td>
-    </tr>
-    <tr>
-        <td>typeKeys</td>
-        <td>searchInput</td>
-        <td>uts</td>
-    </tr>
-    <tr>
-        <td>waitForVisible</td>
-        <td>searchResourcesResults</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>waitForText</td>
-        <td>searchResourcesResults</td>
-        <td>glob:*Projects*Struts*</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=.js-search-dropdown-toggle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=.js-search-input</td>
+	<td>str</td>
+</tr>
+<tr>
+	<td>typeKeys</td>
+	<td>css=.js-search-input</td>
+	<td>uts</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=.js-search-results</td>
+	<td>glob:*Projects*Struts*</td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>

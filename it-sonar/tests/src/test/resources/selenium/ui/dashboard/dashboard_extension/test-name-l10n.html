@@ -8,16 +8,16 @@
 <table cellpadding="1" cellspacing="1" border="1">
     <tbody>
     <tr>
-        <td>open</td>
-        <td>/sonar/dashboard/index/sample?name=Fake&amp;locale=fr</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>assertText</td>
-        <td>css=#sidebar li.active</td>
-        <td>Artificiel</td>
-    </tr>
-    </tbody>
+	<td>open</td>
+	<td>/sonar/dashboard/index/sample?name=Fake&amp;locale=fr</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>link=Artificiel</td>
+	<td></td>
+</tr>
+</tbody>
 </table>
 </body>
 </html>
