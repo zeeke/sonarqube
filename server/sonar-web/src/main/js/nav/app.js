@@ -12,7 +12,6 @@ define([
       collection: new Backbone.Collection(window.navbarItems)
     });
     this.navbarView.render();
-    $('#container').addClass('navbar-sticky');
   });
 
   window.requestMessages().done(function () {

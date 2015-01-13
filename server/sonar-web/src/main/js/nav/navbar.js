@@ -38,7 +38,7 @@ define([
 
     onRender: function () {
       var that = this;
-      this.$el.toggleClass('navbar-primary', !!this.projectName);
+      this.$el.addClass('navbar-' + window.navbarSpace);
       this.$el.addClass('navbar-fade');
       setTimeout(function () {
         that.$el.addClass('in');
@@ -82,6 +82,8 @@ define([
         user: window.SS.user,
         userName: window.SS.userName,
         isUserAdmin: window.SS.isUserAdmin,
+
+        space: window.navbarSpace,
 
         projectName: this.projectName,
         projectFavorite: this.isProjectFavorite,

@@ -3,7 +3,8 @@
 @import (reference) "ui";
 
 @navbarBackground: #262626;
-@navbarPrimaryBackground: #565656;
+@navbarProjectBackground: #565656;
+@navbarSettingsBackground: #78674d;
 
 @navbarHeight: 36px;
 @navbarLineHeight: 20px;
@@ -21,14 +22,6 @@
     margin-bottom: 0;
     .trans(background-color, 0.5s ease);
   }
-
-  &.middle .navbar {
-    background-color: fade(@navbarBackground, 90%);
-  }
-
-  &.middle .navbar-primary {
-    background-color: fade(@navbarPrimaryBackground, 90%);
-  }
 }
 
 .navbar, [class^="navbar-"], [class*=" navbar-"] {
@@ -37,7 +30,6 @@
 
 .navbar {
   .clearfix;
-  background-color: @navbarBackground;
   border-bottom: 3px solid @blue;
 }
 
@@ -61,10 +53,6 @@
       margin-right: 0;
     }
   }
-}
-
-.navbar-primary {
-  background-color: @navbarPrimaryBackground;
 }
 
 .navbar a {
@@ -122,33 +110,16 @@
   font-weight: 300;
   letter-spacing: 0.05em;
 
-  &:hover, &:focus  {
-    background-color: #090909;
+  &:hover, &:focus {
     color: @lightColor;
-  }
-}
-
-.navbar-primary .navbar-nav > li > a {
-  &:hover, &:focus  {
-    background-color: darken(@navbarPrimaryBackground, 10%);
   }
 }
 
 .navbar-nav > .active > a,
 .navbar-nav > .dropdown.open > a {
-  background-color: #090909;
   color: @lightColor;
 }
 
-.navbar-primary .navbar-nav > .active > a,
-.navbar-primary .navbar-nav > .dropdown.open > a {
-  background-color: darken(@navbarPrimaryBackground, 10%);
-}
-
-.navbar-form {
-  @topPadding: (@navbarHeight - @formControlHeight) / 2;
-  padding: @topPadding 10px;
-}
 
 .navbar-icon:before {
   font-size: @iconFontSize;
@@ -196,4 +167,52 @@
   width: 90px;
   margin-right: 10px;
   text-align: right;
+}
+
+
+.navbar-global {
+  background-color: @navbarBackground;
+
+  .navbar-sticky.middle & {
+    background-color: fade(@navbarBackground, 90%);
+  }
+
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li > a:focus,
+  .navbar-nav > .active > a,
+  .navbar-nav > .dropdown.open > a {
+    background-color: darken(@navbarBackground, 10%);
+  }
+}
+
+
+.navbar-project {
+  background-color: @navbarProjectBackground;
+
+  .navbar-sticky.middle & {
+    background-color: fade(@navbarProjectBackground, 90%);
+  }
+
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li > a:focus,
+  .navbar-nav > .active > a,
+  .navbar-nav > .dropdown.open > a {
+    background-color: darken(@navbarProjectBackground, 10%);
+  }
+}
+
+
+.navbar-settings {
+  background-color: @navbarSettingsBackground;
+
+  .navbar-sticky.middle & {
+    background-color: fade(@navbarSettingsBackground, 90%);
+  }
+
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li > a:focus,
+  .navbar-nav > .active > a,
+  .navbar-nav > .dropdown.open > a {
+    background-color: darken(@navbarSettingsBackground, 10%);
+  }
 }

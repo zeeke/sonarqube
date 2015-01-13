@@ -1,12 +1,12 @@
 <div class="container">
   <div class="navbar-header">
     <a class="navbar-brand navbar-logo" href="/">
-      {{#if projectName}}
+      {{#notEq space 'global'}}
         <i class="navbar-back-arrow icon-arrow-left"></i>
-      {{/if}}
+      {{/notEq}}
       {{> '_nav-logo'}}
     </a>
-    {{#if projectName}}
+    {{#eq space 'project'}}
       <div class="navbar-brand" title="{{projectName}}">
         {{#if navbarCanFavoriteProject}}
           <a class="js-favorite navbar-favorite {{#if projectFavorite}}icon-favorite{{else}}icon-not-favorite{{/if}}"
@@ -15,7 +15,12 @@
         {{/if}}
         {{projectName}}
       </div>
-    {{/if}}
+    {{/eq}}
+    {{#eq space 'settings'}}
+      <div class="navbar-brand" title="{{t 'layout.settings'}}">
+        {{t 'layout.settings'}}
+      </div>
+    {{/eq}}
   </div>
 
   <ul class="nav navbar-nav">
