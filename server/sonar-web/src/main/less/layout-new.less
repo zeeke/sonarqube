@@ -1,0 +1,37 @@
+@import (reference) "mixins";
+@import (reference) "variables";
+@import (reference) "ui";
+
+@pageWidth: 1080px;
+@sideWidth: 200px;
+
+html {
+  overflow-y: scroll;
+}
+
+.container {
+  width: @pageWidth;
+  margin: 0 auto;
+  padding: 0 10px;
+  .box-sizing(content-box);
+}
+
+.container-one-third {
+  width: @pageWidth / 3;
+}
+
+.container-two-thirds {
+  width: @pageWidth / 3 * 2;
+}
+
+.container-one-half {
+  width: @pageWidth / 2;
+}
+
+.container-side {
+  width: @sideWidth;
+}
+
+.container-main {
+  width: @pageWidth - @sideWidth;
+}

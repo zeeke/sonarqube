@@ -5,6 +5,8 @@
 @sideWidth: 180px;
 
 .search-navigator {
+  .clearfix;
+  padding-top: 10px;
 
 //  &.sticky {
 //
@@ -34,7 +36,6 @@
 
 .search-navigator-side {
   float: left;
-  width: @sideWidth;
   top: 30px; left: 0; bottom: 0;
   .box-sizing(border-box);
   background-color: @barBorderColor;
@@ -253,7 +254,6 @@
 
 .search-navigator-workspace {
   float: left;
-  width: 960px - @sideWidth;
 }
 
 .search-navigator-workspace-header {
@@ -261,8 +261,6 @@
   margin-bottom: 10px;
   padding: 5px 0;
   line-height: 22px;
-  border-bottom: 1px solid @barBorderColor;
-  background-color: @barBackgroundColor;
   font-size: @smallFontSize;
 
   .button-group,
@@ -282,7 +280,6 @@
   top: 0;
   right: 0;
   padding: 5px 10px;
-  background-color: @barBackgroundColor;
   font-size: 0;
   white-space: nowrap;
 
@@ -291,7 +288,7 @@
     position: absolute;
     top: 0; bottom: 0; right: 100%;
     width: 10px;
-    background-image: linear-gradient(to right, fade(@barBackgroundColor, 0%), @barBackgroundColor 75%);
+    background-image: linear-gradient(to right, fade(#fff, 0%), #fff 75%);
   }
 }
 
