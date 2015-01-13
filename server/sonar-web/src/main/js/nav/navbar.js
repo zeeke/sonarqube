@@ -15,6 +15,7 @@ define([
     },
 
     events: {
+      'click .js-login': 'onLoginClick',
       'click .js-favorite': 'onFavoriteClick',
       'show.bs.dropdown .js-search-dropdown': 'onSearchDropdownShow',
       'hidden.bs.dropdown .js-search-dropdown': 'onSearchDropdownHidden'
@@ -38,6 +39,12 @@ define([
 
     onRender: function () {
       this.$el.toggleClass('navbar-primary', !!this.projectName);
+    },
+
+    onLoginClick: function () {
+      var returnTo = window.location.pathname + window.location.search;
+      window.location = baseUrl + '/sessions/new?return_to=' + encodeURIComponent(returnTo) + window.location.hash;
+      return false;
     },
 
     onFavoriteClick: function () {

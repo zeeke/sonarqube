@@ -66,7 +66,7 @@
       </li>
     {{else}}
       <li>
-        <a href="{{link '/sessions/new?return_to=<%= u (request.request_uri) -%>'}}">{{t 'layout.login'}}</a>
+        <a class="js-login" href="{{link '/sessions/new'}}">{{t 'layout.login'}}</a>
       </li>
     {{/if}}
     {{#if isUserAdmin}}
