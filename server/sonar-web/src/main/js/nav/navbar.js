@@ -6,7 +6,6 @@ define([
   var $ = jQuery;
 
   return Marionette.Layout.extend({
-    className: 'navbar',
     tagName: 'nav',
     template: Templates['nav-navbar'],
 
@@ -38,7 +37,12 @@ define([
     },
 
     onRender: function () {
+      var that = this;
       this.$el.toggleClass('navbar-primary', !!this.projectName);
+      this.$el.addClass('navbar-fade');
+      setTimeout(function () {
+        that.$el.addClass('in');
+      }, 0);
     },
 
     onLoginClick: function () {

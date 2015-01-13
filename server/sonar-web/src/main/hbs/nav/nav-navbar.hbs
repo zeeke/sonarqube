@@ -1,6 +1,9 @@
 <div class="container">
   <div class="navbar-header">
     <a class="navbar-brand navbar-logo" href="/">
+      {{#if projectName}}
+        <i class="navbar-back-arrow icon-arrow-left"></i>
+      {{/if}}
       {{> '_nav-logo'}}
     </a>
     {{#if projectName}}
