@@ -72,7 +72,7 @@ define([
         this.resultsView.submitCurrent();
         return false;
       }
-      if (e.keyCode === 27  ) {
+      if (e.keyCode === 27) {
         this.options.hide();
         return false;
       }
@@ -92,13 +92,21 @@ define([
     },
 
     resetResultsToDefault: function () {
-      var collection = window.navbarQualifiers.map(function (q) {
-        return {
-          url: baseUrl + '/all_projects?qualifier=' + encodeURIComponent(q),
-          name: t('qualifiers.all', q)
-        };
-      });
-      this.results.reset(collection);
+      var recentHistory = JSON.parse(localStorage.getItem('sonar_recent_history')),
+          history = recentHistory.map(function (historyItem) {
+            return {
+              url: baseUrl + '/dashboard/index?id=' + encodeURIComponent(historyItem.key) + dashboardParameters(true),
+              name: historyItem.name,
+              q: historyItem.icon
+            };
+          }),
+          qualifiers = window.navbarQualifiers.map(function (q) {
+            return {
+              url: baseUrl + '/all_projects?qualifier=' + encodeURIComponent(q),
+              name: t('qualifiers.all', q)
+            };
+          });
+      this.results.reset(history.concat(qualifiers));
     },
 
     open: function () {
