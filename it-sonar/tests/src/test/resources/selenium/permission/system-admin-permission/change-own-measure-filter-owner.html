@@ -14,8 +14,8 @@
 	<td>FILTER_NAME</td>
 </tr>
 <tr>
-    <td>open</td>
-    <td>/sonar/sessions/logout</td>
+	<td>open</td>
+	<td>/sonar/sessions/logout</td>
 	<td></td>
 </tr>
 <tr>
@@ -44,9 +44,9 @@
 	<td></td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>class=navigator-filter-submit</td>
-  <td></td>
+	<td>waitForElementPresent</td>
+	<td>class=navigator-filter-submit</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -84,18 +84,18 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
+	<td>waitForText</td>
 	<td>filter-title</td>
 	<td>glob:*${FILTER_NAME}*Shared with all users*</td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>id=manage-favorites</td>
-  <td></td>
+	<td>waitForElementPresent</td>
+	<td>id=manage-favorites</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-  <td>id=manage-favorites</td>
+	<td>id=manage-favorites</td>
 	<td></td>
 </tr>
 <tr>
