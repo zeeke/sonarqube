@@ -7,6 +7,7 @@ package com.sonar.performance;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,6 +48,10 @@ public class MavenLogs {
       String s = matcher.group(1);
       return Long.parseLong(s);
     }
+    return null;
+  }
+
+  public static Long extractComputationTotalTime(List<String> logs) {
     return null;
   }
 }
