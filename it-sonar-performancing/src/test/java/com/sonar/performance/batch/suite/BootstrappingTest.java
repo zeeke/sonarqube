@@ -65,11 +65,11 @@ public class BootstrappingTest extends PerfTestCase {
 
     BuildResult result = orchestrator.executeBuild(runner);
     // First analysis
-    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 27600L);
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 22800L);
 
     result = orchestrator.executeBuild(runner);
     // Second analysis is longer since we load project referential
-    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 32600L);
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 27200L);
   }
 
   private static File prepareProjectWithManyFlatModules(int SIZE) throws IOException {
@@ -108,11 +108,11 @@ public class BootstrappingTest extends PerfTestCase {
 
     BuildResult result = orchestrator.executeBuild(runner);
     // First analysis
-    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 10500L);
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 8900L);
 
     result = orchestrator.executeBuild(runner);
     // Second analysis
-    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 11050L);
+    perfRule.assertDurationAround(MavenLogs.extractTotalTime(result.getLogs()), 9300L);
   }
 
   private static File prepareProjectWithManyNestedModules(int SIZE) throws IOException {

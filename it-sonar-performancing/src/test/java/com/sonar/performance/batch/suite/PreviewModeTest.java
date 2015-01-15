@@ -41,7 +41,7 @@ public class PreviewModeTest extends PerfTestCase {
     long secondDuration = System.currentTimeMillis() - start;
     System.out.println("Second preview analysis: " + secondDuration + "ms");
 
-    assertDurationAround(secondDuration, 13200L);
+    assertDurationAround(secondDuration, 9000L);
   }
 
 }
