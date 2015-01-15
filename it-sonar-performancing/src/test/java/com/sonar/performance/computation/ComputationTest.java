@@ -14,6 +14,7 @@ import com.sonar.performance.MavenLogs;
 import com.sonar.performance.PerfTestCase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -38,8 +39,14 @@ public class ComputationTest extends PerfTestCase {
   private static File bigProjectBaseDir;
 
   @BeforeClass
-  public static void setUp() throws IOException {
+  public static void classSetUp() throws IOException {
     bigProjectBaseDir = createProject(4, 10, 50);
+  }
+
+  @Before
+  public void before() throws Exception {
+    orchestrator.resetData();
+
   }
 
   @Test
@@ -55,10 +62,7 @@ public class ComputationTest extends PerfTestCase {
       .setRunnerVersion("2.4")
       .setProjectDir(bigProjectBaseDir);
 
-    for (int i = 0; i < 5; i++) {
-      orchestrator.executeBuild(runner);
-      orchestrator.resetData();
-    }
+    orchestrator.executeBuild(runner);
 
     File report = new File(orchestrator.getServer().getLogs().getParent(), "analysis_reports.log");
     List<String> logsLines = FileUtils.readLines(report, Charsets.UTF_8);
