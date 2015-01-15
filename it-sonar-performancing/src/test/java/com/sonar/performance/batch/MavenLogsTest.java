@@ -5,9 +5,10 @@
  */
 package com.sonar.performance.batch;
 
+import com.google.common.collect.Lists;
 import com.sonar.performance.MavenLogs;
-
 import org.junit.Test;
+
 import static org.fest.assertions.Assertions.assertThat;
 
 public class MavenLogsTest {
@@ -25,5 +26,10 @@ public class MavenLogsTest {
   @Test
   public void testEndMemory() throws Exception {
     assertThat(MavenLogs.extractEndMemory("  Final Memory: 68M/190M  ")).isEqualTo(68);
+  }
+
+  @Test
+  public void logs_with_different_computations_take_the_last_one() throws Exception {
+    assertThat(MavenLogs.extractComputationTotalTime(Lists.newArrayList(" #1 done: 123123123 ms \r\n", "    #2 done: 123456789 ms"))).isEqualTo(123456789L);
   }
 }

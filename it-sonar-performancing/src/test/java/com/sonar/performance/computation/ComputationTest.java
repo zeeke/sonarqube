@@ -6,6 +6,7 @@
 package com.sonar.performance.computation;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Objects;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
@@ -40,13 +41,34 @@ public class ComputationTest extends PerfTestCase {
 
   @BeforeClass
   public static void classSetUp() throws IOException {
-    bigProjectBaseDir = createProject(4, 10, 50);
+    bigProjectBaseDir = createProject(4, 10, 20);
   }
 
   @Before
   public void before() throws Exception {
     orchestrator.resetData();
+  }
 
+  @Test
+  public void quick_analysis() throws Exception {
+    File smallProject = createProject(1, 1, 1);
+    SonarRunner runner = SonarRunner.create()
+      .setProperties(
+        "sonar.projectKey", "small-project",
+        "sonar.projectName", "Small Project",
+        "sonar.projectVersion", "1.0",
+        "sonar.sources", "src",
+        "sonar.profile", "one-xoo-issue-per-line")
+      .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-Xmx512m -server -XX:MaxPermSize=64m -XX:-HeapDumpOnOutOfMemoryError")
+      .setRunnerVersion("2.4")
+      .setProjectDir(smallProject);
+
+    orchestrator.executeBuild(runner);
+
+    File report = new File(orchestrator.getServer().getLogs().getParent(), "analysis_reports.log");
+    List<String> logsLines = FileUtils.readLines(report, Charsets.UTF_8);
+    Long duration = MavenLogs.extractComputationTotalTime(logsLines);
+    System.out.format("### Extracted duration: %s\n", Objects.firstNonNull(duration, ""));
   }
 
   @Test
@@ -66,12 +88,13 @@ public class ComputationTest extends PerfTestCase {
 
     File report = new File(orchestrator.getServer().getLogs().getParent(), "analysis_reports.log");
     List<String> logsLines = FileUtils.readLines(report, Charsets.UTF_8);
-    MavenLogs.extractComputationTotalTime(logsLines);
+    Long duration = MavenLogs.extractComputationTotalTime(logsLines);
+    System.out.format("### Extracted duration: %s\n", Objects.firstNonNull(duration, ""));
   }
 
   private static File createProject(int dirDepth, int nbDirByLayer, int nbIssuesByFile) throws IOException {
     File rootDir = temp.newFolder();
-    System.out.println("####" + rootDir.getAbsolutePath());
+    System.out.println("### " + rootDir.getAbsolutePath());
     File projectProperties = new File(rootDir, "sonar-project.properties");
 
     StringBuilder moduleListBuilder = new StringBuilder(nbDirByLayer * ("module".length() + 2));

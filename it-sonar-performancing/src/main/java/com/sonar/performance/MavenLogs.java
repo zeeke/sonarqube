@@ -51,7 +51,21 @@ public class MavenLogs {
     return null;
   }
 
+  /**
+   * #1 - big-project - processing analysis report done: 914072 ms
+   * @param logs
+   */
   public static Long extractComputationTotalTime(List<String> logs) {
+    Pattern pattern = Pattern.compile(".*done:\\s(\\d+)\\sms");
+    for (int i = logs.size() - 1; i >= 0; i--) {
+      String line = logs.get(i);
+      Matcher matcher = pattern.matcher(line);
+      if (matcher.matches()) {
+        String duration = matcher.group(1);
+        return Long.parseLong(duration);
+      }
+    }
+
     return null;
   }
 }
