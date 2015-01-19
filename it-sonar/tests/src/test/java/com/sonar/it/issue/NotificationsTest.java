@@ -105,7 +105,6 @@ public class NotificationsTest {
   }
 
   @Test
-  @Ignore("Instability in email_configuration.html")
   public void notifications_for_new_issues_and_issue_changes() throws Exception {
     // change assignee
     Issues issues = issueClient.find(IssueQuery.create().components("sample-notifications"));
@@ -140,7 +139,6 @@ public class NotificationsTest {
    * SONAR-4606
    */
   @Test
-  @Ignore("Instability in email_configuration.html")
   public void notifications_for_bulk_change_ws() throws Exception {
 
     Issues issues = issueClient.find(IssueQuery.create().components("sample-notifications"));
