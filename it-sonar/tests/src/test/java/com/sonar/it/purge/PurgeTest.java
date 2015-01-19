@@ -85,7 +85,7 @@ public class PurgeTest {
     collector.checkThat("Wrong number of measure data", count("project_measures where measure_data is not null"), equalTo(0));
 
     // count other tables that are constant between 2 scans
-    int expectedIssues = 49;
+    int expectedIssues = 52;
     int expectedDependencies = 0;
 
     collector.checkThat("Wrong number of issues", count("issues"), equalTo(expectedIssues));
