@@ -21,7 +21,7 @@ public class DashboardTest {
   @BeforeClass
   public static void scanProject() {
     orchestrator.resetData();
-    SonarRunner build = SonarRunner.create((ItUtils.locateProjectDir("shared/xoo-sample")))
+    SonarRunner build = SonarRunner.create((ItUtils.locateProjectDir("ui/xoo-sample-with-duplication")))
       .setProperty("sonar.cpd.xoo.minimumLines", "3")
       .setProperty("sonar.cpd.xoo.minimumTokens", "6");
     orchestrator.executeBuild(build);
@@ -109,10 +109,10 @@ public class DashboardTest {
     seleniumSuite("default_widgets",
       "/selenium/ui/dashboard/default_widgets/welcome_widget.html",
 
-      // SONAR-4448 TODO to be moved in another category
+      // SONAR-4448
       "/selenium/ui/dashboard/default_widgets/documentation_and_comments_widget.html",
 
-      // SONAR-4347 TODO to be moved in category duplications
+      // SONAR-4347
       "/selenium/ui/dashboard/default_widgets/duplications_widget.html");
   }
 
