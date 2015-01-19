@@ -1,4 +1,3 @@
-lines:13
 # Variation of ncloc + 3
 ncloc:16
 #Used by dashboard/widgets tests
