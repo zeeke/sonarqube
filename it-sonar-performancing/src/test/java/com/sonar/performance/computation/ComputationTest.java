@@ -6,7 +6,6 @@
 package com.sonar.performance.computation;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Objects;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
@@ -26,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ComputationTest extends PerfTestCase {
+  private static int MAX_HEAP_SIZE_IN_MEGA = 600;
 
   @ClassRule
   public static TemporaryFolder temp = new TemporaryFolder();
@@ -34,6 +34,10 @@ public class ComputationTest extends PerfTestCase {
   public static Orchestrator orchestrator = Orchestrator
     .builderEnv()
     .addPlugin(MavenLocation.create("com.sonarsource.xoo", "sonar-xoo-plugin", "1.0-SNAPSHOT"))
+    .setServerProperty(
+      "sonar.web.javaOpts",
+      String.format("-Xms%dm -Xmx%dm -XX:+HeapDumpOnOutOfMemoryError -XX:MaxPermSize=160m -Djava.awt.headless=true", MAX_HEAP_SIZE_IN_MEGA,
+        MAX_HEAP_SIZE_IN_MEGA))
     .restoreProfileAtStartup(FileLocation.ofClasspath("/one-xoo-issue-per-line.xml"))
     .build();
 
@@ -50,7 +54,7 @@ public class ComputationTest extends PerfTestCase {
   }
 
   @Test
-  public void quick_analysis() throws Exception {
+  public void analyze_small_project_to_test_minimum_duration() throws Exception {
     File smallProject = createProject(1, 1, 1);
     SonarRunner runner = SonarRunner.create()
       .setProperties(
@@ -59,16 +63,12 @@ public class ComputationTest extends PerfTestCase {
         "sonar.projectVersion", "1.0",
         "sonar.sources", "src",
         "sonar.profile", "one-xoo-issue-per-line")
-      .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-Xmx512m -server -XX:MaxPermSize=64m -XX:-HeapDumpOnOutOfMemoryError")
       .setRunnerVersion("2.4")
       .setProjectDir(smallProject);
 
     orchestrator.executeBuild(runner);
 
-    File report = new File(orchestrator.getServer().getLogs().getParent(), "analysis_reports.log");
-    List<String> logsLines = FileUtils.readLines(report, Charsets.UTF_8);
-    Long duration = MavenLogs.extractComputationTotalTime(logsLines);
-    System.out.format("### Extracted duration: %s\n", Objects.firstNonNull(duration, ""));
+    assertComputationDurationAround(450);
   }
 
   @Test
@@ -80,21 +80,24 @@ public class ComputationTest extends PerfTestCase {
         "sonar.projectVersion", "1.0",
         "sonar.sources", "src",
         "sonar.profile", "one-xoo-issue-per-line")
-      .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-Xmx512m -server -XX:MaxPermSize=64m -XX:-HeapDumpOnOutOfMemoryError")
       .setRunnerVersion("2.4")
       .setProjectDir(bigProjectBaseDir);
 
     orchestrator.executeBuild(runner);
 
+    assertComputationDurationAround(365_000);
+  }
+
+  private void assertComputationDurationAround(long expectedDuration) throws IOException {
     File report = new File(orchestrator.getServer().getLogs().getParent(), "analysis_reports.log");
     List<String> logsLines = FileUtils.readLines(report, Charsets.UTF_8);
     Long duration = MavenLogs.extractComputationTotalTime(logsLines);
-    System.out.format("### Extracted duration: %s\n", Objects.firstNonNull(duration, ""));
+
+    assertDurationAround(duration, expectedDuration);
   }
 
   private static File createProject(int dirDepth, int nbDirByLayer, int nbIssuesByFile) throws IOException {
     File rootDir = temp.newFolder();
-    System.out.println("### " + rootDir.getAbsolutePath());
     File projectProperties = new File(rootDir, "sonar-project.properties");
 
     StringBuilder moduleListBuilder = new StringBuilder(nbDirByLayer * ("module".length() + 2));
