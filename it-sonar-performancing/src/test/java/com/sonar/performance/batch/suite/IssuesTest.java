@@ -188,9 +188,7 @@ public class IssuesTest extends PerfTestCase {
     File src = new File(baseDir, "src");
     for (int i = 1; i <= nbFiles; i++) {
       File xooFile = new File(src, "file" + i + ".xoo");
-      FileUtils.write(xooFile, StringUtils.repeat("a\n", nbIssuesPerFile));
-      File xooMeasureFile = new File(src, "file" + i + ".xoo.measures");
-      FileUtils.write(xooMeasureFile, "lines:" + nbIssuesPerFile);
+      FileUtils.write(xooFile, StringUtils.repeat("a\n", nbIssuesPerFile - 1));
     }
 
     return baseDir;
