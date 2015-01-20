@@ -54,24 +54,6 @@ public class ComputationTest extends PerfTestCase {
   }
 
   @Test
-  public void analyze_small_project_to_test_minimum_duration() throws Exception {
-    File smallProject = createProject(1, 1, 1);
-    SonarRunner runner = SonarRunner.create()
-      .setProperties(
-        "sonar.projectKey", "small-project",
-        "sonar.projectName", "Small Project",
-        "sonar.projectVersion", "1.0",
-        "sonar.sources", "src",
-        "sonar.profile", "one-xoo-issue-per-line")
-      .setRunnerVersion("2.4")
-      .setProjectDir(smallProject);
-
-    orchestrator.executeBuild(runner);
-
-    assertComputationDurationAround(450);
-  }
-
-  @Test
   public void analyse_big_project() throws Exception {
     SonarRunner runner = SonarRunner.create()
       .setProperties(
