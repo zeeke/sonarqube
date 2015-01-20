@@ -336,7 +336,6 @@ public class BatchTest {
     assertThat(buildResult.getLogs()).contains("Initializers execution time");
     assertThat(buildResult.getLogs()).contains("Sensors execution time breakdown");
     assertThat(buildResult.getLogs()).contains("Decorators execution time breakdown");
-    assertThat(buildResult.getLogs()).contains("Post-Jobs execution time breakdown");
   }
 
   /**
