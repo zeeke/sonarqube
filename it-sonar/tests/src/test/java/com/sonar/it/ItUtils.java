@@ -15,7 +15,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.sonar.wsclient.SonarClient;
-import org.sonar.wsclient.services.*;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.PropertyDeleteQuery;
+import org.sonar.wsclient.services.PropertyUpdateQuery;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
 
 import javax.annotation.Nullable;
 
@@ -170,7 +174,7 @@ public final class ItUtils {
   }
 
   public static JSONObject getJSONReport(BuildResult result) {
-    Pattern pattern = Pattern.compile("Export results to (.*?).json");
+    Pattern pattern = Pattern.compile("Export issues to (.*?).json");
     Matcher m = pattern.matcher(result.getLogs());
     if (m.find()) {
       String s = m.group(1);
