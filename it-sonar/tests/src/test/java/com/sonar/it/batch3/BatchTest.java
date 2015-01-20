@@ -13,7 +13,11 @@ import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.sonar.wsclient.Sonar;
@@ -265,13 +269,13 @@ public class BatchTest {
     int cachedFiles = FileUtils.listFiles(cache, new String[] {"jar"}, true).size();
     assertThat(cachedFiles).isGreaterThan(5);
     assertThat(result.getLogs()).contains("User cache: " + cache.getAbsolutePath());
-    assertThat(result.getLogs()).contains("Download sonar-findbugs-plugin-");
+    assertThat(result.getLogs()).contains("Download sonar-xoo-plugin-");
 
     result = scan("shared/xoo-sample",
       "sonar.userHome", userHome.getAbsolutePath());
     assertThat(cachedFiles).isEqualTo(cachedFiles);
     assertThat(result.getLogs()).contains("User cache: " + cache.getAbsolutePath());
-    assertThat(result.getLogs()).doesNotContain("Download sonar-findbugs-plugin-");
+    assertThat(result.getLogs()).doesNotContain("Download sonar-xoo-plugin-");
   }
 
   /**
