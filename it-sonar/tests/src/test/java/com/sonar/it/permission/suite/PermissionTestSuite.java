@@ -22,5 +22,6 @@ public class PermissionTestSuite {
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
+    .addPlugin(ItUtils.javaPlugin())
     .build();
 }

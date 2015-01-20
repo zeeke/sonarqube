@@ -5,6 +5,7 @@
  */
 package com.sonar.it.duplications.suite;
 
+import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.locator.MavenLocation;
 import org.junit.ClassRule;
@@ -21,6 +22,6 @@ public class DuplicationsTestSuite {
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     // Used by DuplicationsTest
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-useless-code-tracker-plugin", "1.0"))
-    .addPlugin("java")
+    .addPlugin(ItUtils.javaPlugin())
     .build();
 }

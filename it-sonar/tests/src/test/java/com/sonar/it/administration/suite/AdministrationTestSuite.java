@@ -28,6 +28,6 @@ public class AdministrationTestSuite {
     .addPlugin(ItUtils.locateTestPlugin("property-sets-plugin"))
     .addPlugin(ItUtils.locateTestPlugin("sonar-subcategories-plugin"))
     .addPlugin(ItUtils.xooPlugin())
-    .addPlugin("java")
+    .addPlugin(ItUtils.javaPlugin())
     .build();
 }

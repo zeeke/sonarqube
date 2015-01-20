@@ -15,13 +15,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.sonar.wsclient.SonarClient;
-import org.sonar.wsclient.services.Measure;
-import org.sonar.wsclient.services.PropertyDeleteQuery;
-import org.sonar.wsclient.services.PropertyUpdateQuery;
-import org.sonar.wsclient.services.Resource;
-import org.sonar.wsclient.services.ResourceQuery;
+import org.sonar.wsclient.services.*;
 
 import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -55,6 +52,10 @@ public final class ItUtils {
 
   public static MavenLocation xooPlugin() {
     return MavenLocation.create("com.sonarsource.xoo", "sonar-xoo-plugin", "1.0-SNAPSHOT");
+  }
+
+  public static MavenLocation javaPlugin() {
+    return MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-java-plugin", "2.8");
   }
 
   public static File locateHome() {

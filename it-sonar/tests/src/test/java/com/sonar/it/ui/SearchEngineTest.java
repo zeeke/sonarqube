@@ -26,7 +26,7 @@ public class SearchEngineTest {
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
-    .addPlugin("java")
+    .addPlugin(ItUtils.javaPlugin())
     .build();
 
   @Before

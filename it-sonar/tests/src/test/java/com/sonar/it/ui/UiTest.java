@@ -40,7 +40,7 @@ public class UiTest {
     .addPlugin(ItUtils.locateTestPlugin("page-decoration-plugin"))
     .addPlugin(ItUtils.locateTestPlugin("resource-configuration-extension-plugin"))
     .addPlugin(ItUtils.xooPlugin())
-    .addPlugin("java")
+    .addPlugin(ItUtils.javaPlugin())
     .build();
 
   @After

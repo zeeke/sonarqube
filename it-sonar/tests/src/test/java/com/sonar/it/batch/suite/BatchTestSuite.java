@@ -22,7 +22,7 @@ public class BatchTestSuite {
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
-    .addPlugin("java")
+    .addPlugin(ItUtils.javaPlugin())
     .setContext("/")
 
     // used by TempFolderTest

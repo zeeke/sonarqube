@@ -8,7 +8,6 @@ package com.sonar.it.server;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.OrchestratorBuilder;
-import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -142,15 +141,13 @@ public class ServerTest {
    */
   @Test
   public void test_projects_web_service() throws IOException {
-    orchestrator = Orchestrator.createEnv();
+    orchestrator = Orchestrator.builderEnv().addPlugin(ItUtils.xooPlugin()).build();
     orchestrator.start();
 
-    MavenBuild build = MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-      .setCleanSonarGoals()
-      .setProperties("sonar.dynamicAnalysis", "false");
+    SonarRunner build = SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"));
     orchestrator.executeBuild(build);
 
-    String url = orchestrator.getServer().getUrl() + "/api/projects?key=com.sonarsource.it.samples:simple-sample&versions=true";
+    String url = orchestrator.getServer().getUrl() + "/api/projects?key=sample&versions=true";
     HttpClient httpclient = new DefaultHttpClient();
     try {
       HttpGet get = new HttpGet(url);
@@ -159,7 +156,7 @@ public class ServerTest {
       assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
       String content = IOUtils.toString(response.getEntity().getContent());
       assertThat(content).doesNotContain("error");
-      assertThat(content).contains("simple-sample");
+      assertThat(content).contains("sample");
       EntityUtils.consume(response.getEntity());
 
     } finally {
@@ -252,10 +249,10 @@ public class ServerTest {
    */
   @Test
   public void not_fail_with_url_ending_by_jsp() {
-    orchestrator = Orchestrator.builderEnv().build();
+    orchestrator = Orchestrator.builderEnv().addPlugin(ItUtils.xooPlugin()).build();
     orchestrator.start();
 
-    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/sample"))
+    orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("shared/xoo-sample"))
       .setProperty("sonar.projectKey", "myproject.jsp"));
     // Access dashboard
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("url_ending_by_jsp",

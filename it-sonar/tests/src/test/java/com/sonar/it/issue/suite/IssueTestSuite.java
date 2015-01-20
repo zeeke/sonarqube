@@ -26,5 +26,6 @@ public class IssueTestSuite {
     .addPlugin(ItUtils.locateTestPlugin("issue-action-plugin"))
     .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-checkstyle-plugin", "2.1.1"))
     .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1"))
+    .addPlugin(ItUtils.javaPlugin())
     .build();
 }

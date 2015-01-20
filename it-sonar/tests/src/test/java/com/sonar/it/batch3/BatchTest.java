@@ -37,7 +37,7 @@ public class BatchTest {
 
     .addPlugin(ItUtils.locateTestPlugin("batch-plugin"))
     // Java is only used in convert_library_into_module test
-    .addPlugin("java")
+    .addPlugin(ItUtils.javaPlugin())
 
     .build();
 

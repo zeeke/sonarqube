@@ -17,7 +17,7 @@ public class DesignUITest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .addPlugin("java")
+    .addPlugin(ItUtils.javaPlugin())
     .build();
 
   @BeforeClass
