@@ -33,14 +33,15 @@ public class UiTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-      .addPlugin(ItUtils.locateTestPlugin("static-files-plugin"))
-      .addPlugin(ItUtils.locateTestPlugin("ruby-api-tester-plugin"))
-      .addPlugin(ItUtils.locateTestPlugin("required-measures-widgets-plugin"))
-      .addPlugin(ItUtils.locateTestPlugin("ruby-rails-app-plugin"))
-      .addPlugin(ItUtils.locateTestPlugin("page-decoration-plugin"))
-      .addPlugin(ItUtils.locateTestPlugin("resource-configuration-extension-plugin"))
-      .addPlugin(ItUtils.xooPlugin())
-      .build();
+    .addPlugin(ItUtils.locateTestPlugin("static-files-plugin"))
+    .addPlugin(ItUtils.locateTestPlugin("ruby-api-tester-plugin"))
+    .addPlugin(ItUtils.locateTestPlugin("required-measures-widgets-plugin"))
+    .addPlugin(ItUtils.locateTestPlugin("ruby-rails-app-plugin"))
+    .addPlugin(ItUtils.locateTestPlugin("page-decoration-plugin"))
+    .addPlugin(ItUtils.locateTestPlugin("resource-configuration-extension-plugin"))
+    .addPlugin(ItUtils.xooPlugin())
+    .addPlugin("java")
+    .build();
 
   @After
   public void cleanDatabase() {
@@ -51,7 +52,7 @@ public class UiTest {
   public void test_static_files() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("ui-static-files",
       "/selenium/ui/static-files.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -77,7 +78,7 @@ public class UiTest {
   public void test_footer() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("ui-footer",
       "/selenium/ui/footer.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -88,7 +89,7 @@ public class UiTest {
   public void test_page_decoration() {
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("ui-page-decoration",
       "/selenium/ui/page-decoration.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -122,7 +123,7 @@ public class UiTest {
       "/selenium/ui/ruby-extensions/ruby-api-tester.html",
       "/selenium/ui/ruby-extensions/ruby-rails-app.html",
       "/selenium/ui/ruby-extensions/ruby-rails-app-advanced.html"
-    ).build();
+      ).build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -159,7 +160,7 @@ public class UiTest {
     scanSample();
 
     Selenese selenese = Selenese.builder().setHtmlTestsInClasspath("resource-configuration-extension",
-        "/selenium/ui/resource-configuration-extension/resource-configuration-extension.html").build();
+      "/selenium/ui/resource-configuration-extension/resource-configuration-extension.html").build();
     orchestrator.executeSelenese(selenese);
   }
 
@@ -177,8 +178,8 @@ public class UiTest {
 
   private void scanSample() {
     orchestrator.executeBuild(MavenBuild.create(ItUtils.locateProjectPom("shared/sample"))
-        .setCleanSonarGoals()
-        .setProperties("sonar.dynamicAnalysis", "false"));
+      .setCleanSonarGoals()
+      .setProperties("sonar.dynamicAnalysis", "false"));
   }
 
   private void scanXooSample() {

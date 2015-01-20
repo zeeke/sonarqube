@@ -24,7 +24,10 @@ import static org.fest.assertions.Assertions.assertThat;
 public class SearchEngineTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv().addPlugin(ItUtils.xooPlugin()).build();
+  public static Orchestrator orchestrator = Orchestrator.builderEnv()
+    .addPlugin(ItUtils.xooPlugin())
+    .addPlugin("java")
+    .build();
 
   @Before
   public void clean() {

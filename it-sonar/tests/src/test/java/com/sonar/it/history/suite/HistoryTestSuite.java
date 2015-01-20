@@ -21,5 +21,6 @@ public class HistoryTestSuite {
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
+    .addPlugin("java")
     .build();
 }

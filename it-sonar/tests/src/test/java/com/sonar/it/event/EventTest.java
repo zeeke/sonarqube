@@ -25,7 +25,9 @@ import static org.junit.Assert.assertThat;
 public class EventTest {
 
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv().build();
+  public static Orchestrator orchestrator = Orchestrator.builderEnv()
+    .addPlugin("java")
+    .build();
 
   @After
   public void clean() {

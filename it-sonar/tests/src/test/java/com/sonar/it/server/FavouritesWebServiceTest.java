@@ -26,7 +26,9 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class FavouritesWebServiceTest {
   @Rule
-  public Orchestrator orchestrator = Orchestrator.builderEnv().build();
+  public Orchestrator orchestrator = Orchestrator.builderEnv()
+    .addPlugin("java")
+    .build();
 
   @Before
   public void inspectProject() {

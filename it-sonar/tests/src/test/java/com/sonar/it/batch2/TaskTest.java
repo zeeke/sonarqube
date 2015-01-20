@@ -28,6 +28,7 @@ public class TaskTest {
     .addPlugin(ItUtils.locateTestPlugin("task-plugin"))
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.javascript", "sonar-javascript-plugin", "2.0"))
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins.python", "sonar-python-plugin", "1.3"))
+    .addPlugin("java")
     .build();
 
   @After

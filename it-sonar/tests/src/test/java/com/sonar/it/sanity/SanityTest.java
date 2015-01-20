@@ -27,7 +27,6 @@ public class SanityTest {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .removeDistributedPlugins()
     .addPlugin(ItUtils.xooPlugin())
     .setContext("/")
     .build();

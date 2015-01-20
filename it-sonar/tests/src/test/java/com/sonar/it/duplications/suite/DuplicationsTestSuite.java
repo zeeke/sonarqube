@@ -21,5 +21,6 @@ public class DuplicationsTestSuite {
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     // Used by DuplicationsTest
     .addPlugin(MavenLocation.create("org.codehaus.sonar-plugins", "sonar-useless-code-tracker-plugin", "1.0"))
+    .addPlugin("java")
     .build();
 }

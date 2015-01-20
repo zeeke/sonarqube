@@ -16,7 +16,9 @@ import org.junit.Test;
 public class DesignUITest {
 
   @ClassRule
-  public static Orchestrator orchestrator = Orchestrator.builderEnv().build();
+  public static Orchestrator orchestrator = Orchestrator.builderEnv()
+    .addPlugin("java")
+    .build();
 
   @BeforeClass
   public static void analyseProject() throws Exception {

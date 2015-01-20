@@ -17,5 +17,7 @@ import org.junit.runners.Suite;
 public class TestTestSuite {
 
   @ClassRule
-  public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv().build();
+  public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
+    .addPlugin("java")
+    .build();
 }

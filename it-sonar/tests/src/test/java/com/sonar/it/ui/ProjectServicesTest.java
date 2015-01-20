@@ -8,7 +8,6 @@ package com.sonar.it.ui;
 import com.sonar.it.ItUtils;
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.MavenBuild;
-import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.MavenLocation;
 import com.sonar.orchestrator.selenium.Selenese;
@@ -31,6 +30,7 @@ public class ProjectServicesTest {
     .addPlugin(ItUtils.xooPlugin())
     .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-checkstyle-plugin", "2.1.1"))
     .addPlugin(MavenLocation.of("org.codehaus.sonar-plugins.java", "sonar-pmd-plugin", "2.1"))
+    .addPlugin("java")
     .build();
 
   @BeforeClass

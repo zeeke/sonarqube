@@ -27,7 +27,6 @@ public class IssueWithServerRestartTest {
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
     .addPlugin(ItUtils.locateTestPlugin("deprecated-xoo-rule-plugin"))
-    .removeDistributedPlugins()
     .build();
 
   /**

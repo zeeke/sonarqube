@@ -31,6 +31,7 @@ public class ScmTestSuite {
   @ClassRule
   public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
     .addPlugin(ItUtils.xooPlugin())
+    .addPlugin("java")
     .setContext("/")
 
     .build();
