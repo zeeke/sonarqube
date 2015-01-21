@@ -41,12 +41,12 @@ public class SonarUpgradeTest {
 
   @Test
   public void test_upgrade_from_lts() {
-    testDatabaseUpgrade("3.7.4", Orchestrator.builderEnv().getSonarVersion());
+    testDatabaseUpgrade("4.5.1", Orchestrator.builderEnv().getSonarVersion());
   }
 
   @Test
   public void test_upgrade_from_latest_release() {
-    testDatabaseUpgrade("4.4", Orchestrator.builderEnv().getSonarVersion());
+    testDatabaseUpgrade("5.0", Orchestrator.builderEnv().getSonarVersion());
   }
 
   private void testDatabaseUpgrade(String fromVersion, String toVersion, BeforeUpgrade... tasks) {
@@ -92,7 +92,7 @@ public class SonarUpgradeTest {
     OrchestratorBuilder builder = Orchestrator.builderEnv().setSonarVersion(version);
     builder.setOrchestratorProperty("orchestrator.keepDatabase", String.valueOf(keepDatabase));
     if (!keepDatabase) {
-      builder.restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
+      builder.restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-5.1.xml"));
     }
     if (VersionUtils.isGreaterThanOrEqual(version, "4.2")) {
       builder.removeDistributedPlugins();
@@ -116,7 +116,7 @@ public class SonarUpgradeTest {
       .setCleanSonarGoals()
       .setProperty("sonar.dynamicAnalysis", "false")
       .setProperty("sonar.scm.disabled", "true")
-      .setProperty("sonar.profile", "sonar-way-2.7");
+      .setProperty("sonar.profile", "sonar-way-5.1");
     // SONAR-3960 Cross project duplication is not supported on pgsql 8.3 before Sonar 3.3.2
     if (VersionUtils.isGreaterThanOrEqual(orchestrator.getServer().getVersion(), "3.3.2")
       || !orchestrator.getDatabase().getSonarProperties().get("sonar.jdbc.dialect").equals("postgresql")) {
