@@ -75,9 +75,6 @@ public abstract class PerfTestCase {
 
   /**
    * New batch analysis with most features disabled by default (empty QP, no CPD, no SCM, ...)
-   * @param sonarRunnerOpts
-   * @param props
-   * @return
    */
   public static SonarRunner newSonarRunner(String sonarRunnerOpts, String... props) {
     return SonarRunner.create()
