@@ -22,7 +22,9 @@ public class WebTest extends PerfTestCase {
 
   @ClassRule
   public static Orchestrator orchestrator = Orchestrator.builderEnv()
-    .restoreProfileAtStartup(FileLocation.ofClasspath("/sonar-way-3.6.xml"))
+    .setOrchestratorProperty("javaVersion", "LATEST_RELEASE")
+    .addPlugin("java")
+    .restoreProfileAtStartup(FileLocation.ofClasspath("/java-quality-profile.xml"))
     .build();
 
   @BeforeClass
