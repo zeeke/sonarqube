@@ -49,7 +49,9 @@ public class IssueMapperTest extends AbstractDaoTestCase {
   public void testInsert() throws Exception {
     IssueDto dto = new IssueDto();
     dto.setComponentId(123l);
+    dto.setComponentUuid("component-uuid");
     dto.setProjectId(100l);
+    dto.setProjectUuid("project-uuid");
     dto.setRuleId(200);
     dto.setKee("ABCDE");
     dto.setLine(500);
@@ -75,7 +77,7 @@ public class IssueMapperTest extends AbstractDaoTestCase {
     mapper.insert(dto);
     session.commit();
 
-    checkTables("testInsert", new String[]{"id"}, "issues");
+    checkTables("testInsert", new String[] {"id"}, "issues");
   }
 
   @Test
@@ -110,7 +112,7 @@ public class IssueMapperTest extends AbstractDaoTestCase {
     mapper.update(dto);
     session.commit();
 
-    checkTables("testUpdate", new String[]{"id"}, "issues");
+    checkTables("testUpdate", new String[] {"id"}, "issues");
   }
 
   @Test
@@ -148,7 +150,7 @@ public class IssueMapperTest extends AbstractDaoTestCase {
     assertThat(count).isEqualTo(1);
     session.commit();
 
-    checkTables("testUpdate", new String[]{"id"}, "issues");
+    checkTables("testUpdate", new String[] {"id"}, "issues");
   }
 
   @Test
@@ -186,6 +188,6 @@ public class IssueMapperTest extends AbstractDaoTestCase {
     assertThat(count).isEqualTo(0);
     session.commit();
 
-    checkTables("updateBeforeSelectedDate_with_conflict", new String[]{"id"}, "issues");
+    checkTables("updateBeforeSelectedDate_with_conflict", new String[] {"id"}, "issues");
   }
 }

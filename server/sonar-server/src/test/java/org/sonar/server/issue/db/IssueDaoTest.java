@@ -195,8 +195,8 @@ public class IssueDaoTest extends AbstractDaoTestCase {
   @Test
   public void insert() throws Exception {
     IssueDto dto = new IssueDto();
-    dto.setComponent(new ComponentDto().setKey("struts:Action").setId(123L));
-    dto.setProject(new ComponentDto().setKey("struts").setId(100L));
+    dto.setComponent(new ComponentDto().setKey("struts:Action").setId(123L).setUuid("component-uuid"));
+    dto.setProject(new ComponentDto().setKey("struts").setId(100L).setUuid("project-uuid"));
     dto.setRule(RuleTesting.newDto(RuleKey.of("squid", "S001")).setId(200));
     dto.setKee("ABCDE");
     dto.setLine(500);
