@@ -12,7 +12,6 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class RuleWidgetsTest {
@@ -26,19 +25,6 @@ public class RuleWidgetsTest {
     orchestrator.getServer().restoreProfile(FileLocation.ofClasspath("/sonar-way-2.7.xml"));
     orchestrator.executeBuild(SonarRunner.create(ItUtils.locateProjectDir("rule/rule-widgets"))
       .setProperties("sonar.profile", "sonar-way-2.7"));
-  }
-
-  // SONAR-2071
-  @Test
-  @Ignore("Most Violated Components widget cannot work anymore as the weighted_violations metric is out of SonarQube")
-  public void test_most_violated_components_widget() throws Exception {
-    Selenese selenese = Selenese
-      .builder()
-      .setHtmlTestsInClasspath("most-violated-resources-widget",
-        "/selenium/rule/widgets/most-violated-resources/most-violated-resources-widget.html",
-        "/selenium/rule/widgets/most-violated-resources/most-violated-resources-popup-on-violations.html"
-      ).build();
-    orchestrator.executeSelenese(selenese);
   }
 
   // SONAR-2070

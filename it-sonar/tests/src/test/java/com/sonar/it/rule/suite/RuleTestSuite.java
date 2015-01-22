@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  ManualRulesTest.class, RuleWidgetsTest.class, SonarCommonRulesTest.class, RulesTest.class
+  ManualRulesTest.class, RuleWidgetsTest.class, SonarCommonRulesTest.class
 })
 public class RuleTestSuite {
 

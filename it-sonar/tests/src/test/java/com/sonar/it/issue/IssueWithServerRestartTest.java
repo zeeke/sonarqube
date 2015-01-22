@@ -10,14 +10,11 @@ import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.selenium.Selenese;
-import org.apache.commons.io.FileUtils;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.sonar.wsclient.issue.Issue;
 import org.sonar.wsclient.issue.IssueClient;
 import org.sonar.wsclient.issue.IssueQuery;
-
-import java.io.File;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -61,17 +58,6 @@ public class IssueWithServerRestartTest {
     issue = issueClient.find(IssueQuery.create().rules("deprecated-repo:deprecated-rule")).list().get(0);
     assertThat(issue.status()).isEqualTo("CLOSED");
     assertThat(issue.resolution()).isEqualTo("REMOVED");
-  }
-
-  // SONAR-4559
-  private void check_removed_rules_do_not_prevent_displaying_issues_code_viewer() throws Exception {
-    orchestrator.executeSelenese(
-      Selenese.builder().setHtmlTestsInClasspath("display-issues-code-viewer-on-removed-rule",
-        "/selenium/issue/display-issues-code-viewer-on-removed-rule.html"
-      ).build()
-    );
-    File logs = orchestrator.getServer().getLogs();
-    assertThat(FileUtils.readFileToString(logs)).doesNotContain("nil:NilClass");
   }
 
   @Test
