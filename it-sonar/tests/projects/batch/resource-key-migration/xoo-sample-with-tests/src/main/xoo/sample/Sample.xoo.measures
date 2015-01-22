@@ -1,0 +1,8 @@
+#Lines metric is needed on SQ 4.1
+lines:13
+ncloc:13
+#Used by dashboard/widgets tests
+lcom4:2
+complexity_in_classes:3
+classes:1
+comment_lines:0

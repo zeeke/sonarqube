@@ -117,14 +117,14 @@ public class ResourceKeyMigrationTest {
 
   private BuildResult scanXooSampleWithTest() {
     SonarRunner build = SonarRunner.create()
-      .setProjectDir(ItUtils.locateProjectDir("shared/xoo-sample-with-tests"))
+      .setProjectDir(ItUtils.locateProjectDir("batch/resource-key-migration/xoo-sample-with-tests"))
       .setProfile("one-issue-per-line");
     return orchestrator.executeBuild(build);
   }
 
   private BuildResult scanXooSample(String... props) {
     SonarRunner build = SonarRunner.create()
-      .setProjectDir(ItUtils.locateProjectDir("shared/xoo-sample"))
+      .setProjectDir(ItUtils.locateProjectDir("batch/resource-key-migration/xoo-sample"))
       .setProfile("one-issue-per-line")
       .setProperties(props);
     return orchestrator.executeBuild(build);
